@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pusher_beams/pusher_beams.dart';
+import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/home/home.dart';
 import 'package:qixer/view/notification/push_notification_helper.dart';
 import 'package:qixer/view/tabs/saved_item_page.dart';
@@ -47,6 +49,12 @@ class _HomePageState extends State<LandingPage> {
   //Notification alert
   //=================>
   initPusherBeams(BuildContext context) async {
+    var pusherInstance =
+        await Provider.of<PushNotificationService>(context, listen: false)
+            .pusherInstance;
+
+    if (pusherInstance == null) return;
+
     if (!kIsWeb) {
       await PusherBeams.instance
           .onMessageReceivedInTheForeground(_onMessageReceivedInTheForeground);
