@@ -43,16 +43,16 @@ class DeclineHistory extends StatelessWidget {
                                 fontsize: 14, color: cc.successColor),
                             sizedBoxCustom(8),
                             CommonHelper().paragraphCommon(
-                                'Name: ${provider.declineHistory['seller_details'][0]['name']}',
-                                TextAlign.left),
+                              'Name: ${provider.declineHistory['seller_details'][0]['name']}',
+                            ),
                             sizedBoxCustom(4),
                             CommonHelper().paragraphCommon(
-                                'Email: ${provider.declineHistory['seller_details'][0]['email']}',
-                                TextAlign.left),
+                              'Email: ${provider.declineHistory['seller_details'][0]['email']}',
+                            ),
                             sizedBoxCustom(4),
                             CommonHelper().paragraphCommon(
-                                'Phone: ${provider.declineHistory['seller_details'][0]['phone']}',
-                                TextAlign.left),
+                              'Phone: ${provider.declineHistory['seller_details'][0]['phone']}',
+                            ),
                             sizedBoxCustom(20),
                             CommonHelper().dividerCommon()
                           ]),

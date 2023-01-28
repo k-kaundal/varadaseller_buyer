@@ -69,13 +69,13 @@ class MenuNameImageSection extends StatelessWidget {
                         CommonHelper().paragraphCommon(
                             profileProvider.profileDetails.userDetails.phone ??
                                 '',
-                            TextAlign.center),
+                            textAlign: TextAlign.center),
 
                         profileProvider.profileDetails.userDetails.about != null
                             ? CommonHelper().paragraphCommon(
                                 profileProvider
                                     .profileDetails.userDetails.about,
-                                TextAlign.center)
+                                textAlign: TextAlign.center)
                             : Container(),
                       ],
                     ),

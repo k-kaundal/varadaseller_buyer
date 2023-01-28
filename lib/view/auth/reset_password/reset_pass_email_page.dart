@@ -64,9 +64,9 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                           height: 13,
                         ),
                         CommonHelper().paragraphCommon(
-                            asProvider.getString(
-                                "Enter the email you used to creat account and we’ll send instruction for restting password"),
-                            TextAlign.start),
+                          asProvider.getString(
+                              "Enter the email you used to creat account and we’ll send instruction for restting password"),
+                        ),
 
                         const SizedBox(
                           height: 33,

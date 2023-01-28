@@ -66,7 +66,7 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
                 CommonHelper().paragraphCommon(
                     asProvider.getString(
                         "Enter the 4 digit code we sent to to your email in order to reset password"),
-                    TextAlign.center),
+                    textAlign: TextAlign.center),
                 const SizedBox(
                   height: 33,
                 ),

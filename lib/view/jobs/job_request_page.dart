@@ -107,12 +107,11 @@ class _JobRequestPageState extends State<JobRequestPage> {
                                               fontsize: 15),
                                           sizedBoxCustom(8),
                                           CommonHelper().paragraphCommon(
-                                              'Your offer: \$${provider.jobReqList[i].job.price}',
-                                              TextAlign.left),
+                                            'Your offer: \$${provider.jobReqList[i].job.price}',
+                                          ),
                                           sizedBoxCustom(6),
                                           CommonHelper().paragraphCommon(
                                               'Seller offer: \$${provider.jobReqList[i].expectedSalary}',
-                                              TextAlign.left,
                                               color: cc.successColor),
                                         ]),
                                   ),

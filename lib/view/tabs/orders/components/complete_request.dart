@@ -67,7 +67,6 @@ class CompleteRequest extends StatelessWidget {
                                 children: [
                                   CommonHelper().paragraphCommon(
                                       'Seller requested to mark this order complete',
-                                      TextAlign.left,
                                       fontsize: 16),
                                   sizedBoxCustom(20),
                                   Row(

@@ -128,8 +128,12 @@ class CommonHelper {
     );
   }
 
-  paragraphCommon(String title, TextAlign textAlign,
-      {double fontsize = 14, color}) {
+  paragraphCommon(
+    String title, {
+    double fontsize = 14,
+    color,
+    textAlign = TextAlign.left,
+  }) {
     return Text(
       title,
       textAlign: textAlign,

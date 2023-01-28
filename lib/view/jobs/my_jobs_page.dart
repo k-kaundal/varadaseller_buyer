@@ -238,9 +238,8 @@ class _MyJobsPageState extends State<MyJobsPage> {
                                                         children: [
                                                           CommonHelper()
                                                               .paragraphCommon(
-                                                                  'On/Off',
-                                                                  TextAlign
-                                                                      .left),
+                                                            'On/Off',
+                                                          ),
                                                           Switch(
                                                             // This bool value toggles the switch.
                                                             value: provider

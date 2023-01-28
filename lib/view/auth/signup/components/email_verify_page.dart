@@ -75,7 +75,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                 ),
                 CommonHelper().paragraphCommon(
                     'Enter the 4 digit code we sent to to your email in order verify your email',
-                    TextAlign.center),
+                    textAlign: TextAlign.center),
                 const SizedBox(
                   height: 33,
                 ),

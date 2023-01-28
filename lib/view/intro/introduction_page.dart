@@ -73,7 +73,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
 
                         // Subtitle =============>
                         CommonHelper().paragraphCommon(
-                            IntroHelper().geSubTitle(i), TextAlign.center)
+                            IntroHelper().geSubTitle(i),
+                            textAlign: TextAlign.center)
                       ],
                     ),
                   );
