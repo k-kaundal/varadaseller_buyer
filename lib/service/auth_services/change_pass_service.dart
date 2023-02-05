@@ -29,39 +29,35 @@ class ChangePassService with ChangeNotifier {
     } else {
       //check internet connection
       var connection = await checkConnection();
-      if (connection) {
-        //internet connection is on
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        var token = prefs.getString('token');
+      if (!connection) return;
+      //internet connection is on
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
 
-        var header = {
-          //if header type is application/json then the data should be in jsonEncode method
-          "Accept": "application/json",
-          // "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        };
-        var data = {'current_password': currentPass, 'new_password': newPass};
+      var header = {
+        //if header type is application/json then the data should be in jsonEncode method
+        "Accept": "application/json",
+        // "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      };
+      var data = {'current_password': currentPass, 'new_password': newPass};
 
-        setLoadingTrue();
+      setLoadingTrue();
 
-        var response = await http.post(
-            Uri.parse('$baseApi/user/change-password'),
-            headers: header,
-            body: data);
+      var response = await http.post(Uri.parse('$baseApi/user/change-password'),
+          headers: header, body: data);
 
-        if (response.statusCode == 201) {
-          OthersHelper()
-              .showToast("Password changed successfully", Colors.black);
-          setLoadingFalse();
+      if (response.statusCode == 201) {
+        OthersHelper().showToast("Password changed successfully", Colors.black);
+        setLoadingFalse();
 
-          // LoginService().saveDetails(email ?? '', newPass, token ?? '');
+        // LoginService().saveDetails(email ?? '', newPass, token ?? '');
 
-          Navigator.pop(context);
-        } else {
-          print(response.body);
-          SignupService().showError(jsonDecode(response.body)['error']);
-          setLoadingFalse();
-        }
+        Navigator.pop(context);
+      } else {
+        print(response.body);
+        SignupService().showError(jsonDecode(response.body)['error']);
+        setLoadingFalse();
       }
     }
   }
