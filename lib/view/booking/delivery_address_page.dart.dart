@@ -104,8 +104,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
           backgroundColor: Colors.white,
           appBar: CommonHelper().appbarForBookingPages('Address', context),
           body: Consumer<AppStringService>(
-            builder: (context, asProvider, child) =>
-                Consumer<PersonalizationService>(
+            builder: (context, ln, child) => Consumer<PersonalizationService>(
               builder: (context, personalizatioProvider, child) => Column(
                 children: [
                   Expanded(
@@ -124,7 +123,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                   : Container(),
 
                               CommonHelper().titleCommon(
-                                  asProvider.getString('Booking Information')),
+                                  ln.getString('Booking Information')),
 
                               const SizedBox(
                                 height: 22,
@@ -136,20 +135,19 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // name ============>
-                                    CommonHelper().labelCommon(
-                                        asProvider.getString('Name')),
+                                    CommonHelper()
+                                        .labelCommon(ln.getString('Name')),
 
                                     CustomInput(
                                       controller: userNameController,
                                       validation: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return asProvider.getString(
+                                          return ln.getString(
                                               'Please enter your name');
                                         }
                                         return null;
                                       },
-                                      hintText: asProvider
-                                          .getString('Enter your name'),
+                                      hintText: ln.getString('Enter your name'),
                                       icon: 'assets/icons/user.png',
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -158,14 +156,14 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                     ),
 
                                     //Email ============>
-                                    CommonHelper().labelCommon(
-                                        asProvider.getString('Email')),
+                                    CommonHelper()
+                                        .labelCommon(ln.getString('Email')),
 
                                     CustomInput(
                                       controller: emailController,
                                       validation: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return asProvider.getString(
+                                          return ln.getString(
                                               'Please enter your email');
                                         }
                                         return null;
@@ -179,8 +177,8 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                     ),
 
                                     //Phone number field
-                                    CommonHelper().labelCommon(
-                                        asProvider.getString('Phone')),
+                                    CommonHelper()
+                                        .labelCommon(ln.getString('Phone')),
                                     Consumer<RtlService>(
                                       builder: (context, rtlP, child) =>
                                           IntlPhoneField(
@@ -207,20 +205,19 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CommonHelper().labelCommon(
-                                                  asProvider
-                                                      .getString('Post code')),
+                                                  ln.getString('Post code')),
 
                                               CustomInput(
                                                 controller: postCodeController,
                                                 validation: (value) {
                                                   if (value == null ||
                                                       value.isEmpty) {
-                                                    return asProvider.getString(
+                                                    return ln.getString(
                                                         'Please enter post code');
                                                   }
                                                   return null;
                                                 },
-                                                hintText: asProvider.getString(
+                                                hintText: ln.getString(
                                                     'Enter your post code'),
                                                 icon:
                                                     'assets/icons/location.png',
@@ -235,20 +232,19 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                               ),
 
                                               CommonHelper().labelCommon(
-                                                  asProvider.getString(
-                                                      'Your address')),
+                                                  ln.getString('Your address')),
 
                                               CustomInput(
                                                 controller: addressController,
                                                 validation: (value) {
                                                   if (value == null ||
                                                       value.isEmpty) {
-                                                    return asProvider.getString(
+                                                    return ln.getString(
                                                         'Please enter your address');
                                                   }
                                                   return null;
                                                 },
-                                                hintText: asProvider.getString(
+                                                hintText: ln.getString(
                                                     'Enter your address'),
                                                 icon:
                                                     'assets/icons/location.png',
@@ -279,8 +275,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonHelper()
-                              .buttonOrange(asProvider.getString('Next'), () {
+                          CommonHelper().buttonOrange(ln.getString('Next'), () {
                             if (_formKey.currentState!.validate()) {
                               //increase page steps by one
                               BookStepsService().onNext(context);

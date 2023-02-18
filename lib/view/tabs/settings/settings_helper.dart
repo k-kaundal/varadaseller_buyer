@@ -79,10 +79,10 @@ class SettingsHelper {
             ],
           ),
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Column(
+            builder: (context, ln, child) => Column(
               children: [
                 Text(
-                  '${asProvider.getString('Are you sure')}?',
+                  '${ln.getString('Are you sure')}?',
                   style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                 ),
                 const SizedBox(
@@ -91,8 +91,8 @@ class SettingsHelper {
                 Row(
                   children: [
                     Expanded(
-                        child: CommonHelper().borderButtonOrange(
-                            asProvider.getString('Cancel'), () {
+                        child: CommonHelper()
+                            .borderButtonOrange(ln.getString('Cancel'), () {
                       Navigator.pop(context);
                     })),
                     const SizedBox(
@@ -101,7 +101,7 @@ class SettingsHelper {
                     Consumer<LogoutService>(
                       builder: (context, provider, child) => Expanded(
                           child: CommonHelper().buttonOrange(
-                              asProvider.getString('Logout'), () {
+                              ln.getString('Logout'), () {
                         if (provider.isloading == false) {
                           provider.logout(context);
                           //if logged in by google then logout from it

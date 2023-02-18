@@ -19,7 +19,7 @@ class SettingsPageGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final cc = ConstantColors();
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Consumer<ProfileService>(
+      builder: (context, ln, child) => Consumer<ProfileService>(
         builder: (context, profileProvider, child) => GridView.builder(
           gridDelegate: const FlutterzillaFixedGridView(
               crossAxisCount: 2,
@@ -56,8 +56,7 @@ class SettingsPageGrid extends StatelessWidget {
                         height: 3,
                       ),
                       AutoSizeText(
-                        asProvider.getString(
-                            SettingsHelper().cardContent[index].text),
+                        ln.getString(SettingsHelper().cardContent[index].text),
                         maxLines: 1,
                         style: TextStyle(
                           color: cc.greyParagraph,

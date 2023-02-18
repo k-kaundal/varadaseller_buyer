@@ -23,7 +23,7 @@ class Steps extends StatelessWidget {
     return Column(
       children: [
         Consumer<AppStringService>(
-          builder: (context, asProvider, child) => Consumer<BookStepsService>(
+          builder: (context, ln, child) => Consumer<BookStepsService>(
             builder: (context, bsProvider, child) => Row(
               children: [
                 CircularStepProgressIndicator(
@@ -65,7 +65,7 @@ class Steps extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().titleCommon(asProvider.getString(bsProvider
+                    CommonHelper().titleCommon(ln.getString(bsProvider
                         .stepsNameList[bsProvider.currentStep - 1].title)),
                     const SizedBox(
                       height: 6,
@@ -79,7 +79,7 @@ class Steps extends StatelessWidget {
                             ? Row(
                                 children: [
                                   Text(
-                                    '${asProvider.getString('Next')}:',
+                                    '${ln.getString('Next')}:',
                                     textAlign: TextAlign.start,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -96,7 +96,7 @@ class Steps extends StatelessWidget {
                               )
                             : Container(),
                         Text(
-                          asProvider.getString(bsProvider
+                          ln.getString(bsProvider
                               .stepsNameList[bsProvider.currentStep - 1]
                               .subtitle),
                           style: TextStyle(

@@ -14,10 +14,10 @@ class TopRatedServices extends StatelessWidget {
   const TopRatedServices({
     Key? key,
     required this.cc,
-    required this.asProvider,
+    required this.ln,
   }) : super(key: key);
   final ConstantColors cc;
-  final asProvider;
+  final ln;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class TopRatedServices extends StatelessWidget {
                     ),
                     SectionTitle(
                       cc: cc,
-                      title: asProvider.getString('Top booked services'),
+                      title: ln.getString('Top booked services'),
                       pressed: () {
                         Navigator.push(
                           context,
@@ -113,7 +113,7 @@ class TopRatedServices extends StatelessWidget {
                     ),
                   ],
                 )
-              : Text(asProvider.getString('Something went wrong'))
+              : Text(ln.getString('Something went wrong'))
           : Container(),
     );
   }

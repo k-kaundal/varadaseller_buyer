@@ -62,7 +62,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
         physics: physicsCommon,
         child: Consumer<CreateJobService>(
           builder: (context, provider, child) => Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Container(
+            builder: (context, ln, child) => Container(
               padding:
                   EdgeInsets.symmetric(horizontal: screenPadding, vertical: 10),
               child: Form(
@@ -103,7 +103,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      onlineOffline[i],
+                                      ln.getString(onlineOffline[i]),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -129,17 +129,17 @@ class _CreateJobPageState extends State<CreateJobPage> {
 
                     // Title
                     //============>
-                    CommonHelper().labelCommon(asProvider.getString("Title")),
+                    CommonHelper().labelCommon(ln.getString("Title")),
 
                     CustomInput(
                       controller: titleController,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a title';
+                          return ln.getString('Please enter a title');
                         }
                         return null;
                       },
-                      hintText: asProvider.getString("Title"),
+                      hintText: ln.getString("Title"),
                       paddingHorizontal: 15,
                       textInputAction: TextInputAction.next,
                     ),
@@ -147,27 +147,26 @@ class _CreateJobPageState extends State<CreateJobPage> {
 
                     // Title
                     //============>
-                    CommonHelper().labelCommon(asProvider.getString("Budget")),
+                    CommonHelper().labelCommon(ln.getString("Budget")),
 
                     CustomInput(
                       controller: budgetController,
                       isNumberField: true,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your budget';
+                          return ln.getString("Please enter your budget");
                         }
                         return null;
                       },
-                      hintText: asProvider.getString("Budget"),
+                      hintText: ln.getString("Budget"),
                       textInputAction: TextInputAction.next,
                       paddingHorizontal: 15,
                     ),
                     sizedBoxCustom(20),
 
-                    CommonHelper()
-                        .labelCommon(asProvider.getString('Description')),
+                    CommonHelper().labelCommon(ln.getString('Description')),
                     TextareaField(
-                      hintText: asProvider.getString('Description'),
+                      hintText: ln.getString('Description'),
                       notesController: descController,
                     ),
 

@@ -79,9 +79,8 @@ class _MyJobsPageState extends State<MyJobsPage> {
                 padding: EdgeInsets.symmetric(horizontal: screenPadding),
                 clipBehavior: Clip.none,
                 child: Consumer<AppStringService>(
-                  builder: (context, asProvider, child) =>
-                      Consumer<MyJobsService>(
-                          builder: (context, provider, child) {
+                  builder: (context, ln, child) => Consumer<MyJobsService>(
+                      builder: (context, provider, child) {
                     return Column(
                       children: [
                         provider.myJobsListMap.isNotEmpty
@@ -175,7 +174,7 @@ class _MyJobsPageState extends State<MyJobsPage> {
                                                         child: Row(
                                                           children: [
                                                             AutoSizeText(
-                                                              '${asProvider.getString('Starts from')}:',
+                                                              '${ln.getString('Starts from')}:',
                                                               textAlign:
                                                                   TextAlign
                                                                       .start,
@@ -238,7 +237,8 @@ class _MyJobsPageState extends State<MyJobsPage> {
                                                         children: [
                                                           CommonHelper()
                                                               .paragraphCommon(
-                                                            'On/Off',
+                                                            ln.getString(
+                                                                "On/Off"),
                                                           ),
                                                           Switch(
                                                             // This bool value toggles the switch.
@@ -273,8 +273,8 @@ class _MyJobsPageState extends State<MyJobsPage> {
 
                                     //
                                   ])
-                            : OthersHelper()
-                                .showError(context, msg: 'No jobs found'),
+                            : OthersHelper().showError(context,
+                                msg: ln.getString('No jobs found')),
                       ],
                     );
                   }),

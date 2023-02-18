@@ -39,14 +39,14 @@ class _SearchTabState extends State<SearchTab> {
                 padding: EdgeInsets.symmetric(horizontal: screenPadding),
                 clipBehavior: Clip.none,
                 child: Consumer<AppStringService>(
-                  builder: (context, asProvider, child) => Column(
+                  builder: (context, ln, child) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
                           height: 25,
                         ),
-                        CommonHelper().titleCommon(
-                            asProvider.getString('Search services')),
+                        CommonHelper()
+                            .titleCommon(ln.getString('Search services')),
                         sizedBox20(),
                         const SearchBar(),
                       ]),

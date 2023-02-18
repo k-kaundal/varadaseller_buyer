@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 class HomepageHelper {
-  Widget searchbar(asProvider, BuildContext context) {
+  Widget searchbar(ln, BuildContext context) {
     ConstantColors cc = ConstantColors();
     return Container(
         width: double.infinity,
@@ -28,7 +28,7 @@ class HomepageHelper {
               width: 10,
             ),
             Text(
-              asProvider.getString("Search services"),
+              ln.getString("Search services"),
               style: const TextStyle(
                 color: Color.fromARGB(255, 126, 126, 126),
                 fontSize: 14,

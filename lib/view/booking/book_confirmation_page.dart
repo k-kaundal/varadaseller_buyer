@@ -78,7 +78,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
             body: SingleChildScrollView(
               physics: physicsCommon,
               child: Consumer<AppStringService>(
-                builder: (context, asProvider, child) => Container(
+                builder: (context, ln, child) => Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: screenPadding,
                     ),
@@ -93,8 +93,8 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                             personalizationProvider.isOnline == 0
                                 ? Steps(cc: cc)
                                 : Container(),
-                            CommonHelper().titleCommon(
-                                asProvider.getString('Booking details')),
+                            CommonHelper()
+                                .titleCommon(ln.getString('Booking details')),
 
                             const SizedBox(
                               height: 17,
@@ -117,8 +117,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                                   child) =>
                                               BookingHelper().bdetailsContainer(
                                                   'assets/svg/location.svg',
-                                                  asProvider
-                                                      .getString('Location'),
+                                                  ln.getString('Location'),
                                                   '${locationProvider.selectedArea}, ${locationProvider.selectedState}, ${locationProvider.selectedCountry}, '),
                                         ),
 
@@ -135,8 +134,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                               child: BookingHelper()
                                                   .bdetailsContainer(
                                                       'assets/svg/calendar.svg',
-                                                      asProvider
-                                                          .getString('Date'),
+                                                      ln.getString('Date'),
                                                       "${bookProvider.weekDay ?? ''}, ${bookProvider.selectedDateAndMonth ?? ''}"),
                                             ),
                                             const SizedBox(
@@ -146,8 +144,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                               child: BookingHelper()
                                                   .bdetailsContainer(
                                                       'assets/svg/clock.svg',
-                                                      asProvider
-                                                          .getString('Time'),
+                                                      ln.getString('Time'),
                                                       bookProvider
                                                               .selectedTime ??
                                                           ''),
@@ -162,17 +159,15 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                               height: 30,
                             ),
 
-                            BookingHelper().bRow(
-                                'assets/svg/user.svg',
-                                asProvider.getString('Name'),
-                                bookProvider.name ?? ''),
+                            BookingHelper().bRow('assets/svg/user.svg',
+                                ln.getString('Name'), bookProvider.name ?? ''),
                             BookingHelper().bRow(
                                 'assets/svg/email.svg',
-                                asProvider.getString('Email'),
+                                ln.getString('Email'),
                                 bookProvider.email ?? ''),
                             BookingHelper().bRow(
                                 'assets/svg/phone.svg',
-                                asProvider.getString('Phone'),
+                                ln.getString('Phone'),
                                 bookProvider.phone ?? ''),
                             personalizationProvider.isOnline == 0
                                 ? Column(
@@ -181,11 +176,11 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                     children: [
                                       BookingHelper().bRow(
                                           'assets/svg/location.svg',
-                                          asProvider.getString('Post code'),
+                                          ln.getString('Post code'),
                                           bookProvider.postCode ?? ''),
                                       BookingHelper().bRow(
                                           'assets/svg/location.svg',
-                                          asProvider.getString('Address'),
+                                          ln.getString('Address'),
                                           bookProvider.address ?? ''),
                                     ],
                                   )

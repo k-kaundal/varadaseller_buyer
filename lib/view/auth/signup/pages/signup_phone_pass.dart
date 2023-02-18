@@ -40,7 +40,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Consumer<SignupService>(
+      builder: (context, ln, child) => Consumer<SignupService>(
         builder: (context, provider, child) => Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Form(
@@ -49,7 +49,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Phone number field
-                CommonHelper().labelCommon(asProvider.getString("Phone")),
+                CommonHelper().labelCommon(ln.getString("Phone")),
                 Consumer<RtlService>(
                   builder: (context, rtlP, child) => IntlPhoneField(
                     decoration: SignupHelper().phoneFieldDecoration(),
@@ -69,7 +69,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                 sizedBoxCustom(20),
 
                 //New password =========================>
-                CommonHelper().labelCommon(asProvider.getString("Password")),
+                CommonHelper().labelCommon(ln.getString("Password")),
 
                 Container(
                     margin: const EdgeInsets.only(bottom: 19),
@@ -83,8 +83,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                       style: const TextStyle(fontSize: 14),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return asProvider
-                              .getString("Please enter your password");
+                          return ln.getString("Please enter your password");
                         }
                         return null;
                       },
@@ -135,14 +134,13 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                           focusedErrorBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: ConstantColors().primaryColor)),
-                          hintText: asProvider.getString("Enter password"),
+                          hintText: ln.getString("Enter password"),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 18)),
                     )),
 
                 //Repeat New password =========================>
-                CommonHelper()
-                    .labelCommon(asProvider.getString("Repeat password")),
+                CommonHelper().labelCommon(ln.getString("Repeat password")),
 
                 Container(
                     margin: const EdgeInsets.only(bottom: 19),
@@ -156,8 +154,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                       style: const TextStyle(fontSize: 14),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return asProvider
-                              .getString("Please retype your password");
+                          return ln.getString("Please retype your password");
                         }
                         return null;
                       },
@@ -209,7 +206,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                           focusedErrorBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: ConstantColors().primaryColor)),
-                          hintText: asProvider.getString("Enter password"),
+                          hintText: ln.getString("Enter password"),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 18)),
                     )),
@@ -219,17 +216,14 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                   height: 13,
                 ),
 
-                CommonHelper().buttonOrange(asProvider.getString("Continue"),
-                    () {
+                CommonHelper().buttonOrange(ln.getString("Continue"), () {
                   if (widget.passController.text !=
                       widget.repeatPassController.text) {
                     OthersHelper().showToast(
-                        asProvider.getString("Password did not match"),
-                        Colors.black);
+                        ln.getString("Password did not match"), Colors.black);
                   } else if (widget.passController.text.length < 6) {
                     OthersHelper().showToast(
-                        asProvider.getString(
-                            "Password must be at least 6 characters"),
+                        ln.getString("Password must be at least 6 characters"),
                         Colors.black);
                   } else if (_formKey.currentState!.validate()) {
                     provider.pagecontroller.animateToPage(

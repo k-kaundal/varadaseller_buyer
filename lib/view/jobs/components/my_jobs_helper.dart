@@ -40,11 +40,11 @@ class MyJobsHelper {
             ],
           ),
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Consumer<MyJobsService>(
+            builder: (context, ln, child) => Consumer<MyJobsService>(
               builder: (context, provider, child) => Column(
                 children: [
                   Text(
-                    '${asProvider.getString('Are you sure')}?',
+                    '${ln.getString('Are you sure')}?',
                     style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                   ),
                   const SizedBox(
@@ -53,8 +53,8 @@ class MyJobsHelper {
                   Row(
                     children: [
                       Expanded(
-                          child: CommonHelper().borderButtonOrange(
-                              asProvider.getString('Cancel'), () {
+                          child: CommonHelper()
+                              .borderButtonOrange(ln.getString('Cancel'), () {
                         Navigator.pop(context);
                       }, bgColor: Colors.grey)),
                       const SizedBox(

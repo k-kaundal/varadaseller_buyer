@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Column(
+            builder: (context, ln, child) => Column(
               children: [
                 Stack(
                   children: [
@@ -81,16 +81,15 @@ class _LoginPageState extends State<LoginPage> {
                           height: 33,
                         ),
 
-                        CommonHelper().titleCommon(
-                            asProvider.getString('Welcome back! Login')),
+                        CommonHelper()
+                            .titleCommon(ln.getString('Welcome back! Login')),
 
                         const SizedBox(
                           height: 33,
                         ),
 
                         //Name ============>
-                        CommonHelper()
-                            .labelCommon(asProvider.getString("Email")),
+                        CommonHelper().labelCommon(ln.getString("Email")),
 
                         CustomInput(
                           controller: emailController,
@@ -100,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             return null;
                           },
-                          hintText: asProvider.getString("Email"),
+                          hintText: ln.getString("Email"),
                           icon: 'assets/icons/user.png',
                           textInputAction: TextInputAction.next,
                         ),
@@ -109,8 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         //password ===========>
-                        CommonHelper()
-                            .labelCommon(asProvider.getString("Password")),
+                        CommonHelper().labelCommon(ln.getString("Password")),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -197,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
-                                    asProvider.getString("Remember Me"),
+                                    ln.getString("Remember Me"),
                                     style: TextStyle(
                                         color: ConstantColors().greyFour,
                                         fontWeight: FontWeight.w400,
@@ -230,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: SizedBox(
                                 width: 122,
                                 child: Text(
-                                  asProvider.getString("Forgot Password?"),
+                                  ln.getString("Forgot Password?"),
                                   style: TextStyle(
                                       color: cc.primaryColor,
                                       fontSize: 13,
@@ -248,7 +246,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         Consumer<LoginService>(
                           builder: (context, provider, child) => CommonHelper()
-                              .buttonOrange(asProvider.getString("Login"), () {
+                              .buttonOrange(ln.getString("Login"), () {
                             if (provider.isloading == false) {
                               if (_formKey.currentState!.validate()) {
                                 provider.login(

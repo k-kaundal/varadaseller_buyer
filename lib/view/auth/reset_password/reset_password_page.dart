@@ -52,7 +52,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         child: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Container(
+            builder: (context, ln, child) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               height: MediaQuery.of(context).size.height - 120,
               alignment: Alignment.center,
@@ -67,13 +67,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         const SizedBox(
                           height: 33,
                         ),
-                        CommonHelper().titleCommon(
-                            asProvider.getString('Enter new password')),
+                        CommonHelper()
+                            .titleCommon(ln.getString('Enter new password')),
                         const SizedBox(
                           height: 13,
                         ),
                         CommonHelper().paragraphCommon(
-                          asProvider.getString(
+                          ln.getString(
                               'Your new password should be different from previously used passwords'),
                         ),
 
@@ -82,8 +82,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         ),
 
                         //New password =========================>
-                        CommonHelper().labelCommon(
-                            asProvider.getString('Enter new password')),
+                        CommonHelper()
+                            .labelCommon(ln.getString('Enter new password')),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -97,7 +97,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return asProvider
+                                  return ln
                                       .getString('Please enter your password');
                                 }
                                 return null;
@@ -153,15 +153,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText:
-                                      asProvider.getString('New password'),
+                                  hintText: ln.getString('New password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
 
                         //Repeat New password =========================>
-                        CommonHelper().labelCommon(
-                            asProvider.getString('Repeat new password')),
+                        CommonHelper()
+                            .labelCommon(ln.getString('Repeat new password')),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -175,7 +174,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return asProvider
+                                  return ln
                                       .getString('Please retype your password');
                                 }
                                 return null;
@@ -231,8 +230,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: asProvider
-                                      .getString('Retype new password'),
+                                  hintText: ln.getString('Retype new password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
@@ -243,8 +241,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         ),
                         Consumer<ResetPasswordService>(
                           builder: (context, provider, child) => CommonHelper()
-                              .buttonOrange(
-                                  asProvider.getString('Change password'), () {
+                              .buttonOrange(ln.getString('Change password'),
+                                  () {
                             if (provider.isloading == false) {
                               if (_formKey.currentState!.validate()) {
                                 provider.resetPassword(

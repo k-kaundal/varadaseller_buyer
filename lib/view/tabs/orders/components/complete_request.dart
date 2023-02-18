@@ -18,7 +18,7 @@ class CompleteRequest extends StatelessWidget {
   Widget build(BuildContext context) {
     final cc = ConstantColors();
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Consumer<OrderDetailsService>(
+      builder: (context, ln, child) => Consumer<OrderDetailsService>(
         builder: (context, provider, child) => Consumer<OrdersService>(
           builder: (context, oProvider, child) => provider
                       .orderDetails.orderCompleteRequest !=
@@ -41,8 +41,8 @@ class CompleteRequest extends StatelessWidget {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CommonHelper().titleCommon(
-                                asProvider.getString('Complete Request')),
+                            CommonHelper()
+                                .titleCommon(ln.getString('Complete Request')),
                             const SizedBox(
                               height: 15,
                             ),

@@ -147,10 +147,10 @@ class OrdersHelper {
             ],
           ),
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Column(
+            builder: (context, ln, child) => Column(
               children: [
                 Text(
-                  '${asProvider.getString('Are you sure')}?',
+                  '${ln.getString('Are you sure')}?',
                   style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                 ),
                 const SizedBox(
@@ -160,7 +160,7 @@ class OrdersHelper {
                   children: [
                     Expanded(
                         child: CommonHelper()
-                            .borderButtonOrange(asProvider.getString('No'), () {
+                            .borderButtonOrange(ln.getString('No'), () {
                       Navigator.pop(context);
                     })),
                     const SizedBox(
@@ -169,7 +169,7 @@ class OrdersHelper {
                     Consumer<OrdersService>(
                       builder: (context, provider, child) => Expanded(
                           child: CommonHelper()
-                              .buttonOrange(asProvider.getString('Yes'), () {
+                              .buttonOrange(ln.getString('Yes'), () {
                         if (provider.cancelLoading == false) {
                           provider.cancelOrder(context, orderId: orderId);
                         }

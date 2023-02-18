@@ -46,8 +46,7 @@ class _MenuPageState extends State<MenuPage> {
                 child: Consumer<PermissionsService>(
                   builder: (context, pProvider, child) =>
                       Consumer<AppStringService>(
-                    builder: (context, asProvider, child) =>
-                        Consumer<ProfileService>(
+                    builder: (context, ln, child) => Consumer<ProfileService>(
                       builder: (context, profileProvider, child) =>
                           profileProvider.profileDetails != null
                               ? profileProvider.profileDetails != 'error'
@@ -70,8 +69,7 @@ class _MenuPageState extends State<MenuPage> {
                                           child: Column(children: [
                                             SettingsHelper().settingOption(
                                                 'assets/svg/message-circle.svg',
-                                                asProvider.getString("My jobs"),
-                                                () {
+                                                ln.getString("My jobs"), () {
                                               if (!pProvider.jobPermission) {
                                                 OthersHelper().showToast(
                                                     'You don\'t have permission to access this feature',
@@ -92,8 +90,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/message-circle.svg',
-                                                asProvider.getString(
-                                                    "Job requests"), () {
+                                                ln.getString("Job requests"),
+                                                () {
                                               if (!pProvider.jobPermission) {
                                                 OthersHelper().showToast(
                                                     'You don\'t have permission to access this feature',
@@ -115,8 +113,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/message-circle.svg',
-                                                asProvider.getString(
-                                                    "Support Ticket"), () {
+                                                ln.getString("Support Ticket"),
+                                                () {
                                               //=====>
                                               Navigator.push(
                                                 context,
@@ -131,8 +129,7 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/profile-edit.svg',
-                                                asProvider.getString("Wallet"),
-                                                () {
+                                                ln.getString("Wallet"), () {
                                               if (!pProvider.walletPermission) {
                                                 OthersHelper().showToast(
                                                     'You don\'t have permission to access this feature',
@@ -152,8 +149,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/profile-edit.svg',
-                                                asProvider.getString(
-                                                    "My report list"), () {
+                                                ln.getString("My report list"),
+                                                () {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute<void>(
@@ -167,8 +164,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/profile-edit.svg',
-                                                asProvider.getString(
-                                                    "Edit Profile"), () {
+                                                ln.getString("Edit Profile"),
+                                                () {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute<void>(
@@ -181,8 +178,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/lock-circle.svg',
-                                                asProvider.getString(
-                                                    "Change Password"), () {
+                                                ln.getString("Change Password"),
+                                                () {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute<void>(
@@ -203,8 +200,7 @@ class _MenuPageState extends State<MenuPage> {
                                           child: Column(children: [
                                             SettingsHelper().settingOption(
                                                 'assets/svg/logout-circle.svg',
-                                                asProvider.getString("Logout"),
-                                                () {
+                                                ln.getString("Logout"), () {
                                               SettingsHelper()
                                                   .logoutPopup(context);
                                             }),

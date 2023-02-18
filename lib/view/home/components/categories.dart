@@ -9,10 +9,10 @@ class Categories extends StatelessWidget {
   const Categories({
     Key? key,
     required this.cc,
-    required this.asProvider,
+    required this.ln,
   }) : super(key: key);
   final ConstantColors cc;
-  final asProvider;
+  final ln;
   @override
   Widget build(BuildContext context) {
     // getLineAwsome("las la-charging-station");
@@ -43,7 +43,7 @@ class Categories extends StatelessWidget {
                       ],
                     ),
                   )
-                : Text(asProvider.getString('Something went wrong'))
+                : Text(ln.getString('Something went wrong'))
             : OthersHelper().showLoading(cc.primaryColor);
       },
     );

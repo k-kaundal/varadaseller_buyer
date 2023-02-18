@@ -50,7 +50,7 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Container(
+      builder: (context, ln, child) => Container(
         alignment: Alignment.center,
         width: width,
         margin: EdgeInsets.only(
@@ -69,7 +69,7 @@ class ServiceCard extends StatelessWidget {
               sellerName: sellerName,
               rating: rating,
               price: price,
-              asProvider: asProvider,
+              ln: ln,
             ),
             const SizedBox(
               height: 28,
@@ -86,7 +86,7 @@ class ServiceCard extends StatelessWidget {
                       screenWidth < fourinchScreenWidth
                           ? Container()
                           : AutoSizeText(
-                              '${asProvider.getString('Starts from')}:',
+                              '${ln.getString('Starts from')}:',
                               textAlign: TextAlign.start,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -170,7 +170,7 @@ class ServiceCard extends StatelessWidget {
                               child: const ServicePersonalizationPage()));
                     },
                     child: Text(
-                      asProvider.getString(buttonText),
+                      ln.getString(buttonText),
                       style: TextStyle(
                           fontSize: screenWidth < fourinchScreenWidth ? 9 : 13,
                           fontWeight: FontWeight.normal),
@@ -193,7 +193,7 @@ class ServiceCardContents extends StatelessWidget {
       required this.sellerName,
       required this.rating,
       required this.price,
-      required this.asProvider})
+      required this.ln})
       : super(key: key);
 
   final ConstantColors cc;
@@ -202,7 +202,7 @@ class ServiceCardContents extends StatelessWidget {
   final sellerName;
   final rating;
   final price;
-  final asProvider;
+  final ln;
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +274,7 @@ class ServiceCardContents extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '${asProvider.getString('by')}:',
+                    '${ln.getString('by')}:',
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

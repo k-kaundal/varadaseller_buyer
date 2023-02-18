@@ -54,7 +54,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
           child: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
-              builder: (context, asProvider, child) => Container(
+              builder: (context, ln, child) => Container(
                 padding: EdgeInsets.symmetric(horizontal: screenPadding),
                 clipBehavior: Clip.none,
                 child: Consumer<BookConfirmationService>(
@@ -81,7 +81,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                   height: 7,
                                 ),
                                 Text(
-                                  '${asProvider.getString('Payment successful')}!',
+                                  '${ln.getString('Payment successful')}!',
                                   style: TextStyle(
                                       color: cc.greyFour,
                                       fontSize: 21,
@@ -109,8 +109,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                             child: BookingHelper()
                                                 .bdetailsContainer(
                                                     'assets/svg/calendar.svg',
-                                                    asProvider
-                                                        .getString('Date'),
+                                                    ln.getString('Date'),
                                                     "${bookProvider.weekDay ?? ''}, ${bookProvider.selectedDateAndMonth ?? ''}"),
                                           ),
                                           const SizedBox(
@@ -120,8 +119,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                             child: BookingHelper()
                                                 .bdetailsContainer(
                                                     'assets/svg/clock.svg',
-                                                    asProvider
-                                                        .getString('Time'),
+                                                    ln.getString('Time'),
                                                     bookProvider.selectedTime ??
                                                         ''),
                                           )
@@ -141,8 +139,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                         children: [
                                           //Package fee and extra service =============>
                                           BookingHelper().detailsPanelRow(
-                                              asProvider
-                                                  .getString('Package Fee'),
+                                              ln.getString('Package Fee'),
                                               0,
                                               bcProvider
                                                   .includedTotalPrice(
@@ -153,7 +150,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       )
                                     : Container(),
                                 BookingHelper().detailsPanelRow(
-                                    asProvider.getString('Extra service'),
+                                    ln.getString('Extra service'),
                                     0,
                                     bcProvider
                                         .extrasTotalPrice(pProvider.extrasList)
@@ -172,7 +169,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                         children: [
                                           //subtotal and tax =========>
                                           BookingHelper().detailsPanelRow(
-                                              asProvider.getString('Subtotal'),
+                                              ln.getString('Subtotal'),
                                               0,
                                               bcProvider
                                                   .calculateSubtotal(
@@ -184,7 +181,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       )
                                     : Container(),
                                 BookingHelper().detailsPanelRow(
-                                    '${asProvider.getString('Tax')}(+) ${pProvider.tax}%',
+                                    '${ln.getString('Tax')}(+) ${pProvider.tax}%',
                                     0,
                                     bcProvider
                                         .calculateTax(
@@ -208,7 +205,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      asProvider.getString('Total'),
+                                      ln.getString('Total'),
                                       style: TextStyle(
                                         color: cc.greyFour,
                                         fontSize: 14,
@@ -269,15 +266,15 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                 Row(
                                   children: [
                                     BookingHelper().colorCapsule(
-                                        asProvider.getString('Payment status'),
+                                        ln.getString('Payment status'),
                                         widget.paymentStatus,
                                         cc.successColor),
                                     const SizedBox(
                                       width: 30,
                                     ),
                                     BookingHelper().colorCapsule(
-                                        asProvider.getString('Order status'),
-                                        asProvider.getString('Pending'),
+                                        ln.getString('Order status'),
+                                        ln.getString('Pending'),
                                         cc.yellowColor)
                                   ],
                                 ),

@@ -44,7 +44,7 @@ class _SignupPageState extends State<SignupPage> {
         }
       },
       child: Consumer<AppStringService>(
-        builder: (context, asProvider, child) => Consumer<SignupService>(
+        builder: (context, ln, child) => Consumer<SignupService>(
           builder: (context, provider, child) => WillPopScope(
             onWillPop: () {
               if (provider.selectedPage == 0) {
@@ -77,8 +77,8 @@ class _SignupPageState extends State<SignupPage> {
 
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: CommonHelper().titleCommon(
-                          asProvider.getString("Register to join us")),
+                      child: CommonHelper()
+                          .titleCommon(ln.getString("Register to join us")),
                     ),
 
                     const SizedBox(

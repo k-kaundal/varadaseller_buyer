@@ -48,7 +48,7 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
           body: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
-              builder: (context, asProvider, child) => Container(
+              builder: (context, ln, child) => Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: screenPadding,
                   ),
@@ -58,8 +58,8 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                       //Circular Progress bar
                       Steps(cc: cc),
 
-                      CommonHelper().titleCommon(
-                          asProvider.getString('Booking informations')),
+                      CommonHelper()
+                          .titleCommon(ln.getString('Booking informations')),
 
                       const SizedBox(
                         height: 20,
@@ -70,8 +70,7 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                       const SizedBox(
                         height: 27,
                       ),
-                      CommonHelper().buttonOrange(asProvider.getString('Next'),
-                          () {
+                      CommonHelper().buttonOrange(ln.getString('Next'), () {
                         var selectedStateId = Provider.of<CountryStatesService>(
                                 context,
                                 listen: false)
@@ -83,8 +82,7 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                         if (selectedStateId == '0' || selectedAreaId == '0') {
                           OthersHelper().showSnackBar(
                               context,
-                              asProvider.getString(
-                                  'You must select a state and area'),
+                              ln.getString('You must select a state and area'),
                               cc.warningColor);
                           return;
                         }

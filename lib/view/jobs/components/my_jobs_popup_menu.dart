@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/jobs/components/my_jobs_helper.dart';
 import 'package:qixer/view/jobs/edit_job_page.dart';
 
@@ -21,18 +23,20 @@ class MyJobsPopupMenu extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        PopupMenuButton(
-          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            for (int i = 0; i < popupMenuList.length; i++)
-              PopupMenuItem(
-                onTap: () {
-                  Future.delayed(Duration.zero, () {
-                    navigate(i, context, jobId, imageLink, jobIndex);
-                  });
-                },
-                child: Text(popupMenuList[i]),
-              ),
-          ],
+        Consumer<AppStringService>(
+          builder: (context, ln, child) => PopupMenuButton(
+            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+              for (int i = 0; i < popupMenuList.length; i++)
+                PopupMenuItem(
+                  onTap: () {
+                    Future.delayed(Duration.zero, () {
+                      navigate(i, context, jobId, imageLink, jobIndex);
+                    });
+                  },
+                  child: Text(ln.getString(popupMenuList[i])),
+                ),
+            ],
+          ),
         )
       ],
     );

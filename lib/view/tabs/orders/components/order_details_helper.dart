@@ -41,10 +41,10 @@ class OrderDetailsHelper {
               ],
             ),
             child: Consumer<AppStringService>(
-              builder: (context, asProvider, child) => Column(
+              builder: (context, ln, child) => Column(
                 children: [
                   Text(
-                    '${asProvider.getString('Are you sure')}?',
+                    '${ln.getString('Are you sure')}?',
                     style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                   ),
                   const SizedBox(
@@ -53,8 +53,8 @@ class OrderDetailsHelper {
                   Row(
                     children: [
                       Expanded(
-                          child: CommonHelper().borderButtonOrange(
-                              asProvider.getString('Cancel'), () {
+                          child: CommonHelper()
+                              .borderButtonOrange(ln.getString('Cancel'), () {
                         Navigator.pop(context);
                       }, bgColor: cc.greyFour)),
                       const SizedBox(
@@ -62,7 +62,7 @@ class OrderDetailsHelper {
                       ),
                       Expanded(
                           child: CommonHelper()
-                              .buttonOrange(asProvider.getString('Delete'), () {
+                              .buttonOrange(ln.getString('Delete'), () {
                         provider.declineOrderExtra(context,
                             extraId: extraId, orderId: orderId);
                       }, isloading: provider.isLoading, bgColor: Colors.red)),

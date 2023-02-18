@@ -106,7 +106,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           }
         },
         child: Consumer<AppStringService>(
-          builder: (context, asProvider, child) => Consumer<ProfileEditService>(
+          builder: (context, ln, child) => Consumer<ProfileEditService>(
             builder: (context, provider, child) => WillPopScope(
               onWillPop: () {
                 if (provider.isloading == false) {
@@ -199,20 +199,18 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //Name ============>
-                          CommonHelper()
-                              .labelCommon(asProvider.getString('Full name')),
+                          CommonHelper().labelCommon(ln.getString('Full name')),
 
                           CustomInput(
                             controller: fullNameController,
                             validation: (value) {
                               if (value == null || value.isEmpty) {
-                                return asProvider
+                                return ln
                                     .getString('Please enter your full name');
                               }
                               return null;
                             },
-                            hintText:
-                                asProvider.getString('Enter your full name'),
+                            hintText: ln.getString('Enter your full name'),
                             icon: 'assets/icons/user.png',
                             textInputAction: TextInputAction.next,
                           ),
@@ -221,15 +219,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           ),
 
                           //Email ============>
-                          CommonHelper()
-                              .labelCommon(asProvider.getString('Email')),
+                          CommonHelper().labelCommon(ln.getString('Email')),
 
                           CustomInput(
                             controller: emailController,
                             validation: (value) {
                               if (value == null || value.isEmpty) {
-                                return asProvider
-                                    .getString('Please enter your email');
+                                return ln.getString('Please enter your email');
                               }
                               return null;
                             },
@@ -248,8 +244,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonHelper()
-                              .labelCommon(asProvider.getString('Phone')),
+                          CommonHelper().labelCommon(ln.getString('Phone')),
                           Consumer<RtlService>(
                             builder: (context, rtlP, child) => IntlPhoneField(
                               controller: phoneController,
@@ -265,20 +260,17 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             ),
                           ),
                           sizedBoxCustom(20),
-                          CommonHelper()
-                              .labelCommon(asProvider.getString('Post code')),
+                          CommonHelper().labelCommon(ln.getString('Post code')),
                           CustomInput(
                             controller: postCodeController,
                             validation: (value) {
                               if (value == null || value.isEmpty) {
-                                return asProvider
-                                    .getString('Please enter post code');
+                                return ln.getString('Please enter post code');
                               }
                               return null;
                             },
                             isNumberField: true,
-                            hintText:
-                                asProvider.getString('Enter your post code'),
+                            hintText: ln.getString('Enter your post code'),
                             icon: 'assets/icons/user.png',
                             textInputAction: TextInputAction.next,
                           ),
@@ -297,10 +289,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           const SizedBox(
                             height: 25,
                           ),
-                          CommonHelper().labelCommon(
-                              asProvider.getString('Your Address')),
+                          CommonHelper()
+                              .labelCommon(ln.getString('Your Address')),
                           TextareaField(
-                            hintText: asProvider.getString('Address'),
+                            hintText: ln.getString('Address'),
                             notesController: addressController,
                           ),
                         ],
@@ -313,10 +305,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           const SizedBox(
                             height: 25,
                           ),
-                          CommonHelper()
-                              .labelCommon(asProvider.getString('About')),
+                          CommonHelper().labelCommon(ln.getString('About')),
                           TextareaField(
-                            hintText: asProvider.getString('About'),
+                            hintText: ln.getString('About'),
                             notesController: aboutController,
                           ),
                         ],
@@ -325,7 +316,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       const SizedBox(
                         height: 25,
                       ),
-                      CommonHelper().buttonOrange(asProvider.getString('Save'),
+                      CommonHelper().buttonOrange(ln.getString('Save'),
                           () async {
                         var selectedStateId = Provider.of<CountryStatesService>(
                                 context,
@@ -338,27 +329,25 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         if (selectedStateId == '0' || selectedAreaId == '0') {
                           OthersHelper().showSnackBar(
                               context,
-                              asProvider.getString(
-                                  'You must select a state and area'),
+                              ln.getString('You must select a state and area'),
                               cc.warningColor);
                           return;
                         } else if (provider.isloading == false) {
                           if (addressController.text.isEmpty) {
                             OthersHelper().showToast(
-                                asProvider
-                                    .getString('Address field is required'),
+                                ln.getString('Address field is required'),
                                 Colors.black);
                             return;
                           } else if (phoneController.text.isEmpty) {
                             OthersHelper().showToast(
-                                asProvider.getString('Phone field is required'),
+                                ln.getString('Phone field is required'),
                                 Colors.black);
                             return;
                           }
                           showTopSnackBar(
                               context,
                               CustomSnackBar.success(
-                                message: asProvider.getString(
+                                message: ln.getString(
                                     'Updating profile...It may take few seconds'),
                               ),
                               persistent: true,

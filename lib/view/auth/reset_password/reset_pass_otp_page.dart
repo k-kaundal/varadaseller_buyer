@@ -41,7 +41,7 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
           Navigator.pop(context);
         }),
         body: Consumer<AppStringService>(
-          builder: (context, asProvider, child) => Container(
+          builder: (context, ln, child) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -58,13 +58,13 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
                   ),
                 ),
                 CommonHelper().titleCommon(
-                  asProvider.getString("Enter the 4 digit code"),
+                  ln.getString("Enter the 4 digit code"),
                 ),
                 const SizedBox(
                   height: 13,
                 ),
                 CommonHelper().paragraphCommon(
-                    asProvider.getString(
+                    ln.getString(
                         "Enter the 4 digit code we sent to to your email in order to reset password"),
                     textAlign: TextAlign.center),
                 const SizedBox(
@@ -121,8 +121,7 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
                       provider.isloading == false
                           ? RichText(
                               text: TextSpan(
-                                text:
-                                    '${asProvider.getString("Did not receive")}?  ',
+                                text: '${ln.getString("Did not receive")}?  ',
                                 style: const TextStyle(
                                     color: Color(0xff646464), fontSize: 14),
                                 children: <TextSpan>[
@@ -133,7 +132,7 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
                                               widget.email, context,
                                               isFromOtpPage: true);
                                         },
-                                      text: asProvider.getString("Send again"),
+                                      text: ln.getString("Send again"),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,

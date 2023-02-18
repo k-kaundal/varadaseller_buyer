@@ -36,8 +36,8 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: cc.greyPrimary),
           title: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Text(
-              asProvider.getString('Support tickets'),
+            builder: (context, ln, child) => Text(
+              ln.getString('Support tickets'),
               style: TextStyle(
                   color: cc.greyPrimary,
                   fontSize: 16,
@@ -57,7 +57,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
           ),
           actions: [
             Consumer<AppStringService>(
-              builder: (context, asProvider, child) => Container(
+              builder: (context, ln, child) => Container(
                 width: screenWidth / 4,
                 padding: const EdgeInsets.symmetric(
                   vertical: 9,
@@ -81,7 +81,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                           color: cc.primaryColor,
                           borderRadius: BorderRadius.circular(8)),
                       child: AutoSizeText(
-                        asProvider.getString('Create'),
+                        ln.getString('Create'),
                         maxLines: 1,
                         style: const TextStyle(
                           color: Colors.white,
@@ -133,8 +133,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
           child: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
-              builder: (context, asProvider, child) => Consumer<
-                      SupportTicketService>(
+              builder: (context, ln, child) => Consumer<SupportTicketService>(
                   builder: (context, provider, child) => provider
                           .ticketList.isNotEmpty
                       ? Container(
@@ -201,8 +200,8 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                                                                 i]['id']);
                                                       },
                                                       value: index,
-                                                      child: Text(asProvider
-                                                          .getString('Chat')),
+                                                      child: Text(
+                                                          ln.getString('Chat')),
                                                     );
                                                   });
                                                 },
@@ -247,8 +246,8 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                             ],
                           ),
                         )
-                      : CommonHelper().nothingfound(
-                          context, asProvider.getString('No ticket'))),
+                      : CommonHelper()
+                          .nothingfound(context, ln.getString('No ticket'))),
             ),
           ),
         ));

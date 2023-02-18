@@ -11,7 +11,7 @@ class SellerDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Consumer<OrderDetailsService>(
+      builder: (context, ln, child) => Consumer<OrderDetailsService>(
         builder: (context, provider, child) => Column(
           children: [
             provider.orderDetails.sellerDetails != null
@@ -25,8 +25,8 @@ class SellerDetails extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonHelper().titleCommon(
-                              asProvider.getString('Seller Details')),
+                          CommonHelper()
+                              .titleCommon(ln.getString('Seller Details')),
                           const SizedBox(
                             height: 25,
                           ),
@@ -35,28 +35,28 @@ class SellerDetails extends StatelessWidget {
                           Container(
                             child: BookingHelper().bRow(
                                 'null',
-                                asProvider.getString('Name'),
+                                ln.getString('Name'),
                                 provider.orderDetails.sellerDetails.name),
                           ),
 
                           Container(
                             child: BookingHelper().bRow(
                                 'null',
-                                asProvider.getString('Email'),
+                                ln.getString('Email'),
                                 provider.orderDetails.sellerDetails.email),
                           ),
 
                           Container(
                             child: BookingHelper().bRow(
                                 'null',
-                                asProvider.getString('Phone'),
+                                ln.getString('Phone'),
                                 provider.orderDetails.sellerDetails.phone),
                           ),
                           provider.orderDetails.isOrderOnline == 0
                               ? Container(
                                   child: BookingHelper().bRow(
                                       'null',
-                                      asProvider.getString('Post code'),
+                                      ln.getString('Post code'),
                                       provider.orderDetails.sellerDetails
                                               .postCode ??
                                           ''),
@@ -66,7 +66,7 @@ class SellerDetails extends StatelessWidget {
                               ? Container(
                                   child: BookingHelper().bRow(
                                       'null',
-                                      asProvider.getString('Address'),
+                                      ln.getString('Address'),
                                       provider.orderDetails.sellerDetails
                                               .address ??
                                           "",

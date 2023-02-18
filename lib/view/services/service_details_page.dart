@@ -65,8 +65,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
     return Scaffold(
       backgroundColor: Colors.white,
       body: Consumer<AppStringService>(
-        builder: (context, asProvider, child) =>
-            Consumer<ServiceDetailsService>(
+        builder: (context, ln, child) => Consumer<ServiceDetailsService>(
           builder: (context, provider, child) => provider.isloading == false
               ? provider.serviceAllDetails != 'error'
                   ? Column(
@@ -79,8 +78,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                 children: [
                                   // Image big
                                   ImageBig(
-                                    serviceName:
-                                        asProvider.getString('Service Name'),
+                                    serviceName: ln.getString('Service Name'),
                                     imageLink: provider.serviceAllDetails
                                                 .serviceImage !=
                                             null
@@ -120,15 +118,9 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                           fontWeight: FontWeight.normal),
                                       controller: _tabController,
                                       tabs: [
-                                        Tab(
-                                            text: asProvider
-                                                .getString('Overview')),
-                                        Tab(
-                                            text: asProvider
-                                                .getString('About seller')),
-                                        Tab(
-                                            text:
-                                                asProvider.getString('Review')),
+                                        Tab(text: ln.getString('Overview')),
+                                        Tab(text: ln.getString('About seller')),
+                                        Tab(text: ln.getString('Review')),
                                       ],
                                     ),
                                     Container(
@@ -164,7 +156,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                 //     ? Column(
                                 //         children: [
                                 //           CommonHelper().borderButtonOrange(
-                                //               asProvider.getString(
+                                //               ln.getString(
                                 //                   'Write a review'), () {
                                 //             Navigator.push(
                                 //               context,
@@ -190,8 +182,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                   children: [
                                     Expanded(
                                       child: CommonHelper().buttonOrange(
-                                          asProvider.getString(
-                                              'Book Appointment'), () {
+                                          ln.getString('Book Appointment'), () {
                                         print(
                                             'seller id ${provider.serviceAllDetails.serviceDetails.sellerId}');
                                         Provider.of<BookService>(context,
@@ -255,7 +246,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                     )
                   : Container(
                       alignment: Alignment.center,
-                      child: Text(asProvider.getString('Something went wrong')),
+                      child: Text(ln.getString('Something went wrong')),
                     )
               : OthersHelper().showLoading(cc.primaryColor),
         ),

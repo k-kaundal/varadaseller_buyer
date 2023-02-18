@@ -79,26 +79,28 @@ class _JobConversationPageState extends State<JobConversationPage> {
                     width: 12,
                   ),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          widget.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          "Job Request ID: #${widget.jobRequestId}",
-                          style:
-                              TextStyle(color: cc.primaryColor, fontSize: 13),
-                        ),
-                      ],
+                    child: Consumer<AppStringService>(
+                      builder: (context, ln, child) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            widget.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            "${ln.getString("Job Request ID")}: #${widget.jobRequestId}",
+                            style:
+                                TextStyle(color: cc.primaryColor, fontSize: 13),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   // Icon(
@@ -295,7 +297,8 @@ class _JobConversationPageState extends State<JobConversationPage> {
                                                             child: Row(
                                                               children: [
                                                                 Text(
-                                                                  'Attachment',
+                                                                  ln.getString(
+                                                                      'Attachment'),
                                                                   style: TextStyle(
                                                                       fontSize:
                                                                           15,

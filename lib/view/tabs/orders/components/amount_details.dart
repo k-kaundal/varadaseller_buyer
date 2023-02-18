@@ -17,7 +17,7 @@ class AmountDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Consumer<OrderDetailsService>(
+      builder: (context, ln, child) => Consumer<OrderDetailsService>(
         builder: (context, provider, child) => Column(
           children: [
             Container(
@@ -28,8 +28,7 @@ class AmountDetails extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper()
-                        .titleCommon(asProvider.getString('Amount Details')),
+                    CommonHelper().titleCommon(ln.getString('Amount Details')),
                     const SizedBox(
                       height: 25,
                     ),
@@ -38,42 +37,38 @@ class AmountDetails extends StatelessWidget {
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          asProvider.getString('Package fee'),
+                          ln.getString('Package fee'),
                           provider.orderDetails.packageFee.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          asProvider.getString('Extra service'),
+                          ln.getString('Extra service'),
                           provider.orderDetails.extraService.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          asProvider.getString('Sub total'),
+                          ln.getString('Sub total'),
                           provider.orderDetails.subTotal.toString()),
                     ),
 
                     Container(
-                      child: BookingHelper().bRow(
-                          'null',
-                          asProvider.getString('Tax'),
+                      child: BookingHelper().bRow('null', ln.getString('Tax'),
                           provider.orderDetails.tax.toString()),
                     ),
 
                     Container(
-                      child: BookingHelper().bRow(
-                          'null',
-                          asProvider.getString('Total'),
+                      child: BookingHelper().bRow('null', ln.getString('Total'),
                           provider.orderDetails.total.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                         'null',
-                        asProvider.getString('Payment status'),
+                        ln.getString('Payment status'),
                         provider.orderDetails.paymentStatus,
                       ),
                     ),
@@ -81,7 +76,7 @@ class AmountDetails extends StatelessWidget {
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          asProvider.getString('Payment method'),
+                          ln.getString('Payment method'),
                           removeUnderscore(
                               provider.orderDetails.paymentGateway),
                           lastBorder: false),

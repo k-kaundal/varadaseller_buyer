@@ -58,87 +58,85 @@ class _ServicePersonalizationPageState
         body: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) =>
-                Consumer<PersonalizationService>(
-                    builder: (context, provider, child) => provider.isloading ==
-                            false
-                        ? provider.serviceExtraData != 'error'
-                            ? Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: screenPadding,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    provider.isOnline == 0
-                                        ? Steps(cc: cc)
-                                        : Container(),
+            builder: (context, ln, child) => Consumer<PersonalizationService>(
+                builder: (context, provider, child) => provider.isloading ==
+                        false
+                    ? provider.serviceExtraData != 'error'
+                        ? Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenPadding,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                provider.isOnline == 0
+                                    ? Steps(cc: cc)
+                                    : Container(),
 
-                                    provider.serviceExtraData.service
-                                                .isServiceOnline !=
-                                            1
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              CommonHelper().titleCommon(
-                                                  '${asProvider.getString('What is included')}:'),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Included(
-                                                cc: cc,
-                                                data: provider.includedList,
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                            ],
-                                          )
-                                        : Container(),
-
-                                    provider.extrasList.isNotEmpty
-                                        ? Extras(
+                                provider.serviceExtraData.service
+                                            .isServiceOnline !=
+                                        1
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CommonHelper().titleCommon(
+                                              '${ln.getString('What is included')}:'),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Included(
                                             cc: cc,
-                                            additionalServices:
-                                                provider.extrasList,
-                                            serviceBenefits: provider
-                                                .serviceExtraData
-                                                .service
-                                                .serviceBenifit,
-                                            asProvider: asProvider,
-                                          )
-                                        : Container(),
+                                            data: provider.includedList,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
 
-                                    // button ==================>
-                                    const SizedBox(
-                                      height: 27,
-                                    ),
-                                    // CommonHelper().buttonOrange("Next", () {
-                                    //   Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute<void>(
-                                    //       builder: (BuildContext context) =>
-                                    //           const ServiceSchedulePage(),
-                                    //     ),
-                                    //   );
-                                    // }),
+                                provider.extrasList.isNotEmpty
+                                    ? Extras(
+                                        cc: cc,
+                                        additionalServices: provider.extrasList,
+                                        serviceBenefits: provider
+                                            .serviceExtraData
+                                            .service
+                                            .serviceBenifit,
+                                        ln: ln,
+                                      )
+                                    : Container(),
 
-                                    const SizedBox(
-                                      height: 147,
-                                    ),
-                                  ],
-                                ))
-                            : Text(asProvider.getString('Something went wrong'))
-                        : Container(
-                            height: MediaQuery.of(context).size.height - 250,
-                            alignment: Alignment.center,
-                            child: OthersHelper().showLoading(cc.primaryColor),
-                          )),
+                                // button ==================>
+                                const SizedBox(
+                                  height: 27,
+                                ),
+                                // CommonHelper().buttonOrange("Next", () {
+                                //   Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute<void>(
+                                //       builder: (BuildContext context) =>
+                                //           const ServiceSchedulePage(),
+                                //     ),
+                                //   );
+                                // }),
+
+                                const SizedBox(
+                                  height: 147,
+                                ),
+                              ],
+                            ))
+                        : Text(ln.getString('Something went wrong'))
+                    : Container(
+                        height: MediaQuery.of(context).size.height - 250,
+                        alignment: Alignment.center,
+                        child: OthersHelper().showLoading(cc.primaryColor),
+                      )),
           ),
         ),
         bottomSheet: Consumer<AppStringService>(
-          builder: (context, asProvider, child) => Consumer<BookService>(
+          builder: (context, ln, child) => Consumer<BookService>(
             builder: (context, provider, child) =>
                 Consumer<PersonalizationService>(
               builder: (context, personalizationProvider, child) => Container(
@@ -150,14 +148,11 @@ class _ServicePersonalizationPageState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       BookingHelper().detailsPanelRow(
-                          asProvider.getString('Total'),
-                          0,
-                          '${provider.totalPrice}'),
+                          ln.getString('Total'), 0, '${provider.totalPrice}'),
                       const SizedBox(
                         height: 23,
                       ),
-                      CommonHelper().buttonOrange(asProvider.getString('Next'),
-                          () {
+                      CommonHelper().buttonOrange(ln.getString('Next'), () {
                         if (personalizationProvider.isloading == false) {
                           if (personalizationProvider.isOnline == 1) {
                             //if it is an online service no need to show service schedule and choose location page

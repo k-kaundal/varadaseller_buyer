@@ -15,10 +15,10 @@ class RecentServices extends StatelessWidget {
   const RecentServices({
     Key? key,
     required this.cc,
-    required this.asProvider,
+    required this.ln,
   }) : super(key: key);
   final ConstantColors cc;
-  final asProvider;
+  final ln;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class RecentServices extends StatelessWidget {
                           builder: (context, allServiceProvider, child) =>
                               SectionTitle(
                             cc: cc,
-                            title: asProvider.getString('Recently listed'),
+                            title: ln.getString('Recently listed'),
                             pressed: () {
                               //when user clicks on recent see all. set sort by dropdown to latest
                               allServiceProvider
@@ -139,13 +139,12 @@ class RecentServices extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Text(asProvider.getString('Something went wrong'))
+                  : Text(ln.getString('Something went wrong'))
               : Container()
           : Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(top: 35),
-              child: Text(
-                  asProvider.getString('No service available in your area')),
+              child: Text(ln.getString('No service available in your area')),
             ),
     );
   }

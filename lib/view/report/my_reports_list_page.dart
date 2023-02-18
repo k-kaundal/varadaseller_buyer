@@ -76,8 +76,7 @@ class _MyReportListPageState extends State<MyReportListPage> {
             child: SingleChildScrollView(
               physics: physicsCommon,
               child: Consumer<AppStringService>(
-                builder: (context, asProvider, child) => Consumer<
-                        ReportService>(
+                builder: (context, ln, child) => Consumer<ReportService>(
                     builder: (context, provider, child) => provider
                             .reportList.isNotEmpty
                         ? Container(
@@ -145,8 +144,8 @@ class _MyReportListPageState extends State<MyReportListPage> {
                               ],
                             ),
                           )
-                        : CommonHelper().nothingfound(
-                            context, asProvider.getString('No Report'))),
+                        : CommonHelper()
+                            .nothingfound(context, ln.getString('No Report'))),
               ),
             ),
           ),

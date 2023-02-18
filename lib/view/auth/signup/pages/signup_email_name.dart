@@ -41,7 +41,7 @@ class _SignupEmailNameState extends State<SignupEmailName> {
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Container(
+      builder: (context, ln, child) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Form(
           key: _formKey,
@@ -61,8 +61,8 @@ class _SignupEmailNameState extends State<SignupEmailName> {
                 height: 13,
               ),
               Consumer<SignupService>(
-                builder: (context, provider, child) => CommonHelper()
-                    .buttonOrange(asProvider.getString("Continue"), () {
+                builder: (context, provider, child) =>
+                    CommonHelper().buttonOrange(ln.getString("Continue"), () {
                   if (_formKey.currentState!.validate()) {
                     provider.pagecontroller.animateToPage(
                         provider.selectedPage + 1,

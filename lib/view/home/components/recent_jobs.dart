@@ -23,8 +23,7 @@ class RecentJobs extends StatelessWidget {
 
     return Consumer<RecentJobsService>(
         builder: (context, provider, child) => Consumer<AppStringService>(
-              builder: (context, asProvider, child) => provider.recentJobs !=
-                      null
+              builder: (context, ln, child) => provider.recentJobs != null
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -101,7 +100,7 @@ class RecentJobs extends StatelessWidget {
                                         Row(
                                           children: [
                                             AutoSizeText(
-                                              '${asProvider.getString('Starts from')}:',
+                                              '${ln.getString('Starts from')}:',
                                               textAlign: TextAlign.start,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,

@@ -43,8 +43,7 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
           child: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
-              builder: (context, asProvider, child) =>
-                  Consumer<OrderDetailsService>(
+              builder: (context, ln, child) => Consumer<OrderDetailsService>(
                 builder: (context, provider, child) => provider.isLoading ==
                         false
                     ? provider.orderDetails != 'error'
@@ -75,7 +74,7 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 CommonHelper().titleCommon(
-                                                    asProvider.getString(
+                                                    ln.getString(
                                                         'Date & Schedule')),
                                                 const SizedBox(
                                                   height: 25,
@@ -85,8 +84,7 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                                 Container(
                                                   child: BookingHelper().bRow(
                                                       'null',
-                                                      asProvider
-                                                          .getString('Date'),
+                                                      ln.getString('Date'),
                                                       provider
                                                           .orderDetails.date),
                                                 ),
@@ -94,8 +92,7 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                                 Container(
                                                   child: BookingHelper().bRow(
                                                       'null',
-                                                      asProvider.getString(
-                                                          'Schedule'),
+                                                      ln.getString('Schedule'),
                                                       provider.orderDetails
                                                           .schedule,
                                                       lastBorder: false),
@@ -119,16 +116,15 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          CommonHelper().titleCommon(asProvider
-                                              .getString('Order Status')),
+                                          CommonHelper().titleCommon(
+                                              ln.getString('Order Status')),
                                           const SizedBox(
                                             height: 25,
                                           ),
                                           Container(
                                             child: BookingHelper().bRow(
                                                 'null',
-                                                asProvider
-                                                    .getString('Order Status'),
+                                                ln.getString('Order Status'),
                                                 provider.orderStatus,
                                                 lastBorder: false),
                                           ),
@@ -151,7 +147,7 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                 ]),
                           )
                         : CommonHelper().nothingfound(
-                            context, asProvider.getString('No details found'))
+                            context, ln.getString('No details found'))
                     : Container(
                         alignment: Alignment.center,
                         height: MediaQuery.of(context).size.height - 120,

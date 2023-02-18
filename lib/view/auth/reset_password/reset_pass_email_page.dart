@@ -38,7 +38,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
         },
         child: SingleChildScrollView(
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Container(
+            builder: (context, ln, child) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               height: MediaQuery.of(context).size.height - 120,
               alignment: Alignment.center,
@@ -54,7 +54,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                           height: 33,
                         ),
                         Text(
-                          asProvider.getString("Reset password"),
+                          ln.getString("Reset password"),
                           style: TextStyle(
                               color: cc.greyPrimary,
                               fontSize: 18,
@@ -64,7 +64,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                           height: 13,
                         ),
                         CommonHelper().paragraphCommon(
-                          asProvider.getString(
+                          ln.getString(
                               "Enter the email you used to creat account and we’ll send instruction for restting password"),
                         ),
 
@@ -74,15 +74,14 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
 
                         //Name ============>
                         CommonHelper().labelCommon(
-                          asProvider.getString("Enter Email"),
+                          ln.getString("Enter Email"),
                         ),
 
                         CustomInput(
                           controller: emailController,
                           validation: (value) {
                             if (value == null || value.isEmpty) {
-                              return asProvider
-                                  .getString("Please enter your email");
+                              return ln.getString("Please enter your email");
                             }
                             return null;
                           },
@@ -97,8 +96,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                         ),
                         Consumer<ResetPasswordService>(
                           builder: (context, provider, child) => CommonHelper()
-                              .buttonOrange(
-                                  asProvider.getString("Send Instructions"),
+                              .buttonOrange(ln.getString("Send Instructions"),
                                   () {
                             if (provider.isloading == false) {
                               if (_formKey.currentState!.validate()) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
@@ -23,14 +25,17 @@ class OverviewBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(7),
         border: Border.all(color: Colors.grey.withOpacity(.5)),
       ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        CommonHelper().paragraphCommon(title, fontsize: 13),
+      child: Consumer<AppStringService>(
+        builder: (context, ln, child) =>
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          CommonHelper().paragraphCommon(ln.getString(title), fontsize: 13),
 
-        sizedBoxCustom(7),
+          sizedBoxCustom(7),
 
-        //amount
-        CommonHelper().titleCommon(subtitle, fontsize: 15)
-      ]),
+          //amount
+          CommonHelper().titleCommon(ln.getString(subtitle), fontsize: 15)
+        ]),
+      ),
     );
   }
 }

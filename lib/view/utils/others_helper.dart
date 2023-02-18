@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 //===========================>
@@ -45,7 +47,8 @@ class OthersHelper with ChangeNotifier {
   // snackbar
   showSnackBar(BuildContext context, String msg, color) {
     var snackBar = SnackBar(
-      content: Text(msg),
+      content: Consumer<AppStringService>(
+          builder: (context, ln, child) => Text(ln.getString(msg))),
       backgroundColor: color,
       duration: const Duration(milliseconds: 2000),
     );

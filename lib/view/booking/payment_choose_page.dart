@@ -60,7 +60,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
         body: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Container(
+            builder: (context, ln, child) => Container(
               padding: EdgeInsets.symmetric(horizontal: screenPadding),
               child: Consumer<PaymentGatewayListService>(
                 builder: (context, pgProvider, child) => pgProvider
@@ -94,8 +94,8 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                   child: CommonHelper().dividerCommon(),
                                 ),
 
-                              CommonHelper().titleCommon(asProvider
-                                  .getString('Choose payment method')),
+                              CommonHelper().titleCommon(
+                                  ln.getString('Choose payment method')),
 
                               //payment method card
                               GridView.builder(
@@ -187,7 +187,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                                     height: 30,
                                                   ),
                                                   CommonHelper().buttonOrange(
-                                                      asProvider.getString(
+                                                      ln.getString(
                                                           'Choose image'), () {
                                                     btProvider
                                                         .pickImage(context);
@@ -227,7 +227,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
-                                    asProvider.getString(
+                                    ln.getString(
                                         'I agree with terms and conditions'),
                                     style: TextStyle(
                                         color: ConstantColors().greyFour,
@@ -250,8 +250,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                 height: 20,
                               ),
                               CommonHelper().buttonOrange(
-                                  asProvider.getString('Pay & Confirm'),
-                                  () async {
+                                  ln.getString('Pay & Confirm'), () async {
                                 var w = await Provider.of<WalletService>(
                                         context,
                                         listen: false)
@@ -262,7 +261,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
 
                                 if (termsAgree == false) {
                                   OthersHelper().showToast(
-                                      asProvider.getString(
+                                      ln.getString(
                                           'You must agree with the terms and conditions to place the order'),
                                       Colors.black);
                                   return;

@@ -39,7 +39,7 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Container(
+      builder: (context, ln, child) => Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Column(
             children: [
@@ -55,8 +55,7 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
                 title: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    asProvider
-                        .getString("I agree with the terms and conditons"),
+                    ln.getString("I agree with the terms and conditons"),
                     style: TextStyle(
                         color: ConstantColors().greyFour,
                         fontWeight: FontWeight.w400,
@@ -80,7 +79,7 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
                     CommonHelper().buttonOrange("Sign Up", () {
                   if (termsAgree == false) {
                     OthersHelper().showToast(
-                        asProvider.getString(
+                        ln.getString(
                             "You must agree with the terms and conditions to register"),
                         Colors.black);
                   } else {
@@ -98,8 +97,7 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
                           selectedAreaId == null) {
                         OthersHelper().showSnackBar(
                             context,
-                            asProvider
-                                .getString("You must select a state and area"),
+                            ln.getString("You must select a state and area"),
                             cc.warningColor);
                         return;
                       }

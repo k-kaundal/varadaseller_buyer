@@ -55,7 +55,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
           Provider.of<CouponService>(context, listen: false).setCouponDefault();
         }),
         body: Consumer<AppStringService>(
-          builder: (context, asProvider, child) => Consumer<SheduleService>(
+          builder: (context, ln, child) => Consumer<SheduleService>(
             builder: (context, provider, child) {
               print(provider.totalDay);
               //if user didnt select anything then go with the default value
@@ -113,7 +113,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                 height: 30,
                               ),
                               CommonHelper().titleCommon(
-                                  '${asProvider.getString('Available time')}:'),
+                                  '${ln.getString('Available time')}:'),
 
                               const SizedBox(
                                 height: 17,
@@ -198,7 +198,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                           },
                                         )
                                       : Text(
-                                          asProvider.getString(
+                                          ln.getString(
                                               'No shedule available on this date'),
                                           style:
                                               TextStyle(color: cc.primaryColor),
@@ -253,8 +253,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                           // const SizedBox(
                           //   height: 23,
                           // ),
-                          CommonHelper()
-                              .buttonOrange(asProvider.getString('Next'), () {
+                          CommonHelper().buttonOrange(ln.getString('Next'), () {
                             if (_selectedTime != null &&
                                 _selectedWeekday != null) {
                               //increase page steps by one

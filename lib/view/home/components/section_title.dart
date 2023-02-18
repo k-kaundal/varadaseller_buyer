@@ -21,10 +21,10 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) => Row(
+      builder: (context, ln, child) => Row(
         children: [
           Text(
-            asProvider.getString(title),
+            ln.getString(title),
             style: TextStyle(
               color: cc.greyFour,
               fontSize: 17,
@@ -41,7 +41,7 @@ class SectionTitle extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      asProvider.getString('See all'),
+                      ln.getString('See all'),
                       style: TextStyle(
                         color: cc.primaryColor,
                         fontSize: 15,

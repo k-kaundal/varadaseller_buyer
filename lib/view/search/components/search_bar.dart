@@ -22,8 +22,7 @@ class SearchBar extends StatelessWidget {
     ConstantColors cc = ConstantColors();
     TextEditingController searchController = TextEditingController();
     return Consumer<AppStringService>(
-      builder: (context, asProvider, child) =>
-          Consumer<SearchBarWithDropdownService>(
+      builder: (context, ln, child) => Consumer<SearchBarWithDropdownService>(
         builder: (context, provider, child) => Container(
           margin: const EdgeInsets.only(bottom: 16),
           child: Column(
@@ -67,7 +66,7 @@ class SearchBar extends StatelessWidget {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: const Icon(Icons.search),
-                                hintText: asProvider.getString("Search"),
+                                hintText: ln.getString("Search"),
                                 hintStyle: TextStyle(
                                     color: cc.greyPrimary.withOpacity(.8)),
                                 contentPadding: const EdgeInsets.symmetric(
@@ -197,7 +196,7 @@ class SearchBar extends StatelessWidget {
                                 Container(
                                   margin: const EdgeInsets.only(top: 20),
                                   child: Text(
-                                    asProvider.getString("No result found"),
+                                    ln.getString("No result found"),
                                     style: TextStyle(color: cc.greyPrimary),
                                   ),
                                 )
@@ -209,7 +208,7 @@ class SearchBar extends StatelessWidget {
                             Container(
                               margin: const EdgeInsets.only(top: 20),
                               child: Text(
-                                asProvider.getString("No result found"),
+                                ln.getString("No result found"),
                                 style: TextStyle(color: cc.greyPrimary),
                               ),
                             )

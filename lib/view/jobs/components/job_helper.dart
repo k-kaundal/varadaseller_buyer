@@ -39,10 +39,10 @@
 //             ],
 //           ),
 //           child: Consumer<AppStringService>(
-//             builder: (context, asProvider, child) => Column(
+//             builder: (context, ln, child) => Column(
 //               children: [
 //                 Text(
-//                   '${asProvider.getString('Are you sure')}?',
+//                   '${ln.getString('Are you sure')}?',
 //                   style: TextStyle(color: cc.greyPrimary, fontSize: 17),
 //                 ),
 //                 const SizedBox(
@@ -52,7 +52,7 @@
 //                   children: [
 //                     Expanded(
 //                         child: CommonHelper().borderButtonOrange(
-//                             asProvider.getString('Cancel'), () {
+//                             ln.getString('Cancel'), () {
 //                       Navigator.pop(context);
 //                     })),
 //                     const SizedBox(
@@ -61,7 +61,7 @@
 //                     Consumer<LogoutService>(
 //                       builder: (context, provider, child) => Expanded(
 //                           child: CommonHelper().buttonOrange(
-//                               asProvider.getString('Logout'), () {
+//                               ln.getString('Logout'), () {
 //                         if (provider.isloading == false) {
                           
 //                         }

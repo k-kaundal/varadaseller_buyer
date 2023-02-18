@@ -52,7 +52,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         child: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Container(
+            builder: (context, ln, child) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               height: MediaQuery.of(context).size.height - 120,
               alignment: Alignment.center,
@@ -66,7 +66,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       children: [
                         //New password =========================>
                         CommonHelper().labelCommon(
-                            asProvider.getString("Enter current password")),
+                            ln.getString("Enter current password")),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -80,7 +80,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return asProvider
+                                  return ln
                                       .getString("Enter your current password");
                                 }
                                 return null;
@@ -136,15 +136,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: asProvider
-                                      .getString("Enter current password"),
+                                  hintText:
+                                      ln.getString("Enter current password"),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
 
                         //New password =========================>
-                        CommonHelper().labelCommon(
-                            asProvider.getString("Enter new password")),
+                        CommonHelper()
+                            .labelCommon(ln.getString("Enter new password")),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -158,7 +158,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return asProvider
+                                  return ln
                                       .getString('Please enter your password');
                                 }
                                 return null;
@@ -214,15 +214,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText:
-                                      asProvider.getString('New password'),
+                                  hintText: ln.getString('New password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
 
                         //Repeat New password =========================>
-                        CommonHelper().labelCommon(
-                            asProvider.getString('Repeat new password')),
+                        CommonHelper()
+                            .labelCommon(ln.getString('Repeat new password')),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -236,7 +235,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return asProvider
+                                  return ln
                                       .getString('Please retype your password');
                                 }
                                 return null;
@@ -292,8 +291,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: asProvider
-                                      .getString('Retype new password'),
+                                  hintText: ln.getString('Retype new password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
@@ -304,8 +302,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         ),
                         Consumer<ChangePassService>(
                           builder: (context, provider, child) => CommonHelper()
-                              .buttonOrange(
-                                  asProvider.getString('Change password'), () {
+                              .buttonOrange(ln.getString('Change password'),
+                                  () {
                             if (provider.isloading == false) {
                               provider.changePassword(
                                   currentPasswordController.text,

@@ -50,7 +50,7 @@ class _HomepageState extends State<Homepage> {
           child: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
-              builder: (context, asProvider, child) => Column(
+              builder: (context, ln, child) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
@@ -83,7 +83,7 @@ class _HomepageState extends State<Homepage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  '${asProvider.getString('Welcome')}!',
+                                                  '${ln.getString('Welcome')}!',
                                                   style: TextStyle(
                                                     color: cc.greyParagraph,
                                                     fontSize: 14,
@@ -127,7 +127,7 @@ class _HomepageState extends State<Homepage> {
                                         ),
                                       ),
                                     )
-                                  : Text(asProvider.getString(
+                                  : Text(ln.getString(
                                       'Could not load user profile info'))
                               : Container(),
                     ),
@@ -149,8 +149,7 @@ class _HomepageState extends State<Homepage> {
                                       cc: cc,
                                     )));
                           },
-                          child:
-                              HomepageHelper().searchbar(asProvider, context)),
+                          child: HomepageHelper().searchbar(ln, context)),
                     ),
 
                     const SizedBox(
@@ -184,7 +183,7 @@ class _HomepageState extends State<Homepage> {
 
                           SectionTitle(
                             cc: cc,
-                            title: asProvider.getString('Browse categories'),
+                            title: ln.getString('Browse categories'),
                             pressed: () {
                               Navigator.push(
                                 context,
@@ -203,21 +202,21 @@ class _HomepageState extends State<Homepage> {
                           //Categories =============>
                           Categories(
                             cc: cc,
-                            asProvider: asProvider,
+                            ln: ln,
                           ),
 
                           //Top rated sellers ========>
 
                           TopRatedServices(
                             cc: cc,
-                            asProvider: asProvider,
+                            ln: ln,
                           ),
 
                           //Recent service ========>
 
                           RecentServices(
                             cc: cc,
-                            asProvider: asProvider,
+                            ln: ln,
                           ),
 
                           //Discount images

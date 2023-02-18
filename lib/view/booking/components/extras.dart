@@ -13,12 +13,12 @@ class Extras extends StatefulWidget {
       required this.cc,
       required this.additionalServices,
       required this.serviceBenefits,
-      required this.asProvider})
+      required this.ln})
       : super(key: key);
   final ConstantColors cc;
   final additionalServices;
   final serviceBenefits;
-  final asProvider;
+  final ln;
 
   @override
   State<Extras> createState() => _ExtrasState();
@@ -31,8 +31,7 @@ class _ExtrasState extends State<Extras> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CommonHelper()
-            .titleCommon('${widget.asProvider.getString('Add extras')}:'),
+        CommonHelper().titleCommon('${widget.ln.getString('Add extras')}:'),
         const SizedBox(
           height: 17,
         ),
@@ -257,8 +256,8 @@ class _ExtrasState extends State<Extras> {
         const SizedBox(
           height: 27,
         ),
-        CommonHelper().titleCommon(
-            '${widget.asProvider.getString('Benifits of the Package')}:'),
+        CommonHelper()
+            .titleCommon('${widget.ln.getString('Benifits of the Package')}:'),
         const SizedBox(
           height: 17,
         ),
