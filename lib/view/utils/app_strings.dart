@@ -176,4 +176,13 @@ var appStrings = {
   "Hire now": "Hire now",
   "On/Off": "On/Off",
   'No jobs found': 'No jobs found',
+  "Wallet": "Wallet",
+  "Balance": "Balance",
+  "History": "History",
+  "ID": "ID",
+  "Gateway": "Gateway",
+  "Amount": "Amount",
+  "Conversations": "Conversations",
+  'You do not have any active conversation':
+      'You do not have any active conversation',
 };

@@ -125,7 +125,8 @@ class _WalletPageState extends State<WalletPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      CommonHelper().titleCommon('History'),
+                                      CommonHelper()
+                                          .titleCommon(ln.getString('History')),
                                       sizedBoxCustom(17),
                                       for (int i = 0;
                                           i < provider.walletHistory.length;
@@ -149,7 +150,7 @@ class _WalletPageState extends State<WalletPage> {
                                                             .start,
                                                     children: [
                                                       CommonHelper().titleCommon(
-                                                          'ID: #${provider.walletHistory[i].id}',
+                                                          '${ln.getString("ID")}: #${provider.walletHistory[i].id}',
                                                           fontsize: 15,
                                                           color:
                                                               cc.primaryColor),
@@ -157,7 +158,7 @@ class _WalletPageState extends State<WalletPage> {
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            "Gateway: ${removeUnderscore(provider.walletHistory[i].paymentGateway)}",
+                                                            "${ln.getString("Gateway")}: ${removeUnderscore(provider.walletHistory[i].paymentGateway)}",
                                                             style: TextStyle(
                                                               color:
                                                                   cc.greyFour,
@@ -169,7 +170,7 @@ class _WalletPageState extends State<WalletPage> {
                                                             width: 19,
                                                           ),
                                                           Text(
-                                                            "Amount: \$${provider.walletHistory[i].amount}",
+                                                            "${ln.getString("Amount")}: \$${provider.walletHistory[i].amount}",
                                                             style: TextStyle(
                                                               color:
                                                                   cc.greyFour,
@@ -183,7 +184,7 @@ class _WalletPageState extends State<WalletPage> {
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            "Payment Status: ${provider.walletHistory[i].paymentStatus}",
+                                                            "${ln.getString("Payment Status")}: ${provider.walletHistory[i].paymentStatus}",
                                                             style: TextStyle(
                                                               color:
                                                                   cc.greyFour,
@@ -207,11 +208,6 @@ class _WalletPageState extends State<WalletPage> {
                                                       ),
                                                     ]),
                                               ),
-                                              // Icon(
-                                              //   Icons.arrow_forward_ios,
-                                              //   size: 16,
-                                              //   color: cc.greyFour,
-                                              // )
                                             ],
                                           ),
                                         ),

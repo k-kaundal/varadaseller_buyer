@@ -327,112 +327,12 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                                                           : Colors.white)),
                                                 ),
                                               ),
-                                              // provider.messagesList[index]
-                                              //             ['attachment'] !=
-                                              //         null
-                                              // ? Container(
-                                              //     margin: const EdgeInsets.only(
-                                              //         top: 11),
-                                              //     child: provider.messagesList[
-                                              //                     index]
-                                              //                 ['imagePicked'] ==
-                                              //             false
-                                              //         ? InkWell(
-                                              //             onTap: () {
-                                              //               Navigator.push(
-                                              //                 context,
-                                              //                 MaterialPageRoute<
-                                              //                     void>(
-                                              //                   builder: (BuildContext
-                                              //                           context) =>
-                                              //                       ImageBigPreviewPage(
-                                              //                     networkImgLink:
-                                              //                         provider.messagesList[
-                                              //                                 index]
-                                              //                             [
-                                              //                             'attachment'],
-                                              //                   ),
-                                              //                 ),
-                                              //               );
-                                              //             },
-                                              //             child:
-                                              //                 CachedNetworkImage(
-                                              //               imageUrl: provider
-                                              //                               .messagesList[
-                                              //                           index][
-                                              //                       'attachment'] ??
-                                              //                   placeHolderUrl,
-                                              //               placeholder:
-                                              //                   (context, url) {
-                                              //                 return Image.asset(
-                                              //                     'assets/images/placeholder.png');
-                                              //               },
-                                              //               height: 150,
-                                              //               width: screenWidth /
-                                              //                       2 -
-                                              //                   50,
-                                              //               fit:
-                                              //                   BoxFit.fitWidth,
-                                              //             ),
-                                              //           )
-                                              //         : InkWell(
-                                              //             onTap: () {
-                                              //               Navigator.push(
-                                              //                 context,
-                                              //                 MaterialPageRoute<
-                                              //                     void>(
-                                              //                   builder: (BuildContext
-                                              //                           context) =>
-                                              //                       ImageBigPreviewPage(
-                                              //                     assetImgLink:
-                                              //                         provider.messagesList[
-                                              //                                 index]
-                                              //                             [
-                                              //                             'attachment'],
-                                              //                   ),
-                                              //                 ),
-                                              //               );
-                                              //             },
-                                              //             child: Image.file(
-                                              //               File(provider
-                                              //                           .messagesList[
-                                              //                       index]
-                                              //                   ['attachment']),
-                                              //               height: 150,
-                                              //               width: screenWidth /
-                                              //                       2 -
-                                              //                   50,
-                                              //               fit: BoxFit.cover,
-                                              //             ),
-                                              //           ),
-                                              //   )
-                                              // : Container()
                                             ],
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-
-                                  // provider.messagesList[index].type == "seller"
-                                  //     ? Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //           right: 13,
-                                  //         ),
-                                  //         width: 15,
-                                  //         height: 15,
-                                  //         decoration: const BoxDecoration(
-                                  //             shape: BoxShape.circle,
-                                  //             color: Colors.white),
-                                  //         child: ClipRRect(
-                                  //           borderRadius: BorderRadius.circular(100),
-                                  //           child: Image.network(
-                                  //             'https://cdn.pixabay.com/photo/2016/09/08/13/58/desert-1654439__340.jpg',
-                                  //             fit: BoxFit.cover,
-                                  //           ),
-                                  //         ),
-                                  //       )
-                                  //     : Container(),
                                 ],
                               );
                             },
