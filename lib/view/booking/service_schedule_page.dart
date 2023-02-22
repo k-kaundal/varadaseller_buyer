@@ -235,24 +235,6 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // CommonHelper().titleCommon('Scheduling for:'),
-                          // const SizedBox(
-                          //   height: 15,
-                          // ),
-                          // BookingHelper().rowLeftRight(
-                          //     'assets/svg/calendar.svg',
-                          //     'Date',
-                          //     'Friday, 18 March 2022'),
-                          // const SizedBox(
-                          //   height: 14,
-                          // ),
-                          // BookingHelper().rowLeftRight(
-                          //     'assets/svg/clock.svg',
-                          //     'Time',
-                          //     '02:00 PM -03:00 PM'),
-                          // const SizedBox(
-                          //   height: 23,
-                          // ),
                           CommonHelper().buttonOrange(ln.getString('Next'), () {
                             if (_selectedTime != null &&
                                 _selectedWeekday != null) {

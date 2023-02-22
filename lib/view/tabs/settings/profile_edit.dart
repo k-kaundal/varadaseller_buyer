@@ -248,7 +248,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           Consumer<RtlService>(
                             builder: (context, rtlP, child) => IntlPhoneField(
                               controller: phoneController,
-                              decoration: SignupHelper().phoneFieldDecoration(),
+                              decoration: SignupHelper().phoneFieldDecoration(
+                                  labelText: ln.getString('Phone Number'),
+                                  hintText: ln.getString('Enter phone number')),
                               initialCountryCode: countryCode,
                               disableLengthCheck: true,
                               textAlign: rtlP.direction == 'ltr'

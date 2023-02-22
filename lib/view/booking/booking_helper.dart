@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
@@ -82,47 +83,49 @@ class BookingHelper {
   bRow(String icon, String title, String text, {bool lastBorder = true}) {
     return Column(
       children: [
-        Row(
-          children: [
-            //icon
-            SizedBox(
-              width: 125,
-              child: Row(children: [
-                icon != 'null'
-                    ? Row(
-                        children: [
-                          SvgPicture.asset(
-                            icon,
-                            height: 19,
-                          ),
-                          const SizedBox(
-                            width: 7,
-                          ),
-                        ],
-                      )
-                    : Container(),
-                Text(
-                  title,
+        Consumer<AppStringService>(
+          builder: (context, ln, child) => Row(
+            children: [
+              //icon
+              SizedBox(
+                width: 125,
+                child: Row(children: [
+                  icon != 'null'
+                      ? Row(
+                          children: [
+                            SvgPicture.asset(
+                              icon,
+                              height: 19,
+                            ),
+                            const SizedBox(
+                              width: 7,
+                            ),
+                          ],
+                        )
+                      : Container(),
+                  Text(
+                    ln.getString(title),
+                    style: TextStyle(
+                      color: cc.greyFour,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ]),
+              ),
+
+              Flexible(
+                child: Text(
+                  text,
                   style: TextStyle(
                     color: cc.greyFour,
                     fontSize: 14,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w600,
                   ),
-                )
-              ]),
-            ),
-
-            Flexible(
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: cc.greyFour,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
         lastBorder == true
             ? Container(
@@ -138,14 +141,16 @@ class BookingHelper {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          flex: 3,
-          child: Text(
-            title,
-            style: TextStyle(
-              color: cc.greyFour,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
+        Consumer<AppStringService>(
+          builder: (context, ln, child) => Expanded(
+            flex: 3,
+            child: Text(
+              ln.getString(title),
+              style: TextStyle(
+                color: cc.greyFour,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),

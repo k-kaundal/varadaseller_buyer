@@ -159,16 +159,12 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                               height: 30,
                             ),
 
-                            BookingHelper().bRow('assets/svg/user.svg',
-                                ln.getString('Name'), bookProvider.name ?? ''),
-                            BookingHelper().bRow(
-                                'assets/svg/email.svg',
-                                ln.getString('Email'),
-                                bookProvider.email ?? ''),
-                            BookingHelper().bRow(
-                                'assets/svg/phone.svg',
-                                ln.getString('Phone'),
-                                bookProvider.phone ?? ''),
+                            BookingHelper().bRow('assets/svg/user.svg', 'Name',
+                                bookProvider.name ?? ''),
+                            BookingHelper().bRow('assets/svg/email.svg',
+                                'Email', bookProvider.email ?? ''),
+                            BookingHelper().bRow('assets/svg/phone.svg',
+                                'Phone', bookProvider.phone ?? ''),
                             personalizationProvider.isOnline == 0
                                 ? Column(
                                     crossAxisAlignment:
@@ -176,11 +172,11 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                     children: [
                                       BookingHelper().bRow(
                                           'assets/svg/location.svg',
-                                          ln.getString('Post code'),
+                                          'Post code',
                                           bookProvider.postCode ?? ''),
                                       BookingHelper().bRow(
                                           'assets/svg/location.svg',
-                                          ln.getString('Address'),
+                                          'Address',
                                           bookProvider.address ?? ''),
                                     ],
                                   )
@@ -189,20 +185,6 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                             const SizedBox(
                               height: 17,
                             ),
-
-                            // Text(
-                            //   'Order notes:',
-                            //   style: TextStyle(
-                            //     color: cc.greyFour,
-                            //     fontSize: 15,
-                            //     fontWeight: FontWeight.w600,
-                            //   ),
-                            // ),
-                            // const SizedBox(
-                            //   height: 11,
-                            // ),
-                            // CommonHelper().paragraphCommon(
-                            //     bookProvider.orderNote ?? '', TextAlign.left),
 
                             const SizedBox(
                               height: 335,

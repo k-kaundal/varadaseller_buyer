@@ -1,9 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/main.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/profile_service.dart';
-import 'package:qixer/view/auth/login/login.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,9 +44,7 @@ class LogoutService with ChangeNotifier {
         Navigator.pushAndRemoveUntil<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => const LoginPage(
-              hasBackButton: false,
-            ),
+            builder: (BuildContext context) => const MyApp(),
           ),
           (route) => false,
         );

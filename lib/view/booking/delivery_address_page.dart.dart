@@ -188,7 +188,11 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                             ? TextAlign.left
                                             : TextAlign.right,
                                         decoration: SignupHelper()
-                                            .phoneFieldDecoration(),
+                                            .phoneFieldDecoration(
+                                                labelText: ln
+                                                    .getString('Phone Number'),
+                                                hintText: ln.getString(
+                                                    'Enter phone number')),
                                         initialCountryCode: countryCode,
                                         onChanged: (phone) {
                                           print(phone.completeNumber);

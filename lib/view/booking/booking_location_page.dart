@@ -70,7 +70,7 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                       const SizedBox(
                         height: 27,
                       ),
-                      CommonHelper().buttonOrange(ln.getString('Next'), () {
+                      CommonHelper().buttonOrange('Next', () {
                         var selectedStateId = Provider.of<CountryStatesService>(
                                 context,
                                 listen: false)

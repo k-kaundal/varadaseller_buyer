@@ -65,7 +65,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                         ),
                         CommonHelper().paragraphCommon(
                           ln.getString(
-                              "Enter the email you used to creat account and we’ll send instruction for restting password"),
+                              "Enter the email you used to create account and we’ll send instruction for restting password"),
                         ),
 
                         const SizedBox(
@@ -74,7 +74,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
 
                         //Name ============>
                         CommonHelper().labelCommon(
-                          ln.getString("Enter Email"),
+                          "Enter Email",
                         ),
 
                         CustomInput(
@@ -85,7 +85,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                             }
                             return null;
                           },
-                          hintText: "Email",
+                          hintText: ln.getString("Email"),
                           icon: 'assets/icons/email.png',
                           textInputAction: TextInputAction.next,
                         ),

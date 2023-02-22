@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: 'Enter password',
+                                  hintText: ln.getString('Enter password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
@@ -278,7 +278,8 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             RichText(
                               text: TextSpan(
-                                text: 'Don\'t have account?  ',
+                                text:
+                                    '${ln.getString("Do not have account?")}  ',
                                 style: const TextStyle(
                                     color: Color(0xff646464), fontSize: 14),
                                 children: <TextSpan>[
@@ -291,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   builder: (context) =>
                                                       const SignupPage()));
                                         },
-                                      text: 'Register',
+                                      text: ln.getString('Register'),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,
@@ -321,7 +322,7 @@ class _LoginPageState extends State<LoginPage> {
                               alignment: Alignment.center,
                               margin: const EdgeInsets.only(bottom: 25),
                               child: Text(
-                                "OR",
+                                ln.getString("OR"),
                                 style: TextStyle(
                                     color: cc.greyPrimary,
                                     fontSize: 17,
@@ -349,7 +350,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: LoginHelper().commonButton(
                                   'assets/icons/google.png',
-                                  "Login with Google",
+                                  ln.getString("Login with Google"),
                                   isloading: gProvider.isloading == false
                                       ? false
                                       : true)),
@@ -366,7 +367,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             child: LoginHelper().commonButton(
                                 'assets/icons/facebook.png',
-                                "Login with Facebook",
+                                ln.getString("Login with Facebook"),
                                 isloading: fProvider.isloading == false
                                     ? false
                                     : true),

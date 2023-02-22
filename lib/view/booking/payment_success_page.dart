@@ -231,30 +231,6 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                     )
                                   ],
                                 ),
-                                // sizedBox20(),
-                                // //Gateway
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //   children: [
-                                //     Text(
-                                //       'Payment gateway',
-                                //       style: TextStyle(
-                                //         color: cc.greyFour,
-                                //         fontSize: 14,
-                                //         fontWeight: FontWeight.w400,
-                                //       ),
-                                //     ),
-                                //     Text(
-                                //       'Mobile',
-                                //       textAlign: TextAlign.right,
-                                //       style: TextStyle(
-                                //         color: cc.greyFour,
-                                //         fontSize: 14,
-                                //         fontWeight: FontWeight.w600,
-                                //       ),
-                                //     )
-                                //   ],
-                                // ),
 
                                 Container(
                                   margin:

@@ -112,15 +112,6 @@ class _ServicePersonalizationPageState
                                 const SizedBox(
                                   height: 27,
                                 ),
-                                // CommonHelper().buttonOrange("Next", () {
-                                //   Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute<void>(
-                                //       builder: (BuildContext context) =>
-                                //           const ServiceSchedulePage(),
-                                //     ),
-                                //   );
-                                // }),
 
                                 const SizedBox(
                                   height: 147,
