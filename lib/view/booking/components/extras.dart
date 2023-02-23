@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/rtl_service.dart';
 
 import '../../../service/booking_services/personalization_service.dart';
-import '../../services/service_helper.dart';
+import '../../report/services/service_helper.dart';
 import '../../utils/common_helper.dart';
 import '../../utils/constant_colors.dart';
 

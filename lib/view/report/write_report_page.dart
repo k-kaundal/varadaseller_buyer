@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/leave_feedback_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/booking/components/textarea_field.dart';
@@ -36,48 +37,52 @@ class _WriteReportPageState extends State<WriteReportPage> {
       }),
       body: SingleChildScrollView(
         physics: physicsCommon,
-        child: Consumer<ProfileService>(
-          builder: (context, profileProvider, child) => Container(
-            padding: EdgeInsets.symmetric(horizontal: screenPadding),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(
-                height: 15,
-              ),
-              sizedBox20(),
-              Text(
-                'What went wrong?',
-                style: TextStyle(
-                    color: cc.greyFour,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 14,
-              ),
-              TextareaField(
-                notesController: reportController,
-                hintText: 'Write the issue',
-              ),
-              sizedBox20(),
-              Consumer<LeaveFeedbackService>(
-                builder: (context, lfProvider, child) =>
-                    CommonHelper().buttonOrange('Submit Report', () {
-                  if (lfProvider.reportLoading == false) {
-                    if (reportController.text.trim().isEmpty) {
-                      OthersHelper().showToast(
-                          'You must write something to submit report',
-                          Colors.black);
-                      return;
-                    }
-                    lfProvider.leaveReport(context,
-                        message: reportController.text,
-                        orderId: widget.orderId,
-                        serviceId: widget.serviceId);
-                  }
-                }, isloading: lfProvider.reportLoading),
-              )
-            ]),
+        child: Consumer<AppStringService>(
+          builder: (context, ln, child) => Consumer<ProfileService>(
+            builder: (context, profileProvider, child) => Container(
+              padding: EdgeInsets.symmetric(horizontal: screenPadding),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    sizedBox20(),
+                    Text(
+                      ln.getString('What went wrong?'),
+                      style: TextStyle(
+                          color: cc.greyFour,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    TextareaField(
+                      notesController: reportController,
+                      hintText: ln.getString('Write the issue'),
+                    ),
+                    sizedBox20(),
+                    Consumer<LeaveFeedbackService>(
+                      builder: (context, lfProvider, child) =>
+                          CommonHelper().buttonOrange('Submit Report', () {
+                        if (lfProvider.reportLoading == false) {
+                          if (reportController.text.trim().isEmpty) {
+                            OthersHelper().showToast(
+                                ln.getString(
+                                    'You must write something to submit report'),
+                                Colors.black);
+                            return;
+                          }
+                          lfProvider.leaveReport(context,
+                              message: reportController.text,
+                              orderId: widget.orderId,
+                              serviceId: widget.serviceId);
+                        }
+                      }, isloading: lfProvider.reportLoading),
+                    )
+                  ]),
+            ),
           ),
         ),
       ),

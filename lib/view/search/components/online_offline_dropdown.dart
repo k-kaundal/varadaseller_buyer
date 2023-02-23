@@ -15,9 +15,6 @@ class OnlineOfflineDropdown extends StatelessWidget {
     return Consumer<SearchBarWithDropdownService>(
       builder: (context, provider, child) => Column(
         children: [
-          // dropdown ===========
-          // provider.userStateId == null
-          //     ?
           provider.onlineOfflineDropdownList.isNotEmpty
               ? Container(
                   width: double.infinity,
@@ -28,7 +25,6 @@ class OnlineOfflineDropdown extends StatelessWidget {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      // menuMaxHeight: 200,
                       isExpanded: true,
                       value: provider.selectedonlineOffline,
                       icon: Icon(Icons.keyboard_arrow_down_rounded,

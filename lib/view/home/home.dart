@@ -37,197 +37,183 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
-    return Listener(
-      onPointerDown: (_) {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.focusedChild?.unfocus();
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            physics: physicsCommon,
-            child: Consumer<AppStringService>(
-              builder: (context, ln, child) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    //name and profile image
-                    Consumer<ProfileService>(
-                      builder: (context, profileProvider, child) =>
-                          profileProvider.profileDetails != null
-                              ? profileProvider.profileDetails != 'error'
-                                  ? InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const ProfileEditPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 25),
-                                        child: Row(
-                                          children: [
-                                            //name
-                                            Expanded(
-                                                child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '${ln.getString('Welcome')}!',
-                                                  style: TextStyle(
-                                                    color: cc.greyParagraph,
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Text(
-                                                  profileProvider.profileDetails
-                                                          .userDetails.name ??
-                                                      '',
-                                                  style: TextStyle(
-                                                    color: cc.greyFour,
-                                                    fontSize: 19,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
-
-                                            //profile image
-                                            profileProvider.profileImage != null
-                                                ? CommonHelper().profileImage(
-                                                    profileProvider
-                                                        .profileImage,
-                                                    52,
-                                                    52)
-                                                : ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    child: Image.asset(
-                                                      'assets/images/avatar.png',
-                                                      height: 52,
-                                                      width: 52,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : Text(ln.getString(
-                                      'Could not load user profile info'))
-                              : Container(),
-                    ),
-
-                    //Search bar ========>
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      margin: const EdgeInsets.only(bottom: 15),
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: SearchBarPageWithDropdown(
-                                      cc: cc,
-                                    )));
-                          },
-                          child: HomepageHelper().searchbar(ln, context)),
-                    ),
-
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CommonHelper().dividerCommon(),
-                    const SizedBox(
-                      height: 25,
-                    ),
-
-                    //Slider
-                    Consumer<SliderService>(
-                        builder: (context, provider, child) => provider
-                                .sliderImageList.isNotEmpty
-                            ? SliderHome(
-                                cc: cc,
-                                sliderDetailsList: provider.sliderDetailsList,
-                                sliderImageList: provider.sliderImageList,
-                              )
-                            : Container()),
-
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //see all ============>
-                          const SizedBox(
-                            height: 25,
-                          ),
-
-                          SectionTitle(
-                            cc: cc,
-                            title: ln.getString('Browse categories'),
-                            pressed: () {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: physicsCommon,
+          child: Consumer<AppStringService>(
+            builder: (context, ln, child) =>
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(
+                height: 20,
+              ),
+              //name and profile image
+              Consumer<ProfileService>(
+                builder: (context, profileProvider, child) => profileProvider
+                            .profileDetails !=
+                        null
+                    ? profileProvider.profileDetails != 'error'
+                        ? InkWell(
+                            onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute<void>(
                                   builder: (BuildContext context) =>
-                                      const AllCategoriesPage(),
+                                      const ProfileEditPage(),
                                 ),
                               );
                             },
-                          ),
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25),
+                              child: Row(
+                                children: [
+                                  //name
+                                  Expanded(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${ln.getString('Welcome')}!',
+                                        style: TextStyle(
+                                          color: cc.greyParagraph,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        profileProvider.profileDetails
+                                                .userDetails.name ??
+                                            '',
+                                        style: TextStyle(
+                                          color: cc.greyFour,
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
 
-                          const SizedBox(
-                            height: 18,
-                          ),
+                                  //profile image
+                                  profileProvider.profileImage != null
+                                      ? CommonHelper().profileImage(
+                                          profileProvider.profileImage, 52, 52)
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.asset(
+                                            'assets/images/avatar.png',
+                                            height: 52,
+                                            width: 52,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Text(ln.getString('Could not load user profile info'))
+                    : Container(),
+              ),
 
-                          //Categories =============>
-                          Categories(
-                            cc: cc,
-                            ln: ln,
-                          ),
+              //Search bar ========>
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                margin: const EdgeInsets.only(bottom: 15),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: SearchBarPageWithDropdown(
+                                cc: cc,
+                              )));
+                    },
+                    child: HomepageHelper().searchbar(ln, context)),
+              ),
 
-                          //Top rated sellers ========>
+              const SizedBox(
+                height: 10,
+              ),
+              CommonHelper().dividerCommon(),
+              const SizedBox(
+                height: 25,
+              ),
 
-                          TopRatedServices(
-                            cc: cc,
-                            ln: ln,
-                          ),
+              //Slider
+              Consumer<SliderService>(
+                  builder: (context, provider, child) =>
+                      provider.sliderImageList.isNotEmpty
+                          ? SliderHome(
+                              cc: cc,
+                              sliderDetailsList: provider.sliderDetailsList,
+                              sliderImageList: provider.sliderImageList,
+                            )
+                          : Container()),
 
-                          //Recent service ========>
-
-                          RecentServices(
-                            cc: cc,
-                            ln: ln,
-                          ),
-
-                          //Discount images
-                          const RecentJobs(),
-
-                          sizedBoxCustom(30)
-                        ],
-                      ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //see all ============>
+                    const SizedBox(
+                      height: 25,
                     ),
-                  ]),
-            ),
+
+                    SectionTitle(
+                      cc: cc,
+                      title: ln.getString('Browse categories'),
+                      pressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                const AllCategoriesPage(),
+                          ),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(
+                      height: 18,
+                    ),
+
+                    //Categories =============>
+                    Categories(
+                      cc: cc,
+                    ),
+
+                    //Top rated sellers ========>
+
+                    TopRatedServices(
+                      cc: cc,
+                      ln: ln,
+                    ),
+
+                    //Recent service ========>
+
+                    RecentServices(
+                      cc: cc,
+                      ln: ln,
+                    ),
+
+                    //Discount images
+                    const RecentJobs(),
+
+                    sizedBoxCustom(30)
+                  ],
+                ),
+              ),
+            ]),
           ),
         ),
       ),

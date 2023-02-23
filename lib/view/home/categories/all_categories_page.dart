@@ -3,6 +3,7 @@ import 'package:flutterzilla_fixed_grid/flutterzilla_fixed_grid.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/service/all_services_service.dart';
+import 'package:qixer/service/app_string_service.dart';
 
 import 'package:qixer/view/home/categories/components/category_card.dart';
 
@@ -40,33 +41,35 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
           Navigator.pop(context);
         }),
         body: Consumer<CategoryService>(
-          builder: (context, provider, child) => Container(
-            padding: EdgeInsets.symmetric(horizontal: screenPadding),
-            child: GridView.builder(
-              clipBehavior: Clip.none,
-              gridDelegate: const FlutterzillaFixedGridView(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 19,
-                  crossAxisSpacing: 19,
-                  height: 100),
-              padding: const EdgeInsets.only(top: 12),
-              itemCount: provider.categories.category.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return provider.categories != null
-                    ? provider.categories != 'error'
-                        ? CategoryCard(
-                            name: provider.categories.category[index].name,
-                            id: provider.categories.category[index].id,
-                            cc: cc,
-                            index: index,
-                            marginRight: 0.0,
-                            imagelink:
-                                provider.categories.category[index].mobileIcon,
-                          )
-                        : const Text("Something went wrong")
-                    : OthersHelper().showLoading(cc.primaryColor);
-              },
+          builder: (context, provider, child) => Consumer<AppStringService>(
+            builder: (context, ln, child) => Container(
+              padding: EdgeInsets.symmetric(horizontal: screenPadding),
+              child: GridView.builder(
+                clipBehavior: Clip.none,
+                gridDelegate: const FlutterzillaFixedGridView(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 19,
+                    crossAxisSpacing: 19,
+                    height: 100),
+                padding: const EdgeInsets.only(top: 12),
+                itemCount: provider.categories.category.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return provider.categories != null
+                      ? provider.categories != 'error'
+                          ? CategoryCard(
+                              name: provider.categories.category[index].name,
+                              id: provider.categories.category[index].id,
+                              cc: cc,
+                              index: index,
+                              marginRight: 0.0,
+                              imagelink: provider
+                                  .categories.category[index].mobileIcon,
+                            )
+                          : Text(ln.getString("Something went wrong"))
+                      : OthersHelper().showLoading(cc.primaryColor);
+                },
+              ),
             ),
           ),
         ));

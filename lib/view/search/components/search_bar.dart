@@ -11,7 +11,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 
 import '../../../service/service_details_service.dart';
 import '../../home/components/service_card.dart';
-import '../../services/service_details_page.dart';
+import '../../report/services/service_details_page.dart';
 import '../../utils/constant_colors.dart';
 
 class SearchBar extends StatelessWidget {
@@ -94,12 +94,6 @@ class SearchBar extends StatelessWidget {
               sizedBoxCustom(15),
               Row(
                 children: [
-                  // const Expanded(
-                  //   child: AreaDropdown(),
-                  // ),
-                  // const SizedBox(
-                  //   width: 10,
-                  // ),
                   Expanded(
                       child: OnlineOfflineDropdown(
                     searchText: searchController.text,

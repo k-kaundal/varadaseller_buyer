@@ -29,16 +29,13 @@ class DescInHtml extends StatelessWidget {
       //   return null;
       // },
 
-      // turn on selectable if required (it's disabled by default)
-      isSelectable: true,
-
       // these callbacks are called when a complicated element is loading
       // or failed to render allowing the app to render progress indicator
       // and fallback widget
       onErrorBuilder: (context, element, error) =>
           Text('$element error: $error'),
       onLoadingBuilder: (context, element, loadingProgress) =>
-          CircularProgressIndicator(),
+          const CircularProgressIndicator(),
 
       // this callback will be triggered when user taps a link
 
@@ -48,10 +45,9 @@ class DescInHtml extends StatelessWidget {
       renderMode: RenderMode.column,
 
       // set the default styling for text
-      textStyle: TextStyle(fontSize: 15),
+      textStyle: const TextStyle(fontSize: 15),
 
       // turn on `webView` if you need IFRAME support (it's disabled by default)
-      webView: true,
     );
   }
 }

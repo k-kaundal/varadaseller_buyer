@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/orders_service.dart';
 import 'package:qixer/view/report/write_report_page.dart';
-import 'package:qixer/view/services/review/write_review_page.dart';
+import 'package:qixer/view/report/services/review/write_review_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';

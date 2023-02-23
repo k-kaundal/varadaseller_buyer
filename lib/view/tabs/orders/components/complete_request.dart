@@ -50,14 +50,15 @@ class CompleteRequest extends StatelessWidget {
                             //Declined
                             //==========>
                             if (provider.orderDetails.orderCompleteRequest == 3)
-                              OrdersHelper()
-                                  .statusCapsule('Declined', cc.warningColor),
+                              OrdersHelper().statusCapsule(
+                                  ln.getString('Declined'), cc.warningColor),
 
                             //Completed
                             //==========>
                             if (provider.orderDetails.orderCompleteRequest == 2)
                               OrdersHelper().statusCapsule(
-                                  'Order completed', cc.successColor),
+                                  ln.getString('Order completed'),
+                                  cc.successColor),
 
                             //accept reject button
                             //==========>
@@ -66,7 +67,8 @@ class CompleteRequest extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonHelper().paragraphCommon(
-                                      'Seller requested to mark this order complete',
+                                      ln.getString(
+                                          'Seller requested to mark this order complete'),
                                       fontsize: 16),
                                   sizedBoxCustom(20),
                                   Row(

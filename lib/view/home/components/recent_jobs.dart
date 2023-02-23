@@ -52,10 +52,6 @@ class RecentJobs extends StatelessWidget {
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () {
-                                    // print(provider.myJobsListMap[i]
-                                    //         ['id']
-                                    //     .toString());
-
                                     Provider.of<MyJobsService>(context,
                                             listen: false)
                                         .setOrderDetailsLoadingStatus(true);

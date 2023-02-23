@@ -112,17 +112,14 @@ class _MyReportListPageState extends State<MyReportListPage> {
                                                 // width: screenWidth - 200,
                                                 child:
                                                     CommonHelper().labelCommon(
-                                                  'Report id: ' +
-                                                      provider.reportList[i]
-                                                              ['id']
-                                                          .toString(),
+                                                  'Report id: ${provider.reportList[i]['id']}',
                                                 ),
                                               ),
                                               SizedBox(
                                                 width: 100,
                                                 child: CommonHelper()
-                                                    .buttonOrange('Chat admin',
-                                                        () {
+                                                    .buttonOrange(
+                                                        'Chat with admin', () {
                                                   provider.goToMessagePage(
                                                       context,
                                                       provider.reportList[i]
@@ -134,18 +131,15 @@ class _MyReportListPageState extends State<MyReportListPage> {
                                             ],
                                           ),
                                           CommonHelper().labelCommon(
-                                            'Order id: ' +
-                                                provider.reportList[i]
-                                                        ['orderId']
-                                                    .toString(),
+                                            '${"Order id"}: ${provider.reportList[i]['orderId']}',
                                           ),
                                         ]),
                                   )
                               ],
                             ),
                           )
-                        : CommonHelper()
-                            .nothingfound(context, ln.getString('No Report'))),
+                        : CommonHelper().nothingfound(
+                            context, ln.getString('No Report found'))),
               ),
             ),
           ),

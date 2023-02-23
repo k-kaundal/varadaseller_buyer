@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pusher_beams/pusher_beams.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/home/home.dart';
 import 'package:qixer/view/notification/push_notification_helper.dart';
@@ -23,7 +26,6 @@ class LandingPage extends StatefulWidget {
 class _HomePageState extends State<LandingPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initPusherBeams(context);
   }
@@ -37,7 +39,6 @@ class _HomePageState extends State<LandingPage> {
   }
 
   int _currentIndex = 0;
-  //Bottom nav pages
   final List<Widget> _children = [
     const Homepage(),
     const OrdersPage(),
@@ -83,6 +84,9 @@ class _HomePageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    var pressAgainTxt = Provider.of<AppStringService>(context, listen: false)
+        .getString("Press again to exit");
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: WillPopScope(
@@ -92,7 +96,7 @@ class _HomePageState extends State<LandingPage> {
                 now.difference(currentBackPressTime!) >
                     const Duration(seconds: 2)) {
               currentBackPressTime = now;
-              OthersHelper().showToast("Press again to exit", Colors.black);
+              OthersHelper().showToast(pressAgainTxt, Colors.black);
               return Future.value(false);
             }
             return Future.value(true);

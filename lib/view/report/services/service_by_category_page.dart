@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/common_service.dart';
-import 'package:qixer/service/seller_all_services_service.dart';
 import 'package:qixer/service/service_details_service.dart';
-import 'package:qixer/view/home/components/service_card.dart';
-import 'package:qixer/view/services/service_details_page.dart';
+import 'package:qixer/service/serviceby_category_service.dart';
+import 'package:qixer/view/report/services/service_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
-class SellerAllServicePage extends StatefulWidget {
-  const SellerAllServicePage(
-      {Key? key, this.sellerName = '', required this.sellerId})
+import '../../home/components/service_card.dart';
+
+class ServicebyCategoryPage extends StatefulWidget {
+  const ServicebyCategoryPage(
+      {Key? key, this.categoryName = '', required this.categoryId})
       : super(key: key);
 
-  final String sellerName;
-  final sellerId;
+  final String categoryName;
+  final categoryId;
 
   @override
-  State<SellerAllServicePage> createState() => _ServicebyCategoryPageState();
+  State<ServicebyCategoryPage> createState() => _ServicebyCategoryPageState();
 }
 
-class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
+class _ServicebyCategoryPageState extends State<ServicebyCategoryPage> {
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
   @override
@@ -33,12 +35,11 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('seller id ${widget.sellerId}');
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon(widget.sellerName, context, () {
-        Provider.of<SellerAllServicesService>(context, listen: false)
+      appBar: CommonHelper().appbarCommon(widget.categoryName, context, () {
+        Provider.of<ServiceByCategoryService>(context, listen: false)
             .setEverythingToDefault();
 
         Navigator.pop(context);
@@ -47,13 +48,13 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
         controller: refreshController,
         enablePullUp: true,
         enablePullDown:
-            context.watch<SellerAllServicesService>().currentPage > 1
+            context.watch<ServiceByCategoryService>().currentPage > 1
                 ? false
                 : true,
         onRefresh: () async {
-          final result = await Provider.of<SellerAllServicesService>(context,
+          final result = await Provider.of<ServiceByCategoryService>(context,
                   listen: false)
-              .fetchSellerAllService(context, widget.sellerId);
+              .fetchCategoryService(context, widget.categoryId);
           if (result) {
             refreshController.refreshCompleted();
           } else {
@@ -61,9 +62,9 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
           }
         },
         onLoading: () async {
-          final result = await Provider.of<SellerAllServicesService>(context,
+          final result = await Provider.of<ServiceByCategoryService>(context,
                   listen: false)
-              .fetchSellerAllService(context, widget.sellerId);
+              .fetchCategoryService(context, widget.categoryId);
           if (result) {
             debugPrint('loadcomplete ran');
             //loadcomplete function loads the data again
@@ -80,14 +81,14 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
         },
         child: WillPopScope(
           onWillPop: () {
-            Provider.of<SellerAllServicesService>(context, listen: false)
+            Provider.of<ServiceByCategoryService>(context, listen: false)
                 .setEverythingToDefault();
             return Future.value(true);
           },
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Consumer<SellerAllServicesService>(
+              child: Consumer<ServiceByCategoryService>(
                 builder: (context, provider, child) => provider.hasError != true
                     ? provider.serviceMap.isNotEmpty
                         ? Column(children: [
@@ -166,10 +167,12 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
                             height: screenHeight - 140,
                             child: OthersHelper().showLoading(cc.primaryColor),
                           )
-                    : Container(
-                        alignment: Alignment.center,
-                        height: screenHeight - 140,
-                        child: const Text("No service available"),
+                    : Consumer<AppStringService>(
+                        builder: (context, ln, child) => Container(
+                          alignment: Alignment.center,
+                          height: screenHeight - 140,
+                          child: Text(ln.getString("No service available")),
+                        ),
                       ),
               ),
             ),

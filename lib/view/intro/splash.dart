@@ -32,6 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
           height: MediaQuery.of(context).size.height,
           width: double.infinity,
           alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
           // color: ConstantColors().primaryColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,9 +52,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               OthersHelper().showLoading(ConstantColors().primaryColor)
             ],
-          ),
-          decoration: const BoxDecoration(
-            color: Colors.white,
           ),
         ));
   }

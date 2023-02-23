@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/all_services_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 
-import '../../utils/others_helper.dart';
+import '../../../utils/others_helper.dart';
 
 class ServiceFilterDropdownHelper {
   //category dropdown

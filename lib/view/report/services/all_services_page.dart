@@ -4,13 +4,13 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/service/all_services_service.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/service_details_service.dart';
-import 'package:qixer/view/services/components/service_filter_dropdowns.dart';
-import 'package:qixer/view/services/service_details_page.dart';
+import 'package:qixer/view/report/services/components/service_filter_dropdowns.dart';
+import 'package:qixer/view/report/services/service_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
-import '../home/components/service_card.dart';
+import '../../home/components/service_card.dart';
 
 class AllServicePage extends StatefulWidget {
   const AllServicePage({Key? key}) : super(key: key);

@@ -7,7 +7,6 @@ class ReviewTab extends StatelessWidget {
   final provider;
   @override
   Widget build(BuildContext context) {
-    // create a instance of colorlizer
     ColorLizer colorlizer = ColorLizer();
 
     ConstantColors cc = ConstantColors();
@@ -90,19 +89,6 @@ class ReviewTab extends StatelessWidget {
                             height: 1.4,
                           ),
                         ),
-
-                        //date
-                        // const SizedBox(
-                        //   height: 10,
-                        // ),
-                        // Text(
-                        //   'Mar 21, 2022',
-                        //   style: TextStyle(
-                        //     color: Colors.grey.withOpacity(.8),
-                        //     fontSize: 14,
-                        //     height: 1.4,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

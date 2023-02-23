@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
@@ -5,25 +7,23 @@ import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/service_details_service.dart';
 import 'package:qixer/view/booking/service_personalization_page.dart';
 import 'package:qixer/view/live_chat/chat_message_page.dart';
-import 'package:qixer/view/services/components/about_seller_tab.dart';
-import 'package:qixer/view/services/components/image_big.dart';
-import 'package:qixer/view/services/components/overview_tab.dart';
-import 'package:qixer/view/services/components/review_tab.dart';
+import 'package:qixer/view/report/services/components/about_seller_tab.dart';
+import 'package:qixer/view/report/services/components/image_big.dart';
+import 'package:qixer/view/report/services/components/overview_tab.dart';
+import 'package:qixer/view/report/services/components/review_tab.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../service/booking_services/personalization_service.dart';
-import '../utils/common_helper.dart';
+import '../../../service/booking_services/personalization_service.dart';
+import '../../utils/common_helper.dart';
 import 'components/service_details_top.dart';
 
 class ServiceDetailsPage extends StatefulWidget {
   const ServiceDetailsPage({
     Key? key,
   }) : super(key: key);
-
-  // final serviceId;
 
   @override
   State<ServiceDetailsPage> createState() => _ServiceDetailsPageState();
@@ -44,8 +44,6 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
 
-    // Provider.of<ServiceDetailsService>(context, listen: false)
-    //     .fetchServiceDetails(widget.serviceId);
     super.initState();
   }
 
@@ -152,32 +150,6 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                 EdgeInsets.symmetric(horizontal: screenPadding),
                             child: Column(
                               children: [
-                                // currentTab == 2
-                                //     ? Column(
-                                //         children: [
-                                //           CommonHelper().borderButtonOrange(
-                                //               ln.getString(
-                                //                   'Write a review'), () {
-                                //             Navigator.push(
-                                //               context,
-                                //               MaterialPageRoute<void>(
-                                //                 builder:
-                                //                     (BuildContext context) =>
-                                //                         WriteReviewPage(
-                                //                   serviceId: provider
-                                //                       .serviceAllDetails
-                                //                       .serviceDetails
-                                //                       .id,
-                                //                 ),
-                                //               ),
-                                //             );
-                                //           }),
-                                //           const SizedBox(
-                                //             height: 14,
-                                //           ),
-                                //         ],
-                                //       )
-                                //     : Container(),
                                 Row(
                                   children: [
                                     Expanded(
