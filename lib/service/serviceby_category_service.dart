@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qixer/model/recent_service_model.dart';
 import 'package:qixer/model/serviceby_category_model.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/db/db_service.dart';
@@ -44,7 +43,7 @@ class ServiceByCategoryService with ChangeNotifier {
 
   fetchCategoryService(context, categoryId, {bool isrefresh = false}) async {
     //=================>
-    var apiLink;
+    String apiLink;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var stateId = prefs.getString('state');
     if (stateId == null) {
@@ -79,16 +78,22 @@ class ServiceByCategoryService with ChangeNotifier {
       //if connection is ok
       var response = await http.get(Uri.parse(apiLink));
 
+      print(response.body);
+      print(response.statusCode);
+
+      // var jsonDataServiceList =
+      //     jsonDecode(response.body)['all_services']['data'];
+
       if (response.statusCode == 201) {
         var data = ServicebyCategoryModel.fromJson(jsonDecode(response.body));
 
         setTotalPage(data.allServices.lastPage);
 
         for (int i = 0; i < data.allServices.data.length; i++) {
-          var serviceImage;
+          String? serviceImage;
 
           if (data.serviceImage.length > i) {
-            serviceImage = data.serviceImage[i].imgUrl;
+            serviceImage = data.serviceImage[i]?.imgUrl;
           } else {
             serviceImage = null;
           }
@@ -127,7 +132,10 @@ class ServiceByCategoryService with ChangeNotifier {
         setCurrentPage(currentPage);
         return true;
       } else {
-        hasError = true;
+        if (serviceMap.isEmpty) {
+          hasError = true;
+          notifyListeners();
+        }
         notifyListeners();
         return false;
       }
@@ -165,19 +173,11 @@ class ServiceByCategoryService with ChangeNotifier {
     notifyListeners();
   }
 
-  saveOrUnsave(
-      int serviceId,
-      String title,
-      String image,
-      int price,
-      String sellerName,
-      double rating,
-      int index,
-      BuildContext context,
-      sellerId) async {
+  saveOrUnsave(int serviceId, String title, image, int price, String sellerName,
+      double rating, int index, BuildContext context, sellerId) async {
     var newListMap = serviceMap;
-    alreadySaved = await DbService().saveOrUnsave(
-        serviceId, title, image, price, sellerName, rating, context, sellerId);
+    alreadySaved = await DbService().saveOrUnsave(serviceId, title,
+        image ?? placeHolderUrl, price, sellerName, rating, context, sellerId);
     newListMap[index]['isSaved'] = alreadySaved;
     serviceMap = newListMap;
     notifyListeners();

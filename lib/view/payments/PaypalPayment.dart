@@ -1,14 +1,25 @@
-import 'dart:core';
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:qixer/service/book_confirmation_service.dart';
 import 'package:qixer/service/pay_services/paypal_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaypalPayment extends StatefulWidget {
   final Function onFinish;
 
-  PaypalPayment({required this.onFinish});
+  const PaypalPayment(
+      {Key? key,
+      required this.onFinish,
+      required this.amount,
+      required this.name,
+      required this.phone,
+      required this.email})
+      : super(key: key);
+
+  final amount;
+  final name;
+  final phone;
+  final email;
 
   @override
   State<StatefulWidget> createState() {
@@ -17,7 +28,7 @@ class PaypalPayment extends StatefulWidget {
 }
 
 class PaypalPaymentState extends State<PaypalPayment> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var checkoutUrl;
   var executeUrl;
   var accessToken;
@@ -45,20 +56,19 @@ class PaypalPaymentState extends State<PaypalPayment> {
       try {
         accessToken = await services.getAccessToken(context);
 
-        final transactions = getOrderParams();
+        final transactions = getOrderParams(
+            widget.amount, widget.name, widget.phone, widget.email);
         final res =
             await services.createPaypalPayment(transactions, accessToken);
-        if (res != null) {
-          setState(() {
-            checkoutUrl = res["approvalUrl"];
-            executeUrl = res["executeUrl"];
-          });
-        }
+        setState(() {
+          checkoutUrl = res["approvalUrl"];
+          executeUrl = res["executeUrl"];
+        });
       } catch (e) {
         print('exception: ' + e.toString());
         final snackBar = SnackBar(
           content: Text(e.toString()),
-          duration: Duration(seconds: 10),
+          duration: const Duration(seconds: 10),
           action: SnackBarAction(
             label: 'Close',
             onPressed: () {
@@ -67,30 +77,28 @@ class PaypalPaymentState extends State<PaypalPayment> {
             },
           ),
         );
-        // ignore: deprecated_member_use
-        _scaffoldKey.currentState!.showSnackBar(snackBar);
       }
     });
   }
 
   // item name, price and quantity
-  String itemName = 'iPhone X';
-  String itemPrice = '2.11';
+  String itemName = 'Qixer payment';
+
   int quantity = 1;
 
-  Map<String, dynamic> getOrderParams() {
+  Map<String, dynamic> getOrderParams(amount, name, phone, email) {
     List items = [
       {
         "name": itemName,
         "quantity": quantity,
-        "price": itemPrice,
+        "price": amount,
         "currency": defaultCurrency["currency"]
       }
     ];
 
     // checkout invoice details
-    String totalAmount = '2.11';
-    String subTotalAmount = '2.11';
+    String totalAmount = amount;
+    String subTotalAmount = amount;
     // String totalAmount =
     //     Provider.of<BookConfirmationService>(context, listen: false)
     //         .totalPriceAfterAllcalculation
@@ -101,14 +109,14 @@ class PaypalPaymentState extends State<PaypalPayment> {
     //         .toString();
     String shippingCost = '0';
     int shippingDiscountCost = 0;
-    String userFirstName = 'Gulshan';
-    String userLastName = 'Yadav';
+    String userFirstName = name;
+    String userLastName = ' ';
     String addressCity = 'Delhi';
     String addressStreet = 'Mathura Road';
     String addressZipCode = '110014';
     String addressCountry = 'India';
     String addressState = 'Delhi';
-    String addressPhoneNumber = '+919990119091';
+    String addressPhoneNumber = phone;
 
     Map<String, dynamic> temp = {
       "intent": "sale",
@@ -159,7 +167,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).backgroundColor,
           leading: GestureDetector(
-            child: Icon(Icons.arrow_back_ios),
+            child: const Icon(Icons.arrow_back_ios),
             onTap: () => Navigator.pop(context),
           ),
         ),
@@ -195,14 +203,15 @@ class PaypalPaymentState extends State<PaypalPayment> {
         key: _scaffoldKey,
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.of(context).pop();
               }),
           backgroundColor: Colors.black12,
           elevation: 0.0,
         ),
-        body: Center(child: Container(child: CircularProgressIndicator())),
+        body:
+            Center(child: Container(child: const CircularProgressIndicator())),
       );
     }
   }

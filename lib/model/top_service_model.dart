@@ -18,22 +18,27 @@ class TopServiceModel {
   });
 
   List<TopService> topServices;
-  List<Image> serviceImage;
+  List<Image?> serviceImage;
   List<dynamic> reviewerImage;
 
   factory TopServiceModel.fromJson(Map<String, dynamic> json) =>
       TopServiceModel(
         topServices: List<TopService>.from(
             json["top_services"].map((x) => TopService.fromJson(x))),
-        serviceImage: List<Image>.from(
-            json["service_image"].map((x) => Image.fromJson(x))),
+        serviceImage: List<Image?>.from(json["service_image"].map((x) {
+          if (x is List) {
+            return null;
+          } else {
+            return Image.fromJson(x);
+          }
+        })),
         reviewerImage: List<dynamic>.from(json["reviewer_image"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "top_services": List<dynamic>.from(topServices.map((x) => x.toJson())),
         "service_image":
-            List<dynamic>.from(serviceImage.map((x) => x.toJson())),
+            List<dynamic>.from(serviceImage.map((x) => x?.toJson())),
         "reviewer_image": List<dynamic>.from(reviewerImage.map((x) => x)),
       };
 }
@@ -123,7 +128,7 @@ class ReviewsForMobile {
   int? rating;
   String? message;
   int? buyerId;
-  BuyerForMobile buyerForMobile;
+  BuyerForMobile? buyerForMobile;
 
   factory ReviewsForMobile.fromJson(Map<String, dynamic> json) =>
       ReviewsForMobile(
@@ -141,7 +146,7 @@ class ReviewsForMobile {
         "rating": rating,
         "message": message,
         "buyer_id": buyerId,
-        "buyer_for_mobile": buyerForMobile.toJson(),
+        "buyer_for_mobile": buyerForMobile?.toJson(),
       };
 }
 
@@ -154,14 +159,14 @@ class BuyerForMobile {
   int? id;
   String? image;
 
-  factory BuyerForMobile.fromJson(Map<String, dynamic> json) => BuyerForMobile(
-        id: json["id"],
-        image: json["image"] == null ? null : json["image"],
+  factory BuyerForMobile.fromJson(Map<String, dynamic>? json) => BuyerForMobile(
+        id: json?["id"],
+        image: json?["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "image": image == null ? null : image,
+        "image": image,
       };
 }
 

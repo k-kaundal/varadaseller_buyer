@@ -84,9 +84,9 @@ class MyOrder {
   int? country;
   String? date;
   String? schedule;
-  int? packageFee;
-  int? extraService;
-  int? subTotal;
+  var packageFee;
+  var extraService;
+  var subTotal;
   double? tax;
   double? total;
   dynamic couponCode;

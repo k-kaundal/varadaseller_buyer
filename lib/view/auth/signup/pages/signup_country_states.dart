@@ -1,10 +1,12 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/service/auth_services/signup_service.dart';
 import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
 import 'package:qixer/view/auth/signup/signup_helper.dart';
-import 'package:qixer/view/home/landing_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -38,70 +40,91 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
   @override
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          children: [
-            const CountryStatesDropdowns(),
-            //Agreement checkbox ===========>
-            const SizedBox(
-              height: 17,
-            ),
-            CheckboxListTile(
-              checkColor: Colors.white,
-              activeColor: ConstantColors().primaryColor,
-              contentPadding: const EdgeInsets.all(0),
-              title: Container(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text(
-                  "I agree with the terms and conditons",
-                  style: TextStyle(
-                      color: ConstantColors().greyFour,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14),
-                ),
+    return Consumer<AppStringService>(
+      builder: (context, ln, child) => Container(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            children: [
+              const CountryStatesDropdowns(),
+              //Agreement checkbox ===========>
+              const SizedBox(
+                height: 17,
               ),
-              value: termsAgree,
-              onChanged: (newValue) {
-                setState(() {
-                  termsAgree = !termsAgree;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-            ),
-            //Login button ==================>
-            const SizedBox(
-              height: 17,
-            ),
-            Consumer<SignupService>(
-              builder: (context, provider, child) =>
-                  CommonHelper().buttonOrange("Sign Up", () {
-                if (termsAgree == false) {
-                  OthersHelper().showToast(
-                      'You must agree with the terms and conditions to register',
-                      Colors.black);
-                } else {
-                  if (provider.isloading == false) {
-                    provider.signup(
-                        widget.fullNameController.text.trim(),
-                        widget.emailController.text.trim(),
-                        widget.userNameController.text.trim(),
-                        widget.passController.text.trim(),
-                        context);
+              CheckboxListTile(
+                checkColor: Colors.white,
+                activeColor: ConstantColors().primaryColor,
+                contentPadding: const EdgeInsets.all(0),
+                title: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Text(
+                    ln.getString("I agree with the terms and conditons"),
+                    style: TextStyle(
+                        color: ConstantColors().greyFour,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14),
+                  ),
+                ),
+                value: termsAgree,
+                onChanged: (newValue) {
+                  setState(() {
+                    termsAgree = !termsAgree;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              //Login button ==================>
+              const SizedBox(
+                height: 17,
+              ),
+              Consumer<SignupService>(
+                builder: (context, provider, child) =>
+                    CommonHelper().buttonOrange("Sign Up", () {
+                  if (termsAgree == false) {
+                    OthersHelper().showToast(
+                        ln.getString(
+                            "You must agree with the terms and conditions to register"),
+                        Colors.black);
+                  } else {
+                    if (provider.isloading == false) {
+                      var selectedStateId = Provider.of<CountryStatesService>(
+                              context,
+                              listen: false)
+                          .selectedStateId;
+                      var selectedAreaId = Provider.of<CountryStatesService>(
+                              context,
+                              listen: false)
+                          .selectedAreaId;
+                      if (selectedStateId == '0' ||
+                          selectedAreaId == '0' ||
+                          selectedAreaId == null) {
+                        OthersHelper().showSnackBar(
+                            context,
+                            ln.getString("You must select a state and area"),
+                            cc.warningColor);
+                        return;
+                      }
+
+                      provider.signup(
+                          widget.fullNameController.text.trim(),
+                          widget.emailController.text.trim(),
+                          widget.userNameController.text.trim(),
+                          widget.passController.text.trim(),
+                          context);
+                    }
                   }
-                }
-              }, isloading: provider.isloading == false ? false : true),
-            ),
+                }, isloading: provider.isloading == false ? false : true),
+              ),
 
-            const SizedBox(
-              height: 25,
-            ),
-            SignupHelper().haveAccount(context),
+              const SizedBox(
+                height: 25,
+              ),
+              SignupHelper().haveAccount(context),
 
-            const SizedBox(
-              height: 30,
-            ),
-          ],
-        ));
+              const SizedBox(
+                height: 30,
+              ),
+            ],
+          )),
+    );
   }
 }

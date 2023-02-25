@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:qixer/service/auth_services/login_service.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/auth_services/signup_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -30,39 +29,35 @@ class ChangePassService with ChangeNotifier {
     } else {
       //check internet connection
       var connection = await checkConnection();
-      if (connection) {
-        //internet connection is on
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        var token = prefs.getString('token');
-        var email = prefs.getString('token');
-        var header = {
-          //if header type is application/json then the data should be in jsonEncode method
-          "Accept": "application/json",
-          // "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        };
-        var data = {'current_password': currentPass, 'new_password': newPass};
+      if (!connection) return;
+      //internet connection is on
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
 
-        setLoadingTrue();
+      var header = {
+        //if header type is application/json then the data should be in jsonEncode method
+        "Accept": "application/json",
+        // "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      };
+      var data = {'current_password': currentPass, 'new_password': newPass};
 
-        var response = await http.post(
-            Uri.parse('$baseApi/user/change-password'),
-            headers: header,
-            body: data);
+      setLoadingTrue();
 
-        if (response.statusCode == 201) {
-          OthersHelper()
-              .showToast("Password changed successfully", Colors.black);
-          setLoadingFalse();
+      var response = await http.post(Uri.parse('$baseApi/user/change-password'),
+          headers: header, body: data);
 
-          // LoginService().saveDetails(email ?? '', newPass, token ?? '');
+      if (response.statusCode == 201) {
+        OthersHelper().showToast("Password changed successfully", Colors.black);
+        setLoadingFalse();
 
-          Navigator.pop(context);
-        } else {
-          print(response.body);
-          SignupService().showError(jsonDecode(response.body)['error']);
-          setLoadingFalse();
-        }
+        // LoginService().saveDetails(email ?? '', newPass, token ?? '');
+
+        Navigator.pop(context);
+      } else {
+        print(response.body);
+        SignupService().showError(jsonDecode(response.body)['error']);
+        setLoadingFalse();
       }
     }
   }

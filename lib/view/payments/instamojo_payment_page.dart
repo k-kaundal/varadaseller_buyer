@@ -1,15 +1,36 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qixer/service/jobs_service/job_request_service.dart';
+import 'package:qixer/service/order_details_service.dart';
+import 'package:qixer/service/wallet_service.dart';
 import 'dart:async';
 
 import '../../service/booking_services/place_order_service.dart';
 import '../../service/payment_gateway_list_service.dart';
 
 class InstamojoPaymentPage extends StatefulWidget {
+  const InstamojoPaymentPage(
+      {Key? key,
+      required this.amount,
+      required this.name,
+      required this.email,
+      required this.isFromOrderExtraAccept,
+      required this.isFromWalletDeposite,
+      required this.isFromHireJob})
+      : super(key: key);
+
+  final amount;
+  final name;
+  final isFromOrderExtraAccept;
+  final isFromWalletDeposite;
+  final isFromHireJob;
+  final email;
   @override
   _InstamojoPaymentPageState createState() => _InstamojoPaymentPageState();
 }
@@ -28,6 +49,10 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(microseconds: 600), () {
+      Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
+    });
+
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -116,8 +141,19 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
       if (realResponse["payment"]['status'] == 'Credit') {
         print('instamojo payment successfull');
 
-        Provider.of<PlaceOrderService>(context, listen: false)
-            .makePaymentSuccess(context);
+        if (widget.isFromOrderExtraAccept == true) {
+          Provider.of<OrderDetailsService>(context, listen: false)
+              .acceptOrderExtra(context);
+        } else if (widget.isFromWalletDeposite) {
+          Provider.of<WalletService>(context, listen: false)
+              .makeDepositeToWalletSuccess(context);
+        } else if (widget.isFromHireJob) {
+          Provider.of<JobRequestService>(context, listen: false)
+              .goToJobSuccessPage(context);
+        } else {
+          Provider.of<PlaceOrderService>(context, listen: false)
+              .makePaymentSuccess(context);
+        }
 
 //payment is successful.
       } else {
@@ -131,14 +167,13 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
 
   Future createRequest() async {
     Map<String, String> body = {
-      "amount": "9", //amount to be paid
-      "purpose": "Advertising",
-      "buyer_name": 'mahesh',
-      "email": 'abc@gmail.com',
-      "phone": '7276544474',
+      "amount": widget.amount, //amount to be paid
+      "purpose": "Qixer pay",
+      "buyer_name": widget.name,
+      "email": widget.email,
       "allow_repeated_payments": "true",
       "send_email": "true",
-      "send_sms": "true",
+      "send_sms": "false",
       "redirect_url": "https://www.google.com/",
       //Where to redirect after a successful payment.
       "webhook": "https://www.google.com/",

@@ -2,30 +2,39 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/service/jobs_service/job_request_service.dart';
+import 'package:qixer/service/order_details_service.dart';
+import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../service/booking_services/place_order_service.dart';
 import '../../service/payment_gateway_list_service.dart';
 
 class RazorpayPaymentPage extends StatefulWidget {
-  const RazorpayPaymentPage({Key? key}) : super(key: key);
+  const RazorpayPaymentPage(
+      {Key? key,
+      required this.amount,
+      required this.name,
+      required this.phone,
+      required this.email,
+      required this.isFromOrderExtraAccept,
+      required this.isFromWalletDeposite,
+      required this.isFromHireJob})
+      : super(key: key);
+
+  final amount;
+  final name;
+  final phone;
+  final email;
+  final isFromOrderExtraAccept;
+  final isFromWalletDeposite;
+  final isFromHireJob;
 
   @override
   _RazorpayPaymentPageState createState() => _RazorpayPaymentPageState();
 }
 
 class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
-  // final TextEditingController name = TextEditingController();
-  // final TextEditingController phoneNo = TextEditingController();
-  // final TextEditingController email = TextEditingController();
-  // final TextEditingController description = TextEditingController();
-  // final TextEditingController amount = TextEditingController();
-
-  String amount = '200';
-  String name = 'saleheen';
-  String phone = '54545133511';
-  String email = 'test@test.com';
-
   late Razorpay _razorpay;
 
   @override
@@ -46,7 +55,7 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
   }
 
   void launchRazorPay(BuildContext context) {
-    int amountToPay = int.parse(amount) * 100;
+    double amountToPay = double.parse(widget.amount) * 100;
 
     // var options = {
     //   'key': 'rzp_test_FSFnXQOqPP1YbJ',
@@ -61,9 +70,9 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
               .publicKey ??
           '',
       'amount': "$amountToPay",
-      'name': name,
+      'name': widget.name,
       'description': ' ',
-      'prefill': {'contact': phone, 'email': email}
+      'prefill': {'contact': widget.phone, 'email': widget.email}
     };
 
     try {
@@ -76,8 +85,20 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     print("Payment Sucessfull");
 
-    Provider.of<PlaceOrderService>(context, listen: false)
-        .makePaymentSuccess(context);
+    if (widget.isFromOrderExtraAccept == true) {
+      Provider.of<OrderDetailsService>(context, listen: false)
+          .acceptOrderExtra(context);
+    }
+    if (widget.isFromWalletDeposite) {
+      Provider.of<WalletService>(context, listen: false)
+          .makeDepositeToWalletSuccess(context);
+    } else if (widget.isFromHireJob) {
+      Provider.of<JobRequestService>(context, listen: false)
+          .goToJobSuccessPage(context);
+    } else {
+      Provider.of<PlaceOrderService>(context, listen: false)
+          .makePaymentSuccess(context);
+    }
 
     // print(
     //     "${response.orderId} \n${response.paymentId} \n${response.signature}");
@@ -101,7 +122,7 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
       appBar: AppBar(
         title: const Text("Razorpay"),
       ),
-      body: Container(
+      body: SizedBox(
         height: size.height,
         width: size.width,
         child: SingleChildScrollView(
@@ -110,7 +131,8 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
               Container(
                 margin: const EdgeInsets.only(
                     top: 30, bottom: 20, left: 25, right: 25),
-                child: BookingHelper().detailsPanelRow('Total', 0, '237.6'),
+                child:
+                    BookingHelper().detailsPanelRow('Total', 0, widget.amount),
               ),
               // textField(size, "Name", false, name),
               // textField(size, "Phone no.", false, phoneNo),
@@ -132,7 +154,7 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
       TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: size.height / 50),
-      child: Container(
+      child: SizedBox(
         height: size.height / 15,
         width: size.width / 1.1,
         child: TextField(

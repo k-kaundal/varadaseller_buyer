@@ -17,7 +17,7 @@ class SavedItemService with ChangeNotifier {
       int serviceId,
       String title,
       String image,
-      int price,
+      var price,
       String sellerName,
       double rating,
       int index,

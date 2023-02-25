@@ -14,8 +14,11 @@ import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class TicketChatPage extends StatefulWidget {
-  const TicketChatPage({Key? key, required this.title, required this.ticketId})
-      : super(key: key);
+  const TicketChatPage({
+    Key? key,
+    required this.title,
+    required this.ticketId,
+  }) : super(key: key);
 
   final String title;
   final ticketId;
@@ -31,11 +34,13 @@ class _TicketChatPageState extends State<TicketChatPage> {
   final ScrollController _scrollController = ScrollController();
 
   void _scrollDown() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent + 10,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-    );
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent + 10,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   XFile? pickedImage;
@@ -70,25 +75,9 @@ class _TicketChatPageState extends State<TicketChatPage> {
                       color: cc.greyParagraph,
                     ),
                   ),
+
                   const SizedBox(
-                    width: 2,
-                  ),
-                  // CircleAvatar(
-                  //   backgroundColor: Colors.white,
-                  //   child: Container(
-                  //     padding: const EdgeInsets.all(5),
-                  //     decoration: const BoxDecoration(
-                  //         shape: BoxShape.circle, color: Colors.white),
-                  //     child: ClipRRect(
-                  //       child: Image.asset(
-                  //         'assets/images/logo.png',
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   maxRadius: 22,
-                  // ),
-                  const SizedBox(
-                    width: 12,
+                    width: 14,
                   ),
                   Expanded(
                     child: Column(
@@ -153,24 +142,6 @@ class _TicketChatPageState extends State<TicketChatPage> {
                                     ? MainAxisAlignment.start
                                     : MainAxisAlignment.end,
                             children: [
-                              //small show profile pic
-                              // provider.messagesList[index].type == "seller"
-                              //     ? Container(
-                              //         margin: const EdgeInsets.only(
-                              //           left: 13,
-                              //         ),
-                              //         width: 18,
-                              //         height: 18,
-                              //         decoration: const BoxDecoration(
-                              //             shape: BoxShape.circle,
-                              //             color: Colors.white),
-                              //         child: ClipRRect(
-                              //           child: Image.asset(
-                              //             'assets/images/logo.png',
-                              //           ),
-                              //         ),
-                              //       )
-                              //     : Container(),
                               //the message
                               Expanded(
                                 child: Consumer<RtlService>(
@@ -322,26 +293,6 @@ class _TicketChatPageState extends State<TicketChatPage> {
                                   ),
                                 ),
                               ),
-
-                              // provider.messagesList[index].type == "seller"
-                              //     ? Container(
-                              //         margin: const EdgeInsets.only(
-                              //           right: 13,
-                              //         ),
-                              //         width: 15,
-                              //         height: 15,
-                              //         decoration: const BoxDecoration(
-                              //             shape: BoxShape.circle,
-                              //             color: Colors.white),
-                              //         child: ClipRRect(
-                              //           borderRadius: BorderRadius.circular(100),
-                              //           child: Image.network(
-                              //             'https://cdn.pixabay.com/photo/2016/09/08/13/58/desert-1654439__340.jpg',
-                              //             fit: BoxFit.cover,
-                              //           ),
-                              //         ),
-                              //       )
-                              //     : Container(),
                             ],
                           );
                         },
@@ -418,6 +369,8 @@ class _TicketChatPageState extends State<TicketChatPage> {
                                 'Please write a message first', Colors.black);
                           }
                         },
+                        backgroundColor: cc.primaryColor,
+                        elevation: 0,
                         child: provider.sendLoading == false
                             ? const Icon(
                                 Icons.send,
@@ -432,8 +385,6 @@ class _TicketChatPageState extends State<TicketChatPage> {
                                   strokeWidth: 1.5,
                                 ),
                               ),
-                        backgroundColor: cc.primaryColor,
-                        elevation: 0,
                       ),
                     ],
                   ),

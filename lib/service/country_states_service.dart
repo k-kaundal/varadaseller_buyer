@@ -38,11 +38,13 @@ class CountryStatesService with ChangeNotifier {
 
   setCountryValue(value) {
     selectedCountry = value;
+    print('selected country $selectedCountry');
     notifyListeners();
   }
 
   setStatesValue(value) {
     selectedState = value;
+    print('selected state $selectedState');
     notifyListeners();
   }
 
@@ -145,6 +147,8 @@ class CountryStatesService with ChangeNotifier {
   }
 
   fetchCountries(BuildContext context) async {
+    if (countryDropdownList.isNotEmpty) return;
+
     if (countryDropdownList.isEmpty) {
       Future.delayed(const Duration(milliseconds: 500), () {
         setLoadingTrue();
@@ -181,7 +185,7 @@ class CountryStatesService with ChangeNotifier {
     }
   }
 
-  fetchStates(countryId, BuildContext context) async {
+  Future<bool> fetchStates(countryId, BuildContext context) async {
     //make states list empty first
     statesDropdownList = [];
     statesDropdownIndexList = [];
@@ -191,7 +195,6 @@ class CountryStatesService with ChangeNotifier {
 
     var response =
         await http.get(Uri.parse('$baseApi/country/service-city/$countryId'));
-    print(response.body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = StatesDropdownModel.fromJson(jsonDecode(response.body));
@@ -207,6 +210,7 @@ class CountryStatesService with ChangeNotifier {
       set_State(context, data: data);
       notifyListeners();
       fetchArea(countryId, selectedStateId, context);
+      return true;
     } else {
       fetchArea(countryId, selectedStateId, context);
       //error fetching data
@@ -215,6 +219,7 @@ class CountryStatesService with ChangeNotifier {
       selectedState = 'Select State';
       selectedStateId = '0';
       notifyListeners();
+      return false;
     }
   }
 
@@ -249,7 +254,8 @@ class CountryStatesService with ChangeNotifier {
     var profileData =
         Provider.of<ProfileService>(context, listen: false).profileDetails;
     //if profile of user loaded then show selected dropdown data based on the user profile
-    if (profileData != null) {
+    if (profileData != null &&
+        profileData.userDetails.country.country != null) {
       setCountryBasedOnUserProfile(context);
     } else {
       if (data != null) {

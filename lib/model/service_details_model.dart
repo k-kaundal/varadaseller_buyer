@@ -28,9 +28,9 @@ class ServiceDetailsModel {
       this.videoUrl});
 
   ServiceDetails serviceDetails;
-  Image serviceImage;
+  Image? serviceImage;
   String? serviceSellerName;
-  Image serviceSellerImage;
+  Image? serviceSellerImage;
   int? sellerCompleteOrder;
   int? sellerRating;
   int? orderCompletionRate;
@@ -42,32 +42,35 @@ class ServiceDetailsModel {
   List<dynamic> reviewerImage;
   String? videoUrl;
 
-  factory ServiceDetailsModel.fromJson(Map<String, dynamic> json) =>
+  factory ServiceDetailsModel.fromJson(Map<String?, dynamic>? json) =>
       ServiceDetailsModel(
-        serviceDetails: ServiceDetails.fromJson(json["service_details"]),
-        serviceImage: Image.fromJson(json["service_image"]),
-        serviceSellerName: json["service_seller_name"],
-        serviceSellerImage: Image.fromJson(json["service_seller_image"]),
-        sellerCompleteOrder: json["seller_complete_order"],
-        sellerRating: json["seller_rating"],
-        orderCompletionRate: json["order_completion_rate"],
-        sellerFrom: json["seller_from"],
-        sellerSince: SellerSince.fromJson(json["seller_since"]),
+        serviceDetails: ServiceDetails.fromJson(json?["service_details"]),
+        serviceImage: json?["service_image"] is List
+            ? null
+            : Image.fromJson(json?["service_image"]),
+        serviceSellerName: json?["service_seller_name"],
+        serviceSellerImage: Image.fromJson(json?["service_seller_image"]),
+        sellerCompleteOrder: json?["seller_complete_order"],
+        sellerRating: json?["seller_rating"],
+        orderCompletionRate: json?["order_completion_rate"],
+        sellerFrom: json?["seller_from"],
+        sellerSince: SellerSince.fromJson(json?["seller_since"]),
         serviceIncludes: List<ServiceInclude>.from(
-            json["service_includes"].map((x) => ServiceInclude.fromJson(x))),
+            json?["service_includes"].map((x) => ServiceInclude.fromJson(x))),
         serviceBenifits: List<ServiceBenifit>.from(
-            json["service_benifits"].map((x) => ServiceBenifit.fromJson(x))),
+            json?["service_benifits"].map((x) => ServiceBenifit.fromJson(x))),
         serviceReviews: List<ServiceReview>.from(
-            json["service_reviews"].map((x) => ServiceReview.fromJson(x))),
-        reviewerImage: List<dynamic>.from(json["reviewer_image"].map((x) => x)),
-        videoUrl: json["video_url"],
+            json?["service_reviews"].map((x) => ServiceReview.fromJson(x))),
+        reviewerImage:
+            List<dynamic>.from(json?["reviewer_image"].map((x) => x)),
+        videoUrl: json?["video_url"] is bool ? null : json?["video_url"],
       );
 
   Map<String, dynamic> toJson() => {
         "service_details": serviceDetails.toJson(),
-        "service_image": serviceImage.toJson(),
+        "service_image": serviceImage?.toJson(),
         "service_seller_name": serviceSellerName,
-        "service_seller_image": serviceSellerImage.toJson(),
+        "service_seller_image": serviceSellerImage?.toJson(),
         "seller_complete_order": sellerCompleteOrder,
         "seller_rating": sellerRating,
         "order_completion_rate": orderCompletionRate,
@@ -97,11 +100,11 @@ class Image {
   String? imgUrl;
   dynamic imgAlt;
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-        imageId: json["image_id"],
-        path: json["path"],
-        imgUrl: json["img_url"],
-        imgAlt: json["img_alt"],
+  factory Image.fromJson(Map<String, dynamic>? json) => Image(
+        imageId: json?["image_id"],
+        path: json?["path"],
+        imgUrl: json?["img_url"],
+        imgAlt: json?["img_alt"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -189,7 +192,7 @@ class ServiceDetails {
   int? status;
   int? isServiceOn;
   var price;
-  int? tax;
+  var tax;
   int? view;
   int? soldCount;
   int? featured;
@@ -263,16 +266,16 @@ class ServiceReview {
   String? message;
   String? buyerName;
   int? buyerId;
-  BuyerForMobile buyerForMobile;
+  BuyerForMobile? buyerForMobile;
 
-  factory ServiceReview.fromJson(Map<String, dynamic> json) => ServiceReview(
-        id: json["id"],
-        serviceId: json["service_id"],
-        rating: json["rating"],
-        message: json["message"],
-        buyerName: json["buyer_name"],
-        buyerId: json["buyer_id"],
-        buyerForMobile: BuyerForMobile.fromJson(json["buyer_for_mobile"]),
+  factory ServiceReview.fromJson(Map<String, dynamic>? json) => ServiceReview(
+        id: json?["id"],
+        serviceId: json?["service_id"],
+        rating: json?["rating"],
+        message: json?["message"],
+        buyerName: json?["buyer_name"],
+        buyerId: json?["buyer_id"],
+        buyerForMobile: BuyerForMobile.fromJson(json?["buyer_for_mobile"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -282,7 +285,7 @@ class ServiceReview {
         "message": message,
         "buyerName": buyerName,
         "buyer_id": buyerId,
-        "buyer_for_mobile": buyerForMobile.toJson(),
+        "buyer_for_mobile": buyerForMobile?.toJson(),
       };
 }
 
@@ -327,14 +330,14 @@ class BuyerForMobile {
   int? id;
   String? image;
 
-  factory BuyerForMobile.fromJson(Map<String, dynamic> json) => BuyerForMobile(
-        id: json["id"],
-        image: json["image"] == null ? null : json["image"],
+  factory BuyerForMobile.fromJson(Map<String, dynamic>? json) => BuyerForMobile(
+        id: json?["id"],
+        image: json?["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "image": image == null ? null : image,
+        "image": image,
       };
 }
 

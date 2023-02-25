@@ -1,9 +1,11 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
-import '../../../services/service_by_category_page.dart';
+import '../../../report/services/service_by_category_page.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard(

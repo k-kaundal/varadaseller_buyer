@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-import 'package:qixer/service/serachbar_with_dropdown_service.dart';
-import 'package:qixer/service/service_details_service.dart';
-import 'package:qixer/view/home/components/service_card.dart';
 import 'package:qixer/view/search/components/search_bar.dart';
-import 'package:qixer/view/services/service_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/others_helper.dart';
 
-import '../../service/common_service.dart';
 import '../utils/constant_colors.dart';
 
 class SearchBarPageWithDropdown extends StatelessWidget {

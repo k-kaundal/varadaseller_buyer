@@ -17,19 +17,24 @@ class ServicebyCategoryModel {
   });
 
   AllServices allServices;
-  List<ServiceImage> serviceImage;
+  List<ServiceImage?> serviceImage;
 
   factory ServicebyCategoryModel.fromJson(Map<String, dynamic> json) =>
       ServicebyCategoryModel(
         allServices: AllServices.fromJson(json["all_services"]),
-        serviceImage: List<ServiceImage>.from(
-            json["service_image"].map((x) => ServiceImage.fromJson(x))),
+        serviceImage: List<ServiceImage?>.from(json["service_image"].map((x) {
+          if (x is List) {
+            return null;
+          } else {
+            return ServiceImage.fromJson(x);
+          }
+        })),
       );
 
   Map<String, dynamic> toJson() => {
         "all_services": allServices.toJson(),
         "service_image":
-            List<dynamic>.from(serviceImage.map((x) => x.toJson())),
+            List<dynamic>.from(serviceImage.map((x) => x?.toJson())),
       };
 }
 
@@ -282,13 +287,13 @@ class Link {
   bool? active;
 
   factory Link.fromJson(Map<String, dynamic> json) => Link(
-        url: json["url"] == null ? null : json["url"],
+        url: json["url"],
         label: json["label"],
         active: json["active"],
       );
 
   Map<String, dynamic> toJson() => {
-        "url": url == null ? null : url,
+        "url": url,
         "label": label,
         "active": active,
       };
@@ -307,11 +312,11 @@ class ServiceImage {
   String? imgUrl;
   dynamic imgAlt;
 
-  factory ServiceImage.fromJson(Map<String, dynamic> json) => ServiceImage(
-        imageId: json["image_id"],
-        path: json["path"],
-        imgUrl: json["img_url"],
-        imgAlt: json["img_alt"],
+  factory ServiceImage.fromJson(Map<String, dynamic>? json) => ServiceImage(
+        imageId: json?["image_id"],
+        path: json?["path"],
+        imgUrl: json?["img_url"],
+        imgAlt: json?["img_alt"],
       );
 
   Map<String, dynamic> toJson() => {

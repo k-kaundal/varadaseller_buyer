@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -11,6 +13,7 @@ import 'package:qixer/service/booking_services/personalization_service.dart';
 
 import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/service/profile_service.dart';
+import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/booking/payment_success_page.dart';
 
 import 'package:qixer/view/home/landing_page.dart';
@@ -23,6 +26,15 @@ class PlaceOrderService with ChangeNotifier {
   bool isloading = false;
 
   var orderId;
+  var successUrl;
+  var cancelUrl;
+
+  var paytmHtmlForm;
+
+  setOrderId(v) {
+    orderId = v;
+    notifyListeners();
+  }
 
   setLoadingTrue() {
     isloading = true;
@@ -35,7 +47,7 @@ class PlaceOrderService with ChangeNotifier {
   }
 
   Future<bool> placeOrder(BuildContext context, String? imagePath,
-      {bool isManualOrCod = false}) async {
+      {bool isManualOrCod = false, bool paytmPaymentSelected = false}) async {
     setLoadingTrue();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
@@ -209,15 +221,60 @@ class PlaceOrderService with ChangeNotifier {
       }
     }
 
+    //For paytm
+    //=============>
+    var data = jsonEncode({
+      'service_id': serviceId.toString(),
+      'seller_id': sellerId.toString(),
+      'buyer_id': buyerId.toString(),
+      'name': name,
+      'email': email,
+      'phone': phone, //amount he paid in bkash ucash etc
+      'post_code': post,
+      'address': address,
+      'choose_service_city': city,
+      'choose_service_area': area,
+      'choose_service_country': country,
+      'date': selectedDate.toString(),
+      'schedule': schedule.toString(),
+      'include_services': jsonEncode({"include_services": includesList}),
+      'additional_services': jsonEncode({"additional_services": extrasList}),
+      'coupon_code': coupon.toString(),
+      'selected_payment_gateway': selectedPaymentGateway.toString(),
+      'is_service_online': 0,
+      'paytm': true
+    });
+
+    var header = {
+      //if header type is application/json then the data should be in jsonEncode method
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    };
+
     var response = await dio.post(
       '$baseApi/service/order',
       data: formData,
     );
 
+    //if paytm payment selected
+    // =================>
+
+    if (paytmPaymentSelected == true) {
+      var paytmRes = await http.post(Uri.parse('$baseApi/service/order-paytm'),
+          headers: header, body: data);
+
+      paytmHtmlForm = paytmRes.body;
+      notifyListeners();
+    }
+
     if (response.statusCode == 201) {
       print(response.data);
 
       orderId = response.data['order_id'];
+      successUrl = response.data['success_url'];
+      cancelUrl = response.data['cancel_url'];
+
       print('order id is $orderId');
 
       notifyListeners();
@@ -235,8 +292,6 @@ class PlaceOrderService with ChangeNotifier {
       OthersHelper().showToast('Something went wrong', Colors.black);
       return false;
     }
-
-    //
   }
 
   //make payment successfull
@@ -265,11 +320,12 @@ class PlaceOrderService with ChangeNotifier {
           headers: header,
           body: data);
       setLoadingFalse();
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 404) {
         OthersHelper().showToast('Order placed successfully', Colors.black);
         doNext(context, 'Complete');
       } else {
         print(response.body);
+        print(response.statusCode);
         OthersHelper().showToast(
             'Failed to make payment status successfull', Colors.black);
         doNext(context, 'Pending');
@@ -281,9 +337,9 @@ class PlaceOrderService with ChangeNotifier {
   }
 
   ///////////==========>
-  doNext(BuildContext context, String paymentStatus) {
+  doNext(BuildContext context, String paymentStatus) async {
     //Refresh profile page so that user can see updated total orders
-    Provider.of<ProfileService>(context, listen: false)
+    await Provider.of<ProfileService>(context, listen: false)
         .getProfileDetails(isFromProfileupdatePage: true);
 
     Navigator.of(context).pushAndRemoveUntil(
@@ -301,5 +357,17 @@ class PlaceOrderService with ChangeNotifier {
 
     //reset steps
     Provider.of<BookStepsService>(context, listen: false).setStepsToDefault();
+
+    //Send notification to seller
+    var sellerId = Provider.of<BookService>(context, listen: false).sellerId;
+    var username = Provider.of<ProfileService>(context, listen: false)
+            .profileDetails
+            .userDetails
+            .name ??
+        '';
+    PushNotificationService().sendNotificationToSeller(context,
+        sellerId: sellerId,
+        title: "You have received an order from $username",
+        body: '-');
   }
 }

@@ -19,21 +19,26 @@ class SearchBarWithDropdownServiceModel {
   });
 
   List<Service> services;
-  List<ServiceImage> serviceImage;
+  List<ServiceImage?> serviceImage;
 
   factory SearchBarWithDropdownServiceModel.fromJson(
           Map<String, dynamic> json) =>
       SearchBarWithDropdownServiceModel(
         services: List<Service>.from(
             json["services"].map((x) => Service.fromJson(x))),
-        serviceImage: List<ServiceImage>.from(
-            json["service_image"].map((x) => ServiceImage.fromJson(x))),
+        serviceImage: List<ServiceImage?>.from(json["service_image"].map((x) {
+          if (x is List) {
+            return null;
+          } else {
+            return ServiceImage.fromJson(x);
+          }
+        })),
       );
 
   Map<String, dynamic> toJson() => {
         "services": List<dynamic>.from(services.map((x) => x.toJson())),
         "service_image":
-            List<dynamic>.from(serviceImage.map((x) => x.toJson())),
+            List<dynamic>.from(serviceImage.map((x) => x?.toJson())),
       };
 }
 
@@ -124,17 +129,15 @@ class Service {
   factory Service.fromJson(Map<String, dynamic> json) => Service(
         id: json["id"],
         categoryId: json["category_id"],
-        subcategoryId:
-            json["subcategory_id"] == null ? null : json["subcategory_id"],
+        subcategoryId: json["subcategory_id"],
         sellerId: json["seller_id"],
         serviceCityId: json["service_city_id"],
         title: json["title"],
         slug: json["slug"],
         description: json["description"],
         image: json["image"],
-        imageGallery:
-            json["image_gallery"] == null ? null : json["image_gallery"],
-        video: json["video"] == null ? null : json["video"],
+        imageGallery: json["image_gallery"],
+        video: json["video"],
         status: json["status"],
         isServiceOn: json["is_service_on"],
         price: json["price"].toDouble(),
@@ -145,7 +148,7 @@ class Service {
         tax: json["tax"].toDouble(),
         view: json["view"],
         soldCount: json["sold_count"],
-        featured: json["featured"] == null ? null : json["featured"],
+        featured: json["featured"],
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
         reviewsForMobile: List<ReviewsForMobile>.from(json["reviews_for_mobile"]
             .map((x) => ReviewsForMobile.fromJson(x))),
@@ -155,15 +158,15 @@ class Service {
   Map<String, dynamic> toJson() => {
         "id": id,
         "category_id": categoryId,
-        "subcategory_id": subcategoryId == null ? null : subcategoryId,
+        "subcategory_id": subcategoryId,
         "seller_id": sellerId,
         "service_city_id": serviceCityId,
         "title": title,
         "slug": slug,
         "description": description,
         "image": image,
-        "image_gallery": imageGallery == null ? null : imageGallery,
-        "video": video == null ? null : video,
+        "image_gallery": imageGallery,
+        "video": video,
         "status": status,
         "is_service_on": isServiceOn,
         "price": price,
@@ -174,7 +177,7 @@ class Service {
         "tax": tax,
         "view": view,
         "sold_count": soldCount,
-        "featured": featured == null ? null : featured,
+        "featured": featured,
         "seller_for_mobile": sellerForMobile.toJson(),
         "reviews_for_mobile":
             List<dynamic>.from(reviewsForMobile.map((x) => x.toJson())),

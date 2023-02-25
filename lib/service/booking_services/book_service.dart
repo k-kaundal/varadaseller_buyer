@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:qixer/service/profile_service.dart';
+import 'package:qixer/view/utils/others_helper.dart';
 
 class BookService with ChangeNotifier {
   int? serviceId;
@@ -7,7 +10,7 @@ class BookService with ChangeNotifier {
   int totalPrice = 0;
   int? sellerId;
 
-  String? selectedPayment;
+  String selectedPayment = 'cash_on_delivery';
 
   //address variables
   String? name;
@@ -22,10 +25,10 @@ class BookService with ChangeNotifier {
   String? selectedTime;
   String? weekDay;
 
-  setData(id, title, image, newPrice, sellerNewId) {
+  setData(id, title, newPrice, sellerNewId, {image}) {
     serviceId = id;
     serviceTitle = title;
-    serviceImage = image;
+    serviceImage = image ?? placeHolderUrl;
     totalPrice = newPrice.round();
     sellerId = sellerNewId;
     notifyListeners();
@@ -33,6 +36,7 @@ class BookService with ChangeNotifier {
 
   setSelectedPayment(String value) {
     selectedPayment = value;
+    print('selected payment $selectedPayment');
     notifyListeners();
   }
 
@@ -44,6 +48,25 @@ class BookService with ChangeNotifier {
     postCode = newPostCode;
     address = newAddress;
     orderNote = newOrderNote;
+    notifyListeners();
+  }
+
+  setDeliveryDetailsBasedOnProfile(BuildContext context) {
+    name = Provider.of<ProfileService>(context, listen: false)
+            .profileDetails
+            .userDetails
+            .name ??
+        'test';
+    phone = Provider.of<ProfileService>(context, listen: false)
+            .profileDetails
+            .userDetails
+            .phone ??
+        '111111111';
+    email = Provider.of<ProfileService>(context, listen: false)
+            .profileDetails
+            .userDetails
+            .email ??
+        'test@test.com';
     notifyListeners();
   }
 

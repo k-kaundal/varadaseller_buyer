@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:qixer/model/ticket_messages_model.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:qixer/service/profile_service.dart';
+import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -105,17 +108,12 @@ class SupportMessagesService with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
-    // var data = jsonEncode({
-    //   'ticket_id': ticketId,
-    //   'user_type': 'buyer',
-    //   'message': message,
-    // });
-
     var dio = Dio();
     dio.options.headers['Content-Type'] = 'multipart/form-data';
     dio.options.headers['Accept'] = 'application/json';
     dio.options.headers['Authorization'] = "Bearer $token";
-    var formData;
+
+    FormData formData;
     if (imagePath != null) {
       formData = FormData.fromMap({
         'ticket_id': ticketId,
@@ -170,5 +168,19 @@ class SupportMessagesService with ChangeNotifier {
           true //check if this image is just got picked from device in that case we will show it from device location
     });
     notifyListeners();
+  }
+
+  //
+  sendNotification(BuildContext context, {required sellerId, required msg}) {
+    //Send notification to seller
+    var username = Provider.of<ProfileService>(context, listen: false)
+            .profileDetails
+            .userDetails
+            .name ??
+        '';
+    PushNotificationService().sendNotificationToSeller(context,
+        sellerId: sellerId,
+        title: "New message from support: $username",
+        body: '$msg');
   }
 }

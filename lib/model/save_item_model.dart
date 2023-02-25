@@ -3,7 +3,7 @@ class SaveItemModel {
   late int sellerId;
   late String title;
   late String image;
-  late int price;
+  late var price;
   late String sellerName;
   late double rating;
 

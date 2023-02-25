@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/book_steps_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -21,92 +22,95 @@ class Steps extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Consumer<BookStepsService>(
-          builder: (context, bsProvider, child) => Row(
-            children: [
-              CircularStepProgressIndicator(
-                totalSteps: bsProvider.totalStep,
-                currentStep: bsProvider.currentStep,
-                stepSize: 4,
-                selectedColor: cc.primaryColor,
-                unselectedColor: Colors.grey[200],
-                padding: 0,
-                width: 70,
-                height: 70,
-                selectedStepSize: 4,
-                roundedCap: (_, __) => true,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${bsProvider.currentStep}/',
-                        style: TextStyle(
-                            color: cc.primaryColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        '${bsProvider.totalStep}',
-                        style: TextStyle(
-                            color: cc.greyParagraph,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
+        Consumer<AppStringService>(
+          builder: (context, ln, child) => Consumer<BookStepsService>(
+            builder: (context, bsProvider, child) => Row(
+              children: [
+                CircularStepProgressIndicator(
+                  totalSteps: bsProvider.totalStep,
+                  currentStep: bsProvider.currentStep,
+                  stepSize: 4,
+                  selectedColor: cc.primaryColor,
+                  unselectedColor: Colors.grey[200],
+                  padding: 0,
+                  width: 70,
+                  height: 70,
+                  selectedStepSize: 4,
+                  roundedCap: (_, __) => true,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${bsProvider.currentStep}/',
+                          style: TextStyle(
+                              color: cc.primaryColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          '${bsProvider.totalStep}',
+                          style: TextStyle(
+                              color: cc.greyParagraph,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CommonHelper().titleCommon(bsProvider
-                      .stepsNameList[bsProvider.currentStep - 1].title),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      bsProvider.stepsNameList[bsProvider.currentStep - 1]
-                                  .subtitle !=
-                              ''
-                          ? Row(
-                              children: [
-                                Text(
-                                  'Next:',
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: cc.greyFour.withOpacity(.6),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w400,
+                const SizedBox(
+                  width: 15,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonHelper().titleCommon(ln.getString(bsProvider
+                        .stepsNameList[bsProvider.currentStep - 1].title)),
+                    const SizedBox(
+                      height: 6,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        bsProvider.stepsNameList[bsProvider.currentStep - 1]
+                                    .subtitle !=
+                                ''
+                            ? Row(
+                                children: [
+                                  Text(
+                                    '${ln.getString('Next')}:',
+                                    textAlign: TextAlign.start,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: cc.greyFour.withOpacity(.6),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                              ],
-                            )
-                          : Container(),
-                      Text(
-                        bsProvider
-                            .stepsNameList[bsProvider.currentStep - 1].subtitle,
-                        style: TextStyle(
-                          color: cc.greyParagraph,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                ],
+                              )
+                            : Container(),
+                        Text(
+                          ln.getString(bsProvider
+                              .stepsNameList[bsProvider.currentStep - 1]
+                              .subtitle),
+                          style: TextStyle(
+                            color: cc.greyParagraph,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ],
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
         const SizedBox(

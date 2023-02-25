@@ -13,7 +13,7 @@ class MyOrdersService with ChangeNotifier {
   bool isLoading = true;
 
   setLoadingTrue() {
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       isLoading = true;
     });
   }
@@ -54,6 +54,7 @@ class MyOrdersService with ChangeNotifier {
         setLoadingTrue();
         return myServices;
       } else {
+        print(response.body);
         //Something went wrong
         myServices = 'error';
         isLoading = false;

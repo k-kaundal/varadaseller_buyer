@@ -20,6 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
       screenSizeAndPlatform(context);
     });
     SplashService().loginOrGoHome(context);
+    //run when app starts
+    runAtstart(context);
   }
 
   @override
@@ -30,12 +32,15 @@ class _SplashScreenState extends State<SplashScreen> {
           height: MediaQuery.of(context).size.height,
           width: double.infinity,
           alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
           // color: ConstantColors().primaryColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                height: 30,
+                height: 40,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -47,9 +52,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               OthersHelper().showLoading(ConstantColors().primaryColor)
             ],
-          ),
-          decoration: const BoxDecoration(
-            color: Colors.white,
           ),
         ));
   }

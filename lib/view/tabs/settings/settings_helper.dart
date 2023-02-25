@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/logout_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
@@ -77,40 +78,46 @@ class SettingsHelper {
                   offset: const Offset(0, 13)),
             ],
           ),
-          child: Column(
-            children: [
-              Text(
-                'Are you sure?',
-                style: TextStyle(color: cc.greyPrimary, fontSize: 17),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: CommonHelper().borderButtonOrange('Cancel', () {
-                    Navigator.pop(context);
-                  })),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Consumer<LogoutService>(
-                    builder: (context, provider, child) => Expanded(
-                        child: CommonHelper().buttonOrange('Logout', () {
-                      if (provider.isloading == false) {
-                        provider.logout(context);
-                        //if logged in by google then logout from it
-                        GoogleSignInService().logOutFromGoogleLogin();
+          child: Consumer<AppStringService>(
+            builder: (context, ln, child) => Column(
+              children: [
+                Text(
+                  '${ln.getString('Are you sure')}?',
+                  style: TextStyle(color: cc.greyPrimary, fontSize: 17),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CommonHelper()
+                            .borderButtonOrange(ln.getString('Cancel'), () {
+                      Navigator.pop(context);
+                    })),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Consumer<LogoutService>(
+                      builder: (context, provider, child) => Expanded(
+                          child: CommonHelper().buttonOrange(
+                              ln.getString('Logout'), () {
+                        if (provider.isloading == false) {
+                          provider.logout(context);
+                          //if logged in by google then logout from it
+                          GoogleSignInService().logOutFromGoogleLogin();
 
-                        //if logged in by facebook then logout from it
-                        FacebookLoginService().logoutFromFacebook();
-                      }
-                    }, isloading: provider.isloading == false ? false : true)),
-                  ),
-                ],
-              )
-            ],
+                          //if logged in by facebook then logout from it
+                          FacebookLoginService().logoutFromFacebook();
+                        }
+                      },
+                              isloading:
+                                  provider.isloading == false ? false : true)),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         )).show();
   }

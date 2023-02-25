@@ -16,7 +16,7 @@ class RecentServicesService with ChangeNotifier {
 
   fetchRecentService() async {
     if (recentServiceMap.isEmpty) {
-      var apiLink;
+      String apiLink;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var stateId = prefs.getString('state');
       if (stateId == null) {
@@ -30,6 +30,7 @@ class RecentServicesService with ChangeNotifier {
         //if connection is ok
         var response = await http.get(Uri.parse(apiLink));
 
+        print(response.body);
         if (response.statusCode == 201) {
           var data = RecentServiceModel.fromJson(jsonDecode(response.body));
 
@@ -44,9 +45,9 @@ class RecentServicesService with ChangeNotifier {
           //==============>
 
           for (int i = 0; i < data.latestServices.length; i++) {
-            var serviceImage;
+            String? serviceImage;
             if (data.serviceImage.length > i) {
-              serviceImage = data.serviceImage[i].imgUrl;
+              serviceImage = data.serviceImage[i]?.imgUrl;
             } else {
               serviceImage = null;
             }
@@ -114,19 +115,11 @@ class RecentServicesService with ChangeNotifier {
     notifyListeners();
   }
 
-  saveOrUnsave(
-      int serviceId,
-      String title,
-      String image,
-      int price,
-      String sellerName,
-      double rating,
-      int index,
-      BuildContext context,
-      sellerId) async {
+  saveOrUnsave(int serviceId, String title, image, int price, String sellerName,
+      double rating, int index, BuildContext context, sellerId) async {
     var newListMap = recentServiceMap;
-    alreadySaved = await DbService().saveOrUnsave(
-        serviceId, title, image, price, sellerName, rating, context, sellerId);
+    alreadySaved = await DbService().saveOrUnsave(serviceId, title,
+        image ?? placeHolderUrl, price, sellerName, rating, context, sellerId);
     newListMap[index]['isSaved'] = alreadySaved;
     recentServiceMap = newListMap;
     notifyListeners();

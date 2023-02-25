@@ -1,20 +1,33 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:qixer/service/pay_services/payment_constants.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'common_service.dart';
 
 class PaymentGatewayListService with ChangeNotifier {
   List paymentList = [];
+  var selectedMethodName;
+
   bool? isTestMode;
   var publicKey;
   var secretKey;
 
+  var billPlzCollectionName;
+  var paytabProfileId;
+
+  var squareLocationId;
+
+  var zitopayUserName;
+
   bool isloading = false;
+
+  setSelectedMethodName(newName) {
+    selectedMethodName = newName;
+    notifyListeners();
+  }
 
   setLoadingTrue() {
     isloading = true;
@@ -57,6 +70,12 @@ class PaymentGatewayListService with ChangeNotifier {
 
       if (response.statusCode == 201) {
         paymentList = jsonDecode(response.body)['gateway_list'];
+
+        // add wallet payment
+        paymentList.add({
+          "name": "wallet",
+          "logo_link": "https://i.postimg.cc/y8pMmqF4/wallet.png"
+        });
       } else {
         //something went wrong
         print(response.body);
@@ -156,6 +175,41 @@ class PaymentGatewayListService with ChangeNotifier {
       case 'stripe':
         publicKey = paymentList[index]['public_key'];
         secretKey = paymentList[index]['secret_key'];
+        isTestMode = paymentList[index]['test_mode'];
+        notifyListeners();
+        break;
+
+      case 'cinetpay':
+        publicKey = paymentList[index]['site_id'];
+        secretKey = paymentList[index]['app_key'];
+        isTestMode = paymentList[index]['test_mode'];
+        notifyListeners();
+        break;
+
+      case 'paytabs':
+        paytabProfileId = paymentList[index]['profile_id'];
+        secretKey = paymentList[index]['server_key'];
+        isTestMode = paymentList[index]['test_mode'];
+        notifyListeners();
+        break;
+
+      case 'squareup':
+        squareLocationId = paymentList[index]['location_id'];
+        secretKey = paymentList[index]['access_token'];
+        isTestMode = paymentList[index]['test_mode'];
+        notifyListeners();
+        break;
+
+      case 'billplz':
+        publicKey = paymentList[index]['key'];
+        secretKey = paymentList[index]['xsignature'];
+        billPlzCollectionName = paymentList[index]['collection_name'];
+        isTestMode = paymentList[index]['test_mode'];
+        notifyListeners();
+        break;
+
+      case 'zitopay':
+        zitopayUserName = paymentList[index]['username'];
         isTestMode = paymentList[index]['test_mode'];
         notifyListeners();
         break;

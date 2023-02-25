@@ -48,7 +48,7 @@ class DbService {
       int serviceId,
       String title,
       String image,
-      int price,
+      var price,
       String sellerName,
       double rating,
       BuildContext context,

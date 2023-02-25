@@ -6,7 +6,7 @@ import 'package:qixer/service/service_details_service.dart';
 import 'package:qixer/view/home/components/section_title.dart';
 import 'package:qixer/view/home/components/service_card.dart';
 import 'package:qixer/view/home/top_all_service_page.dart';
-import 'package:qixer/view/services/service_details_page.dart';
+import 'package:qixer/view/report/services/service_details_page.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -14,8 +14,10 @@ class TopRatedServices extends StatelessWidget {
   const TopRatedServices({
     Key? key,
     required this.cc,
+    required this.ln,
   }) : super(key: key);
   final ConstantColors cc;
+  final ln;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class TopRatedServices extends StatelessWidget {
                     ),
                     SectionTitle(
                       cc: cc,
-                      title: 'Top booked services',
+                      title: ln.getString('Top booked services'),
                       pressed: () {
                         Navigator.push(
                           context,
@@ -111,7 +113,7 @@ class TopRatedServices extends StatelessWidget {
                     ),
                   ],
                 )
-              : const Text("Something went wrong")
+              : Text(ln.getString('Something went wrong'))
           : Container(),
     );
   }

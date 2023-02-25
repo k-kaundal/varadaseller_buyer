@@ -9,6 +9,8 @@ import 'package:qixer/view/utils/others_helper.dart';
 class ServiceDetailsService with ChangeNotifier {
   var serviceAllDetails;
 
+  var sellerId;
+
   bool isloading = false;
 
   // List reviewList = [];
@@ -39,12 +41,15 @@ class ServiceDetailsService with ChangeNotifier {
           Uri.parse('$baseApi/service-details/$serviceId'),
           headers: header);
 
+      print(response.body);
       if (response.statusCode == 201) {
         // serviceAllDetails =
         //     ServiceDetailsModel.fromJson(jsonDecode(response.body));
         var data = ServiceDetailsModel.fromJson(jsonDecode(response.body));
 
         serviceAllDetails = data;
+        sellerId = jsonDecode(response.body)['service_details']
+            ['seller_for_mobile']['id'];
         // for (int i = 0; i < data.serviceReviews.length; i++) {
         //   reviewList.add({'rating': data.serviceReviews[i].rating, 'message':data.serviceReviews[i].message,});
         // }
@@ -52,6 +57,7 @@ class ServiceDetailsService with ChangeNotifier {
         setLoadingFalse();
       } else {
         serviceAllDetails == 'error';
+
         setLoadingFalse();
         OthersHelper().showToast('Something went wrong', Colors.black);
         notifyListeners();

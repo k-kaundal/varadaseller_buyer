@@ -16,7 +16,7 @@ class TopRatedServicesSerivce with ChangeNotifier {
   fetchTopService() async {
     if (topServiceMap.isEmpty) {
       //=================>
-      var apiLink;
+      String apiLink;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var stateId = prefs.getString('state');
       if (stateId == null) {
@@ -27,52 +27,51 @@ class TopRatedServicesSerivce with ChangeNotifier {
       //====================>
 
       var connection = await checkConnection();
-      if (connection) {
-        //if connection is ok
-        var response = await http.get(Uri.parse(apiLink));
+      if (!connection) return;
+      //if connection is ok
+      var response = await http.get(Uri.parse(apiLink));
 
-        if (response.statusCode == 201) {
-          var data = TopServiceModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 201) {
+        var data = TopServiceModel.fromJson(jsonDecode(response.body));
 
-          for (int i = 0; i < data.topServices.length; i++) {
-            var serviceImage;
+        for (int i = 0; i < data.topServices.length; i++) {
+          String? serviceImage;
 
-            if (data.serviceImage.length > i) {
-              serviceImage = data.serviceImage[i].imgUrl;
-            } else {
-              serviceImage = null;
-            }
-
-            int totalRating = 0;
-            for (int j = 0;
-                j < data.topServices[i].reviewsForMobile.length;
-                j++) {
-              totalRating = totalRating +
-                  data.topServices[i].reviewsForMobile[j].rating!.toInt();
-            }
-            double averageRate = 0;
-
-            if (data.topServices[i].reviewsForMobile.isNotEmpty) {
-              averageRate =
-                  (totalRating / data.topServices[i].reviewsForMobile.length);
-            }
-            setServiceList(
-                data.topServices[i].id,
-                data.topServices[i].title,
-                data.topServices[i].sellerForMobile.name,
-                data.topServices[i].price,
-                averageRate,
-                serviceImage,
-                i,
-                data.topServices[i].sellerId);
+          if (data.serviceImage.length > i) {
+            serviceImage = data.serviceImage[i]?.imgUrl;
+          } else {
+            serviceImage = null;
           }
 
-          notifyListeners();
-        } else {
-          //Something went wrong
-          topServiceMap.add('error');
-          notifyListeners();
+          int totalRating = 0;
+          for (int j = 0;
+              j < data.topServices[i].reviewsForMobile.length;
+              j++) {
+            totalRating = totalRating +
+                data.topServices[i].reviewsForMobile[j].rating!.toInt();
+          }
+          double averageRate = 0;
+
+          if (data.topServices[i].reviewsForMobile.isNotEmpty) {
+            averageRate =
+                (totalRating / data.topServices[i].reviewsForMobile.length);
+          }
+          setServiceList(
+              data.topServices[i].id,
+              data.topServices[i].title,
+              data.topServices[i].sellerForMobile.name,
+              data.topServices[i].price,
+              averageRate,
+              serviceImage,
+              i,
+              data.topServices[i].sellerId);
         }
+
+        notifyListeners();
+      } else {
+        //Something went wrong
+        topServiceMap.add('error');
+        notifyListeners();
       }
     } else {
       //already loaded from api
@@ -103,19 +102,11 @@ class TopRatedServicesSerivce with ChangeNotifier {
     notifyListeners();
   }
 
-  saveOrUnsave(
-      int serviceId,
-      String title,
-      String image,
-      int price,
-      String sellerName,
-      double rating,
-      int index,
-      BuildContext context,
-      sellerId) async {
+  saveOrUnsave(int serviceId, String title, image, var price, String sellerName,
+      double rating, int index, BuildContext context, sellerId) async {
     var newListMap = topServiceMap;
-    alreadySaved = await DbService().saveOrUnsave(
-        serviceId, title, image, price, sellerName, rating, context, sellerId);
+    alreadySaved = await DbService().saveOrUnsave(serviceId, title,
+        image ?? placeHolderUrl, price, sellerName, rating, context, sellerId);
     newListMap[index]['isSaved'] = alreadySaved;
     topServiceMap = newListMap;
     notifyListeners();

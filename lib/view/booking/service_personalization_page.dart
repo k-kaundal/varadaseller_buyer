@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/booking_services/personalization_service.dart';
 import 'package:qixer/service/booking_services/shedule_service.dart';
@@ -56,126 +57,125 @@ class _ServicePersonalizationPageState
         }),
         body: SingleChildScrollView(
           physics: physicsCommon,
-          child: Consumer<PersonalizationService>(
-              builder: (context, provider, child) => provider.isloading == false
-                  ? provider.serviceExtraData != 'error'
-                      ? Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: screenPadding,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              provider.isOnline == 0
-                                  ? Steps(cc: cc)
-                                  : Container(),
+          child: Consumer<AppStringService>(
+            builder: (context, ln, child) => Consumer<PersonalizationService>(
+                builder: (context, provider, child) => provider.isloading ==
+                        false
+                    ? provider.serviceExtraData != 'error'
+                        ? Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenPadding,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                provider.isOnline == 0
+                                    ? Steps(cc: cc)
+                                    : Container(),
 
-                              provider.serviceExtraData.service
-                                          .isServiceOnline !=
-                                      1
-                                  ? Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CommonHelper()
-                                            .titleCommon('What’s included:'),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        Included(
-                                          cc: cc,
-                                          data: provider.includedList,
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                      ],
-                                    )
-                                  : Container(),
+                                provider.serviceExtraData.service
+                                            .isServiceOnline !=
+                                        1
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CommonHelper().titleCommon(
+                                              '${ln.getString('What is included')}:'),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Included(
+                                            cc: cc,
+                                            data: provider.includedList,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
 
-                              provider.extrasList.isNotEmpty
-                                  ? Extras(
-                                      cc: cc,
-                                      additionalServices: provider.extrasList,
-                                      serviceBenefits: provider.serviceExtraData
-                                          .service.serviceBenifit,
-                                    )
-                                  : Container(),
+                                provider.extrasList.isNotEmpty
+                                    ? Extras(
+                                        cc: cc,
+                                        additionalServices: provider.extrasList,
+                                        serviceBenefits: provider
+                                            .serviceExtraData
+                                            .service
+                                            .serviceBenifit,
+                                        ln: ln,
+                                      )
+                                    : Container(),
 
-                              // button ==================>
-                              const SizedBox(
-                                height: 27,
-                              ),
-                              // CommonHelper().buttonOrange("Next", () {
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute<void>(
-                              //       builder: (BuildContext context) =>
-                              //           const ServiceSchedulePage(),
-                              //     ),
-                              //   );
-                              // }),
+                                // button ==================>
+                                const SizedBox(
+                                  height: 27,
+                                ),
 
-                              const SizedBox(
-                                height: 147,
-                              ),
-                            ],
-                          ))
-                      : const Text("Something went wrong")
-                  : Container(
-                      height: MediaQuery.of(context).size.height - 250,
-                      alignment: Alignment.center,
-                      child: OthersHelper().showLoading(cc.primaryColor),
-                    )),
+                                const SizedBox(
+                                  height: 147,
+                                ),
+                              ],
+                            ))
+                        : Text(ln.getString('Something went wrong'))
+                    : Container(
+                        height: MediaQuery.of(context).size.height - 250,
+                        alignment: Alignment.center,
+                        child: OthersHelper().showLoading(cc.primaryColor),
+                      )),
+          ),
         ),
-        bottomSheet: Consumer<BookService>(
-          builder: (context, provider, child) =>
-              Consumer<PersonalizationService>(
-            builder: (context, personalizationProvider, child) => Container(
-              height: 157,
-              padding: EdgeInsets.only(
-                  left: screenPadding, top: 30, right: screenPadding),
-              decoration: BookingHelper().bottomSheetDecoration(),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BookingHelper()
-                        .detailsPanelRow('Total', 0, '${provider.totalPrice}'),
-                    const SizedBox(
-                      height: 23,
-                    ),
-                    CommonHelper().buttonOrange("Next", () {
-                      if (personalizationProvider.isloading == false) {
-                        if (personalizationProvider.isOnline == 1) {
-                          //if it is an online service no need to show service schedule and choose location page
+        bottomSheet: Consumer<AppStringService>(
+          builder: (context, ln, child) => Consumer<BookService>(
+            builder: (context, provider, child) =>
+                Consumer<PersonalizationService>(
+              builder: (context, personalizationProvider, child) => Container(
+                height: 157,
+                padding: EdgeInsets.only(
+                    left: screenPadding, top: 30, right: screenPadding),
+                decoration: BookingHelper().bottomSheetDecoration(),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BookingHelper().detailsPanelRow(
+                          ln.getString('Total'), 0, '${provider.totalPrice}'),
+                      const SizedBox(
+                        height: 23,
+                      ),
+                      CommonHelper().buttonOrange(ln.getString('Next'), () {
+                        if (personalizationProvider.isloading == false) {
+                          if (personalizationProvider.isOnline == 1) {
+                            //if it is an online service no need to show service schedule and choose location page
 
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: const DeliveryAddressPage()));
-                          BookStepsService().onNext(context);
-                        } else {
-                          //increase page steps by one
-                          BookStepsService().onNext(context);
-                          //fetch shedule
-                          Provider.of<SheduleService>(context, listen: false)
-                              .fetchShedule(provider.sellerId,
-                                  firstThreeLetter(DateTime.now()));
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: const DeliveryAddressPage()));
+                            BookStepsService().onNext(context);
+                          } else {
+                            //increase page steps by one
+                            BookStepsService().onNext(context);
+                            //fetch shedule
+                            Provider.of<SheduleService>(context, listen: false)
+                                .fetchShedule(provider.sellerId,
+                                    firstThreeLetter(DateTime.now()));
 
-                          //go to shedule page
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: const ServiceSchedulePage()));
+                            //go to shedule page
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: const ServiceSchedulePage()));
+                          }
                         }
-                      }
-                    }),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                  ]),
+                      }),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    ]),
+              ),
             ),
           ),
         ),

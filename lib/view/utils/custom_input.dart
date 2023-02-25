@@ -12,26 +12,26 @@ class CustomInput extends StatelessWidget {
   final bool isNumberField;
   final String? icon;
   final double paddingHorizontal;
+
   TextEditingController? controller;
 
-  CustomInput(
-      {Key? key,
-      required this.hintText,
-      this.onChanged,
-      this.textInputAction = TextInputAction.next,
-      this.isPasswordField = false,
-      this.focusNode,
-      this.isNumberField = false,
-      this.controller,
-      this.validation,
-      this.icon,
-      this.paddingHorizontal = 8.0})
-      : super(key: key);
+  CustomInput({
+    Key? key,
+    required this.hintText,
+    this.onChanged,
+    this.textInputAction = TextInputAction.next,
+    this.isPasswordField = false,
+    this.focusNode,
+    this.isNumberField = false,
+    this.controller,
+    this.validation,
+    this.icon,
+    this.paddingHorizontal = 8.0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(bottom: 19),
         decoration: BoxDecoration(
             // color: const Color(0xfff2f2f2),
             borderRadius: BorderRadius.circular(10)),

@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:qixer/service/booking_services/personalization_service.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -15,10 +14,12 @@ class CommonHelper {
     return AppBar(
       centerTitle: true,
       iconTheme: IconThemeData(color: cc.greyPrimary),
-      title: Text(
-        title,
-        style: TextStyle(
-            color: cc.greyPrimary, fontSize: 16, fontWeight: FontWeight.w600),
+      title: Consumer<AppStringService>(
+        builder: (context, ln, child) => Text(
+          ln.getString(title),
+          style: TextStyle(
+              color: cc.greyPrimary, fontSize: 16, fontWeight: FontWeight.w600),
+        ),
       ),
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -37,10 +38,12 @@ class CommonHelper {
     return AppBar(
       centerTitle: true,
       iconTheme: IconThemeData(color: cc.greyPrimary),
-      title: Text(
-        title,
-        style: TextStyle(
-            color: cc.greyPrimary, fontSize: 16, fontWeight: FontWeight.w600),
+      title: Consumer<AppStringService>(
+        builder: (context, ln, child) => Text(
+          ln.getString(title),
+          style: TextStyle(
+              color: cc.greyPrimary, fontSize: 16, fontWeight: FontWeight.w600),
+        ),
       ),
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -67,79 +70,96 @@ class CommonHelper {
   }
 
   //common orange button =======>
-  buttonOrange(String title, VoidCallback pressed, {isloading = false}) {
+  buttonOrange(String title, VoidCallback pressed,
+      {isloading = false, bgColor, double paddingVerticle = 18}) {
     return InkWell(
       onTap: pressed,
-      child: Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          decoration: BoxDecoration(
-              color: cc.primaryColor, borderRadius: BorderRadius.circular(8)),
-          child: isloading == false
-              ? Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                )
-              : OthersHelper().showLoading(Colors.white)),
+      child: Consumer<AppStringService>(
+        builder: (context, ln, child) => Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: paddingVerticle),
+            decoration: BoxDecoration(
+                color: bgColor ?? cc.primaryColor,
+                borderRadius: BorderRadius.circular(8)),
+            child: isloading == false
+                ? Text(
+                    ln.getString(title),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  )
+                : OthersHelper().showLoading(Colors.white)),
+      ),
     );
   }
 
-  borderButtonOrange(String title, VoidCallback pressed) {
+  borderButtonOrange(String title, VoidCallback pressed,
+      {bgColor, double paddingVerticle = 17}) {
     return InkWell(
       onTap: pressed,
-      child: Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(vertical: 17),
-          decoration: BoxDecoration(
-              border: Border.all(color: cc.primaryColor),
-              borderRadius: BorderRadius.circular(8)),
-          child: Text(
-            title,
-            style: TextStyle(
-              color: cc.primaryColor,
-              fontSize: 14,
-            ),
-          )),
+      child: Consumer<AppStringService>(
+        builder: (context, ln, child) => Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: paddingVerticle),
+            decoration: BoxDecoration(
+                border: Border.all(color: bgColor ?? cc.primaryColor),
+                borderRadius: BorderRadius.circular(8)),
+            child: Text(
+              ln.getString(title),
+              style: TextStyle(
+                color: bgColor ?? cc.primaryColor,
+                fontSize: 14,
+              ),
+            )),
+      ),
     );
   }
 
   labelCommon(String title) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: cc.greyThree,
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
+    return Consumer<AppStringService>(
+      builder: (context, ln, child) => Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        child: Text(
+          ln.getString(title),
+          style: TextStyle(
+            color: cc.greyThree,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
   }
 
-  paragraphCommon(String title, TextAlign textAlign) {
+  paragraphCommon(
+    String title, {
+    double fontsize = 14,
+    color,
+    textAlign = TextAlign.left,
+  }) {
     return Text(
       title,
       textAlign: textAlign,
       style: TextStyle(
-        color: cc.greyParagraph,
+        color: color ?? cc.greyParagraph,
         height: 1.4,
-        fontSize: 14,
+        fontSize: fontsize,
         fontWeight: FontWeight.w400,
       ),
     );
   }
 
-  titleCommon(String title) {
+  titleCommon(String title, {double fontsize = 18, color, lineheight = 1.3}) {
     return Text(
       title,
       style: TextStyle(
-          color: cc.greyPrimary, fontSize: 18, fontWeight: FontWeight.bold),
+          color: color ?? cc.greyPrimary,
+          fontSize: fontsize,
+          height: lineheight,
+          fontWeight: FontWeight.bold),
     );
   }
 
@@ -187,7 +207,7 @@ class CommonHelper {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              LineAwesomeIcons.hourglass,
+              Icons.hourglass_empty,
               size: 26,
               color: cc.greyFour,
             ),

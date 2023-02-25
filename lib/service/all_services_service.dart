@@ -13,14 +13,14 @@ import 'package:qixer/view/utils/others_helper.dart';
 class AllServicesService with ChangeNotifier {
   bool isLoading = true;
 
-  var categoryDropdownList = ['All'];
+  var categoryDropdownList = ['Select Category'];
   var categoryDropdownIndexList = [0];
-  var selectedCategory = 'All';
+  var selectedCategory = 'Select Category';
   var selectedCategoryId = 0;
 
-  var subcatDropdownList = ['All'];
+  var subcatDropdownList = ['Select Subcategory'];
   var subcatDropdownIndexList = [0];
-  var selectedSubcat = 'All';
+  var selectedSubcat = 'Select Subcategory';
   var selectedSubcatId = 0;
 
   var ratingDropdownList = [
@@ -77,6 +77,12 @@ class AllServicesService with ChangeNotifier {
     notifyListeners();
   }
 
+  setSelectedCategoryId(value) {
+    selectedCategoryId = value;
+    print('selected category id $selectedCategoryId');
+    notifyListeners();
+  }
+
   setSubcatValue(value) {
     selectedSubcat = value;
     notifyListeners();
@@ -84,12 +90,6 @@ class AllServicesService with ChangeNotifier {
 
   setRatingValue(value) {
     selectedRating = value;
-    notifyListeners();
-  }
-
-  setSelectedCategoryId(value) {
-    selectedCategoryId = value;
-    print('selected category id $selectedCategoryId');
     notifyListeners();
   }
 
@@ -106,9 +106,9 @@ class AllServicesService with ChangeNotifier {
   }
 
   defaultSubcategory() {
-    subcatDropdownList = ['All'];
+    subcatDropdownList = ['Select Subcategory'];
     subcatDropdownIndexList = [0];
-    selectedSubcat = 'All';
+    selectedSubcat = 'Select Subcategory';
     selectedSubcatId = 0;
     notifyListeners();
   }
@@ -185,10 +185,11 @@ class AllServicesService with ChangeNotifier {
     }
   }
 
-  fetchSubcategory(categoryId) async {
+  Future<bool> fetchSubcategory(categoryId) async {
     //make sub category list to default first
     if (selectedCategoryId == 0) {
       defaultSubcategory();
+      return true;
     } else {
       // defaultSubcategory();
 
@@ -213,11 +214,13 @@ class AllServicesService with ChangeNotifier {
         // selectedSubcat = data.subCategories[0].name!;
         // selectedSubcatId = data.subCategories[0].id!;
         notifyListeners();
+        return true;
       } else {
         //error fetching data // no data found
         // subcatDropdownList = [];
         // notifyListeners();
         defaultSubcategory();
+        return false;
       }
     }
   }
@@ -253,10 +256,10 @@ class AllServicesService with ChangeNotifier {
         setTotalPage(data.allServices.lastPage);
 
         for (int i = 0; i < data.allServices.data.length; i++) {
-          var serviceImage;
+          String? serviceImage;
 
           if (data.serviceImage.length > i) {
-            serviceImage = data.serviceImage[i].imgUrl;
+            serviceImage = data.serviceImage[i]?.imgUrl;
           } else {
             serviceImage = null;
           }
@@ -331,19 +334,11 @@ class AllServicesService with ChangeNotifier {
     notifyListeners();
   }
 
-  saveOrUnsave(
-      int serviceId,
-      String title,
-      String image,
-      int price,
-      String sellerName,
-      double rating,
-      int index,
-      BuildContext context,
-      sellerId) async {
+  saveOrUnsave(int serviceId, String title, image, int price, String sellerName,
+      double rating, int index, BuildContext context, sellerId) async {
     var newListMap = serviceMap;
-    alreadySaved = await DbService().saveOrUnsave(
-        serviceId, title, image, price, sellerName, rating, context, sellerId);
+    alreadySaved = await DbService().saveOrUnsave(serviceId, title,
+        image ?? placeHolderUrl, price, sellerName, rating, context, sellerId);
     newListMap[index]['isSaved'] = alreadySaved;
     serviceMap = newListMap;
     notifyListeners();

@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/support_ticket/support_ticket_service.dart';
 import 'package:qixer/view/tabs/orders/orders_helper.dart';
 import 'package:qixer/view/tabs/settings/supports/create_ticket_page.dart';
@@ -34,12 +37,14 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           iconTheme: IconThemeData(color: cc.greyPrimary),
-          title: Text(
-            'Support tickets',
-            style: TextStyle(
-                color: cc.greyPrimary,
-                fontSize: 16,
-                fontWeight: FontWeight.w600),
+          title: Consumer<AppStringService>(
+            builder: (context, ln, child) => Text(
+              ln.getString('Support tickets'),
+              style: TextStyle(
+                  color: cc.greyPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -53,37 +58,39 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
             ),
           ),
           actions: [
-            Container(
-              width: screenWidth / 4,
-              padding: const EdgeInsets.symmetric(
-                vertical: 9,
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          const CreateTicketPage(),
-                    ),
-                  );
-                },
-                child: Container(
-                    // width: double.infinity,
-
-                    alignment: Alignment.center,
-                    // padding: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                        color: cc.primaryColor,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: const AutoSizeText(
-                      'Create',
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
+            Consumer<AppStringService>(
+              builder: (context, ln, child) => Container(
+                width: screenWidth / 4,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 9,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) =>
+                            const CreateTicketPage(),
                       ),
-                    )),
+                    );
+                  },
+                  child: Container(
+                      // width: double.infinity,
+
+                      alignment: Alignment.center,
+                      // padding: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                          color: cc.primaryColor,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: AutoSizeText(
+                        ln.getString('Create'),
+                        maxLines: 1,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                        ),
+                      )),
+                ),
               ),
             ),
             const SizedBox(
@@ -127,115 +134,123 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
           },
           child: SingleChildScrollView(
             physics: physicsCommon,
-            child: Consumer<SupportTicketService>(
-                builder: (context, provider, child) => provider
-                        .ticketList.isNotEmpty
-                    ? Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: screenPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            for (int i = 0; i < provider.ticketList.length; i++)
-                              InkWell(
-                                onTap: () {
-                                  provider.goToMessagePage(
-                                      context,
-                                      provider.ticketList[i]['subject'],
-                                      provider.ticketList[i]['id']);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.only(
-                                    top: 20,
-                                    bottom: 3,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 15),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: cc.borderColor),
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            AutoSizeText(
-                                              '#${provider.ticketList[i]['id']}',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: cc.primaryColor,
+            child: Consumer<AppStringService>(
+              builder: (context, ln, child) => Consumer<SupportTicketService>(
+                  builder: (context, provider, child) => provider
+                          .ticketList.isNotEmpty
+                      ? Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: screenPadding),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              for (int i = 0;
+                                  i < provider.ticketList.length;
+                                  i++)
+                                InkWell(
+                                  onTap: () {
+                                    provider.goToMessagePage(context,
+                                        provider.ticketList[i]['subject'],
+                                        ticketId: provider.ticketList[i]['id']);
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.only(
+                                      top: 20,
+                                      bottom: 3,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 15),
+                                    decoration: BoxDecoration(
+                                        border:
+                                            Border.all(color: cc.borderColor),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              AutoSizeText(
+                                                '#${provider.ticketList[i]['id']}',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  color: cc.primaryColor,
+                                                ),
                                               ),
-                                            ),
-                                            // put the hamburger icon here
-                                            PopupMenuButton(
-                                              // initialValue: 2,
-                                              child:
-                                                  const Icon(Icons.more_vert),
-                                              itemBuilder: (context) {
-                                                return List.generate(1,
-                                                    (index) {
-                                                  return PopupMenuItem(
-                                                    onTap: () async {
-                                                      await Future.delayed(
-                                                          Duration.zero);
-                                                      provider.goToMessagePage(
-                                                          context,
-                                                          provider.ticketList[i]
-                                                              ['subject'],
-                                                          provider.ticketList[i]
-                                                              ['id']);
-                                                    },
-                                                    value: index,
-                                                    child: const Text('Chat'),
-                                                  );
-                                                });
-                                              },
-                                            )
-                                          ],
-                                        ),
+                                              // put the hamburger icon here
+                                              PopupMenuButton(
+                                                // initialValue: 2,
+                                                child:
+                                                    const Icon(Icons.more_vert),
+                                                itemBuilder: (context) {
+                                                  return List.generate(1,
+                                                      (index) {
+                                                    return PopupMenuItem(
+                                                      onTap: () async {
+                                                        await Future.delayed(
+                                                            Duration.zero);
+                                                        provider.goToMessagePage(
+                                                            context,
+                                                            provider.ticketList[
+                                                                i]['subject'],
+                                                            ticketId: provider
+                                                                    .ticketList[
+                                                                i]['id']);
+                                                      },
+                                                      value: index,
+                                                      child: Text(
+                                                          ln.getString('Chat')),
+                                                    );
+                                                  });
+                                                },
+                                              )
+                                            ],
+                                          ),
 
-                                        //Ticket title
-                                        const SizedBox(
-                                          height: 7,
-                                        ),
-                                        CommonHelper().titleCommon(
-                                            provider.ticketList[i]['subject']),
+                                          //Ticket title
+                                          const SizedBox(
+                                            height: 7,
+                                          ),
+                                          CommonHelper().titleCommon(provider
+                                              .ticketList[i]['subject']),
 
-                                        //Divider
-                                        Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 17, bottom: 12),
-                                          child: CommonHelper().dividerCommon(),
-                                        ),
-                                        //Capsules
-                                        Row(
-                                          children: [
-                                            OrdersHelper().statusCapsule(
-                                                provider.ticketList[i]
-                                                    ['priority'],
-                                                cc.greyThree),
-                                            const SizedBox(
-                                              width: 11,
-                                            ),
-                                            OrdersHelper()
-                                                .statusCapsuleBordered(
-                                                    provider.ticketList[i]
-                                                        ['status'],
-                                                    cc.greyParagraph),
-                                          ],
-                                        )
-                                      ]),
-                                ),
-                              )
-                          ],
-                        ),
-                      )
-                    : CommonHelper().nothingfound(context, "No ticket")),
+                                          //Divider
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 17, bottom: 12),
+                                            child:
+                                                CommonHelper().dividerCommon(),
+                                          ),
+                                          //Capsules
+                                          Row(
+                                            children: [
+                                              OrdersHelper().statusCapsule(
+                                                  provider.ticketList[i]
+                                                      ['priority'],
+                                                  cc.greyThree),
+                                              const SizedBox(
+                                                width: 11,
+                                              ),
+                                              OrdersHelper()
+                                                  .statusCapsuleBordered(
+                                                      provider.ticketList[i]
+                                                          ['status'],
+                                                      cc.greyParagraph),
+                                            ],
+                                          )
+                                        ]),
+                                  ),
+                                )
+                            ],
+                          ),
+                        )
+                      : CommonHelper()
+                          .nothingfound(context, ln.getString('No ticket'))),
+            ),
           ),
         ));
   }

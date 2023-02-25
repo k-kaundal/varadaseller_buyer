@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/book_steps_service.dart';
+import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
 import 'package:qixer/view/booking/delivery_address_page.dart.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
+import 'package:qixer/view/utils/others_helper.dart';
 
 import 'components/steps.dart';
 
@@ -43,44 +47,63 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
           ),
           body: SingleChildScrollView(
             physics: physicsCommon,
-            child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenPadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //Circular Progress bar
-                    Steps(cc: cc),
+            child: Consumer<AppStringService>(
+              builder: (context, ln, child) => Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenPadding,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //Circular Progress bar
+                      Steps(cc: cc),
 
-                    CommonHelper().titleCommon('Booking informations'),
+                      CommonHelper()
+                          .titleCommon(ln.getString('Booking informations')),
 
-                    const SizedBox(
-                      height: 20,
-                    ),
+                      const SizedBox(
+                        height: 20,
+                      ),
 
-                    const CountryStatesDropdowns(),
-                    //Login button ==================>
-                    const SizedBox(
-                      height: 27,
-                    ),
-                    CommonHelper().buttonOrange("Next", () {
-                      //increase page steps by one
-                      BookStepsService().onNext(context);
-                      // setDefaultPrice ==> Before the user did any quantity increase decrease...etc
+                      const CountryStatesDropdowns(),
+                      //Login button ==================>
+                      const SizedBox(
+                        height: 27,
+                      ),
+                      CommonHelper().buttonOrange('Next', () {
+                        var selectedStateId = Provider.of<CountryStatesService>(
+                                context,
+                                listen: false)
+                            .selectedStateId;
+                        var selectedAreaId = Provider.of<CountryStatesService>(
+                                context,
+                                listen: false)
+                            .selectedAreaId;
+                        if (selectedStateId == '0' || selectedAreaId == '0') {
+                          OthersHelper().showSnackBar(
+                              context,
+                              ln.getString('You must select a state and area'),
+                              cc.warningColor);
+                          return;
+                        }
 
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: const DeliveryAddressPage()));
-                    }),
+                        //increase page steps by one
+                        BookStepsService().onNext(context);
+                        // setDefaultPrice ==> Before the user did any quantity increase decrease...etc
 
-                    const SizedBox(
-                      height: 30,
-                    ),
-                  ],
-                )),
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: const DeliveryAddressPage()));
+                      }),
+
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    ],
+                  )),
+            ),
           ),
         ),
       ),

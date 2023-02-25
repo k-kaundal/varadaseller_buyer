@@ -51,7 +51,7 @@ class Service {
   int? id;
   int? sellerId;
   String? title;
-  int? price;
+  var price;
   var tax;
   String? image;
   int? isServiceOnline;
@@ -242,8 +242,8 @@ class ServiceInclude {
   int? serviceId;
   int? sellerId;
   String? includeServiceTitle;
-  int? includeServicePrice;
-  int? includeServiceQuantity;
+  var includeServicePrice;
+  var includeServiceQuantity;
 
   factory ServiceInclude.fromJson(Map<String, dynamic> json) => ServiceInclude(
         id: json["id"],

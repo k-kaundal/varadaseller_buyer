@@ -8,4 +8,10 @@ sizedBox20() {
   );
 }
 
+sizedBoxCustom(double size) {
+  return SizedBox(
+    height: size,
+  );
+}
+
 var physicsCommon = const BouncingScrollPhysics();
