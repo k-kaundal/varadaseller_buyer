@@ -195,15 +195,6 @@ class _WalletPageState extends State<WalletPage> {
                                                           const SizedBox(
                                                             width: 19,
                                                           ),
-                                                          // Text(
-                                                          //   "Date: 2 days ago",
-                                                          //   style: TextStyle(
-                                                          //     color:
-                                                          //         cc.greyFour,
-                                                          //     fontSize: 14,
-                                                          //     height: 1.4,
-                                                          //   ),
-                                                          // ),
                                                         ],
                                                       ),
                                                     ]),
@@ -222,7 +213,7 @@ class _WalletPageState extends State<WalletPage> {
                             : Container(
                                 height: screenHeight - 280,
                                 alignment: Alignment.center,
-                                child: const Text('No history found'),
+                                child: Text(ln.getString('No history found')),
                               ),
                       ],
                     ),

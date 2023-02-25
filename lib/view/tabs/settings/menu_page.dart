@@ -72,7 +72,8 @@ class _MenuPageState extends State<MenuPage> {
                                                 ln.getString("My jobs"), () {
                                               if (!pProvider.jobPermission) {
                                                 OthersHelper().showToast(
-                                                    'You don\'t have permission to access this feature',
+                                                    ln.getString(
+                                                        'You do not have permission to access this feature'),
                                                     Colors.black);
                                                 return;
                                               }
@@ -94,7 +95,7 @@ class _MenuPageState extends State<MenuPage> {
                                                 () {
                                               if (!pProvider.jobPermission) {
                                                 OthersHelper().showToast(
-                                                    'You don\'t have permission to access this feature',
+                                                    'You do not have permission to access this feature',
                                                     Colors.black);
                                                 return;
                                               }
@@ -132,7 +133,7 @@ class _MenuPageState extends State<MenuPage> {
                                                 ln.getString("Wallet"), () {
                                               if (!pProvider.walletPermission) {
                                                 OthersHelper().showToast(
-                                                    'You don\'t have permission to access this feature',
+                                                    'You do not have permission to access this feature',
                                                     Colors.black);
                                                 return;
                                               }

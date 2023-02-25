@@ -115,7 +115,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   return Future.value(true);
                 } else {
                   OthersHelper().showToast(
-                      'Please wait while the profile is updating',
+                      ln.getString('Please wait while the profile is updating'),
                       Colors.black);
                   return Future.value(false);
                 }

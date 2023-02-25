@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/service/support_ticket/create_ticket_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
@@ -186,7 +183,7 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
                             : Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 child: Text(
-                                  'You don\'t have any active order',
+                                  'You do not have any active order',
                                   style: TextStyle(color: cc.warningColor),
                                 )),
 
@@ -222,7 +219,7 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
                         CommonHelper().buttonOrange('Create ticket', () {
                           if (provider.hasOrder == false) {
                             OthersHelper().showToast(
-                                'You don\'t have any active order',
+                                'You do not have any active order',
                                 Colors.black);
                           } else if (_formKey.currentState!.validate()) {
                             if (provider.isLoading == false &&

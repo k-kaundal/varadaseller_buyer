@@ -75,12 +75,9 @@ class _TicketChatPageState extends State<TicketChatPage> {
                       color: cc.greyParagraph,
                     ),
                   ),
-                  const SizedBox(
-                    width: 2,
-                  ),
 
                   const SizedBox(
-                    width: 12,
+                    width: 14,
                   ),
                   Expanded(
                     child: Column(
@@ -372,6 +369,8 @@ class _TicketChatPageState extends State<TicketChatPage> {
                                 'Please write a message first', Colors.black);
                           }
                         },
+                        backgroundColor: cc.primaryColor,
+                        elevation: 0,
                         child: provider.sendLoading == false
                             ? const Icon(
                                 Icons.send,
@@ -386,8 +385,6 @@ class _TicketChatPageState extends State<TicketChatPage> {
                                   strokeWidth: 1.5,
                                 ),
                               ),
-                        backgroundColor: cc.primaryColor,
-                        elevation: 0,
                       ),
                     ],
                   ),
