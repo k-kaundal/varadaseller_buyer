@@ -72,7 +72,7 @@ class PayfastPayment extends StatelessWidget {
                       );
                     });
 
-                Navigator.pop(context);
+                PlaceOrderService().makePaymentFailed(context);
               },
               initialUrl: url,
               javascriptMode: JavascriptMode.unrestricted,

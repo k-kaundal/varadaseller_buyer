@@ -61,7 +61,7 @@ class SquareUpPayment extends StatelessWidget {
                 initialUrl: url,
                 javascriptMode: JavascriptMode.unrestricted,
                 navigationDelegate: (NavigationRequest request) async {
-                  print('navigation delegate link ' + request.url);
+                  print('navigation delegate link ${request.url}');
                   if (request.url.contains('http://www.xgenious.com')) {
                     // String status = await verifyPayment(request.url);
                     // if (status == 'paid') {
@@ -107,7 +107,7 @@ class SquareUpPayment extends StatelessWidget {
                     print('payment failed');
                     OthersHelper()
                         .showSnackBar(context, 'Payment failed', Colors.red);
-                    Navigator.pop(context);
+                    PlaceOrderService().makePaymentFailed(context);
 
                     return NavigationDecision.prevent;
                   }

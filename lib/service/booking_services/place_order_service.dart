@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
 
@@ -14,6 +14,7 @@ import 'package:qixer/service/booking_services/personalization_service.dart';
 import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
+import 'package:qixer/view/booking/payment_failed_page.dart';
 import 'package:qixer/view/booking/payment_success_page.dart';
 
 import 'package:qixer/view/home/landing_page.dart';
@@ -369,5 +370,22 @@ class PlaceOrderService with ChangeNotifier {
         sellerId: sellerId,
         title: "You have received an order from $username",
         body: '-');
+  }
+
+  ///////////==========>
+  makePaymentFailed(BuildContext context) async {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const LandingPage()),
+        (Route<dynamic> route) => false);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => const PaymentFailedPage(),
+      ),
+    );
+
+    //reset steps
+    Provider.of<BookStepsService>(context, listen: false).setStepsToDefault();
   }
 }

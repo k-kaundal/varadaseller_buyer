@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'dart:async';
 import 'dart:convert';
@@ -78,7 +78,7 @@ class PayTabsPayment extends StatelessWidget {
                       );
                     });
 
-                Navigator.pop(context);
+                PlaceOrderService().makePaymentFailed(context);
               },
               initialUrl: url,
               javascriptMode: JavascriptMode.unrestricted,
@@ -116,7 +116,7 @@ class PayTabsPayment extends StatelessWidget {
                       );
                     });
 
-                Navigator.pop(context);
+                PlaceOrderService().makePaymentFailed(context);
               },
               navigationDelegate: (navRequest) async {
                 return NavigationDecision.navigate;

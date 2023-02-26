@@ -58,7 +58,7 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
         leading: InkWell(
             onTap: () {
               isLoading = true;
-              Navigator.pop(context);
+              PlaceOrderService().makePaymentFailed(context);
             },
             child: const Icon(
               Icons.arrow_back,
@@ -196,8 +196,7 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
         isLoading = false; //setting state to false after data loaded
 
         selectedUrl =
-            json.decode(resp.body)["payment_request"]['longurl'].toString() +
-                "?embed=form";
+            "${json.decode(resp.body)["payment_request"]['longurl']}?embed=form";
       });
       print(json.decode(resp.body)['message'].toString());
 //If something is wrong with the data we provided to

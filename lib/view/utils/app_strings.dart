@@ -307,4 +307,7 @@ var appStrings = {
   "No service saved": "No service saved",
   "Payment Status": "Payment Status",
   'No history found': 'No history found',
+  'Payment failed but order placed!': 'Payment failed but order placed!',
+  'Payment failed but the order is placed. Payment status is pending. You can try to pay again from the orders page':
+      'Payment failed but the order is placed. Payment status is pending. You can try to pay again from the orders page',
 };

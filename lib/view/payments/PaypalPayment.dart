@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/pay_services/paypal_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -65,7 +66,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
           executeUrl = res["executeUrl"];
         });
       } catch (e) {
-        print('exception: ' + e.toString());
+        print('exception: $e');
         final snackBar = SnackBar(
           content: Text(e.toString()),
           duration: const Duration(seconds: 10),
@@ -73,7 +74,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
             label: 'Close',
             onPressed: () {
               // Some code to undo the change.
-              Navigator.pop(context);
+              PlaceOrderService().makePaymentFailed(context);
             },
           ),
         );
@@ -140,7 +141,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
             "items": items,
             if (isEnableShipping && isEnableAddress)
               "shipping_address": {
-                "recipient_name": userFirstName + " " + userLastName,
+                "recipient_name": "$userFirstName $userLastName",
                 "line1": addressStreet,
                 "line2": "",
                 "city": addressCity,
@@ -165,10 +166,10 @@ class PaypalPaymentState extends State<PaypalPayment> {
     if (checkoutUrl != null) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           leading: GestureDetector(
             child: const Icon(Icons.arrow_back_ios),
-            onTap: () => Navigator.pop(context),
+            onTap: () => PlaceOrderService().makePaymentFailed(context),
           ),
         ),
         body: WebView(

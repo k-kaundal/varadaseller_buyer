@@ -51,8 +51,7 @@ class PaystackPaymentPage extends StatelessWidget {
                     const Spacer(),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+                        PlaceOrderService().makePaymentFailed(context);
                       },
                       child: Text(
                         'Yes',
@@ -134,7 +133,8 @@ class PaystackPaymentPage extends StatelessWidget {
                             actions: [
                               const Spacer(),
                               TextButton(
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () => PlaceOrderService()
+                                    .makePaymentFailed(context),
                                 child: Text(
                                   'Ok',
                                   style: TextStyle(color: cc.primaryColor),
@@ -166,7 +166,7 @@ class PaystackPaymentPage extends StatelessWidget {
                     return NavigationDecision.prevent;
                   }
                   if (navRequest.url.contains('failed')) {
-                    Navigator.pop(context);
+                    PlaceOrderService().makePaymentFailed(context);
                   }
                   return NavigationDecision.navigate;
                 },

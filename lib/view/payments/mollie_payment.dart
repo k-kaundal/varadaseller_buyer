@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'dart:convert';
 
@@ -98,7 +98,7 @@ class MolliePayment extends StatelessWidget {
                             content: Text('Payment has been cancelled.'),
                           );
                         });
-                    Navigator.pop(context);
+                    PlaceOrderService().makePaymentFailed(context);
                   }
                   if (status == 'failed') {
                     await showDialog(
@@ -108,7 +108,7 @@ class MolliePayment extends StatelessWidget {
                             title: Text('Payment failed!'),
                           );
                         });
-                    Navigator.pop(context);
+                    PlaceOrderService().makePaymentFailed(context);
                   }
                   if (status == 'expired') {
                     await showDialog(
@@ -119,7 +119,7 @@ class MolliePayment extends StatelessWidget {
                             content: Text('Payment has been expired.'),
                           );
                         });
-                    Navigator.pop(context);
+                    PlaceOrderService().makePaymentFailed(context);
                   }
                 }
               },

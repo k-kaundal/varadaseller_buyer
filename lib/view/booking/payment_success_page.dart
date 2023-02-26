@@ -33,22 +33,10 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: CommonHelper().appbarCommon('Payment', context, () {
-          // Navigator.pushReplacement<void, void>(
-          //   context,
-          //   MaterialPageRoute<void>(
-          //     builder: (BuildContext context) => const LandingPage(),
-          //   ),
-          // );
           Navigator.pop(context);
         }),
         body: WillPopScope(
           onWillPop: () {
-            // Navigator.pushReplacement<void, void>(
-            //   context,
-            //   MaterialPageRoute<void>(
-            //     builder: (BuildContext context) => const LandingPage(),
-            //   ),
-            // );
             return Future.value(true);
           },
           child: SingleChildScrollView(

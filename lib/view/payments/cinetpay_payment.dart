@@ -72,7 +72,7 @@ class CinetPayPayment extends StatelessWidget {
                       );
                     });
 
-                Navigator.pop(context);
+                PlaceOrderService().makePaymentFailed(context);
               },
 
               initialUrl: url,

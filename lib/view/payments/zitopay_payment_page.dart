@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
 
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -103,7 +103,7 @@ class _ZitopayPaymentPageState extends State<ZitopayPaymentPage> {
                 print('payment failed');
                 OthersHelper()
                     .showSnackBar(context, 'Payment failed', Colors.red);
-                Navigator.pop(context);
+                PlaceOrderService().makePaymentFailed(context);
 
                 return NavigationDecision.prevent;
               }

@@ -104,7 +104,7 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
                   print('payment failed');
                   OthersHelper()
                       .showSnackBar(context, 'Payment failed', Colors.red);
-                  Navigator.pop(context);
+                  PlaceOrderService().makePaymentFailed(context);
 
                   return NavigationDecision.prevent;
                 }
