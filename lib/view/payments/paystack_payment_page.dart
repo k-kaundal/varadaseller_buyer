@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -11,6 +13,7 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/profile_service.dart';
+import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -217,6 +220,9 @@ class PaystackPaymentPage extends StatelessWidget {
             .email ??
         'test@test.com';
 
+    String currencyCode = 'USD';
+    currencyCode = Provider.of<RtlService>(context, listen: false).currencyCode;
+
     if (isFromOrderExtraAccept == true) {
       amount = Provider.of<OrderDetailsService>(context, listen: false)
           .selectedExtraPrice;
@@ -275,7 +281,7 @@ class PaystackPaymentPage extends StatelessWidget {
         headers: header,
         body: jsonEncode({
           "amount": amount,
-          "currency": "NGN",
+          "currency": "NGN", //"NGN" was default
           "email": email,
           "reference_id": orderId.toString(),
           "callback_url": "http://success.com",

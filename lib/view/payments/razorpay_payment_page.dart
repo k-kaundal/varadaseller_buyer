@@ -40,9 +40,7 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
   @override
   void initState() {
     super.initState();
-    // amount = Provider.of<BookConfirmationService>(context, listen: false)
-    //     .totalPriceAfterAllcalculation
-    //     .toString();
+
     initializeRazorPay();
   }
 
@@ -56,14 +54,6 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
 
   void launchRazorPay(BuildContext context) {
     double amountToPay = double.parse(widget.amount) * 100;
-
-    // var options = {
-    //   'key': 'rzp_test_FSFnXQOqPP1YbJ',
-    //   'amount': "$amountToPay",
-    //   'name': name,
-    //   'description': ' ',
-    //   'prefill': {'contact': phone, 'email': email}
-    // };
 
     var options = {
       'key': Provider.of<PaymentGatewayListService>(context, listen: false)
@@ -99,9 +89,6 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
       Provider.of<PlaceOrderService>(context, listen: false)
           .makePaymentSuccess(context);
     }
-
-    // print(
-    //     "${response.orderId} \n${response.paymentId} \n${response.signature}");
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -134,15 +121,6 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
                 child:
                     BookingHelper().detailsPanelRow('Total', 0, widget.amount),
               ),
-              // textField(size, "Name", false, name),
-              // textField(size, "Phone no.", false, phoneNo),
-              // textField(size, "Email", false, email),
-              // textField(size, "Description", false, description),
-              // textField(size, "amount", true, amount),
-              // ElevatedButton(
-              //   onPressed: launchRazorPay,
-              //   child: const Text("Pay Now"),
-              // ),
             ],
           ),
         ),

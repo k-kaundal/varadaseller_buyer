@@ -417,31 +417,32 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                             ),
                             Row(
                               children: [
-                                widget.panelController.isPanelClosed
-                                    ? Expanded(
-                                        child: CommonHelper()
-                                            .borderButtonOrange('Apply coupon',
-                                                () {
-                                          widget.panelController.open();
-                                          couponFocus.requestFocus();
-                                          Future.delayed(
-                                              const Duration(milliseconds: 900),
-                                              () {
-                                            _scrollController.animateTo(
-                                              355,
-                                              duration: const Duration(
-                                                  milliseconds: 600),
-                                              curve: Curves.fastOutSlowIn,
-                                            );
-                                          });
-                                        }),
-                                      )
-                                    : Container(),
-                                widget.panelController.isPanelClosed
-                                    ? const SizedBox(
-                                        width: 20,
-                                      )
-                                    : Container(),
+                                // TODO uncomment this
+                                // widget.panelController.isPanelClosed
+                                //     ? Expanded(
+                                //         child: CommonHelper()
+                                //             .borderButtonOrange('Apply coupon',
+                                //                 () {
+                                //           widget.panelController.open();
+                                //           couponFocus.requestFocus();
+                                //           Future.delayed(
+                                //               const Duration(milliseconds: 900),
+                                //               () {
+                                //             _scrollController.animateTo(
+                                //               355,
+                                //               duration: const Duration(
+                                //                   milliseconds: 600),
+                                //               curve: Curves.fastOutSlowIn,
+                                //             );
+                                //           });
+                                //         }),
+                                //       )
+                                //     : Container(),
+                                // widget.panelController.isPanelClosed
+                                //     ? const SizedBox(
+                                //         width: 20,
+                                //       )
+                                //     : Container(),
                                 Expanded(
                                   child: CommonHelper()
                                       .buttonOrange('Proceed to payment', () {

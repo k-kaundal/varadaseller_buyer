@@ -104,7 +104,6 @@ var appStrings = {
       "I agree with the terms and conditions",
   "Pay & confirm": "Pay & confirm",
   "Payment successful": "Payment successful",
-  "Order status": "Order status",
   "Are you sure": "Are you sure",
   "Cancel": "Cancel",
   "Welcome back! Login": "Welcome back! Login",

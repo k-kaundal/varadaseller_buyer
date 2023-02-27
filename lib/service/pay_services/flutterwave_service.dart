@@ -10,16 +10,11 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/profile_service.dart';
+import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/service/wallet_service.dart';
 import 'package:uuid/uuid.dart';
 
 class FlutterwaveService {
-  // String phone = '35435413513513';
-  // String email = 'test@test.com';
-
-  String currency = 'USD';
-  // String amount = '200';
-
   payByFlutterwave(BuildContext context,
       {bool isFromOrderExtraAccept = false,
       bool isFromWalletDeposite = false,
@@ -91,6 +86,9 @@ class FlutterwaveService {
                 .publicKey ??
             '';
 
+    String currencyCode = 'USD';
+    currencyCode = Provider.of<RtlService>(context, listen: false).currencyCode;
+
     final style = FlutterwaveStyle(
       appBarText: "Flutterwave payment",
       buttonColor: Colors.blue,
@@ -137,7 +135,7 @@ class FlutterwaveService {
         context: context,
         style: style,
         publicKey: publicKey,
-        currency: currency,
+        currency: currencyCode,
         txRef: const Uuid().v1(),
         amount: amount,
         customer: customer,

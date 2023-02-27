@@ -151,7 +151,7 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
       var bookProvider = Provider.of<BookService>(context, listen: false);
 
       if (pProvider.isOnline == 0) {
-        amount = bcProvider.totalPriceAfterAllcalculation.toStringAsFixed(2);
+        amount = bcProvider.totalPriceAfterAllcalculation;
       } else {
         amount = bcProvider.totalPriceOnlineServiceAfterAllCalculation;
       }
@@ -164,6 +164,9 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
         Provider.of<PaymentGatewayListService>(context, listen: false)
                 .secretKey ??
             '';
+
+    print('mercado pago amount $amount');
+    print('mercado pago amount type ${amount.runtimeType}');
 
     var header = {
       "Accept": "application/json",
