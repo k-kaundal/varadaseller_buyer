@@ -372,7 +372,7 @@ class _JobConversationPageState extends State<JobConversationPage> {
                           child: TextField(
                             controller: sendMessageController,
                             decoration: InputDecoration(
-                                hintText: ln.getString("Write message..."),
+                                hintText: ln.getString("Write message") + '...',
                                 hintStyle:
                                     const TextStyle(color: Colors.black54),
                                 border: InputBorder.none),
@@ -418,6 +418,8 @@ class _JobConversationPageState extends State<JobConversationPage> {
                                   Colors.black);
                             }
                           },
+                          backgroundColor: cc.primaryColor,
+                          elevation: 0,
                           child: provider.sendLoading == false
                               ? const Icon(
                                   Icons.send,
@@ -432,8 +434,6 @@ class _JobConversationPageState extends State<JobConversationPage> {
                                     strokeWidth: 1.5,
                                   ),
                                 ),
-                          backgroundColor: cc.primaryColor,
-                          elevation: 0,
                         ),
                       ],
                     ),

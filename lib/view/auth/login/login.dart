@@ -279,7 +279,7 @@ class _LoginPageState extends State<LoginPage> {
                             RichText(
                               text: TextSpan(
                                 text:
-                                    '${ln.getString("Do not have account?")}  ',
+                                    '${ln.getString("Do not have an account")}  ',
                                 style: const TextStyle(
                                     color: Color(0xff646464), fontSize: 14),
                                 children: <TextSpan>[
@@ -322,7 +322,7 @@ class _LoginPageState extends State<LoginPage> {
                               alignment: Alignment.center,
                               margin: const EdgeInsets.only(bottom: 25),
                               child: Text(
-                                ln.getString("OR"),
+                                ln.getString("Or"),
                                 style: TextStyle(
                                     color: cc.greyPrimary,
                                     fontSize: 17,

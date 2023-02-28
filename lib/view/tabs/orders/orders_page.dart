@@ -50,7 +50,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                       const SizedBox(
                                         height: 25,
                                       ),
-                                      CommonHelper().titleCommon('My Orders'),
+                                      CommonHelper().titleCommon('My orders'),
                                       const SizedBox(
                                         height: 10,
                                       ),

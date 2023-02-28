@@ -183,7 +183,7 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
                             : Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 child: Text(
-                                  'You do not have any active order',
+                                  "No active order",
                                   style: TextStyle(color: cc.warningColor),
                                 )),
 
@@ -218,9 +218,8 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
                         ),
                         CommonHelper().buttonOrange('Create ticket', () {
                           if (provider.hasOrder == false) {
-                            OthersHelper().showToast(
-                                'You do not have any active order',
-                                Colors.black);
+                            OthersHelper()
+                                .showToast("No active order", Colors.black);
                           } else if (_formKey.currentState!.validate()) {
                             if (provider.isLoading == false &&
                                 provider.hasOrder == true) {

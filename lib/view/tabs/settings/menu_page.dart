@@ -165,7 +165,7 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/profile-edit.svg',
-                                                ln.getString("Edit Profile"),
+                                                ln.getString("Edit profile"),
                                                 () {
                                               Navigator.push(
                                                 context,

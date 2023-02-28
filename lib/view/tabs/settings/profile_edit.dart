@@ -249,7 +249,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             builder: (context, rtlP, child) => IntlPhoneField(
                               controller: phoneController,
                               decoration: SignupHelper().phoneFieldDecoration(
-                                  labelText: ln.getString('Phone Number'),
+                                  labelText: ln.getString('Phone number'),
                                   hintText: ln.getString('Enter phone number')),
                               initialCountryCode: countryCode,
                               disableLengthCheck: true,

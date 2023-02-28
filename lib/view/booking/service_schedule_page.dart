@@ -199,7 +199,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                         )
                                       : Text(
                                           ln.getString(
-                                              'No shedule available on this date'),
+                                              "No schedule available on this date"),
                                           style:
                                               TextStyle(color: cc.primaryColor),
                                         )

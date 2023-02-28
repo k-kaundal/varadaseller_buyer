@@ -35,7 +35,7 @@ class _AllServicePageState extends State<AllServicePage> {
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon('All Services', context, () {
+      appBar: CommonHelper().appbarCommon('All services', context, () {
         Navigator.pop(context);
       }),
       body: SmartRefresher(

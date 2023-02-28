@@ -29,7 +29,7 @@ class OverviewTab extends StatelessWidget {
             height: 20,
           ),
           AutoSizeText(
-            '${"Benefits of the premium package"}:',
+            '${"Benefits of premium Package"}:',
             maxLines: 1,
             style: TextStyle(
                 color: cc.greyFour, fontSize: 19, fontWeight: FontWeight.bold),

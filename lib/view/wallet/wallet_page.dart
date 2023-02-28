@@ -184,7 +184,7 @@ class _WalletPageState extends State<WalletPage> {
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            "${ln.getString("Payment Status")}: ${provider.walletHistory[i].paymentStatus}",
+                                                            "${ln.getString("Payment status")}: ${provider.walletHistory[i].paymentStatus}",
                                                             style: TextStyle(
                                                               color:
                                                                   cc.greyFour,

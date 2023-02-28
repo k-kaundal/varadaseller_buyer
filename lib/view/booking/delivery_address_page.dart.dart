@@ -190,7 +190,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                         decoration: SignupHelper()
                                             .phoneFieldDecoration(
                                                 labelText: ln
-                                                    .getString('Phone Number'),
+                                                    .getString('Phone number'),
                                                 hintText: ln.getString(
                                                     'Enter phone number')),
                                         initialCountryCode: countryCode,

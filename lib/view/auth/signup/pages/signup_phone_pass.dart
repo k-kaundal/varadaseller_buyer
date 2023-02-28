@@ -55,7 +55,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                 Consumer<RtlService>(
                   builder: (context, rtlP, child) => IntlPhoneField(
                     decoration: SignupHelper().phoneFieldDecoration(
-                        labelText: ln.getString('Phone Number'),
+                        labelText: ln.getString('Phone number'),
                         hintText: ln.getString('Enter phone number')),
                     initialCountryCode: provider.countryCode,
                     disableLengthCheck: true,

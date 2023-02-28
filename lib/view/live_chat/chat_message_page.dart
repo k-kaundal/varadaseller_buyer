@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/live_chat/chat_message_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/service/rtl_service.dart';
@@ -184,257 +185,264 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
           pusher.disconnect();
           return Future.value(true);
         },
-        child:
-            Consumer<ChatMessagesService>(builder: (context, provider, child) {
-          if (provider.messagesList.isNotEmpty &&
-              provider.sendLoading == false) {
-            Future.delayed(const Duration(milliseconds: 500), () {
-              _scrollDown();
-            });
-          }
-          return Stack(
-            children: [
-              provider.isloading == false
-                  ?
-                  //chat messages
-                  Container(
-                      margin: const EdgeInsets.only(bottom: 60),
-                      child: SmartRefresher(
-                        controller: refreshController,
-                        reverse: true,
-                        enablePullUp: true,
-                        enablePullDown:
-                            context.watch<ChatMessagesService>().currentPage > 1
-                                ? false
-                                : true,
-                        onRefresh: () async {
-                          final result = await Provider.of<ChatMessagesService>(
-                                  context,
-                                  listen: false)
-                              .fetchMessages(context,
-                                  receiverId: widget.receiverId);
-                          if (result) {
-                            refreshController.refreshCompleted();
-                          } else {
-                            refreshController.refreshFailed();
-                          }
-                        },
-                        onLoading: () async {
-                          final result = await Provider.of<ChatMessagesService>(
-                                  context,
-                                  listen: false)
-                              .fetchMessages(context,
-                                  receiverId: widget.receiverId);
-                          if (result) {
-                            debugPrint('loadcomplete ran');
-                            //loadcomplete function loads the data again
-                            refreshController.loadComplete();
-                          } else {
-                            debugPrint('no more data');
-                            refreshController.loadNoData();
+        child: Consumer<AppStringService>(
+          builder: (context, ln, child) => Consumer<ChatMessagesService>(
+              builder: (context, provider, child) {
+            if (provider.messagesList.isNotEmpty &&
+                provider.sendLoading == false) {
+              Future.delayed(const Duration(milliseconds: 500), () {
+                _scrollDown();
+              });
+            }
+            return Stack(
+              children: [
+                provider.isloading == false
+                    ?
+                    //chat messages
+                    Container(
+                        margin: const EdgeInsets.only(bottom: 60),
+                        child: SmartRefresher(
+                          controller: refreshController,
+                          reverse: true,
+                          enablePullUp: true,
+                          enablePullDown:
+                              context.watch<ChatMessagesService>().currentPage >
+                                      1
+                                  ? false
+                                  : true,
+                          onRefresh: () async {
+                            final result =
+                                await Provider.of<ChatMessagesService>(context,
+                                        listen: false)
+                                    .fetchMessages(context,
+                                        receiverId: widget.receiverId);
+                            if (result) {
+                              refreshController.refreshCompleted();
+                            } else {
+                              refreshController.refreshFailed();
+                            }
+                          },
+                          onLoading: () async {
+                            final result =
+                                await Provider.of<ChatMessagesService>(context,
+                                        listen: false)
+                                    .fetchMessages(context,
+                                        receiverId: widget.receiverId);
+                            if (result) {
+                              debugPrint('loadcomplete ran');
+                              //loadcomplete function loads the data again
+                              refreshController.loadComplete();
+                            } else {
+                              debugPrint('no more data');
+                              refreshController.loadNoData();
 
-                            Future.delayed(const Duration(seconds: 1), () {
-                              //it will reset footer no data state to idle and will let us load again
-                              refreshController.resetNoData();
-                            });
-                          }
-                        },
-                        child: Container(
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            itemCount: provider.messagesList.length,
-                            shrinkWrap: true,
-                            reverse: true,
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                              bottom: 10,
-                            ),
-                            physics: physicsCommon,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                mainAxisAlignment: provider.messagesList[index]
-                                            ['fromUser'] !=
-                                        widget.currentUserId
-                                    ? MainAxisAlignment.start
-                                    : MainAxisAlignment.end,
-                                children: [
-                                  Expanded(
-                                    child: Consumer<RtlService>(
-                                      builder: (context, rtlP, child) =>
-                                          Container(
-                                        padding: EdgeInsets.only(
-                                            left: provider.messagesList[index]
-                                                        ['fromUser'] !=
-                                                    widget.currentUserId
-                                                ? rtlP.direction == 'ltr'
-                                                    ? 10
-                                                    : 90
-                                                : rtlP.direction == 'ltr'
-                                                    ? 90
-                                                    : 10,
-                                            right: provider.messagesList[index]
-                                                        ['type'] ==
-                                                    "seller"
-                                                ? rtlP.direction == 'ltr'
-                                                    ? 90
-                                                    : 10
-                                                : rtlP.direction == 'ltr'
-                                                    ? 10
-                                                    : 90,
-                                            top: 10,
-                                            bottom: 10),
-                                        child: Align(
-                                          alignment:
-                                              (provider.messagesList[index]
+                              Future.delayed(const Duration(seconds: 1), () {
+                                //it will reset footer no data state to idle and will let us load again
+                                refreshController.resetNoData();
+                              });
+                            }
+                          },
+                          child: Container(
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              itemCount: provider.messagesList.length,
+                              shrinkWrap: true,
+                              reverse: true,
+                              padding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                              ),
+                              physics: physicsCommon,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      provider.messagesList[index]
+                                                  ['fromUser'] !=
+                                              widget.currentUserId
+                                          ? MainAxisAlignment.start
+                                          : MainAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      child: Consumer<RtlService>(
+                                        builder: (context, rtlP, child) =>
+                                            Container(
+                                          padding: EdgeInsets.only(
+                                              left: provider.messagesList[index]
                                                           ['fromUser'] !=
                                                       widget.currentUserId
-                                                  ? Alignment.topLeft
-                                                  : Alignment.topRight),
-                                          child: Column(
-                                            crossAxisAlignment:
+                                                  ? rtlP.direction == 'ltr'
+                                                      ? 10
+                                                      : 90
+                                                  : rtlP.direction == 'ltr'
+                                                      ? 90
+                                                      : 10,
+                                              right:
+                                                  provider.messagesList[index]
+                                                              ['type'] ==
+                                                          "seller"
+                                                      ? rtlP.direction == 'ltr'
+                                                          ? 90
+                                                          : 10
+                                                      : rtlP.direction == 'ltr'
+                                                          ? 10
+                                                          : 90,
+                                              top: 10,
+                                              bottom: 10),
+                                          child: Align(
+                                            alignment:
                                                 (provider.messagesList[index]
                                                             ['fromUser'] !=
                                                         widget.currentUserId
-                                                    ? CrossAxisAlignment.start
-                                                    : CrossAxisAlignment.end),
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  color: (provider.messagesList[
-                                                                  index]
+                                                    ? Alignment.topLeft
+                                                    : Alignment.topRight),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  (provider.messagesList[index]
                                                               ['fromUser'] !=
                                                           widget.currentUserId
-                                                      ? Colors.grey.shade200
-                                                      : cc.primaryColor),
+                                                      ? CrossAxisAlignment.start
+                                                      : CrossAxisAlignment.end),
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    color: (provider.messagesList[
+                                                                    index]
+                                                                ['fromUser'] !=
+                                                            widget.currentUserId
+                                                        ? Colors.grey.shade200
+                                                        : cc.primaryColor),
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.all(16),
+                                                  //message =====>
+                                                  child: Text(
+                                                    provider.messagesList[index]
+                                                            ['message']
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: (provider.messagesList[
+                                                                        index][
+                                                                    'fromUser'] !=
+                                                                widget
+                                                                    .currentUserId
+                                                            ? Colors.grey[800]
+                                                            : Colors.white)),
+                                                  ),
                                                 ),
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                //message =====>
-                                                child: Text(
-                                                  provider.messagesList[index]
-                                                          ['message']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: (provider.messagesList[
-                                                                      index][
-                                                                  'fromUser'] !=
-                                                              widget
-                                                                  .currentUserId
-                                                          ? Colors.grey[800]
-                                                          : Colors.white)),
-                                                ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            },
+                                  ],
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  : OthersHelper().showLoading(cc.primaryColor),
+                      )
+                    : OthersHelper().showLoading(cc.primaryColor),
 
-              //write message section
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      left: 20, bottom: 10, top: 10, right: 10),
-                  height: 60,
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Row(
-                    children: <Widget>[
-                      pickedImage != null
-                          ? Image.file(
-                              File(pickedImage!.path),
-                              height: 40,
-                              width: 40,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(),
-                      const SizedBox(
-                        width: 13,
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: sendMessageController,
-                          decoration: const InputDecoration(
-                              hintText: "Write message...",
-                              hintStyle: TextStyle(color: Colors.black54),
-                              border: InputBorder.none),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      //pick image =====>
-                      // IconButton(
-                      //     onPressed: () async {
-                      //       pickedImage = await provider.pickImage();
-                      //       setState(() {});
-                      //     },
-                      //     icon: const Icon(Icons.attachment)),
-
-                      //send message button
-                      const SizedBox(
-                        width: 13,
-                      ),
-                      FloatingActionButton(
-                        onPressed: () async {
-                          if (sendMessageController.text.isNotEmpty) {
-                            //hide keyboard
-                            FocusScope.of(context).unfocus();
-                            //send message
-
-                            provider.sendMessage(
-                                widget.receiverId,
-                                sendMessageController.text.trim(),
-                                null,
-                                context);
-                            //clear input field
-                            sendMessageController.clear();
-                            //clear image
-                            setState(() {
-                              pickedImage = null;
-                            });
-                          } else {
-                            OthersHelper().showToast(
-                                'Please write a message first', Colors.black);
-                          }
-                        },
-                        child: provider.sendLoading == false
-                            ? const Icon(
-                                Icons.send,
-                                color: Colors.white,
-                                size: 18,
+                //write message section
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        left: 20, bottom: 10, top: 10, right: 10),
+                    height: 60,
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: Row(
+                      children: <Widget>[
+                        pickedImage != null
+                            ? Image.file(
+                                File(pickedImage!.path),
+                                height: 40,
+                                width: 40,
+                                fit: BoxFit.cover,
                               )
-                            : const SizedBox(
-                                height: 14,
-                                width: 14,
-                                child: CircularProgressIndicator(
+                            : Container(),
+                        const SizedBox(
+                          width: 13,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: sendMessageController,
+                            decoration: InputDecoration(
+                                hintText: ln.getString("Write message") + '...',
+                                hintStyle:
+                                    const TextStyle(color: Colors.black54),
+                                border: InputBorder.none),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        //pick image =====>
+                        // IconButton(
+                        //     onPressed: () async {
+                        //       pickedImage = await provider.pickImage();
+                        //       setState(() {});
+                        //     },
+                        //     icon: const Icon(Icons.attachment)),
+
+                        //send message button
+                        const SizedBox(
+                          width: 13,
+                        ),
+                        FloatingActionButton(
+                          onPressed: () async {
+                            if (sendMessageController.text.isNotEmpty) {
+                              //hide keyboard
+                              FocusScope.of(context).unfocus();
+                              //send message
+
+                              provider.sendMessage(
+                                  widget.receiverId,
+                                  sendMessageController.text.trim(),
+                                  null,
+                                  context);
+                              //clear input field
+                              sendMessageController.clear();
+                              //clear image
+                              setState(() {
+                                pickedImage = null;
+                              });
+                            } else {
+                              OthersHelper().showToast(
+                                  'Please write a message first', Colors.black);
+                            }
+                          },
+                          backgroundColor: cc.primaryColor,
+                          elevation: 0,
+                          child: provider.sendLoading == false
+                              ? const Icon(
+                                  Icons.send,
                                   color: Colors.white,
-                                  strokeWidth: 1.5,
+                                  size: 18,
+                                )
+                              : const SizedBox(
+                                  height: 14,
+                                  width: 14,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 1.5,
+                                  ),
                                 ),
-                              ),
-                        backgroundColor: cc.primaryColor,
-                        elevation: 0,
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        }),
+              ],
+            );
+          }),
+        ),
       ),
     );
   }

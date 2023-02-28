@@ -57,7 +57,7 @@ class CompleteRequest extends StatelessWidget {
                             //==========>
                             if (provider.orderDetails.orderCompleteRequest == 2)
                               OrdersHelper().statusCapsule(
-                                  ln.getString('Order completed'),
+                                  ln.getString('Order Completed'),
                                   cc.successColor),
 
                             //accept reject button

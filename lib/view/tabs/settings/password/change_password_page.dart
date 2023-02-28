@@ -80,8 +80,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return ln
-                                      .getString("Enter your current password");
+                                  return ln.getString("Enter current password");
                                 }
                                 return null;
                               },

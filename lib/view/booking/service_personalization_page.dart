@@ -81,7 +81,7 @@ class _ServicePersonalizationPageState
                                             CrossAxisAlignment.start,
                                         children: [
                                           CommonHelper().titleCommon(
-                                              '${ln.getString('What is included')}:'),
+                                              '${ln.getString('What\'s included')}:'),
                                           const SizedBox(
                                             height: 20,
                                           ),

@@ -32,7 +32,6 @@ var appStrings = {
   "Total": "Total",
   "Payment status": "Payment status",
   "Order Status": "Order Status",
-  "Saved Services": "Saved Services",
   "Starts from": "Starts from",
   "No result found": "No result found",
   "Pending orders": "Pending orders",
@@ -244,7 +243,6 @@ var appStrings = {
   'From': 'From',
   "Benefits of the premium package": "Benefits of the premium package",
   'Orders completed': 'Orders completed',
-  'Seller Ratings': 'Seller Ratings',
   'Category': 'Category',
   'Sub Category': 'Sub Category',
   'Ratings': 'Ratings',
@@ -304,7 +302,6 @@ var appStrings = {
   'Phone Number': 'Phone Number',
   'Saved services': 'Saved services',
   "No service saved": "No service saved",
-  "Payment Status": "Payment Status",
   'No history found': 'No history found',
   'Payment failed but order placed!': 'Payment failed but order placed!',
   'Payment failed but the order is placed. Payment status is pending. You can try to pay again from the orders page':

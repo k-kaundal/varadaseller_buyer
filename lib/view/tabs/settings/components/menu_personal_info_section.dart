@@ -48,7 +48,7 @@ class MenuPersonalInfoSection extends StatelessWidget {
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString("Post Code"),
+                          ln.getString("Post code"),
                           profileProvider.profileDetails.userDetails.postCode ??
                               ''),
                       BookingHelper().bRow(

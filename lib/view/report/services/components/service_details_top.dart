@@ -151,7 +151,7 @@ class ServiceDetailsTop extends StatelessWidget {
                       width: 5,
                     ),
                     AutoSizeText(
-                      ln.getString('Seller Ratings'),
+                      ln.getString('Seller ratings'),
                       maxLines: 1,
                       style: TextStyle(
                           color: cc.greyFour,

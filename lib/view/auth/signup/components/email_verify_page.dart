@@ -149,7 +149,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                         provider.isloading == false
                             ? RichText(
                                 text: TextSpan(
-                                  text: '${ln.getString('Did not receive?')}  ',
+                                  text: '${ln.getString('Did not receive')}?  ',
                                   style: const TextStyle(
                                       color: Color(0xff646464), fontSize: 14),
                                   children: <TextSpan>[

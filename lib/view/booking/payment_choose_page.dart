@@ -228,7 +228,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
                                     ln.getString(
-                                        'I agree with terms and conditions'),
+                                        'I agree with the terms and conditons'),
                                     style: TextStyle(
                                         color: ConstantColors().greyFour,
                                         fontWeight: FontWeight.w400,
