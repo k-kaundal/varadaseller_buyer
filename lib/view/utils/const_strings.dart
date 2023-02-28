@@ -1,6 +1,7 @@
 class ConstString {
   static const String welcome = "welcome";
   static const String couldntLoadProfile = 'Could not load user profile info';
+  static const browseCategories = "Browse categories";
   static const String allCategories = "All categories";
   static const String topServices = "Top services";
   static const String recentListed = "Recently listed";
