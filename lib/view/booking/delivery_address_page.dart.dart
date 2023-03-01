@@ -123,7 +123,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                   : Container(),
 
                               CommonHelper().titleCommon(
-                                  ln.getString('Booking Information')),
+                                  ln.getString('Booking informations')),
 
                               const SizedBox(
                                 height: 22,

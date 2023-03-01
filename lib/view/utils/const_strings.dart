@@ -50,11 +50,11 @@ class ConstString {
   static const String all = "All";
   static const String highestPrice = "Highest price";
   static const String lowestPrice = "Lowest price";
-  static const String latestPrice = "Latest service";
+  static const String latestService = "Latest service";
   static const String plzEnterFullName = 'Please enter your full name';
   static const String about = "About";
   static const String yourAddress = "Your Address";
-  static const String pleaseEnterAddress = 'Please enter your address';
+  static const String plzEnterAddress = 'Please enter your address';
   static const String chooseCountry = "Choose country";
   static const String chooseCity = "Choose city";
   static const String chooseArea = "Choose Area";
@@ -80,7 +80,6 @@ class ConstString {
       "No schedule available on this date";
   static const String chooseLocation = "Choose Location";
   static const String bookInfos = "Booking informations";
-  static const String bookInfo = "Booking Information";
   static const String bookConfirmation = "Booking confirmation";
   static const String bookDetails = "Booking Details";
   static const String location = "Location";
@@ -129,7 +128,7 @@ class ConstString {
       "Enter the email you used to create account and we’ll send instruction for restting password";
   static const String enterEmail = "Enter email";
 
-  static const String sendInstruction = "Send instructions";
+  static const String sendInstructions = "Send instructions";
   static const String enterFourDigitCode = "Enter the 4 digit code";
   static const String enterFourDigitCodeToReset =
       "Enter the 4 digit code we sent to your email in order to reset password";
@@ -190,7 +189,6 @@ class ConstString {
   static const String depositeAmount = "Deposite Amount";
   static const String enterDepositeAmount = "Enter deposite amount";
   static const String addExtras = "Add extras";
-  static const String benefitOfPackage = "Benifits of the Package";
   static const String extraServiceFee = 'Extra Service Fee';
   static const String orderExtraAccepted = 'Order extra accepted';
   static const String details = "Details";
@@ -212,7 +210,7 @@ class ConstString {
   static const String retypePass = 'Please retype your password';
   static const String retypeNew = 'Retype new password';
   static const String verifyEmail = 'Verify Email';
-  static const String enterFourDigit =
+  static const String enterFourDigitToEmailVerify =
       'Enter the 4 digit code we sent to to your email in order verify your email';
   static const String iAgreeTerms = 'I agree with the terms and conditons';
   static const String signUp = 'Sign Up';

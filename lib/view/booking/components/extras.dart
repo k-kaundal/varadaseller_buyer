@@ -257,7 +257,7 @@ class _ExtrasState extends State<Extras> {
           height: 27,
         ),
         CommonHelper()
-            .titleCommon('${widget.ln.getString('Benifits of the Package')}:'),
+            .titleCommon('${widget.ln.getString('Benifits of the package')}:'),
         const SizedBox(
           height: 17,
         ),
