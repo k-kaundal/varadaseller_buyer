@@ -129,12 +129,12 @@ var appStrings = {
   ConstString.enterEmailToGetInstruction:
       ConstString.enterEmailToGetInstruction,
   ConstString.enterEmail: ConstString.enterEmail,
-  ConstString.sendInstructions: "Send instructions",
-  "Enter the 4 digit code": "Enter the 4 digit code",
-  "Enter the 4 digit code we sent to your email in order to reset password":
-      "Enter the 4 digit code we sent to your email in order to reset password",
-  "Did not receive": "Didn't receive",
-  "Send again": "Send again",
+  ConstString.sendInstructions: ConstString.sendInstructions,
+  ConstString.enterFourDigitToEmailVerify:
+      ConstString.enterFourDigitToEmailVerify,
+  ConstString.enterFourDigitCodeToReset: ConstString.enterFourDigitCodeToReset,
+  ConstString.didNotReceive: ConstString.didNotReceive,
+  ConstString.sendAgain: ConstString.sendAgain,
   "Something went wrong": "Something went wrong",
   "Please wait while the profile is updating":
       "Please wait while the profile is updating",
