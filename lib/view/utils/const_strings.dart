@@ -155,9 +155,9 @@ class ConstString {
   static const String edit = "Edit";
   static const String createJob = "Create Job";
   static const String title = "Title";
-  static const String enterTitle = 'Please enter a title';
+  static const String plzEnterTitle = 'Please enter a title';
   static const String budget = "Budget";
-  static const String enterBudget = "Please enter your budget";
+  static const String plzEnterBudget = "Please enter your budget";
   static const String description = "Description";
   static const String endDate = "End date";
   static const String enterValidBudget = "You must enter a valid budget";
@@ -166,7 +166,7 @@ class ConstString {
   static const String jobReqId = "Job Request ID";
   static const String editJob = "Edit job";
   static const String attachment = 'Attachment';
-  static const String writeMessageFirst = "Please write a message first";
+  static const String plzWriteMessageFirst = "Please write a message first";
   static const String deadline = "Deadline";
   static const String jobRequests = "Job Requests";
   static const String yourOffer = "Your offer";
@@ -207,11 +207,11 @@ class ConstString {
   static const String plzEnterPass = 'Please enter your password';
   static const String newPass = 'New password';
   static const String repeatNewPass = 'Repeat new password';
-  static const String retypePass = 'Please retype your password';
-  static const String retypeNew = 'Retype new password';
+  static const String plzRetypePass = 'Please retype your password';
+  static const String retypeNewPass = 'Retype new password';
   static const String verifyEmail = 'Verify Email';
   static const String enterFourDigitToEmailVerify =
-      'Enter the 4 digit code we sent to to your email in order verify your email';
+      'Enter the 4 digit code we sent to your email in order verify your email';
   static const String iAgreeTerms = 'I agree with the terms and conditons';
   static const String signUp = 'Sign Up';
   static const String haveAnAccount = 'Have an account?';

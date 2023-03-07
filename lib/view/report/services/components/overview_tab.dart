@@ -42,7 +42,7 @@ class OverviewTab extends StatelessWidget {
               i < provider.serviceAllDetails.serviceBenifits.length;
               i++)
             ServiceHelper().checkListCommon(
-                provider.serviceAllDetails.serviceBenifits[i].benifits),
+                provider.serviceAllDetails.serviceBenifits[i].benifits ?? ''),
 
           //FAQ ===============>
           (provider.serviceAllDetails.serviceDetails.serviceFaq).isNotEmpty
