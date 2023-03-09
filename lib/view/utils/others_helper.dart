@@ -7,7 +7,7 @@ import 'package:qixer/view/utils/constant_colors.dart';
 
 //===========================>
 
-// String baseApi = 'https://beefinder.es/api/v1';
+// String baseApi = 'https://seekers.ng/api/v1';
 
 String baseApi = 'https://bytesed.com/laravel/qixer/api/v1';
 
