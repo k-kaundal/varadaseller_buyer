@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/book_steps_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
@@ -79,7 +80,7 @@ class Steps extends StatelessWidget {
                             ? Row(
                                 children: [
                                   Text(
-                                    '${ln.getString('Next')}:',
+                                    '${ln.getString(ConstString.next)}:',
                                     textAlign: TextAlign.start,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

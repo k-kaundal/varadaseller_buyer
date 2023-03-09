@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/reset_password_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 import '../../utils/constant_colors.dart';
@@ -38,7 +39,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
     return Scaffold(
-      appBar: CommonHelper().appbarCommon('Change password', context, () {
+      appBar: CommonHelper().appbarCommon(ConstString.changePass, context, () {
         Navigator.pop(context);
       }),
       backgroundColor: Colors.white,
@@ -67,14 +68,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         const SizedBox(
                           height: 33,
                         ),
-                        CommonHelper()
-                            .titleCommon(ln.getString('Enter new password')),
+                        CommonHelper().titleCommon(
+                            ln.getString(ConstString.enterNewPass)),
                         const SizedBox(
                           height: 13,
                         ),
                         CommonHelper().paragraphCommon(
-                          ln.getString(
-                              'Your new password should be different from previously used passwords'),
+                          ln.getString(ConstString.newPassDifferent),
                         ),
 
                         const SizedBox(
@@ -82,8 +82,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         ),
 
                         //New password =========================>
-                        CommonHelper()
-                            .labelCommon(ln.getString('Enter new password')),
+                        CommonHelper().labelCommon(
+                            ln.getString(ConstString.enterNewPass)),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -97,8 +97,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return ln
-                                      .getString('Please enter your password');
+                                  return ln.getString(ConstString.plzEnterPass);
                                 }
                                 return null;
                               },
@@ -153,14 +152,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: ln.getString('New password'),
+                                  hintText: ln.getString(ConstString.newPass),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
 
                         //Repeat New password =========================>
-                        CommonHelper()
-                            .labelCommon(ln.getString('Repeat new password')),
+                        CommonHelper().labelCommon(
+                            ln.getString(ConstString.repeatNewPass)),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -175,7 +174,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return ln
-                                      .getString('Please retype your password');
+                                      .getString(ConstString.plzRetypePass);
                                 }
                                 return null;
                               },
@@ -230,7 +229,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: ln.getString('Retype new password'),
+                                  hintText:
+                                      ln.getString(ConstString.retypeNewPass),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
@@ -241,8 +241,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         ),
                         Consumer<ResetPasswordService>(
                           builder: (context, provider, child) => CommonHelper()
-                              .buttonOrange(ln.getString('Change password'),
-                                  () {
+                              .buttonOrange(
+                                  ln.getString(ConstString.changePass), () {
                             if (provider.isloading == false) {
                               if (_formKey.currentState!.validate()) {
                                 provider.resetPassword(

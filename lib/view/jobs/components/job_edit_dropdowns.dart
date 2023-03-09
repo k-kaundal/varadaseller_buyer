@@ -4,6 +4,7 @@ import 'package:qixer/service/all_services_service.dart';
 import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/view/report/services/components/service_filter_dropdown_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -59,7 +60,7 @@ class _JobEditDropdownsState extends State<JobEditDropdowns> {
                       //dropdown and search box
 
                       // Country dropdown ===============>
-                      CommonHelper().labelCommon("Choose country"),
+                      CommonHelper().labelCommon(ConstString.chooseCountry),
                       provider.countryDropdownList.isNotEmpty
                           ? Container(
                               width: double.infinity,
@@ -118,7 +119,7 @@ class _JobEditDropdownsState extends State<JobEditDropdowns> {
                         height: 25,
                       ),
                       // States dropdown ===============>
-                      CommonHelper().labelCommon("Choose city"),
+                      CommonHelper().labelCommon(ConstString.chooseCity),
                       provider.statesDropdownList.isNotEmpty
                           ? Container(
                               width: double.infinity,

@@ -8,6 +8,7 @@ import 'package:qixer/view/booking/payment_choose_page.dart';
 import 'package:qixer/view/jobs/job_conversation_page.dart';
 import 'package:qixer/view/jobs/job_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -29,12 +30,16 @@ class _JobRequestPageState extends State<JobRequestPage> {
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
 
-  List menuNames = ['View details', 'Conversation', 'Hire now'];
+  List menuNames = [
+    ConstString.viewDetails,
+    ConstString.conversation,
+    ConstString.hireNow
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonHelper().appbarCommon('Job Requests', context, () {
+      appBar: CommonHelper().appbarCommon(ConstString.jobRequests, context, () {
         Navigator.pop(context);
       }),
       backgroundColor: cc.bgColor,
@@ -110,11 +115,11 @@ class _JobRequestPageState extends State<JobRequestPage> {
                                                 fontsize: 15),
                                             sizedBoxCustom(8),
                                             CommonHelper().paragraphCommon(
-                                              '${ln.getString("Your offer")}: \$${provider.jobReqList[i].job.price}',
+                                              '${ln.getString(ConstString.yourOffer)}: \$${provider.jobReqList[i].job.price}',
                                             ),
                                             sizedBoxCustom(6),
                                             CommonHelper().paragraphCommon(
-                                                '${ln.getString("Seller offer")}: \$${provider.jobReqList[i].expectedSalary}',
+                                                '${ln.getString(ConstString.sellerOffer)}: \$${provider.jobReqList[i].expectedSalary}',
                                                 color: cc.successColor),
                                           ]),
                                     ),
@@ -218,7 +223,7 @@ class _JobRequestPageState extends State<JobRequestPage> {
                       ),
                     )
                   : OthersHelper().showError(context,
-                      msg: ln.getString('No request found')),
+                      msg: ln.getString(ConstString.noReqFound)),
             ),
           ),
         ),

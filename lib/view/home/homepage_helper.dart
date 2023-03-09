@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 class HomepageHelper {
@@ -28,7 +29,7 @@ class HomepageHelper {
               width: 10,
             ),
             Text(
-              ln.getString("Search services"),
+              ln.getString(ConstString.searchServices),
               style: const TextStyle(
                 color: Color.fromARGB(255, 126, 126, 126),
                 fontSize: 14,

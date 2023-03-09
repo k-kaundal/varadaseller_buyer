@@ -9,6 +9,7 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/booking/service_personalization_page.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 import '../../../service/booking_services/personalization_service.dart';
@@ -86,7 +87,7 @@ class ServiceCard extends StatelessWidget {
                       screenWidth < fourinchScreenWidth
                           ? Container()
                           : AutoSizeText(
-                              '${ln.getString('Starts from')}:',
+                              '${ln.getString(ConstString.startsFrom)}:',
                               textAlign: TextAlign.start,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -274,7 +275,7 @@ class ServiceCardContents extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '${ln.getString('by')}:',
+                    '${ln.getString(ConstString.by)}:',
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

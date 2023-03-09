@@ -10,6 +10,7 @@ import 'package:qixer/view/booking/components/extras.dart';
 import 'package:qixer/view/booking/delivery_address_page.dart.dart';
 import 'package:qixer/view/booking/service_schedule_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -41,13 +42,13 @@ class _ServicePersonalizationPageState
     ConstantColors cc = ConstantColors();
     return WillPopScope(
       onWillPop: () {
-        // BookStepsService().decreaseStep(context);
         return Future.value(true);
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarForBookingPages('Personalize', context,
-            isPersonalizatioPage: true, extraFunction: () {
+        appBar: CommonHelper().appbarForBookingPages(
+            ConstString.personalize, context, isPersonalizatioPage: true,
+            extraFunction: () {
           //Whatever quanity or other extra user has selected.. set the totalprice to the default service price again
           Provider.of<BookService>(context, listen: false).setTotalPrice(
               Provider.of<PersonalizationService>(context, listen: false)
@@ -81,7 +82,7 @@ class _ServicePersonalizationPageState
                                             CrossAxisAlignment.start,
                                         children: [
                                           CommonHelper().titleCommon(
-                                              '${ln.getString('What\'s included')}:'),
+                                              '${ln.getString(ConstString.whatsIncluded)}:'),
                                           const SizedBox(
                                             height: 20,
                                           ),
@@ -118,7 +119,7 @@ class _ServicePersonalizationPageState
                                 ),
                               ],
                             ))
-                        : Text(ln.getString('Something went wrong'))
+                        : Text(ln.getString(ConstString.somethingWrong))
                     : Container(
                         height: MediaQuery.of(context).size.height - 250,
                         alignment: Alignment.center,
@@ -139,11 +140,14 @@ class _ServicePersonalizationPageState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       BookingHelper().detailsPanelRow(
-                          ln.getString('Total'), 0, '${provider.totalPrice}'),
+                          ln.getString(ConstString.total),
+                          0,
+                          '${provider.totalPrice}'),
                       const SizedBox(
                         height: 23,
                       ),
-                      CommonHelper().buttonOrange(ln.getString('Next'), () {
+                      CommonHelper()
+                          .buttonOrange(ln.getString(ConstString.next), () {
                         if (personalizationProvider.isloading == false) {
                           if (personalizationProvider.isOnline == 1) {
                             //if it is an online service no need to show service schedule and choose location page

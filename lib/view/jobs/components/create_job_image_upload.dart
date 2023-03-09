@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/jobs_service/create_job_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 class CreateJobUploadImage extends StatelessWidget {
   const CreateJobUploadImage({Key? key}) : super(key: key);
@@ -28,11 +29,6 @@ class CreateJobUploadImage extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           children: [
-                            // for (int i = 0;
-                            //     i <
-                            //         provider
-                            //             .images!.length;
-                            //     i++)
                             InkWell(
                               onTap: () {},
                               child: Column(
@@ -40,7 +36,6 @@ class CreateJobUploadImage extends StatelessWidget {
                                   Container(
                                     margin: const EdgeInsets.only(right: 10),
                                     child: Image.file(
-                                      // File(provider.images[i].path),
                                       File(provider.pickedImage.path),
                                       height: 80,
                                       width: 80,
@@ -63,7 +58,8 @@ class CreateJobUploadImage extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                CommonHelper().buttonOrange(ln.getString('Choose images'), () {
+                CommonHelper()
+                    .buttonOrange(ln.getString(ConstString.chooseImages), () {
                   provider.pickAddressImage(context);
                 }),
               ],

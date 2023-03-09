@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,6 +16,7 @@ import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/booking/components/deposite_amount_section.dart';
 import 'package:qixer/view/booking/components/total_payable.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -54,7 +57,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon('Payment', context, () {
+        appBar: CommonHelper().appbarCommon(ConstString.payment, context, () {
           Navigator.pop(context);
         }),
         body: SingleChildScrollView(
@@ -95,7 +98,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                 ),
 
                               CommonHelper().titleCommon(
-                                  ln.getString('Choose payment method')),
+                                  ln.getString(ConstString.choosePayMethod)),
 
                               //payment method card
                               GridView.builder(
@@ -187,8 +190,8 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                                     height: 30,
                                                   ),
                                                   CommonHelper().buttonOrange(
-                                                      ln.getString(
-                                                          'Choose image'), () {
+                                                      ln.getString(ConstString
+                                                          .chooseImage), () {
                                                     btProvider
                                                         .pickImage(context);
                                                   }),
@@ -227,8 +230,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
-                                    ln.getString(
-                                        'I agree with the terms and conditons'),
+                                    ln.getString(ConstString.iAgreeTerms),
                                     style: TextStyle(
                                         color: ConstantColors().greyFour,
                                         fontWeight: FontWeight.w400,
@@ -250,7 +252,8 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                 height: 20,
                               ),
                               CommonHelper().buttonOrange(
-                                  ln.getString('Pay & Confirm'), () async {
+                                  ln.getString(ConstString.payConfirm),
+                                  () async {
                                 var w = await Provider.of<WalletService>(
                                         context,
                                         listen: false)
@@ -261,8 +264,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
 
                                 if (termsAgree == false) {
                                   OthersHelper().showToast(
-                                      ln.getString(
-                                          'You must agree with the terms and conditions to place the order'),
+                                      ln.getString(ConstString.mustAgreeTerms),
                                       Colors.black);
                                   return;
                                 }

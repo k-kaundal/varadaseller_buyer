@@ -13,6 +13,7 @@ import 'package:qixer/service/common_service.dart';
 import 'package:qixer/view/booking/booking_location_page.dart';
 
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -49,8 +50,8 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarForBookingPages('Schedule', context,
-            extraFunction: () {
+        appBar: CommonHelper().appbarForBookingPages(
+            ConstString.schedule, context, extraFunction: () {
           //set coupon value to default again
           Provider.of<CouponService>(context, listen: false).setCouponDefault();
         }),
@@ -113,7 +114,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                 height: 30,
                               ),
                               CommonHelper().titleCommon(
-                                  '${ln.getString('Available time')}:'),
+                                  '${ln.getString(ConstString.availableTime)}:'),
 
                               const SizedBox(
                                 height: 17,
@@ -199,7 +200,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                         )
                                       : Text(
                                           ln.getString(
-                                              "No schedule available on this date"),
+                                              ConstString.noScheduleAvailable),
                                           style:
                                               TextStyle(color: cc.primaryColor),
                                         )
@@ -235,7 +236,8 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonHelper().buttonOrange(ln.getString('Next'), () {
+                          CommonHelper()
+                              .buttonOrange(ln.getString(ConstString.next), () {
                             if (_selectedTime != null &&
                                 _selectedWeekday != null) {
                               //increase page steps by one

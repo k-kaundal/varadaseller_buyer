@@ -4,6 +4,7 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/auth/login/login.dart';
 import 'package:qixer/view/intro/intro_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
@@ -138,7 +139,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                 Border.all(color: cc.primaryColor, width: 1.5),
                             borderRadius: BorderRadius.circular(7)),
                         child: Text(
-                          ln.getString('Skip'),
+                          ln.getString(ConstString.skip),
                           style: TextStyle(
                               color: cc.primaryColor,
                               fontSize: 15,
@@ -172,7 +173,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                               color: cc.primaryColor,
                               borderRadius: BorderRadius.circular(8)),
                           child: Text(
-                            ln.getString('Continue'),
+                            ln.getString(ConstString.continueTxt),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,

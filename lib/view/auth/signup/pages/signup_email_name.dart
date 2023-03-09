@@ -7,6 +7,7 @@ import 'package:qixer/service/auth_services/signup_service.dart';
 import 'package:qixer/view/auth/signup/components/email_name_fields.dart';
 import 'package:qixer/view/auth/signup/signup_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 class SignupEmailName extends StatefulWidget {
   const SignupEmailName(
@@ -57,8 +58,8 @@ class _SignupEmailNameState extends State<SignupEmailName> {
                 height: 13,
               ),
               Consumer<SignupService>(
-                builder: (context, provider, child) =>
-                    CommonHelper().buttonOrange(ln.getString("Continue"), () {
+                builder: (context, provider, child) => CommonHelper()
+                    .buttonOrange(ln.getString(ConstString.continueTxt), () {
                   if (_formKey.currentState!.validate()) {
                     provider.pagecontroller.animateToPage(
                         provider.selectedPage + 1,

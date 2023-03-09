@@ -8,6 +8,7 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/home/categories/components/category_card.dart';
 
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -37,7 +38,8 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
     ConstantColors cc = ConstantColors();
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon('All Categories', context, () {
+        appBar:
+            CommonHelper().appbarCommon(ConstString.allCategories, context, () {
           Navigator.pop(context);
         }),
         body: Consumer<CategoryService>(
@@ -66,7 +68,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                               imagelink: provider
                                   .categories.category[index].mobileIcon,
                             )
-                          : Text(ln.getString("Something went wrong"))
+                          : Text(ln.getString(ConstString.somethingWrong))
                       : OthersHelper().showLoading(cc.primaryColor);
                 },
               ),

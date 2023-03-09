@@ -7,6 +7,7 @@ import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
 import 'package:qixer/view/booking/delivery_address_page.dart.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -42,7 +43,7 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
         },
         child: Scaffold(
           appBar: CommonHelper().appbarForBookingPages(
-            "Location",
+            ConstString.location,
             context,
           ),
           body: SingleChildScrollView(
@@ -59,7 +60,7 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                       Steps(cc: cc),
 
                       CommonHelper()
-                          .titleCommon(ln.getString('Booking informations')),
+                          .titleCommon(ln.getString(ConstString.bookInfos)),
 
                       const SizedBox(
                         height: 20,
@@ -70,7 +71,7 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                       const SizedBox(
                         height: 27,
                       ),
-                      CommonHelper().buttonOrange('Next', () {
+                      CommonHelper().buttonOrange(ConstString.next, () {
                         var selectedStateId = Provider.of<CountryStatesService>(
                                 context,
                                 listen: false)
@@ -82,7 +83,7 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                         if (selectedStateId == '0' || selectedAreaId == '0') {
                           OthersHelper().showSnackBar(
                               context,
-                              ln.getString('You must select a state and area'),
+                              ln.getString(ConstString.mustSelectStateArea),
                               cc.warningColor);
                           return;
                         }

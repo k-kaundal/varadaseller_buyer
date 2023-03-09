@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 
 import 'package:qixer/view/auth/login/login.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 class SignupHelper {
@@ -15,7 +16,7 @@ class SignupHelper {
         children: [
           RichText(
             text: TextSpan(
-              text: '${ln.getString('Have an account?')}  ',
+              text: '${ln.getString(ConstString.haveAnAccount)}  ',
               style: const TextStyle(color: Color(0xff646464), fontSize: 14),
               children: <TextSpan>[
                 TextSpan(
@@ -26,7 +27,7 @@ class SignupHelper {
                             MaterialPageRoute(
                                 builder: (context) => const LoginPage()));
                       },
-                    text: ln.getString('Sign in'),
+                    text: ln.getString(ConstString.signIn),
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,

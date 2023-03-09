@@ -10,6 +10,7 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/email_verify_service.dart';
 import 'package:qixer/service/auth_services/reset_password_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -51,7 +52,8 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
         }
       },
       child: Scaffold(
-        appBar: CommonHelper().appbarCommon('Verify Email', context, () {
+        appBar:
+            CommonHelper().appbarCommon(ConstString.verifyEmail, context, () {
           Navigator.pop(context);
         }),
         body: Consumer<AppStringService>(
@@ -72,14 +74,13 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                       ),
                     ),
                   ),
-                  CommonHelper()
-                      .titleCommon(ln.getString("Enter the 4 digit code")),
+                  CommonHelper().titleCommon(
+                      ln.getString(ConstString.enterFourDigitCode)),
                   const SizedBox(
                     height: 13,
                   ),
                   CommonHelper().paragraphCommon(
-                      ln.getString(
-                          'Enter the 4 digit code we sent to to your email in order verify your email'),
+                      ln.getString(ConstString.enterFourDigitToEmailVerify),
                       textAlign: TextAlign.center),
                   const SizedBox(
                     height: 33,
@@ -149,7 +150,8 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                         provider.isloading == false
                             ? RichText(
                                 text: TextSpan(
-                                  text: '${ln.getString('Did not receive')}?  ',
+                                  text:
+                                      '${ln.getString(ConstString.didNotReceive)}?  ',
                                   style: const TextStyle(
                                       color: Color(0xff646464), fontSize: 14),
                                   children: <TextSpan>[
@@ -160,7 +162,8 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                                                 widget.email, context,
                                                 isFromOtpPage: true);
                                           },
-                                        text: ln.getString('Send again'),
+                                        text:
+                                            ln.getString(ConstString.sendAgain),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,

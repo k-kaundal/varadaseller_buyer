@@ -259,8 +259,20 @@ var appStrings = {
   ConstString.supportTickets: ConstString.supportTickets,
   ConstString.savedServices: ConstString.savedServices,
   ConstString.noServiceSaved: ConstString.noServiceSaved,
+  ConstString.userName: ConstString.userName,
+  ConstString.pressAgainToExit: ConstString.pressAgainToExit,
   ConstString.noHistoryFound: ConstString.noHistoryFound,
+  ConstString.pending: ConstString.pending,
   ConstString.payFailedOrderPlaced: ConstString.payFailedOrderPlaced,
   ConstString.payFailedOrderPlacedPayAgain:
       ConstString.payFailedOrderPlacedPayAgain,
+
+//intro
+  ConstString.houseCleaningService: ConstString.houseCleaningService,
+  ConstString.repairingService: ConstString.repairingService,
+  ConstString.homeShiftService: ConstString.homeShiftService,
+  ConstString.getHouseServiceFromExperts:
+      ConstString.getHouseServiceFromExperts,
+  ConstString.getRepairedFromExperts: ConstString.getRepairedFromExperts,
+  ConstString.homeShiftFromExperts: ConstString.homeShiftFromExperts,
 };

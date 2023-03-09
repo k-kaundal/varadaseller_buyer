@@ -11,6 +11,7 @@ import 'package:qixer/view/auth/signup/signup_helper.dart';
 import 'package:qixer/view/booking/book_confirmation_page.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -102,7 +103,8 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
         child: Scaffold(
           // resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,
-          appBar: CommonHelper().appbarForBookingPages('Address', context),
+          appBar: CommonHelper()
+              .appbarForBookingPages(ConstString.address, context),
           body: Consumer<AppStringService>(
             builder: (context, ln, child) => Consumer<PersonalizationService>(
               builder: (context, personalizatioProvider, child) => Column(
@@ -123,7 +125,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                   : Container(),
 
                               CommonHelper().titleCommon(
-                                  ln.getString('Booking informations')),
+                                  ln.getString(ConstString.bookInfos)),
 
                               const SizedBox(
                                 height: 22,
@@ -135,19 +137,20 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // name ============>
-                                    CommonHelper()
-                                        .labelCommon(ln.getString('Name')),
+                                    CommonHelper().labelCommon(
+                                        ln.getString(ConstString.name)),
 
                                     CustomInput(
                                       controller: userNameController,
                                       validation: (value) {
                                         if (value == null || value.isEmpty) {
                                           return ln.getString(
-                                              'Please enter your name');
+                                              ConstString.plzEnterName);
                                         }
                                         return null;
                                       },
-                                      hintText: ln.getString('Enter your name'),
+                                      hintText:
+                                          ln.getString(ConstString.enterName),
                                       icon: 'assets/icons/user.png',
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -156,19 +159,20 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                     ),
 
                                     //Email ============>
-                                    CommonHelper()
-                                        .labelCommon(ln.getString('Email')),
+                                    CommonHelper().labelCommon(
+                                        ln.getString(ConstString.email)),
 
                                     CustomInput(
                                       controller: emailController,
                                       validation: (value) {
                                         if (value == null || value.isEmpty) {
                                           return ln.getString(
-                                              'Please enter your email');
+                                              ConstString.plzEnterEmail);
                                         }
                                         return null;
                                       },
-                                      hintText: "Enter your email",
+                                      hintText:
+                                          ln.getString(ConstString.enterEmail),
                                       icon: 'assets/icons/email-grey.png',
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -177,8 +181,8 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                     ),
 
                                     //Phone number field
-                                    CommonHelper()
-                                        .labelCommon(ln.getString('Phone')),
+                                    CommonHelper().labelCommon(
+                                        ln.getString(ConstString.phone)),
                                     Consumer<RtlService>(
                                       builder: (context, rtlP, child) =>
                                           IntlPhoneField(
@@ -189,10 +193,11 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                             : TextAlign.right,
                                         decoration: SignupHelper()
                                             .phoneFieldDecoration(
-                                                labelText: ln
-                                                    .getString('Phone number'),
+                                                labelText: ln.getString(
+                                                    ConstString.phoneNumber),
                                                 hintText: ln.getString(
-                                                    'Enter phone number')),
+                                                    ConstString
+                                                        .enterPhoneNumber)),
                                         initialCountryCode: countryCode,
                                         onChanged: (phone) {
                                           print(phone.completeNumber);
@@ -209,7 +214,8 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CommonHelper().labelCommon(
-                                                  ln.getString('Post code')),
+                                                  ln.getString(
+                                                      ConstString.postCode)),
 
                                               CustomInput(
                                                 controller: postCodeController,
@@ -217,12 +223,13 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                                   if (value == null ||
                                                       value.isEmpty) {
                                                     return ln.getString(
-                                                        'Please enter post code');
+                                                        ConstString
+                                                            .plzEnterPost);
                                                   }
                                                   return null;
                                                 },
                                                 hintText: ln.getString(
-                                                    'Enter your post code'),
+                                                    ConstString.enterPostCode),
                                                 icon:
                                                     'assets/icons/location.png',
                                                 textInputAction:
@@ -236,7 +243,8 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                               ),
 
                                               CommonHelper().labelCommon(
-                                                  ln.getString('Your address')),
+                                                  ln.getString(
+                                                      ConstString.yourAddress)),
 
                                               CustomInput(
                                                 controller: addressController,
@@ -244,12 +252,13 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                                   if (value == null ||
                                                       value.isEmpty) {
                                                     return ln.getString(
-                                                        'Please enter your address');
+                                                        ConstString
+                                                            .plzEnterAddress);
                                                   }
                                                   return null;
                                                 },
                                                 hintText: ln.getString(
-                                                    'Enter your address'),
+                                                    ConstString.enterAddress),
                                                 icon:
                                                     'assets/icons/location.png',
                                                 textInputAction:
@@ -279,7 +288,8 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonHelper().buttonOrange(ln.getString('Next'), () {
+                          CommonHelper()
+                              .buttonOrange(ln.getString(ConstString.next), () {
                             if (_formKey.currentState!.validate()) {
                               //increase page steps by one
                               BookStepsService().onNext(context);

@@ -10,6 +10,7 @@ import 'package:qixer/view/notification/push_notification_helper.dart';
 import 'package:qixer/view/tabs/saved_item_page.dart';
 import 'package:qixer/view/tabs/search/search_tab.dart';
 import 'package:qixer/view/tabs/settings/menu_page.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import '../tabs/orders/orders_page.dart';
@@ -85,7 +86,7 @@ class _HomePageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     var pressAgainTxt = Provider.of<AppStringService>(context, listen: false)
-        .getString("Press again to exit");
+        .getString(ConstString.pressAgainToExit);
 
     return Scaffold(
       backgroundColor: Colors.white,

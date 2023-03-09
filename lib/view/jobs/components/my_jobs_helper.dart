@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/jobs_service/my_jobs_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -44,7 +45,7 @@ class MyJobsHelper {
               builder: (context, provider, child) => Column(
                 children: [
                   Text(
-                    '${ln.getString('Are you sure')}?',
+                    '${ln.getString(ConstString.areYouSure)}?',
                     style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                   ),
                   const SizedBox(
@@ -53,15 +54,16 @@ class MyJobsHelper {
                   Row(
                     children: [
                       Expanded(
-                          child: CommonHelper()
-                              .borderButtonOrange(ln.getString('Cancel'), () {
+                          child: CommonHelper().borderButtonOrange(
+                              ln.getString(ConstString.cancel), () {
                         Navigator.pop(context);
                       }, bgColor: Colors.grey)),
                       const SizedBox(
                         width: 16,
                       ),
                       Expanded(
-                          child: CommonHelper().buttonOrange('Delete', () {
+                          child: CommonHelper().buttonOrange(ConstString.delete,
+                              () {
                         provider.deleteJob(context, index: index, jobId: jobId);
                       },
                               bgColor: Colors.red,

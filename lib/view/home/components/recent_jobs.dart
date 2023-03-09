@@ -9,6 +9,7 @@ import 'package:qixer/view/home/components/section_title.dart';
 import 'package:qixer/view/jobs/components/my_jobs_card.dart';
 import 'package:qixer/view/jobs/job_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -30,7 +31,7 @@ class RecentJobs extends StatelessWidget {
                         sizedBoxCustom(30),
                         SectionTitle(
                           cc: cc,
-                          title: 'Recent jobs',
+                          title: ln.getString(ConstString.recentJobs),
                           hasSeeAllBtn: false,
                           pressed: () {},
                         ),
@@ -96,7 +97,7 @@ class RecentJobs extends StatelessWidget {
                                         Row(
                                           children: [
                                             AutoSizeText(
-                                              '${ln.getString('Starts from')}:',
+                                              '${ln.getString(ConstString.startsFrom)}:',
                                               textAlign: TextAlign.start,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,

@@ -5,6 +5,7 @@ import 'package:qixer/view/auth/signup/components/area_dropdown.dart';
 import 'package:qixer/view/auth/signup/components/country_dropdown.dart';
 import 'package:qixer/view/auth/signup/components/state_dropdown.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 class CountryStatesDropdowns extends StatefulWidget {
   const CountryStatesDropdowns({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _CountryStatesDropdownsState extends State<CountryStatesDropdowns> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().labelCommon("Choose country"),
+                    CommonHelper().labelCommon(ConstString.chooseCountry),
                     const CountryDropdown(),
                   ],
                 ),
@@ -46,7 +47,7 @@ class _CountryStatesDropdownsState extends State<CountryStatesDropdowns> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().labelCommon("Choose city"),
+                    CommonHelper().labelCommon(ConstString.chooseCity),
                     const StateDropdown(),
                   ],
                 ),
@@ -59,7 +60,7 @@ class _CountryStatesDropdownsState extends State<CountryStatesDropdowns> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().labelCommon("Choose area"),
+                    CommonHelper().labelCommon(ConstString.chooseArea),
                     const AreaDropdown(),
                   ],
                 )

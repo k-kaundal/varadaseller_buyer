@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/responsive.dart';
@@ -29,7 +30,7 @@ class _OrderExtraAcceptSuccessPageState
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon('Success', context, () {
+        appBar: CommonHelper().appbarCommon(ConstString.success, context, () {
           Navigator.pop(context);
         }),
         body: SingleChildScrollView(
@@ -50,7 +51,7 @@ class _OrderExtraAcceptSuccessPageState
                     ),
                     sizedBoxCustom(7),
                     Text(
-                      ln.getString('Order extra accepted'),
+                      ln.getString(ConstString.orderExtraAccepted),
                       style: TextStyle(
                           color: cc.greyFour,
                           fontSize: 21,

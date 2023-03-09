@@ -8,6 +8,7 @@ import 'package:qixer/service/auth_services/signup_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/auth/signup/signup_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -51,12 +52,12 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Phone number field
-                CommonHelper().labelCommon(ln.getString("Phone")),
+                CommonHelper().labelCommon(ln.getString(ConstString.phone)),
                 Consumer<RtlService>(
                   builder: (context, rtlP, child) => IntlPhoneField(
                     decoration: SignupHelper().phoneFieldDecoration(
-                        labelText: ln.getString('Phone number'),
-                        hintText: ln.getString('Enter phone number')),
+                        labelText: ln.getString(ConstString.phoneNumber),
+                        hintText: ln.getString(ConstString.enterPhoneNumber)),
                     initialCountryCode: provider.countryCode,
                     disableLengthCheck: true,
                     textAlign: rtlP.direction == 'ltr'
@@ -73,7 +74,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                 sizedBoxCustom(20),
 
                 //New password =========================>
-                CommonHelper().labelCommon(ln.getString("Password")),
+                CommonHelper().labelCommon(ln.getString(ConstString.pass)),
 
                 Container(
                     margin: const EdgeInsets.only(bottom: 19),
@@ -87,7 +88,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                       style: const TextStyle(fontSize: 14),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return ln.getString("Please enter your password");
+                          return ln.getString(ConstString.plzEnterPass);
                         }
                         return null;
                       },
@@ -138,13 +139,14 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                           focusedErrorBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: ConstantColors().primaryColor)),
-                          hintText: ln.getString("Enter password"),
+                          hintText: ln.getString(ConstString.enterPass),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 18)),
                     )),
 
                 //Repeat New password =========================>
-                CommonHelper().labelCommon(ln.getString("Repeat password")),
+                CommonHelper()
+                    .labelCommon(ln.getString(ConstString.repeatPass)),
 
                 Container(
                     margin: const EdgeInsets.only(bottom: 19),
@@ -158,7 +160,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                       style: const TextStyle(fontSize: 14),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return ln.getString("Please retype your password");
+                          return ln.getString(ConstString.plzRetypePass);
                         }
                         return null;
                       },
@@ -210,7 +212,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                           focusedErrorBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: ConstantColors().primaryColor)),
-                          hintText: ln.getString("Enter password"),
+                          hintText: ln.getString(ConstString.enterPass),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 18)),
                     )),
@@ -220,15 +222,15 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                   height: 13,
                 ),
 
-                CommonHelper().buttonOrange(ln.getString("Continue"), () {
+                CommonHelper()
+                    .buttonOrange(ln.getString(ConstString.continueTxt), () {
                   if (widget.passController.text !=
                       widget.repeatPassController.text) {
                     OthersHelper().showToast(
-                        ln.getString("Password did not match"), Colors.black);
+                        ln.getString(ConstString.passDidntMatch), Colors.black);
                   } else if (widget.passController.text.length < 6) {
                     OthersHelper().showToast(
-                        ln.getString("Password must be at least 6 characters"),
-                        Colors.black);
+                        ln.getString(ConstString.passMustBeSix), Colors.black);
                   } else if (_formKey.currentState!.validate()) {
                     provider.pagecontroller.animateToPage(
                         provider.selectedPage + 1,

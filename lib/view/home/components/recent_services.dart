@@ -8,6 +8,7 @@ import 'package:qixer/view/home/components/section_title.dart';
 import 'package:qixer/view/home/components/service_card.dart';
 import 'package:qixer/view/report/services/all_services_page.dart';
 import 'package:qixer/view/report/services/service_details_page.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -36,7 +37,7 @@ class RecentServices extends StatelessWidget {
                           builder: (context, allServiceProvider, child) =>
                               SectionTitle(
                             cc: cc,
-                            title: ln.getString('Recently listed'),
+                            title: ln.getString(ConstString.recentJobs),
                             pressed: () {
                               //when user clicks on recent see all. set sort by dropdown to latest
                               allServiceProvider
@@ -101,7 +102,7 @@ class RecentServices extends StatelessWidget {
                                         ['sellerName'],
                                     price: provider.recentServiceMap[i]
                                         ['price'],
-                                    buttonText: 'Book Now',
+                                    buttonText: ConstString.bookNow,
                                     width:
                                         MediaQuery.of(context).size.width - 85,
                                     marginRight: 17.0,
@@ -139,12 +140,13 @@ class RecentServices extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Text(ln.getString('Something went wrong'))
+                  : Text(ln.getString(ConstString.somethingWrong))
               : Container()
           : Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(top: 35),
-              child: Text(ln.getString('No service available in your area')),
+              child:
+                  Text(ln.getString(ConstString.noServiceAvailableInYourArea)),
             ),
     );
   }

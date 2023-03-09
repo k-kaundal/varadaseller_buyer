@@ -1,16 +1,18 @@
+import 'package:qixer/view/utils/const_strings.dart';
+
 class IntroHelper {
   getImage(int i) {
     return 'assets/images/intro${i + 1}.png';
   }
 
   List title = [
-    "House Cleaning Service",
-    "Repairing Services",
-    "Home Shifting Service"
+    ConstString.houseCleaningService,
+    ConstString.repairingService,
+    ConstString.homeShiftService
   ];
   List subTitle = [
-    "Get house cleaning services from expert cleaners",
-    "Get repaired anything from our thousands of experts",
-    "Take our home shifting service to get best service"
+    ConstString.getHouseServiceFromExperts,
+    ConstString.getRepairedFromExperts,
+    ConstString.homeShiftFromExperts
   ];
 }

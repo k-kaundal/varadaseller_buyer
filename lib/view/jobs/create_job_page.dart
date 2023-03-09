@@ -6,6 +6,7 @@ import 'package:qixer/view/booking/components/textarea_field.dart';
 import 'package:qixer/view/jobs/components/create_job_image_upload.dart';
 import 'package:qixer/view/jobs/components/job_create_dropdowns.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/custom_input.dart';
@@ -54,7 +55,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
     var onlyDate = selectedDate.toString().split(' ');
 
     return Scaffold(
-      appBar: CommonHelper().appbarCommon('Create Job', context, () {
+      appBar: CommonHelper().appbarCommon(ConstString.createJob, context, () {
         Navigator.pop(context);
       }),
       backgroundColor: cc.bgColor,
@@ -129,17 +130,17 @@ class _CreateJobPageState extends State<CreateJobPage> {
 
                     // Title
                     //============>
-                    CommonHelper().labelCommon(ln.getString("Title")),
+                    CommonHelper().labelCommon(ln.getString(ConstString.title)),
 
                     CustomInput(
                       controller: titleController,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return ln.getString('Please enter a title');
+                          return ln.getString(ConstString.plzEnterTitle);
                         }
                         return null;
                       },
-                      hintText: ln.getString("Title"),
+                      hintText: ln.getString(ConstString.title),
                       paddingHorizontal: 15,
                       textInputAction: TextInputAction.next,
                     ),
@@ -147,26 +148,28 @@ class _CreateJobPageState extends State<CreateJobPage> {
 
                     // Title
                     //============>
-                    CommonHelper().labelCommon(ln.getString("Budget")),
+                    CommonHelper()
+                        .labelCommon(ln.getString(ConstString.budget)),
 
                     CustomInput(
                       controller: budgetController,
                       isNumberField: true,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return ln.getString("Please enter your budget");
+                          return ln.getString(ConstString.plzEnterBudget);
                         }
                         return null;
                       },
-                      hintText: ln.getString("Budget"),
+                      hintText: ln.getString(ConstString.budget),
                       textInputAction: TextInputAction.next,
                       paddingHorizontal: 15,
                     ),
                     sizedBoxCustom(20),
 
-                    CommonHelper().labelCommon(ln.getString('Description')),
+                    CommonHelper()
+                        .labelCommon(ln.getString(ConstString.description)),
                     TextareaField(
-                      hintText: ln.getString('Description'),
+                      hintText: ln.getString(ConstString.description),
                       notesController: descController,
                     ),
 
@@ -178,7 +181,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
 
                     // pick date
                     //===========>
-                    CommonHelper().labelCommon("End date"),
+                    CommonHelper().labelCommon(ConstString.endDate),
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10)),
@@ -225,14 +228,14 @@ class _CreateJobPageState extends State<CreateJobPage> {
 
                     sizedBoxCustom(25),
 
-                    CommonHelper().buttonOrange('Create job', () {
+                    CommonHelper().buttonOrange(ConstString.createJob, () {
                       if (provider.isLoading == true) return;
 
                       if (double.tryParse(budgetController.text.trim()) ==
                           null) {
                         //if not integer value
-                        OthersHelper().showSnackBar(context,
-                            'You must enter a valid budget', Colors.red);
+                        OthersHelper().showSnackBar(
+                            context, ConstString.enterValidBudget, Colors.red);
                         return;
                       }
 
@@ -257,5 +260,5 @@ class _CreateJobPageState extends State<CreateJobPage> {
     );
   }
 
-  List onlineOffline = ['Offline', 'Online'];
+  List onlineOffline = [ConstString.offline, ConstString.online];
 }

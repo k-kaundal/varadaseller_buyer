@@ -15,6 +15,7 @@ import 'package:qixer/view/home/components/top_rated_services.dart';
 import 'package:qixer/view/home/homepage_helper.dart';
 import 'package:qixer/view/tabs/settings/profile_edit.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 import '../utils/constant_styles.dart';
@@ -76,7 +77,7 @@ class _HomepageState extends State<Homepage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '${ln.getString('Welcome')}!',
+                                        '${ln.getString(ConstString.welcome)}!',
                                         style: TextStyle(
                                           color: cc.greyParagraph,
                                           fontSize: 14,
@@ -116,7 +117,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                             ),
                           )
-                        : Text(ln.getString('Could not load user profile info'))
+                        : Text(ln.getString(ConstString.couldntLoadProfile))
                     : Container(),
               ),
 
@@ -171,7 +172,7 @@ class _HomepageState extends State<Homepage> {
 
                     SectionTitle(
                       cc: cc,
-                      title: ln.getString('Browse categories'),
+                      title: ln.getString(ConstString.browseCategories),
                       pressed: () {
                         Navigator.push(
                           context,

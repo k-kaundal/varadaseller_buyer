@@ -10,6 +10,7 @@ import 'package:qixer/view/jobs/components/my_jobs_page_appbar.dart';
 import 'package:qixer/view/jobs/components/my_jobs_popup_menu.dart';
 import 'package:qixer/view/jobs/job_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -174,7 +175,7 @@ class _MyJobsPageState extends State<MyJobsPage> {
                                                         child: Row(
                                                           children: [
                                                             AutoSizeText(
-                                                              '${ln.getString('Starts from')}:',
+                                                              '${ln.getString(ConstString.startsFrom)}:',
                                                               textAlign:
                                                                   TextAlign
                                                                       .start,
@@ -238,7 +239,8 @@ class _MyJobsPageState extends State<MyJobsPage> {
                                                           CommonHelper()
                                                               .paragraphCommon(
                                                             ln.getString(
-                                                                "On/Off"),
+                                                                ConstString
+                                                                    .onOff),
                                                           ),
                                                           Switch(
                                                             // This bool value toggles the switch.
@@ -274,7 +276,7 @@ class _MyJobsPageState extends State<MyJobsPage> {
                                     //
                                   ])
                             : OthersHelper().showError(context,
-                                msg: ln.getString('No jobs found')),
+                                msg: ln.getString(ConstString.noJobFound)),
                       ],
                     );
                   }),

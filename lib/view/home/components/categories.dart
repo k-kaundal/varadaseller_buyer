@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/home_services/category_service.dart';
 import 'package:qixer/view/home/categories/components/category_card.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -43,7 +44,7 @@ class Categories extends StatelessWidget {
                         ],
                       ),
                     )
-                  : Text(ln.getString('Something went wrong'))
+                  : Text(ln.getString(ConstString.somethingWrong))
               : OthersHelper().showLoading(cc.primaryColor);
         },
       ),

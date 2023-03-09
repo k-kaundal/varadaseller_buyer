@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/rtl_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 import '../../../service/booking_services/personalization_service.dart';
 import '../../report/services/service_helper.dart';
@@ -31,7 +34,8 @@ class _ExtrasState extends State<Extras> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CommonHelper().titleCommon('${widget.ln.getString('Add extras')}:'),
+        CommonHelper()
+            .titleCommon('${widget.ln.getString(ConstString.addExtra)}:'),
         const SizedBox(
           height: 17,
         ),
@@ -257,7 +261,7 @@ class _ExtrasState extends State<Extras> {
           height: 27,
         ),
         CommonHelper()
-            .titleCommon('${widget.ln.getString('Benifits of the package')}:'),
+            .titleCommon('${widget.ln.getString(ConstString.benefitPackage)}:'),
         const SizedBox(
           height: 17,
         ),

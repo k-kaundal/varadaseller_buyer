@@ -7,6 +7,7 @@ import 'package:qixer/view/home/components/section_title.dart';
 import 'package:qixer/view/home/components/service_card.dart';
 import 'package:qixer/view/home/top_all_service_page.dart';
 import 'package:qixer/view/report/services/service_details_page.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -32,7 +33,7 @@ class TopRatedServices extends StatelessWidget {
                     ),
                     SectionTitle(
                       cc: cc,
-                      title: ln.getString('Top booked services'),
+                      title: ln.getString(ConstString.topBooked),
                       pressed: () {
                         Navigator.push(
                           context,
@@ -113,7 +114,7 @@ class TopRatedServices extends StatelessWidget {
                     ),
                   ],
                 )
-              : Text(ln.getString('Something went wrong'))
+              : Text(ln.getString(ConstString.somethingWrong))
           : Container(),
     );
   }

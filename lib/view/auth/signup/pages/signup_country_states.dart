@@ -8,6 +8,7 @@ import 'package:qixer/service/auth_services/signup_service.dart';
 import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
 import 'package:qixer/view/auth/signup/signup_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -57,7 +58,7 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
                 title: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    ln.getString("I agree with the terms and conditons"),
+                    ln.getString(ConstString.iAgreeTerms),
                     style: TextStyle(
                         color: ConstantColors().greyFour,
                         fontWeight: FontWeight.w400,
@@ -78,11 +79,10 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
               ),
               Consumer<SignupService>(
                 builder: (context, provider, child) =>
-                    CommonHelper().buttonOrange("Sign Up", () {
+                    CommonHelper().buttonOrange(ConstString.signUp, () {
                   if (termsAgree == false) {
                     OthersHelper().showToast(
-                        ln.getString(
-                            "You must agree with the terms and conditions to register"),
+                        ln.getString(ConstString.registerAgreeTerms),
                         Colors.black);
                   } else {
                     if (provider.isloading == false) {
@@ -99,7 +99,7 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
                           selectedAreaId == null) {
                         OthersHelper().showSnackBar(
                             context,
-                            ln.getString("You must select a state and area"),
+                            ln.getString(ConstString.mustSelectStateArea),
                             cc.warningColor);
                         return;
                       }

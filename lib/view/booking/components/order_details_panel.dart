@@ -8,6 +8,7 @@ import 'package:qixer/service/booking_services/personalization_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/booking/payment_choose_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 import '../../utils/constant_colors.dart';
@@ -72,7 +73,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                     children: [
                       bcProvider.isPanelOpened == false
                           ? Text(
-                              ln.getString('Swipe up for details'),
+                              ln.getString(ConstString.swipeUp),
                               style: TextStyle(
                                 color: cc.primaryColor,
                                 fontSize: 14,
@@ -80,7 +81,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                               ),
                             )
                           : Text(
-                              ln.getString('Collapse details'),
+                              ln.getString(ConstString.collapse),
                               style: TextStyle(
                                 color: cc.primaryColor,
                                 fontSize: 14,
@@ -138,7 +139,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   CommonHelper().labelCommon(
-                                                      'Collapse details'),
+                                                      ConstString.collapse),
                                                   const SizedBox(
                                                     height: 5,
                                                   ),
@@ -177,7 +178,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                                                   ),
                                                   //Package fee
                                                   BookingHelper().detailsPanelRow(
-                                                      'Package Fee',
+                                                      ConstString.packageFee,
                                                       0,
                                                       bcProvider
                                                           .includedTotalPrice(
@@ -193,8 +194,8 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
 
                                         //Extra service =============>
 
-                                        CommonHelper()
-                                            .labelCommon('Extra service'),
+                                        CommonHelper().labelCommon(
+                                            ConstString.extraService),
                                         const SizedBox(
                                           height: 5,
                                         ),
@@ -230,7 +231,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
 
                                         //total of extras
                                         BookingHelper().detailsPanelRow(
-                                            'Extra Service Fee',
+                                            ConstString.extraServFee,
                                             0,
                                             bcProvider
                                                 .extrasTotalPrice(
@@ -248,7 +249,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                                             ? Column(
                                                 children: [
                                                   BookingHelper().detailsPanelRow(
-                                                      'Subtotal',
+                                                      ConstString.subtotal,
                                                       0,
                                                       bcProvider
                                                           .calculateSubtotal(
@@ -266,7 +267,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
 
                                         //tax
                                         BookingHelper().detailsPanelRow(
-                                            '${ln.getString("Tax(+)")} ${pProvider.tax}%',
+                                            '${ln.getString(ConstString.tax)}(+) ${pProvider.tax}%',
                                             0,
                                             bcProvider
                                                 .calculateTax(
@@ -287,7 +288,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                                           builder: (context, couponService,
                                                   child) =>
                                               BookingHelper().detailsPanelRow(
-                                                  'Coupon',
+                                                  ConstString.coupon,
                                                   0,
                                                   couponService.couponDiscount
                                                       .toString()),
@@ -308,7 +309,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                             Consumer<PersonalizationService>(
                               builder: (context, pProvider, child) =>
                                   BookingHelper().detailsPanelRow(
-                                      'Total',
+                                      ConstString.total,
                                       0,
                                       pProvider.isOnline == 0
                                           ? bcProvider
@@ -327,8 +328,8 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                                           CrossAxisAlignment.start,
                                       children: [
                                         sizedBox20(),
-                                        CommonHelper()
-                                            .labelCommon("Coupon code"),
+                                        CommonHelper().labelCommon(
+                                            ConstString.couponCode),
                                         Row(
                                           children: [
                                             Expanded(
@@ -364,7 +365,7 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                                                             OutlineInputBorder(
                                                                 borderSide: BorderSide(
                                                                     color: ConstantColors().primaryColor)),
-                                                        hintText: ln.getString('Enter coupon code'),
+                                                        hintText: ln.getString(ConstString.enterCouponCode),
                                                         contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18)),
                                                   )),
                                             ),
@@ -373,7 +374,8 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                                                   left: 15),
                                               width: 100,
                                               child: CommonHelper()
-                                                  .buttonOrange('Apply', () {
+                                                  .buttonOrange(
+                                                      ConstString.apply, () {
                                                 if (couponController
                                                     .text.isNotEmpty) {
                                                   if (couponProvider
@@ -444,8 +446,8 @@ class _OrderDetailsPanelState extends State<OrderDetailsPanel>
                                 //       )
                                 //     : Container(),
                                 Expanded(
-                                  child: CommonHelper()
-                                      .buttonOrange('Proceed to payment', () {
+                                  child: CommonHelper().buttonOrange(
+                                      ConstString.proceedToPay, () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute<void>(

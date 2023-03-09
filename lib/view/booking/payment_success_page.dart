@@ -7,6 +7,7 @@ import 'package:qixer/service/booking_services/personalization_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -32,7 +33,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon('Payment', context, () {
+        appBar: CommonHelper().appbarCommon(ConstString.payment, context, () {
           Navigator.pop(context);
         }),
         body: WillPopScope(
@@ -69,7 +70,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                   height: 7,
                                 ),
                                 Text(
-                                  '${ln.getString('Payment successful')}!',
+                                  '${ln.getString(ConstString.paySuccess)}!',
                                   style: TextStyle(
                                       color: cc.greyFour,
                                       fontSize: 21,
@@ -107,7 +108,8 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                             child: BookingHelper()
                                                 .bdetailsContainer(
                                                     'assets/svg/clock.svg',
-                                                    ln.getString('Time'),
+                                                    ln.getString(
+                                                        ConstString.time),
                                                     bookProvider.selectedTime ??
                                                         ''),
                                           )
@@ -127,7 +129,8 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                         children: [
                                           //Package fee and extra service =============>
                                           BookingHelper().detailsPanelRow(
-                                              ln.getString('Package Fee'),
+                                              ln.getString(
+                                                  ConstString.packageFee),
                                               0,
                                               bcProvider
                                                   .includedTotalPrice(
@@ -138,7 +141,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       )
                                     : Container(),
                                 BookingHelper().detailsPanelRow(
-                                    ln.getString('Extra service'),
+                                    ln.getString(ConstString.extraService),
                                     0,
                                     bcProvider
                                         .extrasTotalPrice(pProvider.extrasList)
@@ -157,7 +160,8 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                         children: [
                                           //subtotal and tax =========>
                                           BookingHelper().detailsPanelRow(
-                                              ln.getString('Subtotal'),
+                                              ln.getString(
+                                                  ConstString.subtotal),
                                               0,
                                               bcProvider
                                                   .calculateSubtotal(
@@ -169,7 +173,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       )
                                     : Container(),
                                 BookingHelper().detailsPanelRow(
-                                    '${ln.getString('Tax')}(+) ${pProvider.tax}%',
+                                    '${ln.getString(ConstString.tax)}(+) ${pProvider.tax}%',
                                     0,
                                     bcProvider
                                         .calculateTax(
@@ -193,7 +197,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      ln.getString('Total'),
+                                      ln.getString(ConstString.total),
                                       style: TextStyle(
                                         color: cc.greyFour,
                                         fontSize: 14,
@@ -230,15 +234,15 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                 Row(
                                   children: [
                                     BookingHelper().colorCapsule(
-                                        ln.getString('Payment status'),
+                                        ln.getString(ConstString.paymentStatus),
                                         widget.paymentStatus,
                                         cc.successColor),
                                     const SizedBox(
                                       width: 30,
                                     ),
                                     BookingHelper().colorCapsule(
-                                        ln.getString('Order status'),
-                                        ln.getString('Pending'),
+                                        ln.getString(ConstString.orderStatus),
+                                        ln.getString(ConstString.pending),
                                         cc.yellowColor)
                                   ],
                                 ),

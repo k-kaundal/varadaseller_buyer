@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/jobs_service/edit_job_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 class EditJobUploadImage extends StatelessWidget {
   const EditJobUploadImage({Key? key, required this.prevImageLink})
@@ -40,7 +41,8 @@ class EditJobUploadImage extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                CommonHelper().buttonOrange(ln.getString('Choose images'), () {
+                CommonHelper()
+                    .buttonOrange(ln.getString(ConstString.chooseImages), () {
                   provider.pickAddressImage(context);
                 }),
               ],

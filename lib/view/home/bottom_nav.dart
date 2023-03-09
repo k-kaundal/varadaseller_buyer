@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/common_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 import '../utils/constant_colors.dart';
 
@@ -36,7 +37,7 @@ class BottomNav extends StatelessWidget {
                     color: currentIndex == 0 ? cc.primaryColor : cc.greyFour,
                     semanticsLabel: 'Acme Logo'),
               ),
-              label: ln.getString('Home'),
+              label: ln.getString(ConstString.home),
             ),
             BottomNavigationBarItem(
               icon: Container(
@@ -45,7 +46,7 @@ class BottomNav extends StatelessWidget {
                     color: currentIndex == 1 ? cc.primaryColor : cc.greyFour,
                     semanticsLabel: 'Acme Logo'),
               ),
-              label: ln.getString('Orders'),
+              label: ln.getString(ConstString.orders),
             ),
             BottomNavigationBarItem(
               icon: Container(
@@ -54,7 +55,7 @@ class BottomNav extends StatelessWidget {
                     color: currentIndex == 2 ? cc.primaryColor : cc.greyFour,
                     semanticsLabel: 'Acme Logo'),
               ),
-              label: ln.getString('Saved'),
+              label: ln.getString(ConstString.saved),
             ),
             BottomNavigationBarItem(
               icon: Container(
@@ -63,7 +64,7 @@ class BottomNav extends StatelessWidget {
                     color: currentIndex == 3 ? cc.primaryColor : cc.greyFour,
                     semanticsLabel: 'Acme Logo'),
               ),
-              label: ln.getString('Search'),
+              label: ln.getString(ConstString.search),
             ),
             BottomNavigationBarItem(
               icon: Container(
@@ -72,7 +73,7 @@ class BottomNav extends StatelessWidget {
                     color: currentIndex == 4 ? cc.primaryColor : cc.greyFour,
                     semanticsLabel: 'Acme Logo'),
               ),
-              label: ln.getString('Menu'),
+              label: ln.getString(ConstString.menu),
             ),
           ],
         ),

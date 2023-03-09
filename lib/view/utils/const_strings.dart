@@ -1,5 +1,6 @@
 class ConstString {
-  static const String welcome = "welcome";
+  static const String welcome = "Welcome";
+  static const String pressAgainToExit = "Press again to exit";
   static const String couldntLoadProfile = 'Could not load user profile info';
   static const browseCategories = "Browse categories";
   static const String allCategories = "All categories";
@@ -34,6 +35,7 @@ class ConstString {
   static const String startsFrom = "Starts from";
   static const String noResultFound = "No result found";
   static const String pendingOrders = "Pending orders";
+  static const String pending = 'Pending';
   static const String activeOrders = "Active orders";
   static const String completedOrders = "Completed orders";
   static const String totalOrders = "Total orders";
@@ -92,6 +94,8 @@ class ConstString {
   static const String couponCode = "Coupon code";
   static const String enterCouponCode = "Enter coupon code";
   static const String apply = "Apply";
+  static const String bookNow = 'Book Now';
+  static const String by = 'by';
   static const String payment = "Payment";
   static const String totalPayable = "Total payable";
   static const String choosePayMethod = "Choose payment method";
@@ -281,9 +285,24 @@ class ConstString {
   static const String savedServices = 'Saved services';
   static const String noServiceSaved = "No service saved";
   static const String noHistoryFound = 'No history found';
+  static const String chooseStates = "Choose states";
+  static const String myJobs = 'My jobs';
+
   static const String payFailedOrderPlaced = 'Payment failed but order placed!';
+  static const String userName = "Username";
   static const String payFailedOrderPlacedPayAgain =
       'Payment failed but the order is placed. Payment status is pending. You can try to pay again from the orders page';
+
+//intro
+  static const String houseCleaningService = "House Cleaning Service";
+  static const String repairingService = "Repairing Services";
+  static const String homeShiftService = "Home Shifting Service";
+  static const String getHouseServiceFromExperts =
+      "Get house cleaning services from expert cleaners";
+  static const String getRepairedFromExperts =
+      "Get repaired anything from our thousands of experts";
+  static const String homeShiftFromExperts =
+      "Take our home shifting service to get best service";
 
 // static const String allCategories =  ;
 }

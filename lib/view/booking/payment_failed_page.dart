@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -26,7 +27,7 @@ class _PaymentFailedPageState extends State<PaymentFailedPage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon('Payment', context, () {
+        appBar: CommonHelper().appbarCommon(ConstString.payment, context, () {
           Navigator.pop(context);
         }),
         body: WillPopScope(
@@ -63,7 +64,7 @@ class _PaymentFailedPageState extends State<PaymentFailedPage> {
                     height: 7,
                   ),
                   Text(
-                    '${ln.getString('Payment failed but order placed!')}!',
+                    '${ln.getString(ConstString.payFailedOrderPlaced)}!',
                     style: TextStyle(
                         color: cc.greyFour,
                         fontSize: 21,
@@ -73,8 +74,7 @@ class _PaymentFailedPageState extends State<PaymentFailedPage> {
                     height: 10,
                   ),
                   CommonHelper().paragraphCommon(
-                      ln.getString(
-                          'Payment failed but the order is placed. Payment status is pending. You can try to pay again from the orders page'),
+                      ln.getString(ConstString.payFailedOrderPlacedPayAgain),
                       textAlign: TextAlign.center)
                 ],
               ),
