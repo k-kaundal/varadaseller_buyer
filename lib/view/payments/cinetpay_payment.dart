@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -49,13 +50,13 @@ class CinetPayPayment extends StatelessWidget {
             }
             if (snapshot.hasData) {
               return const Center(
-                child: Text('Loding failed.'),
+                child: Text(ConstString.loadingFailed),
               );
             }
             if (snapshot.hasError) {
               print(snapshot.error);
               return const Center(
-                child: Text('Loding failed.'),
+                child: Text(ConstString.loadingFailed),
               );
             }
             return WebView(
@@ -67,8 +68,8 @@ class CinetPayPayment extends StatelessWidget {
                     context: context,
                     builder: (ctx) {
                       return const AlertDialog(
-                        title: Text('Loading failed!'),
-                        content: Text('Failed to load payment page.'),
+                        title: Text(ConstString.loadingFailed),
+                        content: Text(ConstString.loadingFailed),
                       );
                     });
 

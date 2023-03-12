@@ -298,6 +298,8 @@ class ConstString {
   static const String chooseStates = "Choose states";
   static const String myJobs = 'My jobs';
   static const String watchVideo = 'Watch video';
+  static const String loadingFailed = 'Loding failed';
+  static const String paymentFailed = 'Payment failed';
 
   static const String payFailedOrderPlaced = 'Payment failed but order placed!';
   static const String userName = "Username";

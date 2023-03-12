@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -53,7 +54,7 @@ class SquareUpPayment extends StatelessWidget {
             if (snapshot.hasError) {
               print(snapshot.error);
               return const Center(
-                child: Text('Loding failed.'),
+                child: Text(ConstString.loadingFailed),
               );
             }
             if (snapshot.hasData) {
@@ -105,8 +106,8 @@ class SquareUpPayment extends StatelessWidget {
                   }
                   if (request.url.contains('https://pub.dev/')) {
                     print('payment failed');
-                    OthersHelper()
-                        .showSnackBar(context, 'Payment failed', Colors.red);
+                    OthersHelper().showSnackBar(
+                        context, ConstString.paymentFailed, Colors.red);
                     PlaceOrderService().makePaymentFailed(context);
 
                     return NavigationDecision.prevent;
@@ -115,7 +116,7 @@ class SquareUpPayment extends StatelessWidget {
                 },
               );
             } else {
-              return const Text('Something went wrong');
+              return const Text(ConstString.somethingWrong);
             }
           }),
     );

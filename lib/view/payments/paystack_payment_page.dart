@@ -15,6 +15,7 @@ import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/service/wallet_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -47,9 +48,8 @@ class PaystackPaymentPage extends StatelessWidget {
               context: context,
               builder: (ctx) {
                 return AlertDialog(
-                  title: const Text('Are you sure?'),
-                  content:
-                      const Text('Your payment proccess will be terminated.'),
+                  title: const Text(ConstString.areYouSure),
+                  content: const Text(''),
                   actions: [
                     const Spacer(),
                     TextButton(
@@ -57,7 +57,7 @@ class PaystackPaymentPage extends StatelessWidget {
                         PlaceOrderService().makePaymentFailed(context);
                       },
                       child: Text(
-                        'Yes',
+                        ConstString.yes,
                         style: TextStyle(color: cc.primaryColor),
                       ),
                     )
@@ -75,7 +75,7 @@ class PaystackPaymentPage extends StatelessWidget {
               }
               if (snapshot.hasData) {
                 return const Center(
-                  child: Text('Loding failed.'),
+                  child: Text(ConstString.loadingFailed),
                 );
               }
               // if (snapshot.hasError) {
@@ -92,7 +92,7 @@ class PaystackPaymentPage extends StatelessWidget {
                     context: context,
                     builder: (ctx) {
                       return const AlertDialog(
-                        title: Text('Payment failed!'),
+                        title: Text(ConstString.paymentFailed),
                         content: Text(''),
                         actions: [
                           Spacer(),
@@ -131,15 +131,15 @@ class PaystackPaymentPage extends StatelessWidget {
                         context: context,
                         builder: (ctx) {
                           return AlertDialog(
-                            title: const Text('Payment failed!'),
-                            content: const Text('Payment has been cancelled.'),
+                            title: const Text(ConstString.paymentFailed),
+                            content: const Text(''),
                             actions: [
                               const Spacer(),
                               TextButton(
                                 onPressed: () => PlaceOrderService()
                                     .makePaymentFailed(context),
                                 child: Text(
-                                  'Ok',
+                                  ConstString.ok,
                                   style: TextStyle(color: cc.primaryColor),
                                 ),
                               )

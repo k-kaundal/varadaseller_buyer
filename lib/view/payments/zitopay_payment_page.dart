@@ -7,6 +7,7 @@ import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/wallet_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -101,8 +102,8 @@ class _ZitopayPaymentPageState extends State<ZitopayPaymentPage> {
               }
               if (request.url.contains('https://pub.dev/')) {
                 print('payment failed');
-                OthersHelper()
-                    .showSnackBar(context, 'Payment failed', Colors.red);
+                OthersHelper().showSnackBar(
+                    context, ConstString.paymentFailed, Colors.red);
                 PlaceOrderService().makePaymentFailed(context);
 
                 return NavigationDecision.prevent;

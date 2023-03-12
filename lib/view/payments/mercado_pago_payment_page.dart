@@ -16,6 +16,7 @@ import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/wallet_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -57,13 +58,13 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
             }
             if (snapshot.hasData) {
               return const Center(
-                child: Text('Loding failed.'),
+                child: Text(ConstString.loadingFailed),
               );
             }
             if (snapshot.hasError) {
               print(snapshot.error);
               return const Center(
-                child: Text('Loding failed.'),
+                child: Text(ConstString.loadingFailed),
               );
             }
             return WebView(
@@ -71,8 +72,8 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
                   context: context,
                   builder: (ctx) {
                     return const AlertDialog(
-                      title: Text('Loading failed!'),
-                      content: Text('Failed to load payment page.'),
+                      title: Text(ConstString.loadingFailed),
+                      content: Text(ConstString.loadingFailed),
                       actions: [
                         Spacer(),
                       ],
@@ -102,8 +103,8 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
                 }
                 if (request.url.contains('https://www.facebook.com/')) {
                   print('payment failed');
-                  OthersHelper()
-                      .showSnackBar(context, 'Payment failed', Colors.red);
+                  OthersHelper().showSnackBar(
+                      context, ConstString.paymentFailed, Colors.red);
                   PlaceOrderService().makePaymentFailed(context);
 
                   return NavigationDecision.prevent;

@@ -268,6 +268,8 @@ var appStrings = {
   ConstString.yes: ConstString.yes,
   ConstString.chat: ConstString.chat,
   ConstString.myReportList: ConstString.myReportList,
+  ConstString.loadingFailed: ConstString.loadingFailed,
+  ConstString.paymentFailed: ConstString.paymentFailed,
   ConstString.leaveFeedback: ConstString.leaveFeedback,
   ConstString.cancelOrder: ConstString.cancelOrder,
   ConstString.reportToAdmin: ConstString.reportToAdmin,
