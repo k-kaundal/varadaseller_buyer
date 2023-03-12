@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ServiceHelper {
@@ -59,7 +58,7 @@ class ServiceHelper {
 //===================>
   watchVideoPopup(BuildContext context, String videoLink) {
     String videoId = YoutubePlayer.convertUrlToId(videoLink)!;
-    YoutubePlayerController _controller = YoutubePlayerController(
+    YoutubePlayerController controller = YoutubePlayerController(
       initialVideoId: videoId,
       flags: const YoutubePlayerFlags(
         autoPlay: false,
@@ -101,7 +100,7 @@ class ServiceHelper {
                 color: cc.primaryColor,
                 height: 200,
                 child: YoutubePlayer(
-                  controller: _controller,
+                  controller: controller,
                   showVideoProgressIndicator: true,
                 ),
               ),

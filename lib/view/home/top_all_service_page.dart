@@ -4,7 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/home_services/top_all_services_service.dart';
 import 'package:qixer/service/service_details_service.dart';
-import 'package:qixer/view/report/services/service_details_page.dart';
+import 'package:qixer/view/services/service_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';

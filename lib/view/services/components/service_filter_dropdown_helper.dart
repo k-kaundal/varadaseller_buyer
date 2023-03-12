@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/all_services_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
-import '../../../utils/others_helper.dart';
+import '../../utils/others_helper.dart';
 
 class ServiceFilterDropdownHelper {
   //category dropdown
@@ -14,7 +15,7 @@ class ServiceFilterDropdownHelper {
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CommonHelper().labelCommon("Category"),
+                CommonHelper().labelCommon(ConstString.category),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -76,7 +77,7 @@ class ServiceFilterDropdownHelper {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().labelCommon("Sub Category"),
+                    CommonHelper().labelCommon(ConstString.subcategory),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -138,7 +139,7 @@ class ServiceFilterDropdownHelper {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().labelCommon("Ratings"),
+                    CommonHelper().labelCommon(ConstString.ratings),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -201,7 +202,7 @@ class ServiceFilterDropdownHelper {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().labelCommon("Sort By"),
+                    CommonHelper().labelCommon(ConstString.sortby),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 15),

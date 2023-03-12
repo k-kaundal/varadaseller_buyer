@@ -6,12 +6,13 @@ import 'package:qixer/service/searchbar_with_dropdown_service.dart';
 import 'package:qixer/view/auth/signup/components/country_dropdown.dart';
 import 'package:qixer/view/auth/signup/components/state_dropdown.dart';
 import 'package:qixer/view/search/components/online_offline_dropdown.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
 import '../../../service/service_details_service.dart';
 import '../../home/components/service_card.dart';
-import '../../report/services/service_details_page.dart';
+import '../../services/service_details_page.dart';
 import '../../utils/constant_colors.dart';
 
 class SearchBar extends StatelessWidget {
@@ -66,7 +67,7 @@ class SearchBar extends StatelessWidget {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: const Icon(Icons.search),
-                                hintText: ln.getString("Search"),
+                                hintText: ln.getString(ConstString.search),
                                 hintStyle: TextStyle(
                                     color: cc.greyPrimary.withOpacity(.8)),
                                 contentPadding: const EdgeInsets.symmetric(
@@ -190,7 +191,7 @@ class SearchBar extends StatelessWidget {
                                 Container(
                                   margin: const EdgeInsets.only(top: 20),
                                   child: Text(
-                                    ln.getString("No result found"),
+                                    ln.getString(ConstString.noResultFound),
                                     style: TextStyle(color: cc.greyPrimary),
                                   ),
                                 )
@@ -202,7 +203,7 @@ class SearchBar extends StatelessWidget {
                             Container(
                               margin: const EdgeInsets.only(top: 20),
                               child: Text(
-                                ln.getString("No result found"),
+                                ln.getString(ConstString.noResultFound),
                                 style: TextStyle(color: cc.greyPrimary),
                               ),
                             )

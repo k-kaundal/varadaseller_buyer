@@ -6,6 +6,7 @@ import 'package:qixer/service/leave_feedback_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/booking/components/textarea_field.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -28,7 +29,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon('Write a review', context, () {
+      appBar: CommonHelper().appbarCommon(ConstString.writeReview, context, () {
         Navigator.pop(context);
       }),
       body: SingleChildScrollView(
@@ -64,7 +65,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     ),
                     sizedBox20(),
                     Text(
-                      ln.getString('How was the service?'),
+                      ln.getString(ConstString.howWasService),
                       style: TextStyle(
                           color: cc.greyFour,
                           fontSize: 15,
@@ -75,12 +76,12 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     ),
                     TextareaField(
                       notesController: reviewController,
-                      hintText: ln.getString('Write a review'),
+                      hintText: ln.getString(ConstString.writeReview),
                     ),
                     sizedBox20(),
                     Consumer<LeaveFeedbackService>(
                       builder: (context, lfProvider, child) => CommonHelper()
-                          .buttonOrange('Post review', () {
+                          .buttonOrange(ConstString.postReview, () {
                         if (lfProvider.isloading == false) {
                           lfProvider.leaveFeedback(
                               rating,

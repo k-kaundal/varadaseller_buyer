@@ -7,6 +7,7 @@ import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/view/booking/payment_choose_page.dart';
 import 'package:qixer/view/tabs/orders/components/order_details_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -34,7 +35,8 @@ class OrderExtras extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().titleCommon(ln.getString('Extras')),
+                    CommonHelper()
+                        .titleCommon(ln.getString(ConstString.extras)),
                     const SizedBox(
                       height: 20,
                     ),
@@ -47,7 +49,7 @@ class OrderExtras extends StatelessWidget {
                                 fontsize: 15),
                             sizedBoxCustom(5),
                             CommonHelper().paragraphCommon(
-                              '${ln.getString("Unit price")}: \$${provider.orderExtra[i].price.toStringAsFixed(2)}    Quantity: ${provider.orderExtra[i].quantity}    Total: \$${provider.orderExtra[i].total.toStringAsFixed(2)}',
+                              '${ln.getString(ConstString.unitPrice)}: \$${provider.orderExtra[i].price.toStringAsFixed(2)}    Quantity: ${provider.orderExtra[i].quantity}    Total: \$${provider.orderExtra[i].total.toStringAsFixed(2)}',
                             ),
                             sizedBoxCustom(12),
 
@@ -56,8 +58,8 @@ class OrderExtras extends StatelessWidget {
                               Row(
                                 children: [
                                   Expanded(
-                                      child: CommonHelper()
-                                          .buttonOrange('Decline', () {
+                                      child: CommonHelper().buttonOrange(
+                                          ConstString.decline, () {
                                     OrderDetailsHelper().deletePopup(context,
                                         extraId: provider.orderExtra[i].id,
                                         orderId: orderId);
@@ -67,7 +69,7 @@ class OrderExtras extends StatelessWidget {
                                   ),
                                   Expanded(
                                       child: CommonHelper()
-                                          .buttonOrange('Accept', () {
+                                          .buttonOrange(ConstString.accept, () {
                                     provider.setExtraDetails(
                                         orderId: orderId,
                                         extraId: provider.orderExtra[i].id,

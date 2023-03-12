@@ -14,6 +14,7 @@ import 'package:qixer/view/tabs/settings/profile_edit.dart';
 import 'package:qixer/view/tabs/settings/settings_helper.dart';
 import 'package:qixer/view/tabs/settings/supports/my_tickets_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -72,8 +73,8 @@ class _MenuPageState extends State<MenuPage> {
                                                 ln.getString("My jobs"), () {
                                               if (!pProvider.jobPermission) {
                                                 OthersHelper().showToast(
-                                                    ln.getString(
-                                                        'You do not have permission to access this feature'),
+                                                    ln.getString(ConstString
+                                                        .noPermissionToThisFeature),
                                                     Colors.black);
                                                 return;
                                               }
@@ -95,7 +96,8 @@ class _MenuPageState extends State<MenuPage> {
                                                 () {
                                               if (!pProvider.jobPermission) {
                                                 OthersHelper().showToast(
-                                                    'You do not have permission to access this feature',
+                                                    ConstString
+                                                        .noPermissionToThisFeature,
                                                     Colors.black);
                                                 return;
                                               }
@@ -114,7 +116,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/message-circle.svg',
-                                                ln.getString("Support Ticket"),
+                                                ln.getString(
+                                                    ConstString.supportTicket),
                                                 () {
                                               //=====>
                                               Navigator.push(
@@ -133,7 +136,8 @@ class _MenuPageState extends State<MenuPage> {
                                                 ln.getString("Wallet"), () {
                                               if (!pProvider.walletPermission) {
                                                 OthersHelper().showToast(
-                                                    'You do not have permission to access this feature',
+                                                    ConstString
+                                                        .noPermissionToThisFeature,
                                                     Colors.black);
                                                 return;
                                               }
@@ -150,7 +154,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/profile-edit.svg',
-                                                ln.getString("My report list"),
+                                                ln.getString(
+                                                    ConstString.myReportList),
                                                 () {
                                               Navigator.push(
                                                 context,
@@ -165,7 +170,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/profile-edit.svg',
-                                                ln.getString("Edit profile"),
+                                                ln.getString(
+                                                    ConstString.editProfile),
                                                 () {
                                               Navigator.push(
                                                 context,
@@ -179,7 +185,8 @@ class _MenuPageState extends State<MenuPage> {
                                             CommonHelper().dividerCommon(),
                                             SettingsHelper().settingOption(
                                                 'assets/svg/lock-circle.svg',
-                                                ln.getString("Change Password"),
+                                                ln.getString(
+                                                    ConstString.changePass),
                                                 () {
                                               Navigator.push(
                                                 context,
@@ -201,7 +208,8 @@ class _MenuPageState extends State<MenuPage> {
                                           child: Column(children: [
                                             SettingsHelper().settingOption(
                                                 'assets/svg/logout-circle.svg',
-                                                ln.getString("Logout"), () {
+                                                ln.getString(
+                                                    ConstString.logout), () {
                                               SettingsHelper()
                                                   .logoutPopup(context);
                                             }),

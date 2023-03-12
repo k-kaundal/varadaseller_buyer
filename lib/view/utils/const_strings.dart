@@ -246,6 +246,13 @@ class ConstString {
   static const String noReportFound = 'No Report found';
   static const String writeMessage = 'Write message';
   static const String report = 'Report';
+  static const String no = 'No';
+  static const String yes = 'Yes';
+  static const String leaveFeedback = 'Leave feedback';
+  static const String cancelOrder = 'Cancel order';
+  static const String reportToAdmin = 'Report to admin';
+  static const String unitPrice = "Unit price";
+  static const String reportId = 'Report id';
   static const String whatWentWrong = 'What went wrong?';
   static const String writeTheIssue = 'Write the issue';
   static const String submitReport = 'Submit Report';
@@ -255,6 +262,7 @@ class ConstString {
   static const String payNow = 'Pay now';
   static const String completeReq = 'Complete Request';
   static const String declined = 'Declined';
+  static const String buyerDetails = 'Buyer details';
   static const String sellerReqestedToComplete =
       'Seller requested to mark this order complete';
   static const String decline = 'Decline';
@@ -265,6 +273,8 @@ class ConstString {
       'Describe why you want to decline the request';
   static const String enterDeclineReason = 'You must enter decline reason';
   static const String extras = 'Extras';
+  static const String chat = 'Chat';
+  static const String myReportList = "My report list";
   static const String postCode = 'Post code';
   static const String orderDetails = 'Order Details';
   static const String noDetailsFound = 'No details found';
@@ -287,6 +297,7 @@ class ConstString {
   static const String noHistoryFound = 'No history found';
   static const String chooseStates = "Choose states";
   static const String myJobs = 'My jobs';
+  static const String watchVideo = 'Watch video';
 
   static const String payFailedOrderPlaced = 'Payment failed but order placed!';
   static const String userName = "Username";

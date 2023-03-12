@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/all_services_service.dart';
 import 'package:qixer/service/country_states_service.dart';
-import 'package:qixer/view/report/services/components/service_filter_dropdown_helper.dart';
+import 'package:qixer/view/services/components/service_filter_dropdown_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';

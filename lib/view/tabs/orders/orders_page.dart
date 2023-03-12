@@ -8,6 +8,7 @@ import 'package:qixer/service/rtl_service.dart';
 
 import 'package:qixer/view/tabs/orders/order_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -50,7 +51,8 @@ class _OrdersPageState extends State<OrdersPage> {
                                       const SizedBox(
                                         height: 25,
                                       ),
-                                      CommonHelper().titleCommon('My orders'),
+                                      CommonHelper().titleCommon(
+                                          ln.getString(ConstString.myOrders)),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -143,7 +145,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                                           if (j == 1 &&
                                                                               (provider.myServices[i].paymentStatus == 'complete' || provider.myServices[i].status != 0)) {
                                                                             //0 means pending
-                                                                            OthersHelper().showToast(ln.getString('You can not cancel this order'),
+                                                                            OthersHelper().showToast(ln.getString(ConstString.cannotCancel),
                                                                                 Colors.black);
                                                                             return;
                                                                           }
@@ -190,7 +192,9 @@ class _OrdersPageState extends State<OrdersPage> {
                                                                 OrdersHelper()
                                                                     .orderRow(
                                                                   'assets/svg/calendar.svg',
-                                                                  'Date',
+                                                                  ln.getString(
+                                                                      ConstString
+                                                                          .date),
                                                                   provider
                                                                       .myServices[
                                                                           i]
@@ -223,7 +227,9 @@ class _OrdersPageState extends State<OrdersPage> {
                                                                 OrdersHelper()
                                                                     .orderRow(
                                                                   'assets/svg/clock.svg',
-                                                                  'Schedule',
+                                                                  ln.getString(
+                                                                      ConstString
+                                                                          .schedule),
                                                                   provider
                                                                       .myServices[
                                                                           i]
@@ -253,7 +259,9 @@ class _OrdersPageState extends State<OrdersPage> {
                                                             OrdersHelper()
                                                                 .orderRow(
                                                           'assets/svg/bill.svg',
-                                                          'Billed',
+                                                          ln.getString(
+                                                              ConstString
+                                                                  .billed),
                                                           rtlP.currencyDirection ==
                                                                   'left'
                                                               ? '${rtlP.currency}${provider.myServices[i].total.toStringAsFixed(2)}'
@@ -267,10 +275,10 @@ class _OrdersPageState extends State<OrdersPage> {
 
                                       //
                                     ])
-                              : CommonHelper().nothingfound(
-                                  context, ln.getString("No active order"))
+                              : CommonHelper().nothingfound(context,
+                                  ln.getString(ConstString.noActiveOrder))
                           : CommonHelper().nothingfound(
-                              context, ln.getString("No active order"))
+                              context, ln.getString(ConstString.noActiveOrder))
                       : Container(
                           alignment: Alignment.center,
                           height: MediaQuery.of(context).size.height - 120,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/common_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -65,7 +66,7 @@ class AboutSellerTab extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          ln.getString('Order Completed'),
+                          ln.getString(ConstString.orderCompleted),
                           style: TextStyle(
                             color: cc.primaryColor,
                             fontSize: 12,
@@ -103,12 +104,12 @@ class AboutSellerTab extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ServiceHelper().serviceDetails(
-                          ln.getString('From'),
+                          ln.getString(ConstString.from),
                           provider.serviceAllDetails.sellerFrom),
                     ),
                     Expanded(
                         child: ServiceHelper().serviceDetails(
-                            ln.getString('Order Completion Rate'),
+                            ln.getString(ConstString.orderCompleteRate),
                             '${provider.serviceAllDetails.orderCompletionRate}%'))
                   ],
                 ),
@@ -119,13 +120,13 @@ class AboutSellerTab extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ServiceHelper().serviceDetails(
-                          ln.getString('Seller Since'),
+                          ln.getString(ConstString.sellerSince),
                           getYear(provider
                               .serviceAllDetails.sellerSince.createdAt)),
                     ),
                     Expanded(
                         child: ServiceHelper().serviceDetails(
-                            ln.getString('Order Completed'),
+                            ln.getString(ConstString.orderCompleted),
                             provider.serviceAllDetails.sellerCompleteOrder
                                 .toString()))
                   ],

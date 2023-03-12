@@ -7,6 +7,7 @@ import 'package:qixer/service/leave_feedback_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/booking/components/textarea_field.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -32,7 +33,7 @@ class _WriteReportPageState extends State<WriteReportPage> {
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon('Report', context, () {
+      appBar: CommonHelper().appbarCommon(ConstString.report, context, () {
         Navigator.pop(context);
       }),
       body: SingleChildScrollView(
@@ -49,7 +50,7 @@ class _WriteReportPageState extends State<WriteReportPage> {
                     ),
                     sizedBox20(),
                     Text(
-                      ln.getString('What went wrong?'),
+                      ln.getString(ConstString.whatWentWrong),
                       style: TextStyle(
                           color: cc.greyFour,
                           fontSize: 15,
@@ -60,17 +61,16 @@ class _WriteReportPageState extends State<WriteReportPage> {
                     ),
                     TextareaField(
                       notesController: reportController,
-                      hintText: ln.getString('Write the issue'),
+                      hintText: ln.getString(ConstString.writeTheIssue),
                     ),
                     sizedBox20(),
                     Consumer<LeaveFeedbackService>(
-                      builder: (context, lfProvider, child) =>
-                          CommonHelper().buttonOrange('Submit Report', () {
+                      builder: (context, lfProvider, child) => CommonHelper()
+                          .buttonOrange(ConstString.submitReport, () {
                         if (lfProvider.reportLoading == false) {
                           if (reportController.text.trim().isEmpty) {
                             OthersHelper().showToast(
-                                ln.getString(
-                                    'You must write something to submit report'),
+                                ln.getString(ConstString.writeToSubmitReport),
                                 Colors.black);
                             return;
                           }

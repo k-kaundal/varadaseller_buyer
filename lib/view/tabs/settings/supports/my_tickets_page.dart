@@ -9,6 +9,7 @@ import 'package:qixer/service/support_ticket/support_ticket_service.dart';
 import 'package:qixer/view/tabs/orders/orders_helper.dart';
 import 'package:qixer/view/tabs/settings/supports/create_ticket_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/responsive.dart';
@@ -83,7 +84,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                           color: cc.primaryColor,
                           borderRadius: BorderRadius.circular(8)),
                       child: AutoSizeText(
-                        ln.getString('Create'),
+                        ln.getString(ConstString.create),
                         maxLines: 1,
                         style: const TextStyle(
                           color: Colors.white,
@@ -202,8 +203,8 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                                                                 i]['id']);
                                                       },
                                                       value: index,
-                                                      child: Text(
-                                                          ln.getString('Chat')),
+                                                      child: Text(ln.getString(
+                                                          ConstString.chat)),
                                                     );
                                                   });
                                                 },

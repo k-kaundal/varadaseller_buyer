@@ -8,6 +8,7 @@ import 'package:qixer/view/tabs/orders/components/decline_history.dart';
 import 'package:qixer/view/tabs/orders/components/order_extras.dart';
 import 'package:qixer/view/tabs/orders/components/seller_details.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -36,7 +37,8 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: cc.bgColor,
-        appBar: CommonHelper().appbarCommon('Order Details', context, () {
+        appBar:
+            CommonHelper().appbarCommon(ConstString.orderDetails, context, () {
           Navigator.pop(context);
         }),
         body: SafeArea(
@@ -74,8 +76,8 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 CommonHelper().titleCommon(
-                                                    ln.getString(
-                                                        'Date & Schedule')),
+                                                    ln.getString(ConstString
+                                                        .dateSchedule)),
                                                 const SizedBox(
                                                   height: 25,
                                                 ),
@@ -84,7 +86,8 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                                 Container(
                                                   child: BookingHelper().bRow(
                                                       'null',
-                                                      ln.getString('Date'),
+                                                      ln.getString(
+                                                          ConstString.date),
                                                       provider
                                                           .orderDetails.date),
                                                 ),
@@ -92,7 +95,8 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                                 Container(
                                                   child: BookingHelper().bRow(
                                                       'null',
-                                                      ln.getString('Schedule'),
+                                                      ln.getString(
+                                                          ConstString.schedule),
                                                       provider.orderDetails
                                                           .schedule,
                                                       lastBorder: false),
@@ -117,14 +121,16 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CommonHelper().titleCommon(
-                                              ln.getString('Order Status')),
+                                              ln.getString(
+                                                  ConstString.orderStatus)),
                                           const SizedBox(
                                             height: 25,
                                           ),
                                           Container(
                                             child: BookingHelper().bRow(
                                                 'null',
-                                                ln.getString('Order Status'),
+                                                ln.getString(
+                                                    ConstString.orderStatus),
                                                 provider.orderStatus,
                                                 lastBorder: false),
                                           ),
@@ -147,7 +153,7 @@ class _OrdersDetailsPageState extends State<OrderDetailsPage> {
                                 ]),
                           )
                         : CommonHelper().nothingfound(
-                            context, ln.getString('No details found'))
+                            context, ln.getString(ConstString.noDetailsFound))
                     : Container(
                         alignment: Alignment.center,
                         height: MediaQuery.of(context).size.height - 120,

@@ -5,7 +5,8 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
-import 'package:qixer/view/report/services/components/desc_from_html.dart';
+import 'package:qixer/view/services/components/desc_from_html.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 import '../service_helper.dart';
@@ -29,7 +30,7 @@ class OverviewTab extends StatelessWidget {
             height: 20,
           ),
           AutoSizeText(
-            '${"Benefits of premium Package"}:',
+            '${ln.getString(ConstString.benefitOfPremium)}:',
             maxLines: 1,
             style: TextStyle(
                 color: cc.greyFour, fontSize: 19, fontWeight: FontWeight.bold),
@@ -53,7 +54,7 @@ class OverviewTab extends StatelessWidget {
                       height: 15,
                     ),
                     AutoSizeText(
-                      '${"FAQ"}:',
+                      '${ln.getString(ConstString.faq)}:',
                       maxLines: 1,
                       style: TextStyle(
                           color: cc.greyFour,

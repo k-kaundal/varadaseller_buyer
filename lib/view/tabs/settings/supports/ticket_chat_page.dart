@@ -9,6 +9,7 @@ import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/service/support_ticket/support_messages_service.dart';
 import 'package:qixer/view/tabs/settings/supports/image_big_preview.dart';
 import 'package:qixer/view/tabs/settings/supports/support_ticket_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -335,7 +336,9 @@ class _TicketChatPageState extends State<TicketChatPage> {
                           child: TextField(
                             controller: sendMessageController,
                             decoration: InputDecoration(
-                                hintText: ln.getString("Write message") + '...',
+                                hintText:
+                                    ln.getString(ConstString.writeMessage) +
+                                        '...',
                                 hintStyle:
                                     const TextStyle(color: Colors.black54),
                                 border: InputBorder.none),
@@ -376,7 +379,8 @@ class _TicketChatPageState extends State<TicketChatPage> {
                               });
                             } else {
                               OthersHelper().showToast(
-                                  'Please write a message first', Colors.black);
+                                  ConstString.plzWriteMessageFirst,
+                                  Colors.black);
                             }
                           },
                           backgroundColor: cc.primaryColor,

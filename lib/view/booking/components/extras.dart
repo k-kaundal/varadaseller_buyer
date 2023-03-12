@@ -6,7 +6,7 @@ import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/utils/const_strings.dart';
 
 import '../../../service/booking_services/personalization_service.dart';
-import '../../report/services/service_helper.dart';
+import '../../services/service_helper.dart';
 import '../../utils/common_helper.dart';
 import '../../utils/constant_colors.dart';
 

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/live_chat/chat_list_service.dart';
 import 'package:qixer/service/permissions_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
 import '../../../live_chat/chat_list_page.dart';
@@ -26,8 +27,7 @@ class ChatIcon extends StatelessWidget {
             onTap: () {
               if (!pProvider.chatPermission) {
                 OthersHelper().showToast(
-                    ln.getString(
-                        'You do not have permission to access this feature'),
+                    ln.getString(ConstString.noPermissionToThisFeature),
                     Colors.black);
                 return;
               }

@@ -4,6 +4,7 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 class SellerDetails extends StatelessWidget {
   const SellerDetails({Key? key}) : super(key: key);
@@ -25,8 +26,8 @@ class SellerDetails extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonHelper()
-                              .titleCommon(ln.getString('Seller Details')),
+                          CommonHelper().titleCommon(
+                              ln.getString(ConstString.sellerDetails)),
                           const SizedBox(
                             height: 25,
                           ),
@@ -35,28 +36,28 @@ class SellerDetails extends StatelessWidget {
                           Container(
                             child: BookingHelper().bRow(
                                 'null',
-                                ln.getString('Name'),
+                                ln.getString(ConstString.name),
                                 provider.orderDetails.sellerDetails.name),
                           ),
 
                           Container(
                             child: BookingHelper().bRow(
                                 'null',
-                                ln.getString('Email'),
+                                ln.getString(ConstString.email),
                                 provider.orderDetails.sellerDetails.email),
                           ),
 
                           Container(
                             child: BookingHelper().bRow(
                                 'null',
-                                ln.getString('Phone'),
+                                ln.getString(ConstString.phone),
                                 provider.orderDetails.sellerDetails.phone),
                           ),
                           provider.orderDetails.isOrderOnline == 0
                               ? Container(
                                   child: BookingHelper().bRow(
                                       'null',
-                                      ln.getString('Post code'),
+                                      ln.getString(ConstString.postCode),
                                       provider.orderDetails.sellerDetails
                                               .postCode ??
                                           ''),
@@ -66,7 +67,7 @@ class SellerDetails extends StatelessWidget {
                               ? Container(
                                   child: BookingHelper().bRow(
                                       'null',
-                                      ln.getString('Address'),
+                                      ln.getString(ConstString.address),
                                       provider.orderDetails.sellerDetails
                                               .address ??
                                           "",

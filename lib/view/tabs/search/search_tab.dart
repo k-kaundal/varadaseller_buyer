@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/search/components/search_bar.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class SearchTab extends StatefulWidget {
@@ -42,8 +43,8 @@ class _SearchTabState extends State<SearchTab> {
                         const SizedBox(
                           height: 25,
                         ),
-                        CommonHelper()
-                            .titleCommon(ln.getString('Search services')),
+                        CommonHelper().titleCommon(
+                            ln.getString(ConstString.searchServices)),
                         sizedBox20(),
                         const SearchBar(),
                       ]),

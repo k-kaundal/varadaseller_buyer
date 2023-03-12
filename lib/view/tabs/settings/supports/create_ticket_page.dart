@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/support_ticket/create_ticket_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/custom_input.dart';
@@ -35,7 +37,8 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon('Create ticket', context, () {
+        appBar:
+            CommonHelper().appbarCommon(ConstString.createTicket, context, () {
           Provider.of<CreateTicketService>(context, listen: false)
               .makeOrderlistEmpty();
           Navigator.pop(context);
@@ -48,195 +51,203 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
           },
           child: SingleChildScrollView(
             physics: physicsCommon,
-            child: Consumer<CreateTicketService>(
-              builder: (context, provider, child) => Form(
-                key: _formKey,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenPadding, vertical: 20),
-                  child: Column(children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //Priority dropdown ======>
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonHelper().labelCommon("Priority"),
-                            Container(
-                              width: double.infinity,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: cc.greyFive),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  // menuMaxHeight: 200,
-                                  // isExpanded: true,
-                                  value: provider.selectedPriority,
-                                  icon: Icon(Icons.keyboard_arrow_down_rounded,
-                                      color: cc.greyFour),
-                                  iconSize: 26,
-                                  elevation: 17,
-                                  style: TextStyle(color: cc.greyFour),
-                                  onChanged: (newValue) {
-                                    provider.setPriorityValue(newValue);
-
-                                    //setting the id of selected value
-                                    provider.setSelectedPriorityId(
-                                        provider.priorityDropdownIndexList[
-                                            provider.priorityDropdownList
-                                                .indexOf(newValue!)]);
-                                  },
-                                  items: provider.priorityDropdownList
-                                      .map<DropdownMenuItem<String>>((value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                            color:
-                                                cc.greyPrimary.withOpacity(.8)),
-                                      ),
-                                    );
-                                  }).toList(),
+            child: Consumer<AppStringService>(
+              builder: (context, ln, child) => Consumer<CreateTicketService>(
+                builder: (context, provider, child) => Form(
+                  key: _formKey,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenPadding, vertical: 20),
+                    child: Column(children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //Priority dropdown ======>
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonHelper().labelCommon(ConstString.priority),
+                              Container(
+                                width: double.infinity,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: cc.greyFive),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    // menuMaxHeight: 200,
+                                    // isExpanded: true,
+                                    value: provider.selectedPriority,
+                                    icon: Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        color: cc.greyFour),
+                                    iconSize: 26,
+                                    elevation: 17,
+                                    style: TextStyle(color: cc.greyFour),
+                                    onChanged: (newValue) {
+                                      provider.setPriorityValue(newValue);
 
-                        //Order dropdown =======>
-                        provider.hasOrder == true
-                            ? provider.orderDropdownList.isNotEmpty
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      sizedBox20(),
-                                      CommonHelper()
-                                          .labelCommon("Order number"),
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15),
-                                        decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: cc.greyFive),
-                                          borderRadius:
-                                              BorderRadius.circular(6),
+                                      //setting the id of selected value
+                                      provider.setSelectedPriorityId(
+                                          provider.priorityDropdownIndexList[
+                                              provider.priorityDropdownList
+                                                  .indexOf(newValue!)]);
+                                    },
+                                    items: provider.priorityDropdownList
+                                        .map<DropdownMenuItem<String>>((value) {
+                                      return DropdownMenuItem(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              color: cc.greyPrimary
+                                                  .withOpacity(.8)),
                                         ),
-                                        child: DropdownButtonHideUnderline(
-                                          child: DropdownButton<String>(
-                                            // menuMaxHeight: 200,
-                                            // isExpanded: true,
-                                            value: provider.selectedOrder
-                                                .toString(),
-                                            icon: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: cc.greyFour),
-                                            iconSize: 26,
-                                            elevation: 17,
-                                            style:
-                                                TextStyle(color: cc.greyFour),
-                                            onChanged: (newValue) {
-                                              provider.setOrderValue(newValue);
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
 
-                                              //setting the id of selected value
-                                              provider.setSelectedOrderId(
-                                                  provider.orderDropdownIndexList[
-                                                      provider.orderDropdownList
-                                                          .indexOf(newValue!)]);
-                                            },
-                                            items: provider.orderDropdownList
-                                                .map<DropdownMenuItem<String>>(
-                                                    (value) {
-                                              return DropdownMenuItem(
-                                                value: value.toString(),
-                                                child: Text(
-                                                  value.toString(),
-                                                  style: TextStyle(
-                                                      color: cc.greyPrimary
-                                                          .withOpacity(.8)),
-                                                ),
-                                              );
-                                            }).toList(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                : Container(
-                                    margin: const EdgeInsets.only(top: 15),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                          //Order dropdown =======>
+                          provider.hasOrder == true
+                              ? provider.orderDropdownList.isNotEmpty
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        OthersHelper()
-                                            .showLoading(cc.primaryColor)
+                                        sizedBox20(),
+                                        CommonHelper().labelCommon(
+                                            ConstString.orderNumber),
+                                        Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15),
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: cc.greyFive),
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                          ),
+                                          child: DropdownButtonHideUnderline(
+                                            child: DropdownButton<String>(
+                                              // menuMaxHeight: 200,
+                                              // isExpanded: true,
+                                              value: provider.selectedOrder
+                                                  .toString(),
+                                              icon: Icon(
+                                                  Icons
+                                                      .keyboard_arrow_down_rounded,
+                                                  color: cc.greyFour),
+                                              iconSize: 26,
+                                              elevation: 17,
+                                              style:
+                                                  TextStyle(color: cc.greyFour),
+                                              onChanged: (newValue) {
+                                                provider
+                                                    .setOrderValue(newValue);
+
+                                                //setting the id of selected value
+                                                provider.setSelectedOrderId(provider
+                                                        .orderDropdownIndexList[
+                                                    provider.orderDropdownList
+                                                        .indexOf(newValue!)]);
+                                              },
+                                              items: provider.orderDropdownList
+                                                  .map<
+                                                      DropdownMenuItem<
+                                                          String>>((value) {
+                                                return DropdownMenuItem(
+                                                  value: value.toString(),
+                                                  child: Text(
+                                                    value.toString(),
+                                                    style: TextStyle(
+                                                        color: cc.greyPrimary
+                                                            .withOpacity(.8)),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        )
                                       ],
-                                    ),
-                                  )
-                            : Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                child: Text(
-                                  "No active order",
-                                  style: TextStyle(color: cc.warningColor),
-                                )),
+                                    )
+                                  : Container(
+                                      margin: const EdgeInsets.only(top: 15),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          OthersHelper()
+                                              .showLoading(cc.primaryColor)
+                                        ],
+                                      ),
+                                    )
+                              : Container(
+                                  margin: const EdgeInsets.only(top: 20),
+                                  child: Text(
+                                    ln.getString(ConstString.noActiveOrder),
+                                    style: TextStyle(color: cc.warningColor),
+                                  )),
 
-                        sizedBox20(),
-                        CommonHelper().labelCommon("Title"),
-                        CustomInput(
-                          controller: titleController,
-                          validation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter ticket title';
+                          sizedBox20(),
+                          CommonHelper().labelCommon(ConstString.title),
+                          CustomInput(
+                            controller: titleController,
+                            validation: (value) {
+                              if (value == null || value.isEmpty) {
+                                return ln
+                                    .getString(ConstString.plzEnterTicketTitle);
+                              }
+                              return null;
+                            },
+                            hintText: ln.getString(ConstString.ticketTitle),
+                            // icon: 'assets/icons/user.png',
+                            paddingHorizontal: 18,
+                            textInputAction: TextInputAction.next,
+                          ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          CommonHelper().labelCommon(ConstString.description),
+                          TextareaField(
+                            hintText:
+                                ln.getString(ConstString.plzExplainProblem),
+                            notesController: descController,
+                          ),
+
+                          //Save button =========>
+
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          CommonHelper().buttonOrange(ConstString.createTicket,
+                              () {
+                            if (provider.hasOrder == false) {
+                              OthersHelper().showToast(
+                                  ConstString.noActiveOrder, Colors.black);
+                            } else if (_formKey.currentState!.validate()) {
+                              if (provider.isLoading == false &&
+                                  provider.hasOrder == true) {
+                                provider.createTicket(
+                                    context,
+                                    titleController.text,
+                                    provider.selectedPriority,
+                                    descController.text,
+                                    provider.selectedOrderId);
+                              }
                             }
-                            return null;
                           },
-                          hintText: "Ticket title",
-                          // icon: 'assets/icons/user.png',
-                          paddingHorizontal: 18,
-                          textInputAction: TextInputAction.next,
-                        ),
-                        const SizedBox(
-                          height: 7,
-                        ),
-                        CommonHelper().labelCommon("Description"),
-                        TextareaField(
-                          hintText: 'Please explain your problem',
-                          notesController: descController,
-                        ),
-
-                        //Save button =========>
-
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        CommonHelper().buttonOrange('Create ticket', () {
-                          if (provider.hasOrder == false) {
-                            OthersHelper()
-                                .showToast("No active order", Colors.black);
-                          } else if (_formKey.currentState!.validate()) {
-                            if (provider.isLoading == false &&
-                                provider.hasOrder == true) {
-                              provider.createTicket(
-                                  context,
-                                  titleController.text,
-                                  provider.selectedPriority,
-                                  descController.text,
-                                  provider.selectedOrderId);
-                            }
-                          }
-                        },
-                            isloading:
-                                provider.isLoading == false ? false : true)
-                      ],
-                    ),
-                  ]),
+                              isloading:
+                                  provider.isLoading == false ? false : true)
+                        ],
+                      ),
+                    ]),
+                  ),
                 ),
               ),
             ),

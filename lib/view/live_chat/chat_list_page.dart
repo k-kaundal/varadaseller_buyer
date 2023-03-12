@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
@@ -5,6 +7,7 @@ import 'package:qixer/service/live_chat/chat_list_service.dart';
 import 'package:qixer/view/live_chat/chat_message_page.dart';
 import 'package:qixer/view/live_chat/components/chat_search.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -47,7 +50,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                     child: const Icon(Icons.arrow_back_ios)),
                               ),
                               Text(
-                                ln.getString("Conversations"),
+                                ln.getString(ConstString.conversations),
                                 style: const TextStyle(
                                     fontSize: 27, fontWeight: FontWeight.bold),
                               ),
@@ -176,7 +179,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                       height: screenHeight - 200,
                                       alignment: Alignment.center,
                                       child: Text(ln.getString(
-                                          'You do not have any active conversation')))
+                                          ConstString.noActiveConversation)))
                               : SizedBox(
                                   height: screenHeight - 200,
                                   child: OthersHelper()

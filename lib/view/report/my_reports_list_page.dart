@@ -4,6 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/report_services/report_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -29,7 +30,7 @@ class _MyReportListPageState extends State<MyReportListPage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon('Reports', context, () {
+        appBar: CommonHelper().appbarCommon(ConstString.reports, context, () {
           Navigator.pop(context);
           Provider.of<ReportService>(context, listen: false)
               .setReportListDefault();
@@ -112,14 +113,15 @@ class _MyReportListPageState extends State<MyReportListPage> {
                                                 // width: screenWidth - 200,
                                                 child:
                                                     CommonHelper().labelCommon(
-                                                  'Report id: ${provider.reportList[i]['id']}',
+                                                  '${ln.getString(ConstString.reportId)}: ${provider.reportList[i]['id']}',
                                                 ),
                                               ),
                                               SizedBox(
                                                 width: 100,
                                                 child: CommonHelper()
                                                     .buttonOrange(
-                                                        'Chat with admin', () {
+                                                        ConstString.chatAdmin,
+                                                        () {
                                                   provider.goToMessagePage(
                                                       context,
                                                       provider.reportList[i]
@@ -131,7 +133,7 @@ class _MyReportListPageState extends State<MyReportListPage> {
                                             ],
                                           ),
                                           CommonHelper().labelCommon(
-                                            '${"Order id"}: ${provider.reportList[i]['orderId']}',
+                                            '${ln.getString(ConstString.orderId)}: ${provider.reportList[i]['orderId']}',
                                           ),
                                         ]),
                                   )
@@ -139,7 +141,7 @@ class _MyReportListPageState extends State<MyReportListPage> {
                             ),
                           )
                         : CommonHelper().nothingfound(
-                            context, ln.getString('No Report found'))),
+                            context, ln.getString(ConstString.noReportFound))),
               ),
             ),
           ),

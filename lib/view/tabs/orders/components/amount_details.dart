@@ -10,6 +10,7 @@ import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/booking/payment_choose_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 
 class AmountDetails extends StatelessWidget {
   const AmountDetails({Key? key}) : super(key: key);
@@ -28,43 +29,52 @@ class AmountDetails extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().titleCommon(ln.getString('Amount Details')),
+                    CommonHelper()
+                        .titleCommon(ln.getString(ConstString.amountDetails)),
                     const SizedBox(
                       height: 25,
                     ),
                     //Service row
 
                     Container(
-                      child: BookingHelper().bRow('null', 'Package fee',
+                      child: BookingHelper().bRow(
+                          'null',
+                          ConstString.packageFee,
                           provider.orderDetails.packageFee.toString()),
                     ),
 
                     Container(
-                      child: BookingHelper().bRow('null', 'Extra service',
+                      child: BookingHelper().bRow(
+                          'null',
+                          ConstString.extraService,
                           provider.orderDetails.extraService.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          ln.getString('Subtotal'),
+                          ln.getString(ConstString.subtotal),
                           provider.orderDetails.subTotal.toString()),
                     ),
 
                     Container(
-                      child: BookingHelper().bRow('null', ln.getString('Tax'),
+                      child: BookingHelper().bRow(
+                          'null',
+                          ln.getString(ConstString.tax),
                           provider.orderDetails.tax.toString()),
                     ),
 
                     Container(
-                      child: BookingHelper().bRow('null', ln.getString('Total'),
+                      child: BookingHelper().bRow(
+                          'null',
+                          ln.getString(ConstString.total),
                           provider.orderDetails.total.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                         'null',
-                        ln.getString('Payment status'),
+                        ln.getString(ConstString.paymentStatus),
                         provider.orderDetails.paymentStatus,
                       ),
                     ),
@@ -72,7 +82,7 @@ class AmountDetails extends StatelessWidget {
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          ln.getString('Payment method'),
+                          ln.getString(ConstString.paymentMethod),
                           removeUnderscore(
                               provider.orderDetails.paymentGateway),
                           lastBorder: false),
@@ -85,7 +95,8 @@ class AmountDetails extends StatelessWidget {
                             "manual_payment")
                       Container(
                         margin: const EdgeInsets.only(top: 20),
-                        child: CommonHelper().buttonOrange('Pay now', () {
+                        child:
+                            CommonHelper().buttonOrange(ConstString.payNow, () {
                           //At first, set the address details
                           Provider.of<BookService>(context, listen: false)
                               .setDeliveryDetailsBasedOnProfile(context);

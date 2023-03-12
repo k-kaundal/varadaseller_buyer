@@ -6,6 +6,7 @@ import 'package:qixer/service/orders_service.dart';
 import 'package:qixer/view/tabs/orders/components/decline_order_page.dart';
 import 'package:qixer/view/tabs/orders/orders_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -41,8 +42,8 @@ class CompleteRequest extends StatelessWidget {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CommonHelper()
-                                .titleCommon(ln.getString('Complete Request')),
+                            CommonHelper().titleCommon(
+                                ln.getString(ConstString.completeReq)),
                             const SizedBox(
                               height: 15,
                             ),
@@ -51,13 +52,14 @@ class CompleteRequest extends StatelessWidget {
                             //==========>
                             if (provider.orderDetails.orderCompleteRequest == 3)
                               OrdersHelper().statusCapsule(
-                                  ln.getString('Declined'), cc.warningColor),
+                                  ln.getString(ConstString.declined),
+                                  cc.warningColor),
 
                             //Completed
                             //==========>
                             if (provider.orderDetails.orderCompleteRequest == 2)
                               OrdersHelper().statusCapsule(
-                                  ln.getString('Order Completed'),
+                                  ln.getString(ConstString.orderCompleted),
                                   cc.successColor),
 
                             //accept reject button
@@ -68,14 +70,14 @@ class CompleteRequest extends StatelessWidget {
                                 children: [
                                   CommonHelper().paragraphCommon(
                                       ln.getString(
-                                          'Seller requested to mark this order complete'),
+                                          ConstString.sellerReqestedToComplete),
                                       fontsize: 16),
                                   sizedBoxCustom(20),
                                   Row(
                                     children: [
                                       Expanded(
-                                          child: CommonHelper()
-                                              .buttonOrange('Decline', () {
+                                          child: CommonHelper().buttonOrange(
+                                              ConstString.decline, () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -94,7 +96,7 @@ class CompleteRequest extends StatelessWidget {
                                       ),
                                       Expanded(
                                           child: CommonHelper().buttonOrange(
-                                              'Accept', () {
+                                              ConstString.accept, () {
                                         if (oProvider.markLoading) return;
 
                                         oProvider.completeOrder(context,

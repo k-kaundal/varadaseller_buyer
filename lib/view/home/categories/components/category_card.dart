@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
-import '../../../report/services/service_by_category_page.dart';
+import '../../../services/service_by_category_page.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard(

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -11,6 +13,7 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/live_chat/chat_message_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/service/rtl_service.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -374,7 +377,9 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                           child: TextField(
                             controller: sendMessageController,
                             decoration: InputDecoration(
-                                hintText: ln.getString("Write message") + '...',
+                                hintText:
+                                    ln.getString(ConstString.writeMessage) +
+                                        '...',
                                 hintStyle:
                                     const TextStyle(color: Colors.black54),
                                 border: InputBorder.none),
@@ -415,7 +420,9 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                               });
                             } else {
                               OthersHelper().showToast(
-                                  'Please write a message first', Colors.black);
+                                  ln.getString(
+                                      ConstString.plzWriteMessageFirst),
+                                  Colors.black);
                             }
                           },
                           backgroundColor: cc.primaryColor,

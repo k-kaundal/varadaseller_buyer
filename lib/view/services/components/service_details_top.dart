@@ -7,10 +7,11 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/service/service_details_service.dart';
-import 'package:qixer/view/report/services/seller_all_service_page.dart';
+import 'package:qixer/view/services/seller_all_service_page.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
-import '../../../utils/constant_styles.dart';
+import '../../utils/constant_styles.dart';
 import '../service_helper.dart';
 
 class ServiceDetailsTop extends StatelessWidget {
@@ -63,7 +64,7 @@ class ServiceDetailsTop extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          ln.getString('Our Package'),
+                          ln.getString(ConstString.ourPackage),
                           style: TextStyle(
                               color: cc.greyFour,
                               fontSize: 18,
@@ -120,7 +121,7 @@ class ServiceDetailsTop extends StatelessWidget {
                         width: 5,
                       ),
                       AutoSizeText(
-                        ln.getString('Orders completed'),
+                        ln.getString(ConstString.ourPackage),
                         maxLines: 1,
                         style: TextStyle(
                             color: cc.greyFour,
@@ -151,7 +152,7 @@ class ServiceDetailsTop extends StatelessWidget {
                       width: 5,
                     ),
                     AutoSizeText(
-                      ln.getString('Seller ratings'),
+                      ln.getString(ConstString.sellerRatings),
                       maxLines: 1,
                       style: TextStyle(
                           color: cc.greyFour,
@@ -201,7 +202,7 @@ class ServiceTitleAndUser extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                       elevation: 0, backgroundColor: cc.successColor),
-                  child: Text(ln.getString('Watch video')))
+                  child: Text(ln.getString(ConstString.watchVideo)))
               : Container(),
 
           const SizedBox(

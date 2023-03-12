@@ -4,6 +4,7 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class MenuPersonalInfoSection extends StatelessWidget {
@@ -19,41 +20,41 @@ class MenuPersonalInfoSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CommonHelper()
-                          .titleCommon(ln.getString("Personal informations")),
+                          .titleCommon(ln.getString(ConstString.personalInfos)),
                       const SizedBox(
                         height: 25,
                       ),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString("Email"),
+                          ln.getString(ConstString.email),
                           profileProvider.profileDetails.userDetails.email ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString("City"),
+                          ln.getString(ConstString.city),
                           profileProvider.profileDetails.userDetails.city
                                   .serviceCity ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString("Area"),
+                          ln.getString(ConstString.area),
                           profileProvider.profileDetails.userDetails.area
                                   .serviceArea ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString("Country"),
+                          ln.getString(ConstString.country),
                           profileProvider
                                   .profileDetails.userDetails.country.country ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString("Post code"),
+                          ln.getString(ConstString.postCode),
                           profileProvider.profileDetails.userDetails.postCode ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString("Address"),
+                          ln.getString(ConstString.address),
                           profileProvider.profileDetails.userDetails.address ??
                               '',
                           lastBorder: false),

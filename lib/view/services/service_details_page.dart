@@ -7,17 +7,18 @@ import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/service_details_service.dart';
 import 'package:qixer/view/booking/service_personalization_page.dart';
 import 'package:qixer/view/live_chat/chat_message_page.dart';
-import 'package:qixer/view/report/services/components/about_seller_tab.dart';
-import 'package:qixer/view/report/services/components/image_big.dart';
-import 'package:qixer/view/report/services/components/overview_tab.dart';
-import 'package:qixer/view/report/services/components/review_tab.dart';
+import 'package:qixer/view/services/components/about_seller_tab.dart';
+import 'package:qixer/view/services/components/image_big.dart';
+import 'package:qixer/view/services/components/overview_tab.dart';
+import 'package:qixer/view/services/components/review_tab.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../service/booking_services/personalization_service.dart';
-import '../../utils/common_helper.dart';
+import '../../service/booking_services/personalization_service.dart';
+import '../utils/common_helper.dart';
 import 'components/service_details_top.dart';
 
 class ServiceDetailsPage extends StatefulWidget {
@@ -76,7 +77,8 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                 children: [
                                   // Image big
                                   ImageBig(
-                                    serviceName: ln.getString('Service Name'),
+                                    serviceName:
+                                        ln.getString(ConstString.serviceName),
                                     imageLink: provider.serviceAllDetails
                                                 .serviceImage !=
                                             null
@@ -116,9 +118,15 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                           fontWeight: FontWeight.normal),
                                       controller: _tabController,
                                       tabs: [
-                                        Tab(text: ln.getString('Overview')),
-                                        Tab(text: ln.getString('About seller')),
-                                        Tab(text: ln.getString('Review')),
+                                        Tab(
+                                            text: ln.getString(
+                                                ConstString.overView)),
+                                        Tab(
+                                            text: ln.getString(
+                                                ConstString.aboutSeller)),
+                                        Tab(
+                                            text: ln
+                                                .getString(ConstString.review)),
                                       ],
                                     ),
                                     Container(
@@ -154,7 +162,8 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                   children: [
                                     Expanded(
                                       child: CommonHelper().buttonOrange(
-                                          ln.getString('Book Appointment'), () {
+                                          ln.getString(
+                                              ConstString.bookAppointment), () {
                                         print(
                                             'seller id ${provider.serviceAllDetails.serviceDetails.sellerId}');
                                         Provider.of<BookService>(context,
@@ -218,7 +227,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                     )
                   : Container(
                       alignment: Alignment.center,
-                      child: Text(ln.getString('Something went wrong')),
+                      child: Text(ln.getString(ConstString.somethingWrong)),
                     )
               : OthersHelper().showLoading(cc.primaryColor),
         ),

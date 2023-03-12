@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/logout_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
+import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -24,10 +25,12 @@ class SettingsHelper {
   }
 
   List<SettingsGridCard> cardContent = [
-    SettingsGridCard('assets/svg/pending-circle.svg', 'Pending orders'),
-    SettingsGridCard('assets/svg/active-circle.svg', 'Active orders'),
-    SettingsGridCard('assets/svg/completed-circle.svg', 'Completed orders'),
-    SettingsGridCard('assets/svg/receipt-circle.svg', 'Total orders'),
+    SettingsGridCard(
+        'assets/svg/pending-circle.svg', ConstString.pendingOrders),
+    SettingsGridCard('assets/svg/active-circle.svg', ConstString.activeOrders),
+    SettingsGridCard(
+        'assets/svg/completed-circle.svg', ConstString.completedOrders),
+    SettingsGridCard('assets/svg/receipt-circle.svg', ConstString.totalOrders),
   ];
 
   settingOption(String icon, String title, VoidCallback pressed) {
@@ -82,7 +85,7 @@ class SettingsHelper {
             builder: (context, ln, child) => Column(
               children: [
                 Text(
-                  '${ln.getString('Are you sure')}?',
+                  '${ln.getString(ConstString.areYouSure)}?',
                   style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                 ),
                 const SizedBox(
@@ -91,8 +94,8 @@ class SettingsHelper {
                 Row(
                   children: [
                     Expanded(
-                        child: CommonHelper()
-                            .borderButtonOrange(ln.getString('Cancel'), () {
+                        child: CommonHelper().borderButtonOrange(
+                            ln.getString(ConstString.cancel), () {
                       Navigator.pop(context);
                     })),
                     const SizedBox(
@@ -101,7 +104,7 @@ class SettingsHelper {
                     Consumer<LogoutService>(
                       builder: (context, provider, child) => Expanded(
                           child: CommonHelper().buttonOrange(
-                              ln.getString('Logout'), () {
+                              ln.getString(ConstString.logout), () {
                         if (provider.isloading == false) {
                           provider.logout(context);
                           //if logged in by google then logout from it
