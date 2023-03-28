@@ -171,7 +171,7 @@ class JobRequestService with ChangeNotifier {
     print(response.data);
     print(response.statusCode);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       if (isManualOrCod == true) {
         print('manual or cod ran');
         goToJobSuccessPage(context);

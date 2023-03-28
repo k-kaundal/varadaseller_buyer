@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutterwave_standard/flutterwave.dart';
-import 'package:flutterwave_standard/models/subaccount.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/book_confirmation_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
@@ -120,16 +119,16 @@ class FlutterwaveService {
     final Customer customer =
         Customer(name: "FLW Developer", phoneNumber: phone, email: email);
 
-    final subAccounts = [
-      SubAccount(
-          id: "RS_1A3278129B808CB588B53A14608169AD",
-          transactionChargeType: "flat",
-          transactionPercentage: 25),
-      SubAccount(
-          id: "RS_C7C265B8E4B16C2D472475D7F9F4426A",
-          transactionChargeType: "flat",
-          transactionPercentage: 50)
-    ];
+    // final subAccounts = [
+    //   SubAccount(
+    //       id: "RS_1A3278129B808CB588B53A14608169AD",
+    //       transactionChargeType: "flat",
+    //       transactionPercentage: 25),
+    //   SubAccount(
+    //       id: "RS_C7C265B8E4B16C2D472475D7F9F4426A",
+    //       transactionChargeType: "flat",
+    //       transactionPercentage: 50)
+    // ];
 
     final Flutterwave flutterwave = Flutterwave(
         context: context,
@@ -139,7 +138,7 @@ class FlutterwaveService {
         txRef: const Uuid().v1(),
         amount: amount,
         customer: customer,
-        subAccounts: subAccounts,
+        // subAccounts: subAccounts,
         paymentOptions: "card, payattitude",
         customization: Customization(title: "Test Payment"),
         redirectUrl: "https://www.google.com",
