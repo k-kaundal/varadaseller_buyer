@@ -6,6 +6,7 @@ import 'package:qixer/view/auth/signup/components/country_dropdown.dart';
 import 'package:qixer/view/auth/signup/components/state_dropdown.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/const_strings.dart';
+import 'package:qixer/view/utils/constant_colors.dart';
 
 class CountryStatesDropdowns extends StatefulWidget {
   const CountryStatesDropdowns({Key? key}) : super(key: key);
@@ -67,4 +68,20 @@ class _CountryStatesDropdownsState extends State<CountryStatesDropdowns> {
               ],
             ));
   }
+}
+
+dropdownPlaceholder({required String hintText}) {
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 17),
+    decoration: BoxDecoration(
+        border: Border.all(
+          color: ConstantColors().greyFive,
+        ),
+        borderRadius: BorderRadius.circular(8)),
+    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      CommonHelper().paragraphCommon(hintText),
+      const Icon(Icons.keyboard_arrow_down)
+    ]),
+  );
 }

@@ -9,6 +9,12 @@ class ConstString {
   static const String seeAll = "See all";
   static const String home = "Home";
   static const String orders = "Orders";
+  static const String selectCountry = 'Select Country';
+  static const String selectState = 'Select State';
+  static const String selectArea = 'Select Area';
+  static const String noCountryFound = 'No country found';
+  static const String noCityFound = 'No city found';
+  static const String noAreaFound = 'No area found';
   static const String save = "Save";
   static const String saved = "Saved";
   static const String search = "Search";

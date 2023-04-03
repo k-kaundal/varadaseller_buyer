@@ -90,8 +90,7 @@ class _JobEditDropdownsState extends State<JobEditDropdowns> {
                                                 .indexOf(newValue)]);
 
                                     //fetch states based on selected country
-                                    provider.fetchStates(
-                                        provider.selectedCountryId, context);
+                                    provider.fetchStates(context);
                                   },
                                   items: provider.countryDropdownList
                                       .map<DropdownMenuItem<String>>((value) {
@@ -149,10 +148,7 @@ class _JobEditDropdownsState extends State<JobEditDropdowns> {
                                                 .indexOf(newValue)]);
                                     // //fetch area based on selected country and state
 
-                                    provider.fetchArea(
-                                        provider.selectedCountryId,
-                                        provider.selectedStateId,
-                                        context);
+                                    provider.fetchArea(context);
 
                                     // print(provider.statesDropdownIndexList[provider
                                     //     .statesDropdownList
