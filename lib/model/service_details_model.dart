@@ -354,7 +354,7 @@ class SellerForMobile {
   String? name;
   String? image;
   int? countryId;
-  Country country;
+  Country? country;
 
   factory SellerForMobile.fromJson(Map<String, dynamic> json) =>
       SellerForMobile(
@@ -362,7 +362,8 @@ class SellerForMobile {
         name: json["name"],
         image: json["image"],
         countryId: json["country_id"],
-        country: Country.fromJson(json["country"]),
+        country:
+            json["country"] == null ? null : Country.fromJson(json["country"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -370,7 +371,7 @@ class SellerForMobile {
         "name": name,
         "image": image,
         "country_id": countryId,
-        "country": country.toJson(),
+        "country": country?.toJson(),
       };
 }
 

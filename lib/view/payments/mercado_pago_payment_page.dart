@@ -16,9 +16,10 @@ import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
-import 'package:qixer/view/utils/others_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class MercadopagoPaymentPage extends StatefulWidget {
   const MercadopagoPaymentPage({
@@ -47,72 +48,82 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mercado pago')),
-      body: FutureBuilder(
-          future: getPaymentUrl(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasData) {
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            return WebView(
-              onWebResourceError: (error) => showDialog(
-                  context: context,
-                  builder: (ctx) {
-                    return const AlertDialog(
-                      title: Text(ConstString.loadingFailed),
-                      content: Text(ConstString.loadingFailed),
-                      actions: [
-                        Spacer(),
-                      ],
-                    );
-                  }),
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
-              navigationDelegate: (NavigationRequest request) async {
-                if (request.url.contains('https://www.google.com/')) {
-                  print('payment success');
-                  if (widget.isFromOrderExtraAccept == true) {
-                    await Provider.of<OrderDetailsService>(context,
-                            listen: false)
-                        .acceptOrderExtra(context);
-                  } else if (widget.isFromWalletDeposite) {
-                    await Provider.of<WalletService>(context, listen: false)
-                        .makeDepositeToWalletSuccess(context);
-                  } else if (widget.isFromHireJob) {
-                    Provider.of<JobRequestService>(context, listen: false)
-                        .goToJobSuccessPage(context);
-                  } else {
-                    await Provider.of<PlaceOrderService>(context, listen: false)
-                        .makePaymentSuccess(context);
+      appBar: CommonHelper().appbarCommon('Mercado pago', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
+      body: WillPopScope(
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return true;
+        },
+        child: FutureBuilder(
+            future: getPaymentUrl(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasData) {
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              return WebView(
+                onWebResourceError: (error) => showDialog(
+                    context: context,
+                    builder: (ctx) {
+                      return const AlertDialog(
+                        title: Text('Loading failed!'),
+                        content: Text('Failed to load payment page.'),
+                        actions: [
+                          Spacer(),
+                        ],
+                      );
+                    }),
+                initialUrl: url,
+                javascriptMode: JavascriptMode.unrestricted,
+                navigationDelegate: (NavigationRequest request) async {
+                  if (request.url.contains('https://www.google.com/')) {
+                    print('payment success');
+                    if (widget.isFromOrderExtraAccept == true) {
+                      await Provider.of<OrderDetailsService>(context,
+                              listen: false)
+                          .acceptOrderExtra(context);
+                    } else if (widget.isFromWalletDeposite) {
+                      await Provider.of<WalletService>(context, listen: false)
+                          .makeDepositeToWalletSuccess(context);
+                    } else if (widget.isFromHireJob) {
+                      Provider.of<JobRequestService>(context, listen: false)
+                          .goToJobSuccessPage(context);
+                    } else {
+                      await Provider.of<PlaceOrderService>(context,
+                              listen: false)
+                          .makePaymentSuccess(context);
+                    }
+
+                    return NavigationDecision.prevent;
                   }
+                  if (request.url.contains('https://www.facebook.com/')) {
+                    print('payment failed');
+                    Provider.of<PlaceOrderService>(context, listen: false)
+                        .doNext(context, 'failed', paymentFailed: true);
 
-                  return NavigationDecision.prevent;
-                }
-                if (request.url.contains('https://www.facebook.com/')) {
-                  print('payment failed');
-                  OthersHelper().showSnackBar(
-                      context, ConstString.paymentFailed, Colors.red);
-                  PlaceOrderService().makePaymentFailed(context);
-
-                  return NavigationDecision.prevent;
-                }
-                return NavigationDecision.navigate;
-              },
-            );
-          }),
+                    return NavigationDecision.prevent;
+                  }
+                  return NavigationDecision.navigate;
+                },
+              );
+            }),
+      ),
     );
   }
 
@@ -152,7 +163,7 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
       var bookProvider = Provider.of<BookService>(context, listen: false);
 
       if (pProvider.isOnline == 0) {
-        amount = bcProvider.totalPriceAfterAllcalculation;
+        amount = bcProvider.totalPriceAfterAllcalculation.toStringAsFixed(2);
       } else {
         amount = bcProvider.totalPriceOnlineServiceAfterAllCalculation;
       }
@@ -165,9 +176,8 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
         Provider.of<PaymentGatewayListService>(context, listen: false)
                 .secretKey ??
             '';
-
-    print('mercado pago amount $amount');
-    print('mercado pago amount type ${amount.runtimeType}');
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
 
     var header = {
       "Accept": "application/json",
@@ -180,7 +190,7 @@ class _MercadopagoPaymentPageState extends State<MercadopagoPaymentPage> {
           "title": "Qixer",
           "description": "Qixer payment",
           "quantity": 1,
-          "currency_id": "ARS",
+          "currency_id": currencyCode,
           "unit_price": amount
         }
       ],

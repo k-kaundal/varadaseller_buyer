@@ -10,7 +10,6 @@ import 'package:qixer/view/jobs/components/my_jobs_page_appbar.dart';
 import 'package:qixer/view/jobs/components/my_jobs_popup_menu.dart';
 import 'package:qixer/view/jobs/job_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -80,8 +79,9 @@ class _MyJobsPageState extends State<MyJobsPage> {
                 padding: EdgeInsets.symmetric(horizontal: screenPadding),
                 clipBehavior: Clip.none,
                 child: Consumer<AppStringService>(
-                  builder: (context, ln, child) => Consumer<MyJobsService>(
-                      builder: (context, provider, child) {
+                  builder: (context, asProvider, child) =>
+                      Consumer<MyJobsService>(
+                          builder: (context, provider, child) {
                     return Column(
                       children: [
                         provider.myJobsListMap.isNotEmpty
@@ -175,7 +175,7 @@ class _MyJobsPageState extends State<MyJobsPage> {
                                                         child: Row(
                                                           children: [
                                                             AutoSizeText(
-                                                              '${ln.getString(ConstString.startsFrom)}:',
+                                                              '${asProvider.getString('Starts from')}:',
                                                               textAlign:
                                                                   TextAlign
                                                                       .start,
@@ -238,9 +238,9 @@ class _MyJobsPageState extends State<MyJobsPage> {
                                                         children: [
                                                           CommonHelper()
                                                               .paragraphCommon(
-                                                            ln.getString(
-                                                                ConstString
-                                                                    .onOff),
+                                                            asProvider
+                                                                .getString(
+                                                                    'On/Off'),
                                                           ),
                                                           Switch(
                                                             // This bool value toggles the switch.
@@ -275,13 +275,14 @@ class _MyJobsPageState extends State<MyJobsPage> {
 
                                     //
                                   ])
-                            : OthersHelper().showError(context,
-                                msg: ln.getString(ConstString.noJobFound)),
+                            : OthersHelper()
+                                .showError(context, msg: 'No jobs found'),
                       ],
                     );
                   }),
                 )),
           ),
+          footer: OthersHelper().commonRefreshFooter(context),
         ),
       ),
     );

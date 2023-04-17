@@ -6,17 +6,15 @@ import 'package:qixer/service/orders_service.dart';
 import 'package:qixer/view/report/write_report_page.dart';
 import 'package:qixer/view/services/review/write_review_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class OrdersHelper {
-  ConstantColors cc = ConstantColors();
-
   List ordersPopupMenuList = [
-    ConstString.leaveFeedback,
-    ConstString.cancelOrder,
-    ConstString.reportToAdmin
+    'Leave feedback',
+    'Cancel order',
+    'Report to admin'
   ];
 
   navigateMyOrders(BuildContext context,
@@ -44,6 +42,8 @@ class OrdersHelper {
       );
     }
   }
+
+  ConstantColors cc = ConstantColors();
 
   statusCapsule(String capsuleText, Color color) {
     return Container(
@@ -90,7 +90,7 @@ class OrdersHelper {
               width: 7,
             ),
             Text(
-              title,
+              lnProvider.getString(title),
               style: TextStyle(
                 color: cc.greyFour,
                 fontSize: 14,
@@ -148,10 +148,10 @@ class OrdersHelper {
             ],
           ),
           child: Consumer<AppStringService>(
-            builder: (context, ln, child) => Column(
+            builder: (context, asProvider, child) => Column(
               children: [
                 Text(
-                  '${ln.getString(ConstString.areYouSure)}?',
+                  '${asProvider.getString('Are you sure?')}?',
                   style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                 ),
                 const SizedBox(
@@ -160,8 +160,8 @@ class OrdersHelper {
                 Row(
                   children: [
                     Expanded(
-                        child: CommonHelper().borderButtonOrange(
-                            ln.getString(ConstString.no), () {
+                        child: CommonHelper()
+                            .borderButtonOrange(asProvider.getString('No'), () {
                       Navigator.pop(context);
                     })),
                     const SizedBox(
@@ -170,7 +170,7 @@ class OrdersHelper {
                     Consumer<OrdersService>(
                       builder: (context, provider, child) => Expanded(
                           child: CommonHelper()
-                              .buttonOrange(ln.getString(ConstString.yes), () {
+                              .buttonOrange(asProvider.getString('Yes'), () {
                         if (provider.cancelLoading == false) {
                           provider.cancelOrder(context, orderId: orderId);
                         }

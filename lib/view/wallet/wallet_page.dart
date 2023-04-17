@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/common_service.dart';
+import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/booking/payment_choose_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -33,8 +33,9 @@ class _WalletPageState extends State<WalletPage> {
 
   @override
   Widget build(BuildContext context) {
+    final rtlProvider = Provider.of<RtlService>(context, listen: false);
     return Scaffold(
-      appBar: CommonHelper().appbarCommon(ConstString.wallet, context, () {
+      appBar: CommonHelper().appbarCommon('Wallet', context, () {
         Navigator.pop(context);
       }),
       backgroundColor: cc.bgColor,
@@ -71,7 +72,7 @@ class _WalletPageState extends State<WalletPage> {
                                       height: 3,
                                     ),
                                     AutoSizeText(
-                                      ln.getString(ConstString.balance),
+                                      ln.getString('Balance'),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
@@ -126,8 +127,7 @@ class _WalletPageState extends State<WalletPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      CommonHelper().titleCommon(
-                                          ln.getString(ConstString.history)),
+                                      CommonHelper().titleCommon('History'),
                                       sizedBoxCustom(17),
                                       for (int i = 0;
                                           i < provider.walletHistory.length;
@@ -151,7 +151,7 @@ class _WalletPageState extends State<WalletPage> {
                                                             .start,
                                                     children: [
                                                       CommonHelper().titleCommon(
-                                                          '${ln.getString(ConstString.id)}: #${provider.walletHistory[i].id}',
+                                                          'ID: #${provider.walletHistory[i].id}',
                                                           fontsize: 15,
                                                           color:
                                                               cc.primaryColor),
@@ -159,7 +159,9 @@ class _WalletPageState extends State<WalletPage> {
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            "${ln.getString(ConstString.gateway)}: ${removeUnderscore(provider.walletHistory[i].paymentGateway)}",
+                                                            lnProvider.getString(
+                                                                    "Gateway") +
+                                                                ": ${removeUnderscore(provider.walletHistory[i].paymentGateway)}",
                                                             style: TextStyle(
                                                               color:
                                                                   cc.greyFour,
@@ -171,7 +173,13 @@ class _WalletPageState extends State<WalletPage> {
                                                             width: 19,
                                                           ),
                                                           Text(
-                                                            "${ln.getString(ConstString.amount)}: \$${provider.walletHistory[i].amount}",
+                                                            lnProvider.getString(
+                                                                    "Amount") +
+                                                                ": " +
+                                                                (rtlProvider.currencyDirection ==
+                                                                        'left'
+                                                                    ? "${rtlProvider.currency}${provider.walletHistory[i].amount}"
+                                                                    : "${provider.walletHistory[i].amount}${rtlProvider.currency}"),
                                                             style: TextStyle(
                                                               color:
                                                                   cc.greyFour,
@@ -185,7 +193,9 @@ class _WalletPageState extends State<WalletPage> {
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            "${ln.getString(ConstString.paymentStatus)}: ${provider.walletHistory[i].paymentStatus}",
+                                                            lnProvider.getString(
+                                                                    "Payment Status") +
+                                                                ": ${lnProvider.getString(provider.walletHistory[i].paymentStatus)}",
                                                             style: TextStyle(
                                                               color:
                                                                   cc.greyFour,
@@ -196,10 +206,24 @@ class _WalletPageState extends State<WalletPage> {
                                                           const SizedBox(
                                                             width: 19,
                                                           ),
+                                                          // Text(
+                                                          //   "Date: 2 days ago",
+                                                          //   style: TextStyle(
+                                                          //     color:
+                                                          //         cc.greyFour,
+                                                          //     fontSize: 14,
+                                                          //     height: 1.4,
+                                                          //   ),
+                                                          // ),
                                                         ],
                                                       ),
                                                     ]),
                                               ),
+                                              // Icon(
+                                              //   Icons.arrow_forward_ios,
+                                              //   size: 16,
+                                              //   color: cc.greyFour,
+                                              // )
                                             ],
                                           ),
                                         ),
@@ -215,7 +239,7 @@ class _WalletPageState extends State<WalletPage> {
                                 height: screenHeight - 280,
                                 alignment: Alignment.center,
                                 child: Text(
-                                    ln.getString(ConstString.noHistoryFound)),
+                                    lnProvider.getString('No history found')),
                               ),
                       ],
                     ),

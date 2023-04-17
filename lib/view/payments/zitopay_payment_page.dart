@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -7,9 +7,9 @@ import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
-import 'package:qixer/view/utils/others_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../utils/common_helper.dart';
 
 class ZitopayPaymentPage extends StatefulWidget {
   const ZitopayPaymentPage(
@@ -56,14 +56,16 @@ class _ZitopayPaymentPageState extends State<ZitopayPaymentPage> {
             controller.goBack();
             return false;
           } else {
-            return true;
+            Provider.of<PlaceOrderService>(context, listen: false)
+                .doNext(context, 'failed', paymentFailed: true);
+            return false;
           }
         },
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blue,
-            title: const Text("Zitopay"),
-          ),
+          appBar: CommonHelper().appbarCommon('ZitoPay', context, () {
+            Provider.of<PlaceOrderService>(context, listen: false)
+                .doNext(context, 'failed', paymentFailed: true);
+          }),
           body: WebView(
             javascriptMode: JavascriptMode.unrestricted,
             initialUrl:
@@ -102,9 +104,8 @@ class _ZitopayPaymentPageState extends State<ZitopayPaymentPage> {
               }
               if (request.url.contains('https://pub.dev/')) {
                 print('payment failed');
-                OthersHelper().showSnackBar(
-                    context, ConstString.paymentFailed, Colors.red);
-                PlaceOrderService().makePaymentFailed(context);
+                Provider.of<PlaceOrderService>(context, listen: false)
+                    .doNext(context, 'failed', paymentFailed: true);
 
                 return NavigationDecision.prevent;
               }

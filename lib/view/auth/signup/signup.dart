@@ -6,7 +6,6 @@ import 'package:qixer/view/auth/signup/pages/signup_country_states.dart';
 import 'package:qixer/view/auth/signup/pages/signup_email_name.dart';
 import 'package:qixer/view/auth/signup/pages/signup_phone_pass.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 class SignupPage extends StatefulWidget {
@@ -45,7 +44,7 @@ class _SignupPageState extends State<SignupPage> {
         }
       },
       child: Consumer<AppStringService>(
-        builder: (context, ln, child) => Consumer<SignupService>(
+        builder: (context, asProvider, child) => Consumer<SignupService>(
           builder: (context, provider, child) => WillPopScope(
             onWillPop: () {
               if (provider.selectedPage == 0) {
@@ -79,7 +78,7 @@ class _SignupPageState extends State<SignupPage> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: CommonHelper().titleCommon(
-                          ln.getString(ConstString.registerToJoin)),
+                          asProvider.getString("Register to join us")),
                     ),
 
                     const SizedBox(

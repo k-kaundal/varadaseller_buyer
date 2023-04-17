@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, use_build_context_synchronously
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
 
 import 'dart:async';
 import 'dart:convert';
@@ -10,9 +10,11 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class PayTabsPayment extends StatelessWidget {
   PayTabsPayment(
@@ -45,85 +47,78 @@ class PayTabsPayment extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Paytabs'),
-      ),
-      body: FutureBuilder(
-          future: waitForIt(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasData) {
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            return WebView(
-              // onWebViewCreated: ((controller) {
-              //   _controller = controller;
-              // }),
-              onWebResourceError: (error) {
-                showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return const AlertDialog(
-                        title: Text(ConstString.loadingFailed),
-                        content: Text(ConstString.loadingFailed),
-                      );
-                    });
+      appBar: CommonHelper().appbarCommon('PayTabs', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
+      body: WillPopScope(
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return false;
+        },
+        child: FutureBuilder(
+            future: waitForIt(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasData) {
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              return WebView(
+                // onWebViewCreated: ((controller) {
+                //   _controller = controller;
+                // }),
+                onWebResourceError: (error) {
+                  Provider.of<PlaceOrderService>(context, listen: false)
+                      .doNext(context, 'failed', paymentFailed: true);
+                },
+                initialUrl: url,
+                javascriptMode: JavascriptMode.unrestricted,
 
-                PlaceOrderService().makePaymentFailed(context);
-              },
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
-
-              onPageFinished: (value) async {},
-              onPageStarted: (value) async {
-                if (!value.contains('result')) {
-                  return;
-                }
-                bool paySuccess = await verifyPayment(value);
-
-                if (paySuccess) {
-                  if (isFromOrderExtraAccept == true) {
-                    await Provider.of<OrderDetailsService>(context,
-                            listen: false)
-                        .acceptOrderExtra(context);
-                  } else if (isFromWalletDeposite) {
-                    await Provider.of<WalletService>(context, listen: false)
-                        .makeDepositeToWalletSuccess(context);
-                  } else if (isFromHireJob) {
-                    Provider.of<JobRequestService>(context, listen: false)
-                        .goToJobSuccessPage(context);
-                  } else {
-                    await Provider.of<PlaceOrderService>(context, listen: false)
-                        .makePaymentSuccess(context);
+                onPageFinished: (value) async {},
+                onPageStarted: (value) async {
+                  if (!value.contains('result')) {
+                    return;
                   }
-                  return;
-                }
-                await showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return const AlertDialog(
-                        title: Text(ConstString.paymentFailed),
-                        content: Text(ConstString.paymentFailed),
-                      );
-                    });
+                  bool paySuccess = await verifyPayment(value);
 
-                PlaceOrderService().makePaymentFailed(context);
-              },
-              navigationDelegate: (navRequest) async {
-                return NavigationDecision.navigate;
-              },
-            );
-          }),
+                  if (paySuccess) {
+                    if (isFromOrderExtraAccept == true) {
+                      await Provider.of<OrderDetailsService>(context,
+                              listen: false)
+                          .acceptOrderExtra(context);
+                    } else if (isFromWalletDeposite) {
+                      await Provider.of<WalletService>(context, listen: false)
+                          .makeDepositeToWalletSuccess(context);
+                    } else if (isFromHireJob) {
+                      Provider.of<JobRequestService>(context, listen: false)
+                          .goToJobSuccessPage(context);
+                    } else {
+                      await Provider.of<PlaceOrderService>(context,
+                              listen: false)
+                          .makePaymentSuccess(context);
+                    }
+                    return;
+                  }
+                  await Provider.of<PlaceOrderService>(context, listen: false)
+                      .doNext(context, 'failed', paymentFailed: true);
+                },
+                navigationDelegate: (navRequest) async {
+                  return NavigationDecision.navigate;
+                },
+              );
+            }),
+      ),
     );
   }
 
@@ -134,6 +129,8 @@ class PayTabsPayment extends StatelessWidget {
     String secretKey =
         Provider.of<PaymentGatewayListService>(context, listen: false)
             .secretKey;
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
 
     print('here');
     final url = Uri.parse('https://secure-global.paytabs.com/payment/request');
@@ -152,7 +149,7 @@ class PayTabsPayment extends StatelessWidget {
           "tran_class": "ecom",
           "cart_id": orderId.toString(),
           "cart_description": "Qixer payment",
-          "cart_currency": "USD",
+          "cart_currency": currencyCode,
           "cart_amount": amount,
         }));
     print(response.body);

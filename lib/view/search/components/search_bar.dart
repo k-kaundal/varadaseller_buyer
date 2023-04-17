@@ -3,14 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/searchbar_with_dropdown_service.dart';
-import 'package:qixer/view/auth/signup/components/country_dropdown.dart';
-import 'package:qixer/view/auth/signup/components/state_dropdown.dart';
 import 'package:qixer/view/search/components/online_offline_dropdown.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
 import '../../../service/service_details_service.dart';
+import '../../auth/signup/dropdowns/country_dropdown.dart';
+import '../../auth/signup/dropdowns/state_dropdown.dart';
 import '../../home/components/service_card.dart';
 import '../../services/service_details_page.dart';
 import '../../utils/constant_colors.dart';
@@ -23,7 +22,8 @@ class SearchBar extends StatelessWidget {
     ConstantColors cc = ConstantColors();
     TextEditingController searchController = TextEditingController();
     return Consumer<AppStringService>(
-      builder: (context, ln, child) => Consumer<SearchBarWithDropdownService>(
+      builder: (context, asProvider, child) =>
+          Consumer<SearchBarWithDropdownService>(
         builder: (context, provider, child) => Container(
           margin: const EdgeInsets.only(bottom: 16),
           child: Column(
@@ -51,7 +51,7 @@ class SearchBar extends StatelessWidget {
                               if (value.isNotEmpty) {
                                 provider.fetchService(
                                   context,
-                                  value,
+                                  searchText: value,
                                 );
                               }
                             },
@@ -59,7 +59,7 @@ class SearchBar extends StatelessWidget {
                               if (value.isNotEmpty) {
                                 provider.fetchService(
                                   context,
-                                  value,
+                                  searchText: value,
                                 );
                               }
                             },
@@ -67,7 +67,7 @@ class SearchBar extends StatelessWidget {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: const Icon(Icons.search),
-                                hintText: ln.getString(ConstString.search),
+                                hintText: asProvider.getString("Search"),
                                 hintStyle: TextStyle(
                                     color: cc.greyPrimary.withOpacity(.8)),
                                 contentPadding: const EdgeInsets.symmetric(
@@ -80,14 +80,19 @@ class SearchBar extends StatelessWidget {
 
               //Country state
               Row(
-                children: const [
+                children: [
                   Expanded(
-                    child: CountryDropdown(),
+                    child: CountryDropdown(
+                      textWidth: MediaQuery.of(context).size.width / 3.6,
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Expanded(child: StateDropdown())
+                  Expanded(
+                      child: StateDropdown(
+                    textWidth: MediaQuery.of(context).size.width / 3.6,
+                  ))
                 ],
               ),
 
@@ -95,6 +100,12 @@ class SearchBar extends StatelessWidget {
               sizedBoxCustom(15),
               Row(
                 children: [
+                  // const Expanded(
+                  //   child: AreaDropdown(),
+                  // ),
+                  // const SizedBox(
+                  //   width: 10,
+                  // ),
                   Expanded(
                       child: OnlineOfflineDropdown(
                     searchText: searchController.text,
@@ -191,7 +202,7 @@ class SearchBar extends StatelessWidget {
                                 Container(
                                   margin: const EdgeInsets.only(top: 20),
                                   child: Text(
-                                    ln.getString(ConstString.noResultFound),
+                                    asProvider.getString("No result found"),
                                     style: TextStyle(color: cc.greyPrimary),
                                   ),
                                 )
@@ -203,7 +214,7 @@ class SearchBar extends StatelessWidget {
                             Container(
                               margin: const EdgeInsets.only(top: 20),
                               child: Text(
-                                ln.getString(ConstString.noResultFound),
+                                asProvider.getString("No result found"),
                                 style: TextStyle(color: cc.greyPrimary),
                               ),
                             )

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -60,7 +59,7 @@ class PushNotificationHelper {
               const SizedBox(
                 height: 25,
               ),
-              CommonHelper().buttonOrange(ConstString.ok, () {
+              CommonHelper().buttonOrange('Ok', () {
                 Navigator.pop(context);
               }),
             ],

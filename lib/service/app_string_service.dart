@@ -22,17 +22,22 @@ class AppStringService with ChangeNotifier {
     notifyListeners();
   }
 
-  fetchTranslatedStrings() async {
+  fetchTranslatedStrings(BuildContext context, {bool doNotLoad = false}) async {
     if (tStrings != null) {
       //if already loaded. no need to load again
       return;
     }
+
     var connection = await checkConnection();
     if (connection) {
       //internet connection is on
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
-
+      if (doNotLoad) {
+        final strings = prefs.getString('translated_string');
+        tStrings = jsonDecode(strings ?? 'null');
+        return;
+      }
       setLoadingTrue();
 
       var data = jsonEncode({
@@ -51,6 +56,7 @@ class AppStringService with ChangeNotifier {
 
       if (response.statusCode == 201) {
         tStrings = jsonDecode(response.body)['strings'];
+        prefs.setString('translated_string', jsonEncode(tStrings));
         notifyListeners();
       } else {
         print('error fetching translations ' + response.body);

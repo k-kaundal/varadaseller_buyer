@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/change_pass_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -39,7 +38,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
     return Scaffold(
-      appBar: CommonHelper().appbarCommon(ConstString.changePass, context, () {
+      appBar: CommonHelper().appbarCommon('Change password', context, () {
         Navigator.pop(context);
       }),
       backgroundColor: Colors.white,
@@ -53,7 +52,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         child: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, ln, child) => Container(
+            builder: (context, asProvider, child) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               height: MediaQuery.of(context).size.height - 120,
               alignment: Alignment.center,
@@ -66,8 +65,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //New password =========================>
-                        CommonHelper()
-                            .labelCommon(ConstString.enterCurrentPass),
+                        CommonHelper().labelCommon(
+                            asProvider.getString("Enter current password")),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -81,8 +80,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return ln
-                                      .getString(ConstString.enterCurrentPass);
+                                  return asProvider
+                                      .getString("Enter your current password");
                                 }
                                 return null;
                               },
@@ -137,15 +136,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: ln
-                                      .getString(ConstString.enterCurrentPass),
+                                  hintText: asProvider
+                                      .getString("Enter current password"),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
 
                         //New password =========================>
-                        CommonHelper()
-                            .labelCommon(ln.getString(ConstString.newPass)),
+                        CommonHelper().labelCommon(
+                            asProvider.getString("Enter new password")),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -159,7 +158,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return ln.getString(ConstString.plzEnterPass);
+                                  return asProvider
+                                      .getString('Please enter your password');
                                 }
                                 return null;
                               },
@@ -214,14 +214,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: ln.getString(ConstString.newPass),
+                                  hintText:
+                                      asProvider.getString('New password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
 
                         //Repeat New password =========================>
                         CommonHelper().labelCommon(
-                            ln.getString(ConstString.repeatNewPass)),
+                            asProvider.getString('Repeat new password')),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -235,8 +236,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return ln
-                                      .getString(ConstString.plzRetypePass);
+                                  return asProvider
+                                      .getString('Please retype your password');
                                 }
                                 return null;
                               },
@@ -291,8 +292,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText:
-                                      ln.getString(ConstString.retypeNewPass),
+                                  hintText: asProvider
+                                      .getString('Retype new password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
@@ -304,7 +305,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         Consumer<ChangePassService>(
                           builder: (context, provider, child) => CommonHelper()
                               .buttonOrange(
-                                  ln.getString(ConstString.changePass), () {
+                                  asProvider.getString('Change password'), () {
                             if (provider.isloading == false) {
                               provider.changePassword(
                                   currentPasswordController.text,

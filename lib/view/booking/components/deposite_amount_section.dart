@@ -4,7 +4,6 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/custom_input.dart';
 
@@ -27,13 +26,12 @@ class _DepositeAmountSectionState extends State<DepositeAmountSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //Amount ============>
-              CommonHelper()
-                  .labelCommon(ln.getString(ConstString.depositeAmount)),
+              CommonHelper().labelCommon(ln.getString("Deposit Amount")),
 
               sizedBoxCustom(5),
               CustomInput(
                 controller: amountController,
-                hintText: ln.getString(ConstString.enterDepositeAmount),
+                hintText: ln.getString("Enter deposit amount"),
                 textInputAction: TextInputAction.next,
                 paddingHorizontal: 18,
                 onChanged: (v) {

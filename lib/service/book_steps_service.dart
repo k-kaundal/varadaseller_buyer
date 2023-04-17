@@ -33,8 +33,8 @@ class BookStepsService with ChangeNotifier {
   List<StepsAndNext> stepsNameList = [
     StepsAndNext("Service Personalization", 'Available Schedules'),
     StepsAndNext("Available Schedules", 'Choose Location'),
-    StepsAndNext("Choose Location", 'Informations'),
-    StepsAndNext("Informations", 'Booking Confirmations'),
+    StepsAndNext("Choose Location", "Information's"),
+    StepsAndNext("Information's", 'Booking Confirmations'),
     StepsAndNext("Booking Confirmations", ''),
   ];
 

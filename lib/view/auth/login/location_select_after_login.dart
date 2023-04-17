@@ -3,9 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/all_services_service.dart';
 import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
 import 'package:qixer/view/home/landing_page.dart';
+import 'package:qixer/view/services/service_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
+import 'package:qixer/view/utils/constant_styles.dart';
 
 class LocationSelectAfterLoginPage extends StatelessWidget {
   const LocationSelectAfterLoginPage({Key? key}) : super(key: key);
@@ -15,8 +16,7 @@ class LocationSelectAfterLoginPage extends StatelessWidget {
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar:
-          CommonHelper().appbarCommon(ConstString.selectLocation, context, () {
+      appBar: CommonHelper().appbarCommon('Select Location', context, () {
         Navigator.pop(context);
       }),
       body: SingleChildScrollView(
@@ -34,7 +34,7 @@ class LocationSelectAfterLoginPage extends StatelessWidget {
                 height: 30,
               ),
 
-              CommonHelper().buttonOrange(ConstString.login, () {
+              CommonHelper().buttonOrange("Login", () {
                 Navigator.pushReplacement<void, void>(
                   context,
                   MaterialPageRoute<void>(

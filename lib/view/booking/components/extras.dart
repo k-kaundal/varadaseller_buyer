@@ -1,9 +1,6 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/rtl_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 
 import '../../../service/booking_services/personalization_service.dart';
 import '../../services/service_helper.dart';
@@ -16,12 +13,12 @@ class Extras extends StatefulWidget {
       required this.cc,
       required this.additionalServices,
       required this.serviceBenefits,
-      required this.ln})
+      required this.asProvider})
       : super(key: key);
   final ConstantColors cc;
   final additionalServices;
   final serviceBenefits;
-  final ln;
+  final asProvider;
 
   @override
   State<Extras> createState() => _ExtrasState();
@@ -35,7 +32,7 @@ class _ExtrasState extends State<Extras> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CommonHelper()
-            .titleCommon('${widget.ln.getString(ConstString.addExtra)}:'),
+            .titleCommon('${widget.asProvider.getString('Add extras')}:'),
         const SizedBox(
           height: 17,
         ),
@@ -260,13 +257,14 @@ class _ExtrasState extends State<Extras> {
         const SizedBox(
           height: 27,
         ),
-        CommonHelper()
-            .titleCommon('${widget.ln.getString(ConstString.benefitPackage)}:'),
+        CommonHelper().titleCommon(
+            '${widget.asProvider.getString('Benefits of the Package')}:'),
         const SizedBox(
           height: 17,
         ),
         for (int i = 0; i < widget.serviceBenefits.length; i++)
-          ServiceHelper().checkListCommon(widget.serviceBenefits[i].benifits)
+          ServiceHelper()
+              .checkListCommon(context, widget.serviceBenefits[i].benifits)
       ],
     );
   }

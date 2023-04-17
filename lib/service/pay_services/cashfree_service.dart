@@ -15,6 +15,7 @@ import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
 import '../booking_services/place_order_service.dart';
+import '../rtl_service.dart';
 
 class CashfreeService {
   getTokenAndPay(BuildContext context,
@@ -101,11 +102,12 @@ class CashfreeService {
       "Content-Type": "application/json"
     };
 
-    String orderCurrency = "INR";
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
     var data = jsonEncode({
       'orderId': orderId,
       'orderAmount': amount,
-      'orderCurrency': orderCurrency
+      'orderCurrency': currencyCode
     });
 
     var response = await http.post(
@@ -122,7 +124,7 @@ class CashfreeService {
       cashFreePay(
           jsonDecode(response.body)['cftoken'],
           orderId,
-          orderCurrency,
+          currencyCode,
           context,
           amount,
           name,
@@ -193,6 +195,9 @@ class CashfreeService {
             Provider.of<PlaceOrderService>(context, listen: false)
                 .makePaymentSuccess(context);
           }
+        } else {
+          Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
         }
       }
     });

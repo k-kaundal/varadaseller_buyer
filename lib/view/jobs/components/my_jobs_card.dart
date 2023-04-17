@@ -26,7 +26,7 @@ class MyJobsCardContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, ln, child) => Row(
+      builder: (context, asProvider, child) => Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CommonHelper().profileImage(imageLink, 75, 78),

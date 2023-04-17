@@ -8,7 +8,6 @@ import 'package:qixer/service/auth_services/reset_password_service.dart';
 import 'package:qixer/view/home/landing_page.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EmailVerifyService with ChangeNotifier {
   bool isloading = false;
@@ -64,7 +63,7 @@ class EmailVerifyService with ChangeNotifier {
   }
 
   verifyOtpAndLogin(enteredOtp, BuildContext context, email, password, token,
-      userId, state, country_id) async {
+      userId, state, countryId) async {
     var otpNumber =
         Provider.of<ResetPasswordService>(context, listen: false).otpNumber;
     if (otpNumber != null) {
@@ -100,7 +99,7 @@ class EmailVerifyService with ChangeNotifier {
 
           //save the details for later login
           LoginService()
-              .saveDetails(email, password, token, userId, state, country_id);
+              .saveDetails(email, password, token, userId, state, countryId);
         } else {
           print(response.body);
           OthersHelper().showToast(
@@ -108,7 +107,7 @@ class EmailVerifyService with ChangeNotifier {
               Colors.black);
         }
       } else {
-        OthersHelper().showToast('Otp didn\'t match', Colors.black);
+        OthersHelper().showToast("Otp didn't match", Colors.black);
       }
     } else {
       OthersHelper().showToast('Otp is null', Colors.black);

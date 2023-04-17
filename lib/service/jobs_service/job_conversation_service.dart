@@ -11,6 +11,7 @@ import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JobConversationService with ChangeNotifier {
@@ -142,6 +143,11 @@ class JobConversationService with ChangeNotifier {
       var response = await dio.post(
         '$baseApi/user/job/request/conversation/send',
         data: formData,
+        options: Options(
+          validateStatus: (status) {
+            return true;
+          },
+        ),
       );
       setSendLoadingFalse();
 
@@ -188,7 +194,7 @@ class JobConversationService with ChangeNotifier {
         '';
     PushNotificationService().sendNotificationToSeller(context,
         sellerId: sellerId,
-        title: "New job chat message: $username",
+        title: lnProvider.getString("New job chat message") + ": $username",
         body: '$msg');
   }
 }

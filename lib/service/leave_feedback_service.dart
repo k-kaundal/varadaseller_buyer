@@ -55,7 +55,7 @@ class LeaveFeedbackService with ChangeNotifier {
 
         print('review posted succesfully');
 
-        OthersHelper().showToast('review posted succesfully', Colors.black);
+        OthersHelper().showToast('review posted successfully', Colors.black);
 
         Navigator.pop(context);
 

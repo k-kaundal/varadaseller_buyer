@@ -3,11 +3,11 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/book_steps_service.dart';
-import 'package:qixer/service/country_states_service.dart';
+import 'package:qixer/service/dropdowns_services/area_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/state_dropdown_services.dart';
 import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
 import 'package:qixer/view/booking/delivery_address_page.dart.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -43,13 +43,13 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
         },
         child: Scaffold(
           appBar: CommonHelper().appbarForBookingPages(
-            ConstString.location,
+            "Location",
             context,
           ),
           body: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
-              builder: (context, ln, child) => Container(
+              builder: (context, asProvider, child) => Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: screenPadding,
                   ),
@@ -59,8 +59,8 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                       //Circular Progress bar
                       Steps(cc: cc),
 
-                      CommonHelper()
-                          .titleCommon(ln.getString(ConstString.bookInfos)),
+                      CommonHelper().titleCommon(
+                          asProvider.getString("Booking information's")),
 
                       const SizedBox(
                         height: 20,
@@ -71,19 +71,21 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
                       const SizedBox(
                         height: 27,
                       ),
-                      CommonHelper().buttonOrange(ConstString.next, () {
-                        var selectedStateId = Provider.of<CountryStatesService>(
+                      CommonHelper().buttonOrange(asProvider.getString('Next'),
+                          () {
+                        var selectedStateId = Provider.of<StateDropdownService>(
                                 context,
                                 listen: false)
                             .selectedStateId;
-                        var selectedAreaId = Provider.of<CountryStatesService>(
+                        var selectedAreaId = Provider.of<AreaDropdownService>(
                                 context,
                                 listen: false)
                             .selectedAreaId;
                         if (selectedStateId == '0' || selectedAreaId == '0') {
                           OthersHelper().showSnackBar(
                               context,
-                              ln.getString(ConstString.mustSelectStateArea),
+                              asProvider.getString(
+                                  'You must select a state and area'),
                               cc.warningColor);
                           return;
                         }

@@ -41,6 +41,7 @@ class MyJobsService with ChangeNotifier {
 
   removeJobFromList(int i) {
     myJobsListMap.removeAt(i);
+    imageList.removeAt(i);
     notifyListeners();
   }
 
@@ -83,7 +84,7 @@ class MyJobsService with ChangeNotifier {
       setLoadingStatus(false);
 
       final decodedData = jsonDecode(response.body);
-
+      print(decodedData);
       if (response.statusCode == 201 &&
           decodedData['job_lists']['data'].isNotEmpty) {
         var data = MyJobsModel.fromJson(decodedData);
@@ -140,6 +141,7 @@ class MyJobsService with ChangeNotifier {
         'subcategoryId': data[i].subcategoryId,
         'countryId': data[i].countryId,
         'cityId': data[i].cityId,
+        "isJobOnline": data[i].isJobOnline
       });
     }
   }

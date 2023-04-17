@@ -10,7 +10,7 @@ class BookService with ChangeNotifier {
   int totalPrice = 0;
   int? sellerId;
 
-  String selectedPayment = 'cash_on_delivery';
+  String selectedPayment = 'manual_payment';
 
   //address variables
   String? name;
@@ -22,6 +22,7 @@ class BookService with ChangeNotifier {
 
   //selected shedule variables
   String? selectedDateAndMonth;
+  DateTime? selectedDate;
   String? selectedTime;
   String? weekDay;
 
@@ -70,10 +71,11 @@ class BookService with ChangeNotifier {
     notifyListeners();
   }
 
-  setDateTime(dateandMonth, time, newWeekday) {
+  setDateTime(dateandMonth, time, newWeekday, {date}) {
     selectedDateAndMonth = dateandMonth;
     selectedTime = time;
     weekDay = newWeekday;
+    selectedDate = date;
     notifyListeners();
   }
 

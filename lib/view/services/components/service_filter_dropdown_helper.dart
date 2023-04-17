@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/all_services_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 import '../../utils/others_helper.dart';
 
 class ServiceFilterDropdownHelper {
   //category dropdown
   categoryDropdown(cc, BuildContext context) {
+    Provider.of<AllServicesService>(context, listen: false)
+        .fetchCategories(context);
     return Consumer<AllServicesService>(
       builder: (context, provider, child) => provider
               .categoryDropdownList.isNotEmpty
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CommonHelper().labelCommon(ConstString.category),
+                CommonHelper().labelCommon("Category"),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -77,7 +79,7 @@ class ServiceFilterDropdownHelper {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().labelCommon(ConstString.subcategory),
+                    CommonHelper().labelCommon("Sub Category"),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -134,63 +136,65 @@ class ServiceFilterDropdownHelper {
   //rating dropdown =======>
   ratingDropdown(cc, BuildContext context) {
     return Consumer<AllServicesService>(
-      builder: (context, provider, child) =>
-          provider.ratingDropdownList.isNotEmpty
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonHelper().labelCommon(ConstString.ratings),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: cc.greyFive),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          // menuMaxHeight: 200,
-                          isExpanded: true,
-                          value: provider.selectedRating,
-                          icon: Icon(Icons.keyboard_arrow_down_rounded,
-                              color: cc.greyFour),
-                          iconSize: 26,
-                          elevation: 17,
-                          style: TextStyle(color: cc.greyFour),
-                          onChanged: (newValue) {
-                            provider.setRatingValue(newValue);
+      builder: (context, provider, child) => provider
+              .ratingDropdownList.isNotEmpty
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CommonHelper().labelCommon("Ratings"),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: cc.greyFive),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      // menuMaxHeight: 200,
+                      isExpanded: true,
+                      value: provider.selectedRating,
+                      icon: Icon(Icons.keyboard_arrow_down_rounded,
+                          color: cc.greyFour),
+                      iconSize: 26,
+                      elevation: 17,
+                      style: TextStyle(color: cc.greyFour),
+                      onChanged: (newValue) {
+                        provider.setRatingValue(newValue);
 
-                            //setting the id of selected value
-                            provider.setSelectedRatingId(
-                                provider.ratingDropdownIndexList[provider
-                                    .ratingDropdownList
-                                    .indexOf(newValue!)]);
+                        //setting the id of selected value
+                        provider.setSelectedRatingId(provider
+                                .ratingDropdownIndexList[
+                            provider.ratingDropdownList.indexOf(newValue!)]);
 
-                            //fetch states based on selected country
-                            provider.setEverythingToDefault();
-                            //fetch service
-                            provider.fetchServiceByFilter(context);
-                          },
-                          items: provider.ratingDropdownList
-                              .map<DropdownMenuItem<String>>((value) {
-                            return DropdownMenuItem(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                    color: cc.greyPrimary.withOpacity(.8)),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    )
-                  ],
+                        //fetch states based on selected country
+                        provider.setEverythingToDefault();
+                        //fetch service
+                        provider.fetchServiceByFilter(context);
+                      },
+                      items: provider.ratingDropdownList
+                          .map<DropdownMenuItem<String>>((value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(
+                            value
+                                .replaceAll(
+                                    "Star", lnProvider.getString("Star"))
+                                .replaceAll("All", lnProvider.getString("All")),
+                            style: TextStyle(
+                                color: cc.greyPrimary.withOpacity(.8)),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 )
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [OthersHelper().showLoading(cc.primaryColor)],
-                ),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [OthersHelper().showLoading(cc.primaryColor)],
+            ),
     );
   }
 
@@ -202,7 +206,7 @@ class ServiceFilterDropdownHelper {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().labelCommon(ConstString.sortby),
+                    CommonHelper().labelCommon("Sort By"),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -239,7 +243,7 @@ class ServiceFilterDropdownHelper {
                             return DropdownMenuItem(
                               value: value,
                               child: Text(
-                                value,
+                                lnProvider.getString(value),
                                 style: TextStyle(
                                     color: cc.greyPrimary.withOpacity(.8)),
                               ),

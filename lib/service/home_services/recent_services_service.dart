@@ -24,13 +24,13 @@ class RecentServicesService with ChangeNotifier {
       } else {
         apiLink = '$baseApi/latest-services?state_id=$stateId';
       }
-
+      print(apiLink);
       var connection = await checkConnection();
       if (connection) {
         //if connection is ok
         var response = await http.get(Uri.parse(apiLink));
 
-        print("recent service ${response.body}");
+        print(response.body);
         if (response.statusCode == 201) {
           var data = RecentServiceModel.fromJson(jsonDecode(response.body));
 

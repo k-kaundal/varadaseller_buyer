@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileEditService with ChangeNotifier {
   bool isloading = false;
 
-  String countryCode = 'IN';
+  String countryCode = 'BD';
 
   setCountryCode(code) {
     countryCode = code;
@@ -53,7 +50,7 @@ class ProfileEditService with ChangeNotifier {
     dio.options.headers['Content-Type'] = 'multipart/form-data';
     dio.options.headers["Authorization"] = "Bearer $token";
 
-    var formData;
+    FormData formData;
     if (imagePath != null) {
       formData = FormData.fromMap({
         'name': name,
@@ -86,6 +83,11 @@ class ProfileEditService with ChangeNotifier {
     var response = await dio.post(
       '$baseApi/user/update-profile',
       data: formData,
+      options: Options(
+        validateStatus: (status) {
+          return true;
+        },
+      ),
     );
 
     if (response.statusCode == 201) {

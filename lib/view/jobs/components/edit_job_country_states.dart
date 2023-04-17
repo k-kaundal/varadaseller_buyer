@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/jobs_service/edit_job_country_states_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -40,7 +39,7 @@ class _EditJobCountryStatesState extends State<EditJobCountryStates> {
                 ),
 
                 // Country dropdown ===============>
-                CommonHelper().labelCommon(ConstString.chooseCountry),
+                CommonHelper().labelCommon("Choose country"),
                 provider.countryDropdownList.isNotEmpty
                     ? Container(
                         width: double.infinity,
@@ -96,7 +95,7 @@ class _EditJobCountryStatesState extends State<EditJobCountryStates> {
                   height: 25,
                 ),
                 // States dropdown ===============>
-                CommonHelper().labelCommon(ConstString.chooseCity),
+                CommonHelper().labelCommon("Choose city"),
                 provider.statesDropdownList.isNotEmpty
                     ? Container(
                         width: double.infinity,

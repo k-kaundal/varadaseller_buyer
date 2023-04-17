@@ -81,7 +81,7 @@ class OrderInfo {
   int? city;
   int? area;
   int? country;
-  String? date;
+  DateTime? date;
   String? schedule;
   String? packageFee;
   String? extraService;
@@ -121,7 +121,7 @@ class OrderInfo {
         city: json?["city"],
         area: json?["area"],
         country: json?["country"],
-        date: json?["date"],
+        date: json?["date"] == null ? null : DateTime.parse(json?["date"]),
         schedule: json?["schedule"],
         packageFee: json?["package_fee"],
         extraService: json?["extra_service"],

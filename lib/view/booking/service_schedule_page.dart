@@ -10,10 +10,10 @@ import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/booking_services/coupon_service.dart';
 import 'package:qixer/service/booking_services/shedule_service.dart';
 import 'package:qixer/service/common_service.dart';
+import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/booking/booking_location_page.dart';
 
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -34,13 +34,15 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
   }
 
   int selectedShedule = 0;
-  var _selectedWeekday = firstThreeLetter(DateTime.now());
-  var _monthAndDate = getMonthAndDate(DateTime.now());
+  var _selectedWeekday = firstThreeLetter(DateTime.now().toLocal(), "es");
+  var _monthAndDate = getMonthAndDate(DateTime.now().toLocal(), "es");
   var _selectedTime;
+  DateTime _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
+    final rtlPorvider = Provider.of<RtlService>(context, listen: false);
     return WillPopScope(
       onWillPop: () {
         BookStepsService().decreaseStep(context);
@@ -50,13 +52,13 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarForBookingPages(
-            ConstString.schedule, context, extraFunction: () {
+        appBar: CommonHelper().appbarForBookingPages('Schedule', context,
+            extraFunction: () {
           //set coupon value to default again
           Provider.of<CouponService>(context, listen: false).setCouponDefault();
         }),
         body: Consumer<AppStringService>(
-          builder: (context, ln, child) => Consumer<SheduleService>(
+          builder: (context, asProvider, child) => Consumer<SheduleService>(
             builder: (context, provider, child) {
               print(provider.totalDay);
               //if user didnt select anything then go with the default value
@@ -86,6 +88,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
 
                               DatePicker(
                                 DateTime.now(),
+                                locale: rtlPorvider.langSlug,
                                 initialSelectedDate: DateTime.now(),
                                 daysCount: provider.totalDay == 0
                                     ? 7
@@ -96,9 +99,13 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                   // New date selected
 
                                   setState(() {
-                                    _selectedWeekday = firstThreeLetter(value);
-                                    _monthAndDate = getMonthAndDate(value);
+                                    _selectedWeekday =
+                                        firstThreeLetter(value, null);
+                                    _monthAndDate =
+                                        getMonthAndDate(value, null);
+                                    _selectedDate = value;
                                   });
+                                  print(_selectedWeekday);
 
                                   //fetch shedule
                                   provider.fetchShedule(
@@ -114,7 +121,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                 height: 30,
                               ),
                               CommonHelper().titleCommon(
-                                  '${ln.getString(ConstString.availableTime)}:'),
+                                  '${asProvider.getString('Available time')}:'),
 
                               const SizedBox(
                                 height: 17,
@@ -199,8 +206,8 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                           },
                                         )
                                       : Text(
-                                          ln.getString(
-                                              ConstString.noScheduleAvailable),
+                                          asProvider.getString(
+                                              'No shedule available on this date'),
                                           style:
                                               TextStyle(color: cc.primaryColor),
                                         )
@@ -236,8 +243,26 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // CommonHelper().titleCommon('Scheduling for:'),
+                          // const SizedBox(
+                          //   height: 15,
+                          // ),
+                          // BookingHelper().rowLeftRight(
+                          //     'assets/svg/calendar.svg',
+                          //     'Date',
+                          //     'Friday, 18 March 2022'),
+                          // const SizedBox(
+                          //   height: 14,
+                          // ),
+                          // BookingHelper().rowLeftRight(
+                          //     'assets/svg/clock.svg',
+                          //     'Time',
+                          //     '02:00 PM -03:00 PM'),
+                          // const SizedBox(
+                          //   height: 23,
+                          // ),
                           CommonHelper()
-                              .buttonOrange(ln.getString(ConstString.next), () {
+                              .buttonOrange(asProvider.getString('Next'), () {
                             if (_selectedTime != null &&
                                 _selectedWeekday != null) {
                               //increase page steps by one
@@ -245,7 +270,9 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                               //set selected shedule so that we can use it later
                               Provider.of<BookService>(context, listen: false)
                                   .setDateTime(_monthAndDate, _selectedTime,
-                                      _selectedWeekday);
+                                      _selectedWeekday,
+                                      date: _selectedDate);
+                              print(_selectedDate);
                               Navigator.push(
                                   context,
                                   PageTransition(

@@ -9,9 +9,11 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class MidtransPayment extends StatelessWidget {
   MidtransPayment(
@@ -41,50 +43,58 @@ class MidtransPayment extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Midtrans'),
-      ),
-      body: FutureBuilder(
-          future: waitForIt(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasData) {
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            return WebView(
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (value) async {
-                if (value.contains('success')) {
-                  if (isFromOrderExtraAccept == true) {
-                    Provider.of<OrderDetailsService>(context, listen: false)
-                        .acceptOrderExtra(context);
-                  } else if (isFromWalletDeposite) {
-                    Provider.of<WalletService>(context, listen: false)
-                        .makeDepositeToWalletSuccess(context);
-                  } else if (isFromHireJob) {
-                    Provider.of<JobRequestService>(context, listen: false)
-                        .goToJobSuccessPage(context);
-                  } else {
-                    Provider.of<PlaceOrderService>(context, listen: false)
-                        .makePaymentSuccess(context);
+      appBar: CommonHelper().appbarCommon('Midtrans', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
+      body: WillPopScope(
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return true;
+        },
+        child: FutureBuilder(
+            future: waitForIt(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasData) {
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              return WebView(
+                initialUrl: url,
+                javascriptMode: JavascriptMode.unrestricted,
+                onPageFinished: (value) async {
+                  if (value.contains('success')) {
+                    if (isFromOrderExtraAccept == true) {
+                      Provider.of<OrderDetailsService>(context, listen: false)
+                          .acceptOrderExtra(context);
+                    } else if (isFromWalletDeposite) {
+                      Provider.of<WalletService>(context, listen: false)
+                          .makeDepositeToWalletSuccess(context);
+                    } else if (isFromHireJob) {
+                      Provider.of<JobRequestService>(context, listen: false)
+                          .goToJobSuccessPage(context);
+                    } else {
+                      Provider.of<PlaceOrderService>(context, listen: false)
+                          .makePaymentSuccess(context);
+                    }
                   }
-                }
-              },
-            );
-          }),
+                },
+              );
+            }),
+      ),
     );
   }
 
@@ -100,6 +110,8 @@ class MidtransPayment extends StatelessWidget {
         Provider.of<PaymentGatewayListService>(context, listen: false)
                 .secretKey ??
             '';
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
 
     final basicAuth =
         'Basic ${base64Encode(utf8.encode('$serverKey:$clientKey'))}';
@@ -114,7 +126,8 @@ class MidtransPayment extends StatelessWidget {
         body: jsonEncode({
           "transaction_details": {
             "order_id": DateTime.now().toString(),
-            "gross_amount": 100
+            "gross_amount": amount,
+            'currency': currencyCode
           },
           "credit_card": {"secure": true},
           "customer_details": {
@@ -123,7 +136,7 @@ class MidtransPayment extends StatelessWidget {
             "phone": phone,
           }
         }));
-    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 201) {
       this.url = jsonDecode(response.body)['redirect_url'];
       return;

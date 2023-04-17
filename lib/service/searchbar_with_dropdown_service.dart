@@ -12,10 +12,12 @@ class SearchBarWithDropdownService with ChangeNotifier {
 
   var userStateId;
 
+  var sText;
+
   var cityDropdownList = [
     'Select City',
   ];
-  var selectedCity = 'Select City';
+  var selectedCity;
   List cityDropdownIndexList = [0];
   var selectedCityId = 0;
 
@@ -29,6 +31,13 @@ class SearchBarWithDropdownService with ChangeNotifier {
     selectedCityId = value;
     print('selected city id $selectedCityId');
     notifyListeners();
+  }
+
+  resetSearchParams() {
+    sText = null;
+    selectedCity = null;
+    selectedCityId = 0;
+    selectedonlineOfflineId = 0;
   }
 
   //Online offline
@@ -109,16 +118,21 @@ class SearchBarWithDropdownService with ChangeNotifier {
   //   }
   // }
 
-  fetchService(context, String searchText) async {
+  fetchService(context, {String? searchText}) async {
     var connection = await checkConnection();
+    if (searchText != null) {
+      sText = searchText;
+    }
     if (connection) {
       String data;
 
       data = jsonEncode({
         'service_city_id': selectedCityId,
-        'search_text': searchText,
+        'search_text': sText ?? '',
         'is_service_online': selectedonlineOfflineId
       });
+
+      print(data);
 
       var header = {
         //if header type is application/json then the data should be in jsonEncode method
@@ -133,6 +147,7 @@ class SearchBarWithDropdownService with ChangeNotifier {
           body: data, headers: header);
 
       if (response.statusCode == 201) {
+        print(response.body);
         serviceMap = [];
         var data = SearchBarWithDropdownServiceModel.fromJson(
             jsonDecode(response.body));

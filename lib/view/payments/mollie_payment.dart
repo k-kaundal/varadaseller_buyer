@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, use_build_context_synchronously
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 
@@ -9,9 +9,11 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class MolliePayment extends StatelessWidget {
   MolliePayment(
@@ -47,85 +49,76 @@ class MolliePayment extends StatelessWidget {
       Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
     });
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mollie'),
-      ),
-      body: FutureBuilder(
-          future: waitForIt(context, successUrl),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasData) {
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            return WebView(
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageStarted: (value) async {
-                var redirectUrl = successUrl;
+      appBar: CommonHelper().appbarCommon('Midtrans', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
+      body: WillPopScope(
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return true;
+        },
+        child: FutureBuilder(
+            future: waitForIt(context, successUrl),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasData) {
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              return WebView(
+                initialUrl: url,
+                javascriptMode: JavascriptMode.unrestricted,
+                onPageStarted: (value) async {
+                  var redirectUrl = successUrl;
 
-                if (value.contains(redirectUrl)) {
-                  String status = await verifyPayment(context);
-                  if (status == 'paid') {
-                    if (isFromOrderExtraAccept == true) {
-                      Provider.of<OrderDetailsService>(context, listen: false)
-                          .acceptOrderExtra(context);
-                    } else if (isFromWalletDeposite) {
-                      Provider.of<WalletService>(context, listen: false)
-                          .makeDepositeToWalletSuccess(context);
-                    } else if (isFromHireJob) {
-                      Provider.of<JobRequestService>(context, listen: false)
-                          .goToJobSuccessPage(context);
-                    } else {
-                      Provider.of<PlaceOrderService>(context, listen: false)
-                          .makePaymentSuccess(context);
+                  if (value.contains(redirectUrl)) {
+                    String status = await verifyPayment(context);
+                    if (status == 'paid') {
+                      if (isFromOrderExtraAccept == true) {
+                        Provider.of<OrderDetailsService>(context, listen: false)
+                            .acceptOrderExtra(context);
+                      } else if (isFromWalletDeposite) {
+                        Provider.of<WalletService>(context, listen: false)
+                            .makeDepositeToWalletSuccess(context);
+                      } else if (isFromHireJob) {
+                        Provider.of<JobRequestService>(context, listen: false)
+                            .goToJobSuccessPage(context);
+                      } else {
+                        Provider.of<PlaceOrderService>(context, listen: false)
+                            .makePaymentSuccess(context);
+                      }
+                    }
+                    if (status == 'open') {
+                      await Provider.of<PlaceOrderService>(context,
+                              listen: false)
+                          .doNext(context, 'failed', paymentFailed: true);
+                    }
+                    if (status == 'failed') {
+                      await Provider.of<PlaceOrderService>(context,
+                              listen: false)
+                          .doNext(context, 'failed', paymentFailed: true);
+                    }
+                    if (status == 'expired') {
+                      await Provider.of<PlaceOrderService>(context,
+                              listen: false)
+                          .doNext(context, 'failed', paymentFailed: true);
                     }
                   }
-                  if (status == 'open') {
-                    await showDialog(
-                        context: context,
-                        builder: (ctx) {
-                          return const AlertDialog(
-                            title: Text(ConstString.paymentFailed),
-                            content: Text(ConstString.paymentFailed),
-                          );
-                        });
-                    PlaceOrderService().makePaymentFailed(context);
-                  }
-                  if (status == 'failed') {
-                    await showDialog(
-                        context: context,
-                        builder: (ctx) {
-                          return const AlertDialog(
-                            title: Text(ConstString.paymentFailed),
-                          );
-                        });
-                    PlaceOrderService().makePaymentFailed(context);
-                  }
-                  if (status == 'expired') {
-                    await showDialog(
-                        context: context,
-                        builder: (ctx) {
-                          return const AlertDialog(
-                            title: Text(ConstString.paymentFailed),
-                            content: Text(ConstString.paymentFailed),
-                          );
-                        });
-                    PlaceOrderService().makePaymentFailed(context);
-                  }
-                }
-              },
-            );
-          }),
+                },
+              );
+            }),
+      ),
     );
   }
 
@@ -143,11 +136,12 @@ class MolliePayment extends StatelessWidget {
       "Authorization": "Bearer $publicKey",
       // Above is API server key for the Midtrans account, encoded to base64
     };
-
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
     final response = await http.post(url,
         headers: header,
         body: jsonEncode({
-          "amount": {"value": amount, "currency": "USD"},
+          "amount": {"value": amount, "currency": currencyCode},
           "description": "Qixer payment",
           "redirectUrl": successUrl,
           "webhookUrl": successUrl, "metadata": 'mollieQixer$orderId',

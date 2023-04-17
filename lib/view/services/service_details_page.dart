@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
@@ -11,7 +9,6 @@ import 'package:qixer/view/services/components/about_seller_tab.dart';
 import 'package:qixer/view/services/components/image_big.dart';
 import 'package:qixer/view/services/components/overview_tab.dart';
 import 'package:qixer/view/services/components/review_tab.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -25,6 +22,8 @@ class ServiceDetailsPage extends StatefulWidget {
   const ServiceDetailsPage({
     Key? key,
   }) : super(key: key);
+
+  // final serviceId;
 
   @override
   State<ServiceDetailsPage> createState() => _ServiceDetailsPageState();
@@ -45,6 +44,8 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
 
+    // Provider.of<ServiceDetailsService>(context, listen: false)
+    //     .fetchServiceDetails(widget.serviceId);
     super.initState();
   }
 
@@ -64,9 +65,11 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
     return Scaffold(
       backgroundColor: Colors.white,
       body: Consumer<AppStringService>(
-        builder: (context, ln, child) => Consumer<ServiceDetailsService>(
+        builder: (context, asProvider, child) =>
+            Consumer<ServiceDetailsService>(
           builder: (context, provider, child) => provider.isloading == false
-              ? provider.serviceAllDetails != 'error'
+              ? provider.serviceAllDetails != 'error' &&
+                      provider.serviceAllDetails != null
                   ? Column(
                       children: [
                         Expanded(
@@ -78,9 +81,9 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                   // Image big
                                   ImageBig(
                                     serviceName:
-                                        ln.getString(ConstString.serviceName),
+                                        asProvider.getString('Service Name'),
                                     imageLink: provider.serviceAllDetails
-                                                .serviceImage !=
+                                                ?.serviceImage !=
                                             null
                                         ? provider.serviceAllDetails
                                                 .serviceImage.imgUrl ??
@@ -119,14 +122,14 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                       controller: _tabController,
                                       tabs: [
                                         Tab(
-                                            text: ln.getString(
-                                                ConstString.overView)),
+                                            text: asProvider
+                                                .getString('Overview')),
                                         Tab(
-                                            text: ln.getString(
-                                                ConstString.aboutSeller)),
+                                            text: asProvider
+                                                .getString('About seller')),
                                         Tab(
-                                            text: ln
-                                                .getString(ConstString.review)),
+                                            text:
+                                                asProvider.getString('Review')),
                                       ],
                                     ),
                                     Container(
@@ -158,12 +161,38 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                                 EdgeInsets.symmetric(horizontal: screenPadding),
                             child: Column(
                               children: [
+                                // currentTab == 2
+                                //     ? Column(
+                                //         children: [
+                                //           CommonHelper().borderButtonOrange(
+                                //               asProvider.getString(
+                                //                   'Write a review'), () {
+                                //             Navigator.push(
+                                //               context,
+                                //               MaterialPageRoute<void>(
+                                //                 builder:
+                                //                     (BuildContext context) =>
+                                //                         WriteReviewPage(
+                                //                   serviceId: provider
+                                //                       .serviceAllDetails
+                                //                       .serviceDetails
+                                //                       .id,
+                                //                 ),
+                                //               ),
+                                //             );
+                                //           }),
+                                //           const SizedBox(
+                                //             height: 14,
+                                //           ),
+                                //         ],
+                                //       )
+                                //     : Container(),
                                 Row(
                                   children: [
                                     Expanded(
                                       child: CommonHelper().buttonOrange(
-                                          ln.getString(
-                                              ConstString.bookAppointment), () {
+                                          asProvider.getString(
+                                              'Book Appointment'), () {
                                         print(
                                             'seller id ${provider.serviceAllDetails.serviceDetails.sellerId}');
                                         Provider.of<BookService>(context,
@@ -227,7 +256,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
                     )
                   : Container(
                       alignment: Alignment.center,
-                      child: Text(ln.getString(ConstString.somethingWrong)),
+                      child: Text(asProvider.getString('Something went wrong')),
                     )
               : OthersHelper().showLoading(cc.primaryColor),
         ),

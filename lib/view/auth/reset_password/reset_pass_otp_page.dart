@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/reset_pass_otp_service.dart';
 import 'package:qixer/service/auth_services/reset_password_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
 import '../../utils/common_helper.dart';
@@ -38,11 +37,11 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
         }
       },
       child: Scaffold(
-        appBar: CommonHelper().appbarCommon(ConstString.resetPass, context, () {
+        appBar: CommonHelper().appbarCommon('Reset password', context, () {
           Navigator.pop(context);
         }),
         body: Consumer<AppStringService>(
-          builder: (context, ln, child) => Container(
+          builder: (context, asProvider, child) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -59,13 +58,14 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
                   ),
                 ),
                 CommonHelper().titleCommon(
-                  ln.getString(ConstString.enterFourDigitCode),
+                  asProvider.getString("Enter the 4 digit code"),
                 ),
                 const SizedBox(
                   height: 13,
                 ),
                 CommonHelper().paragraphCommon(
-                    ln.getString(ConstString.enterFourDigitCodeToReset),
+                    asProvider.getString(
+                        "Enter the 4 digit code we sent to to your email in order to reset password"),
                     textAlign: TextAlign.center),
                 const SizedBox(
                   height: 33,
@@ -122,7 +122,7 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
                           ? RichText(
                               text: TextSpan(
                                 text:
-                                    '${ln.getString(ConstString.didNotReceive)}?  ',
+                                    '${asProvider.getString("Did not receive")}?  ',
                                 style: const TextStyle(
                                     color: Color(0xff646464), fontSize: 14),
                                 children: <TextSpan>[
@@ -133,7 +133,7 @@ class _ResetPassOtpPageState extends State<ResetPassOtpPage> {
                                               widget.email, context,
                                               isFromOtpPage: true);
                                         },
-                                      text: ln.getString(ConstString.sendAgain),
+                                      text: asProvider.getString("Send again"),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,

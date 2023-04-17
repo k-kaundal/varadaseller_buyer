@@ -62,10 +62,9 @@ class SquareService {
       email = bookProvider.email ?? '';
 
       if (pProvider.isOnline == 0) {
-        amount = bcProvider.totalPriceAfterAllcalculation.toStringAsFixed(2);
+        amount = bcProvider.totalPriceAfterAllcalculation.toInt();
       } else {
-        amount = bcProvider.totalPriceOnlineServiceAfterAllCalculation
-            .toStringAsFixed(2);
+        amount = bcProvider.totalPriceOnlineServiceAfterAllCalculation.toInt();
       }
     }
 

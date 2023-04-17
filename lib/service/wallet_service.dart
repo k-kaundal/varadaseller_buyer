@@ -103,6 +103,7 @@ class WalletService with ChangeNotifier {
     final decodedData = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
+      print(response.body);
       walletBalance = decodedData['balance'];
       notifyListeners();
 
@@ -157,6 +158,11 @@ class WalletService with ChangeNotifier {
     var response = await dio.post(
       '$baseApi/user/wallet/deposit',
       data: formData,
+      options: Options(
+        validateStatus: (status) {
+          return true;
+        },
+      ),
     );
 
     print(response.data);
@@ -183,7 +189,8 @@ class WalletService with ChangeNotifier {
     }
   }
 
-  Future<bool> makeDepositeToWalletSuccess(BuildContext context) async {
+  Future<bool> makeDepositeToWalletSuccess(BuildContext context,
+      {shouldPop = true}) async {
     //make payment success
 
     var connection = await checkConnection();
@@ -213,7 +220,7 @@ class WalletService with ChangeNotifier {
     print(response.statusCode);
 
     if (response.statusCode == 200) {
-      inSuccess(context);
+      inSuccess(context, shouldPop: shouldPop);
     } else {
       OthersHelper().showToast('Something went wrong', Colors.black);
     }
@@ -222,23 +229,24 @@ class WalletService with ChangeNotifier {
   }
 
   // =========>
-  inSuccess(BuildContext context) async {
+  inSuccess(BuildContext context, {shouldPop = true}) async {
     setAmount(null);
-    OthersHelper().showToast('Wallet deposite success', Colors.black);
 
-    await fetchWalletBalance(context);
-    fetchWalletHistory(context);
+    if (shouldPop) {
+      OthersHelper().showToast('Wallet deposit success', Colors.black);
+      await fetchWalletBalance(context);
+      fetchWalletHistory(context);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const LandingPage()),
+          (Route<dynamic> route) => false);
 
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const LandingPage()),
-        (Route<dynamic> route) => false);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => const WalletPage(),
-      ),
-    );
+      Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => const WalletPage(),
+        ),
+      );
+    }
   }
 
   // =================>
@@ -269,7 +277,7 @@ class WalletService with ChangeNotifier {
 
     var response = await http.post(Uri.parse('$baseApi/user/wallet/deduct'),
         headers: header, body: data);
-
+    print("deductFromWallet");
     print(response.body);
     print(response.statusCode);
 
@@ -289,7 +297,14 @@ class WalletService with ChangeNotifier {
             .setLoadingFalse();
 
         Provider.of<JobRequestService>(context, listen: false)
-            .createHireJobRequest(context, isManualOrCod: true);
+            .createHireJobRequest(context, isManualOrCod: true)
+            .then((value) async {
+          if (value == false) {
+            setAmount(amount);
+            await createDepositeRequest(context, imagePath: null);
+            makeDepositeToWalletSuccess(context, shouldPop: false);
+          }
+        });
       } else {
         Provider.of<PlaceOrderService>(context, listen: false)
             .makePaymentSuccess(context);
@@ -300,6 +315,10 @@ class WalletService with ChangeNotifier {
 
       return true;
     } else {
+      if (isFromOrderExtraAccept != true && !isFromHireJob) {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, "Payment failed", paymentFailed: true);
+      }
       Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
 
       print('Error deposite to wallet' + response.body);

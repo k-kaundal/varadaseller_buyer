@@ -4,9 +4,9 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/jobs_service/my_jobs_service.dart';
+import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/jobs/components/overview_box.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -38,6 +38,7 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
   @override
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
+    final rtlProvider = Provider.of<RtlService>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -79,23 +80,59 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                           Row(
                             children: [
                               OverviewBox(
-                                title: ConstString.budget,
-                                subtitle: '\$${provider.jobDetails.price}',
+                                title: lnProvider.getString('Budget'),
+                                subtitle:
+                                    rtlProvider.currencyDirection == 'left'
+                                        ? rtlProvider.currency +
+                                            '${provider.jobDetails.price}'
+                                        : '${provider.jobDetails.price}' +
+                                            rtlProvider.currency,
                               ),
                               const SizedBox(
                                 width: 15,
                               ),
+
                               OverviewBox(
-                                title: ConstString.deadline,
+                                title: lnProvider.getString('Deadline'),
                                 subtitle:
                                     '${getDate(provider.jobDetails.deadLine)}',
                               ),
+
+                              // const OverviewBox(
+                              //   title: 'Location',
+                              //   subtitle: 'Dhaka, Bangladesh',
+                              // ),
                             ],
                           ),
 
                           sizedBoxCustom(14),
 
+                          //Overview
+                          // Row(
+                          //   children: [
+                          //     OverviewBox(
+                          //       title: 'Deadline',
+                          //       subtitle:
+                          //           '${getDate(provider.jobDetails.deadLine)}',
+                          //     ),
+                          //     const SizedBox(
+                          //       width: 15,
+                          //     ),
+                          //     // const OverviewBox(
+                          //     //   title: 'Category',
+                          //     //   subtitle: 'Medical',
+                          //     // ),
+                          //   ],
+                          // ),
+
+                          //Description
+                          // ===============>
+                          // sizedBoxCustom(15),
+
                           HtmlWidget('''${provider.jobDetails.description}'''),
+                          // CommonHelper().paragraphCommon(
+                          //     provider.jobDetails.description.toString(),
+                          //     TextAlign.left),
 
                           sizedBoxCustom(20),
                         ]),

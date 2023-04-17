@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/jobs_service/edit_job_service.dart';
 import 'package:qixer/service/jobs_service/my_jobs_service.dart';
@@ -9,11 +10,11 @@ import 'package:qixer/view/booking/components/textarea_field.dart';
 import 'package:qixer/view/jobs/components/edit_job_image_upload.dart';
 import 'package:qixer/view/jobs/components/job_create_dropdowns.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/custom_input.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class EditJobPage extends StatefulWidget {
   const EditJobPage({
@@ -83,10 +84,14 @@ class _EditJobPageState extends State<EditJobPage> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+      locale: Locale(rtlProvider.langSlug.substring(0, 2),
+          rtlProvider.langSlug.substring(3)),
+      helpText: lnProvider.getString("Select Date"),
+    );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -101,7 +106,7 @@ class _EditJobPageState extends State<EditJobPage> {
     var onlyDate = selectedDate.toString().split(' ');
 
     return Scaffold(
-      appBar: CommonHelper().appbarCommon(ConstString.editJob, context, () {
+      appBar: CommonHelper().appbarCommon('Edit Job', context, () {
         Navigator.pop(context);
         Provider.of<EditJobService>(context, listen: false).setImageNull();
       }),
@@ -115,7 +120,7 @@ class _EditJobPageState extends State<EditJobPage> {
           physics: physicsCommon,
           child: Consumer<EditJobService>(
             builder: (context, provider, child) => Consumer<AppStringService>(
-              builder: (context, ln, child) => Container(
+              builder: (context, asProvider, child) => Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: screenPadding, vertical: 10),
                 child: Form(
@@ -156,7 +161,7 @@ class _EditJobPageState extends State<EditJobPage> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        ln.getString(onlineOffline[i]),
+                                        onlineOffline[i],
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -180,23 +185,35 @@ class _EditJobPageState extends State<EditJobPage> {
                       sizedBoxCustom(25),
 
                       const JobCreateDropdowns(),
+                      // Category dropdown ===============>
+                      // ServiceFilterDropdownHelper()
+                      //     .categoryDropdown(cc, context),
+
+                      // const SizedBox(
+                      //   height: 25,
+                      // ),
+
+                      // // States dropdown ===============>
+                      // ServiceFilterDropdownHelper()
+                      //     .subCategoryDropdown(cc, context),
+
+                      // EditJobCountryStates(jobIndex: widget.jobIndex),
 
                       sizedBoxCustom(20),
 
                       // Title
                       //============>
-                      CommonHelper()
-                          .labelCommon(ln.getString(ConstString.title)),
+                      CommonHelper().labelCommon(asProvider.getString("Title")),
 
                       CustomInput(
                         controller: titleController,
                         validation: (value) {
                           if (value == null || value.isEmpty) {
-                            return ln.getString(ConstString.plzEnterTitle);
+                            return 'Please enter a title';
                           }
                           return null;
                         },
-                        hintText: ln.getString(ConstString.title),
+                        hintText: asProvider.getString("Title"),
                         paddingHorizontal: 15,
                         textInputAction: TextInputAction.next,
                       ),
@@ -205,27 +222,27 @@ class _EditJobPageState extends State<EditJobPage> {
                       // Title
                       //============>
                       CommonHelper()
-                          .labelCommon(ln.getString(ConstString.budget)),
+                          .labelCommon(asProvider.getString("Budget")),
 
                       CustomInput(
                         controller: budgetController,
                         isNumberField: true,
                         validation: (value) {
                           if (value == null || value.isEmpty) {
-                            return ln.getString(ConstString.plzEnterBudget);
+                            return 'Please enter your budget';
                           }
                           return null;
                         },
-                        hintText: ln.getString(ConstString.budget),
+                        hintText: asProvider.getString("Budget"),
                         textInputAction: TextInputAction.next,
                         paddingHorizontal: 15,
                       ),
                       sizedBoxCustom(20),
 
                       CommonHelper()
-                          .labelCommon(ln.getString(ConstString.description)),
+                          .labelCommon(asProvider.getString('Description')),
                       TextareaField(
-                        hintText: ln.getString(ConstString.description),
+                        hintText: asProvider.getString('Description'),
                         notesController: descController,
                       ),
 
@@ -237,38 +254,54 @@ class _EditJobPageState extends State<EditJobPage> {
 
                       // pick date
                       //===========>
-                      CommonHelper().labelCommon(ConstString.endDate),
+                      CommonHelper().labelCommon("End date"),
                       Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10)),
                         child: Stack(
                           children: [
-                            TextField(
-                              showCursor: false,
-                              readOnly: true,
-                              onTap: () {
-                                _selectDate(context);
-                              },
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ConstantColors().greyFive),
-                                      borderRadius: BorderRadius.circular(9)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              ConstantColors().primaryColor)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              ConstantColors().warningColor)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              ConstantColors().primaryColor)),
-                                  hintText: onlyDate[0],
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 16)),
+                            Localizations.override(
+                              context: context,
+                              locale: Locale(
+                                  rtlProvider.langSlug.substring(0, 2),
+                                  rtlProvider.langSlug.substring(3)),
+                              delegates: const [
+                                GlobalMaterialLocalizations.delegate,
+                                GlobalWidgetsLocalizations.delegate,
+                                GlobalCupertinoLocalizations.delegate,
+                              ],
+                              child: Builder(builder: (context) {
+                                return TextField(
+                                  showCursor: false,
+                                  readOnly: true,
+                                  onTap: () {
+                                    print(rtlProvider.langSlug.substring(3));
+                                    _selectDate(context);
+                                  },
+                                  decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: ConstantColors().greyFive),
+                                          borderRadius:
+                                              BorderRadius.circular(9)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: ConstantColors()
+                                                  .primaryColor)),
+                                      errorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: ConstantColors()
+                                                  .warningColor)),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: ConstantColors()
+                                                  .primaryColor)),
+                                      hintText: onlyDate[0],
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 16)),
+                                );
+                              }),
                             ),
                             Positioned(
                                 right: 0,
@@ -287,14 +320,14 @@ class _EditJobPageState extends State<EditJobPage> {
 
                       sizedBoxCustom(25),
 
-                      CommonHelper().buttonOrange(ConstString.editJob, () {
+                      CommonHelper().buttonOrange('Edit job', () {
                         if (provider.isLoading == true) return;
 
                         if (double.tryParse(budgetController.text.trim()) ==
                             null) {
                           //if not integer value
                           OthersHelper().showSnackBar(context,
-                              ConstString.enterValidBudget, Colors.red);
+                              'You must enter a valid budget', Colors.red);
                           return;
                         }
 
@@ -324,5 +357,5 @@ class _EditJobPageState extends State<EditJobPage> {
     );
   }
 
-  List onlineOffline = [ConstString.offline, ConstString.online];
+  List onlineOffline = ['Offline', 'Online'];
 }

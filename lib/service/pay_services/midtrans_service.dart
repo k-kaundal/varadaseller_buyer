@@ -61,7 +61,7 @@ class MidtransService {
       email = bookProvider.email ?? '';
 
       if (pProvider.isOnline == 0) {
-        amount = bcProvider.totalPriceAfterAllcalculation.toStringAsFixed(2);
+        amount = bcProvider.totalPriceAfterAllcalculation.round().toString();
       } else {
         amount = bcProvider.totalPriceOnlineServiceAfterAllCalculation
             .toStringAsFixed(2);

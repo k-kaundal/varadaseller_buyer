@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +55,7 @@ class SliderHome extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      Container(
                         width: MediaQuery.of(context).size.width / 2,
                         child: Text(
                           sliderDetailsList[itemIndex]['title'],
@@ -72,7 +70,7 @@ class SliderHome extends StatelessWidget {
                       const SizedBox(
                         height: 7,
                       ),
-                      SizedBox(
+                      Container(
                         width: MediaQuery.of(context).size.width / 2 - 20,
                         child: Text(
                           sliderDetailsList[itemIndex]['subtitle'],
@@ -85,6 +83,11 @@ class SliderHome extends StatelessWidget {
                       const SizedBox(
                         height: 7,
                       ),
+                      // ElevatedButton(
+                      //     style: ElevatedButton.styleFrom(
+                      //         primary: cc.greyFour, elevation: 0),
+                      //     onPressed: () {},
+                      //     child: const Text('Get now'))
                     ],
                   )),
             )

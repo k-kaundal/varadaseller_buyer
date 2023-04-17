@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:qixer/service/app_string_service.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
+import 'package:qixer/view/utils/responsive.dart';
+
+import '../../service/app_string_service.dart';
 
 //===========================>
-
-// String baseApi = 'https://seekers.ng/api/v1';
 
 String baseApi = 'https://bytesed.com/laravel/qixer/api/v1';
 
 String placeHolderUrl = 'https://i.postimg.cc/rpsKNndW/New-Project.png';
 String userPlaceHolderUrl =
     'https://i.postimg.cc/ZYQp5Xv1/blank-profile-picture-gb26b7fbdf-1280.png';
+String appVersion = 'v1.0';
 
 class OthersHelper with ChangeNotifier {
   ConstantColors cc = ConstantColors();
@@ -30,12 +32,13 @@ class OthersHelper with ChangeNotifier {
     return Container(
         height: MediaQuery.of(context).size.height - 180,
         alignment: Alignment.center,
-        child: Text(msg));
+        child: Text(lnProvider.getString(msg)));
   }
 
   void showToast(String msg, Color? color) {
+    Fluttertoast.cancel();
     Fluttertoast.showToast(
-        msg: msg,
+        msg: lnProvider.getString(msg),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -47,8 +50,7 @@ class OthersHelper with ChangeNotifier {
   // snackbar
   showSnackBar(BuildContext context, String msg, color) {
     var snackBar = SnackBar(
-      content: Consumer<AppStringService>(
-          builder: (context, ln, child) => Text(ln.getString(msg))),
+      content: Text(lnProvider.getString(msg)),
       backgroundColor: color,
       duration: const Duration(milliseconds: 2000),
     );
@@ -59,12 +61,39 @@ class OthersHelper with ChangeNotifier {
 
   void toastShort(String msg, Color color) {
     Fluttertoast.showToast(
-        msg: msg,
+        msg: lnProvider.getString(msg),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: color,
         textColor: Colors.white,
         fontSize: 16.0);
+  }
+
+  commonRefreshFooter(BuildContext context) {
+    final asProvider = Provider.of<AppStringService>(context, listen: false);
+    return CustomFooter(
+      builder: (context, mode) {
+        Widget body;
+        if (mode == LoadStatus.idle) {
+          body = const Text("");
+        } else if (mode == LoadStatus.loading) {
+          body = OthersHelper().showLoading(cc.greyFour);
+        } else if (mode == LoadStatus.failed) {
+          body = Text(asProvider.getString("Load Failed"),
+              style: TextStyle(color: cc.greyFour));
+        } else if (mode == LoadStatus.canLoading) {
+          body = Text(asProvider.getString("Release to load more"),
+              style: TextStyle(color: cc.greyFour));
+        } else {
+          body = Text(asProvider.getString("No more Data"),
+              style: TextStyle(color: cc.greyFour));
+        }
+        return SizedBox(
+          height: 55.0,
+          child: Center(child: body),
+        );
+      },
+    );
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: avoid_print
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,6 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/booking/service_personalization_page.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 import '../../../service/booking_services/personalization_service.dart';
@@ -51,7 +50,7 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, ln, child) => Container(
+      builder: (context, asProvider, child) => Container(
         alignment: Alignment.center,
         width: width,
         margin: EdgeInsets.only(
@@ -70,7 +69,7 @@ class ServiceCard extends StatelessWidget {
               sellerName: sellerName,
               rating: rating,
               price: price,
-              ln: ln,
+              asProvider: asProvider,
             ),
             const SizedBox(
               height: 28,
@@ -87,7 +86,7 @@ class ServiceCard extends StatelessWidget {
                       screenWidth < fourinchScreenWidth
                           ? Container()
                           : AutoSizeText(
-                              '${ln.getString(ConstString.startsFrom)}:',
+                              '${asProvider.getString('Starts from')}:',
                               textAlign: TextAlign.start,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -171,7 +170,7 @@ class ServiceCard extends StatelessWidget {
                               child: const ServicePersonalizationPage()));
                     },
                     child: Text(
-                      ln.getString(buttonText),
+                      asProvider.getString(buttonText),
                       style: TextStyle(
                           fontSize: screenWidth < fourinchScreenWidth ? 9 : 13,
                           fontWeight: FontWeight.normal),
@@ -194,7 +193,7 @@ class ServiceCardContents extends StatelessWidget {
       required this.sellerName,
       required this.rating,
       required this.price,
-      required this.ln})
+      required this.asProvider})
       : super(key: key);
 
   final ConstantColors cc;
@@ -203,7 +202,7 @@ class ServiceCardContents extends StatelessWidget {
   final sellerName;
   final rating;
   final price;
-  final ln;
+  final asProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -275,7 +274,7 @@ class ServiceCardContents extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '${ln.getString(ConstString.by)}:',
+                    '${asProvider.getString('by')}:',
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

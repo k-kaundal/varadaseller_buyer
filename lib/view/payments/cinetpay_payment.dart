@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class CinetPayPayment extends StatelessWidget {
   CinetPayPayment(
@@ -39,9 +41,10 @@ class CinetPayPayment extends StatelessWidget {
       Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
     });
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cinetpay'),
-      ),
+      appBar: CommonHelper().appbarCommon('Cinet pay', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
       body: FutureBuilder(
           future: waitForIt(context),
           builder: (context, snapshot) {
@@ -50,36 +53,35 @@ class CinetPayPayment extends StatelessWidget {
             }
             if (snapshot.hasData) {
               return const Center(
-                child: Text(ConstString.loadingFailed),
+                child: Text('Loding failed.'),
               );
             }
             if (snapshot.hasError) {
               print(snapshot.error);
               return const Center(
-                child: Text(ConstString.loadingFailed),
+                child: Text('Loding failed.'),
               );
             }
-            return WebView(
-              // onWebViewCreated: ((controller) {
-              //   _controller = controller;
-              // }),
-              onWebResourceError: (error) {
-                showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return const AlertDialog(
-                        title: Text(ConstString.loadingFailed),
-                        content: Text(ConstString.loadingFailed),
-                      );
-                    });
-
-                PlaceOrderService().makePaymentFailed(context);
+            return WillPopScope(
+              onWillPop: () async {
+                await Provider.of<PlaceOrderService>(context, listen: false)
+                    .doNext(context, 'failed', paymentFailed: true);
+                return true;
               },
+              child: WebView(
+                // onWebViewCreated: ((controller) {
+                //   _controller = controller;
+                // }),
+                onWebResourceError: (error) {
+                  Provider.of<PlaceOrderService>(context, listen: false)
+                      .doNext(context, 'failed', paymentFailed: true);
+                },
 
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
+                initialUrl: url,
+                javascriptMode: JavascriptMode.unrestricted,
 
-              onPageFinished: (value) async {},
+                onPageFinished: (value) async {},
+              ),
             );
           }),
     );
@@ -103,6 +105,9 @@ class CinetPayPayment extends StatelessWidget {
         Provider.of<PaymentGatewayListService>(context, listen: false)
             .publicKey;
 
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
+
     // final apiKey = '12912847765bc0db748fdd44.40081707';
     // final siteId = '445160';
 
@@ -114,7 +119,7 @@ class CinetPayPayment extends StatelessWidget {
           "transaction_id": DateTime.now().toString(),
           "amount": double.parse(amount).toInt(),
           "currency": "USD",
-          "alternative_currency": "USD",
+          "alternative_currency": currencyCode,
           "description": " Qixer Payment ",
           "customer_id": "1",
           "customer_name": name + " first name",

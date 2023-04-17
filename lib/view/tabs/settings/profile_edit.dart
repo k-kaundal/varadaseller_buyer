@@ -6,7 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
-import 'package:qixer/service/country_states_service.dart';
+import 'package:qixer/service/dropdowns_services/area_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/country_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/state_dropdown_services.dart';
 import 'package:qixer/service/profile_edit_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/rtl_service.dart';
@@ -14,10 +16,10 @@ import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart'
 import 'package:qixer/view/auth/signup/signup_helper.dart';
 import 'package:qixer/view/booking/components/textarea_field.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -44,9 +46,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   void initState() {
     super.initState();
     countryCode = Provider.of<ProfileService>(context, listen: false)
-        .profileDetails
-        .userDetails
-        .countryCode;
+            .profileDetails
+            .userDetails
+            .countryCode ??
+        "ES";
     //set country code
     Future.delayed(const Duration(milliseconds: 600), () {
       Provider.of<ProfileEditService>(context, listen: false)
@@ -81,6 +84,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             .userDetails
             .address ??
         '';
+    Provider.of<CountryDropdownService>(context, listen: false)
+        .setCountryBasedOnUserProfile(context);
+    Provider.of<StateDropdownService>(context, listen: false)
+        .setStateBasedOnUserProfile(context);
+    Provider.of<AreaDropdownService>(context, listen: false)
+        .setAreaBasedOnUserProfile(context);
   }
 
   late AnimationController localAnimationController;
@@ -90,13 +99,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon(ConstString.editProfile, context, () {
+      appBar: CommonHelper().appbarCommon('Edit profile', context, () {
         if (Provider.of<ProfileEditService>(context, listen: false).isloading ==
             false) {
           Navigator.pop(context);
         } else {
-          OthersHelper()
-              .showToast(ConstString.plzWaitProfileUpdating, Colors.black);
+          OthersHelper().showToast(
+              'Please wait while the profile is updating', Colors.black);
         }
       }),
       body: Listener(
@@ -107,7 +116,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           }
         },
         child: Consumer<AppStringService>(
-          builder: (context, ln, child) => Consumer<ProfileEditService>(
+          builder: (context, asProvider, child) => Consumer<ProfileEditService>(
             builder: (context, provider, child) => WillPopScope(
               onWillPop: () {
                 if (provider.isloading == false) {
@@ -116,7 +125,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   return Future.value(true);
                 } else {
                   OthersHelper().showToast(
-                      ln.getString(ConstString.plzWaitProfileUpdating),
+                      'Please wait while the profile is updating',
                       Colors.black);
                   return Future.value(false);
                 }
@@ -201,17 +210,19 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         children: [
                           //Name ============>
                           CommonHelper()
-                              .labelCommon(ln.getString(ConstString.fullName)),
+                              .labelCommon(asProvider.getString('Full name')),
 
                           CustomInput(
                             controller: fullNameController,
                             validation: (value) {
                               if (value == null || value.isEmpty) {
-                                return ln.getString(ConstString.enterFullName);
+                                return asProvider
+                                    .getString('Please enter your full name');
                               }
                               return null;
                             },
-                            hintText: ln.getString(ConstString.enterFullName),
+                            hintText:
+                                asProvider.getString('Enter your full name'),
                             icon: 'assets/icons/user.png',
                             textInputAction: TextInputAction.next,
                           ),
@@ -221,17 +232,18 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
                           //Email ============>
                           CommonHelper()
-                              .labelCommon(ln.getString(ConstString.email)),
+                              .labelCommon(asProvider.getString('Email')),
 
                           CustomInput(
                             controller: emailController,
                             validation: (value) {
                               if (value == null || value.isEmpty) {
-                                return ln.getString(ConstString.plzEnterEmail);
+                                return asProvider
+                                    .getString('Please enter your email');
                               }
                               return null;
                             },
-                            hintText: ConstString.enterEmail,
+                            hintText: lnProvider.getString("Enter your email"),
                             icon: 'assets/icons/email-grey.png',
                             textInputAction: TextInputAction.next,
                           ),
@@ -247,16 +259,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CommonHelper()
-                              .labelCommon(ln.getString(ConstString.phone)),
+                              .labelCommon(asProvider.getString('Phone')),
                           Consumer<RtlService>(
                             builder: (context, rtlP, child) => IntlPhoneField(
+                              searchText:
+                                  asProvider.getString("Search country"),
+                              initialCountryCode: provider.countryCode,
                               controller: phoneController,
-                              decoration: SignupHelper().phoneFieldDecoration(
-                                  labelText:
-                                      ln.getString(ConstString.phoneNumber),
-                                  hintText: ln
-                                      .getString(ConstString.enterPhoneNumber)),
-                              initialCountryCode: countryCode,
+                              decoration: SignupHelper().phoneFieldDecoration(),
                               disableLengthCheck: true,
                               textAlign: rtlP.direction == 'ltr'
                                   ? TextAlign.left
@@ -268,17 +278,19 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           ),
                           sizedBoxCustom(20),
                           CommonHelper()
-                              .labelCommon(ln.getString(ConstString.postCode)),
+                              .labelCommon(asProvider.getString('Post code')),
                           CustomInput(
                             controller: postCodeController,
                             validation: (value) {
                               if (value == null || value.isEmpty) {
-                                return ln.getString(ConstString.plzEnterPost);
+                                return asProvider
+                                    .getString('Please enter post code');
                               }
                               return null;
                             },
                             isNumberField: true,
-                            hintText: ln.getString(ConstString.enterPostCode),
+                            hintText:
+                                asProvider.getString('Enter your post code'),
                             icon: 'assets/icons/user.png',
                             textInputAction: TextInputAction.next,
                           ),
@@ -298,9 +310,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             height: 25,
                           ),
                           CommonHelper().labelCommon(
-                              ln.getString(ConstString.yourAddress)),
+                              asProvider.getString('Your Address')),
                           TextareaField(
-                            hintText: ln.getString(ConstString.address),
+                            hintText: asProvider.getString('Address'),
                             notesController: addressController,
                           ),
                         ],
@@ -314,9 +326,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             height: 25,
                           ),
                           CommonHelper()
-                              .labelCommon(ln.getString(ConstString.about)),
+                              .labelCommon(asProvider.getString('About')),
                           TextareaField(
-                            hintText: ln.getString(ConstString.about),
+                            hintText: asProvider.getString('About'),
                             notesController: aboutController,
                           ),
                         ],
@@ -325,39 +337,41 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       const SizedBox(
                         height: 25,
                       ),
-                      CommonHelper().buttonOrange(
-                          ln.getString(ConstString.save), () async {
-                        var selectedStateId = Provider.of<CountryStatesService>(
+                      CommonHelper().buttonOrange(asProvider.getString('Save'),
+                          () async {
+                        var selectedStateId = Provider.of<StateDropdownService>(
                                 context,
                                 listen: false)
                             .selectedStateId;
-                        var selectedAreaId = Provider.of<CountryStatesService>(
+                        var selectedAreaId = Provider.of<AreaDropdownService>(
                                 context,
                                 listen: false)
                             .selectedAreaId;
                         if (selectedStateId == '0' || selectedAreaId == '0') {
                           OthersHelper().showSnackBar(
                               context,
-                              ln.getString(ConstString.mustSelectStateArea),
+                              asProvider.getString(
+                                  'You must select a state and area'),
                               cc.warningColor);
                           return;
                         } else if (provider.isloading == false) {
                           if (addressController.text.isEmpty) {
                             OthersHelper().showToast(
-                                ln.getString(ConstString.addressRequired),
+                                asProvider
+                                    .getString('Address field is required'),
                                 Colors.black);
                             return;
                           } else if (phoneController.text.isEmpty) {
                             OthersHelper().showToast(
-                                ln.getString(ConstString.phoneRequired),
+                                asProvider.getString('Phone field is required'),
                                 Colors.black);
                             return;
                           }
                           showTopSnackBar(
                               context,
                               CustomSnackBar.success(
-                                message: ln.getString(
-                                    ConstString.updateProfileTakeFewSec),
+                                message: asProvider.getString(
+                                    'Updating profile...It may take few seconds'),
                               ),
                               persistent: true,
                               onAnimationControllerInit: (controller) =>
@@ -373,7 +387,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             phoneController.text,
                             selectedStateId,
                             selectedAreaId,
-                            Provider.of<CountryStatesService>(context,
+                            Provider.of<CountryDropdownService>(context,
                                     listen: false)
                                 .selectedCountryId,
                             postCodeController.text,

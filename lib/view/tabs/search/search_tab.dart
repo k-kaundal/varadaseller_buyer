@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/search/components/search_bar.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
+import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class SearchTab extends StatefulWidget {
@@ -21,6 +21,8 @@ class _SearchTabState extends State<SearchTab> {
 
   @override
   Widget build(BuildContext context) {
+    ConstantColors cc = ConstantColors();
+
     return Listener(
       onPointerDown: (_) {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -37,14 +39,14 @@ class _SearchTabState extends State<SearchTab> {
                 padding: EdgeInsets.symmetric(horizontal: screenPadding),
                 clipBehavior: Clip.none,
                 child: Consumer<AppStringService>(
-                  builder: (context, ln, child) => Column(
+                  builder: (context, asProvider, child) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
                           height: 25,
                         ),
                         CommonHelper().titleCommon(
-                            ln.getString(ConstString.searchServices)),
+                            asProvider.getString('Search services')),
                         sizedBox20(),
                         const SearchBar(),
                       ]),

@@ -5,15 +5,18 @@ import 'package:qixer/service/book_confirmation_service.dart';
 import 'package:qixer/service/book_steps_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/booking_services/personalization_service.dart';
-import 'package:qixer/service/country_states_service.dart';
+import 'package:qixer/service/dropdowns_services/area_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/country_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/state_dropdown_services.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/booking/components/order_details_panel.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+import '../../service/common_service.dart';
 import 'components/steps.dart';
 
 class BookConfirmationPage extends StatefulWidget {
@@ -33,8 +36,13 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
 
   @override
   Widget build(BuildContext context) {
-    PanelController pc = PanelController();
-
+    PanelController _pc = PanelController();
+    final countryProvider =
+        Provider.of<CountryDropdownService>(context, listen: false);
+    final cityProvider =
+        Provider.of<StateDropdownService>(context, listen: false);
+    final areaProvider =
+        Provider.of<AreaDropdownService>(context, listen: false);
     ConstantColors cc = ConstantColors();
     return WillPopScope(
       onWillPop: () {
@@ -44,11 +52,11 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar:
-            CommonHelper().appbarForBookingPages(ConstString.details, context),
+        appBar: CommonHelper()
+            .appbarForBookingPages(lnProvider.getString('Details'), context),
         body: Consumer<BookConfirmationService>(
           builder: (context, bcProvider, child) => SlidingUpPanel(
-            controller: pc,
+            controller: _pc,
             borderRadius: const BorderRadius.only(
               topRight: Radius.circular(20),
               topLeft: Radius.circular(20),
@@ -63,7 +71,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
             ],
             minHeight: 200,
             panel: OrderDetailsPanel(
-              panelController: pc,
+              panelController: _pc,
             ),
             // collapsed: const OrderDetailsPanelProceed(),
             onPanelOpened: () {
@@ -80,7 +88,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
             body: SingleChildScrollView(
               physics: physicsCommon,
               child: Consumer<AppStringService>(
-                builder: (context, ln, child) => Container(
+                builder: (context, asProvider, child) => Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: screenPadding,
                     ),
@@ -96,7 +104,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                 ? Steps(cc: cc)
                                 : Container(),
                             CommonHelper().titleCommon(
-                                ln.getString(ConstString.bookDetails)),
+                                asProvider.getString('Booking details')),
 
                             const SizedBox(
                               height: 17,
@@ -114,15 +122,10 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                         horizontal: 15, vertical: 18),
                                     child: Column(
                                       children: [
-                                        Consumer<CountryStatesService>(
-                                          builder: (context, locationProvider,
-                                                  child) =>
-                                              BookingHelper().bdetailsContainer(
-                                                  'assets/svg/location.svg',
-                                                  ln.getString(
-                                                      ConstString.location),
-                                                  '${locationProvider.selectedArea}, ${locationProvider.selectedState}, ${locationProvider.selectedCountry}, '),
-                                        ),
+                                        BookingHelper().bdetailsContainer(
+                                            'assets/svg/location.svg',
+                                            asProvider.getString('Location'),
+                                            '${areaProvider.selectedArea}, ${cityProvider.selectedState}, ${countryProvider.selectedCountry}, '),
 
                                         //divider
                                         Container(
@@ -137,9 +140,9 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                               child: BookingHelper()
                                                   .bdetailsContainer(
                                                       'assets/svg/calendar.svg',
-                                                      ln.getString(
-                                                          ConstString.date),
-                                                      "${bookProvider.weekDay ?? ''}, ${bookProvider.selectedDateAndMonth ?? ''}"),
+                                                      asProvider
+                                                          .getString('Date'),
+                                                      "${firstThreeLetter(bookProvider.selectedDate, rtlProvider.langSlug.substring(0, 2)) ?? ''}, ${getMonthAndDate(bookProvider.selectedDate, rtlProvider.langSlug.substring(0, 2)) ?? ''}"),
                                             ),
                                             const SizedBox(
                                               width: 13,
@@ -148,8 +151,8 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                               child: BookingHelper()
                                                   .bdetailsContainer(
                                                       'assets/svg/clock.svg',
-                                                      ln.getString(
-                                                          ConstString.time),
+                                                      asProvider
+                                                          .getString('Time'),
                                                       bookProvider
                                                               .selectedTime ??
                                                           ''),
@@ -164,12 +167,18 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                               height: 30,
                             ),
 
-                            BookingHelper().bRow('assets/svg/user.svg',
-                                ConstString.name, bookProvider.name ?? ''),
-                            BookingHelper().bRow('assets/svg/email.svg',
-                                ConstString.email, bookProvider.email ?? ''),
-                            BookingHelper().bRow('assets/svg/phone.svg',
-                                ConstString.phone, bookProvider.phone ?? ''),
+                            BookingHelper().bRow(
+                                'assets/svg/user.svg',
+                                asProvider.getString('Name'),
+                                bookProvider.name ?? ''),
+                            BookingHelper().bRow(
+                                'assets/svg/email.svg',
+                                asProvider.getString('Email'),
+                                bookProvider.email ?? ''),
+                            BookingHelper().bRow(
+                                'assets/svg/phone.svg',
+                                asProvider.getString('Phone'),
+                                bookProvider.phone ?? ''),
                             personalizationProvider.isOnline == 0
                                 ? Column(
                                     crossAxisAlignment:
@@ -177,11 +186,11 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                                     children: [
                                       BookingHelper().bRow(
                                           'assets/svg/location.svg',
-                                          ConstString.postCode,
+                                          asProvider.getString('Post code'),
                                           bookProvider.postCode ?? ''),
                                       BookingHelper().bRow(
                                           'assets/svg/location.svg',
-                                          ConstString.address,
+                                          asProvider.getString('Address'),
                                           bookProvider.address ?? ''),
                                     ],
                                   )
@@ -190,6 +199,20 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
                             const SizedBox(
                               height: 17,
                             ),
+
+                            // Text(
+                            //   'Order notes:',
+                            //   style: TextStyle(
+                            //     color: cc.greyFour,
+                            //     fontSize: 15,
+                            //     fontWeight: FontWeight.w600,
+                            //   ),
+                            // ),
+                            // const SizedBox(
+                            //   height: 11,
+                            // ),
+                            // CommonHelper().paragraphCommon(
+                            //     bookProvider.orderNote ?? '', TextAlign.left),
 
                             const SizedBox(
                               height: 335,

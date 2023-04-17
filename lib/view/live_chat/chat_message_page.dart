@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,14 +7,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
-import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/live_chat/chat_message_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/service/rtl_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class ChatMessagePage extends StatefulWidget {
   const ChatMessagePage({
@@ -48,6 +45,8 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
 
     connectToPusher();
     channelName = 'private-chat-message.${widget.currentUserId}';
+
+    print('channel name............' + channelName);
   }
 
   bool firstTimeLoading = true;
@@ -149,6 +148,7 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
 
                     pusher.unsubscribe(channelName: channelName);
                     pusher.disconnect();
+                    setChatSellerId(null);
                     Navigator.pop(context);
                   },
                   icon: Icon(
@@ -186,270 +186,362 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
 
           pusher.unsubscribe(channelName: channelName);
           pusher.disconnect();
+          setChatSellerId(null);
           return Future.value(true);
         },
-        child: Consumer<AppStringService>(
-          builder: (context, ln, child) => Consumer<ChatMessagesService>(
-              builder: (context, provider, child) {
-            if (provider.messagesList.isNotEmpty &&
-                provider.sendLoading == false) {
-              Future.delayed(const Duration(milliseconds: 500), () {
-                _scrollDown();
-              });
-            }
-            return Stack(
-              children: [
-                provider.isloading == false
-                    ?
-                    //chat messages
-                    Container(
-                        margin: const EdgeInsets.only(bottom: 60),
-                        child: SmartRefresher(
-                          controller: refreshController,
-                          reverse: true,
-                          enablePullUp: true,
-                          enablePullDown:
-                              context.watch<ChatMessagesService>().currentPage >
-                                      1
-                                  ? false
-                                  : true,
-                          onRefresh: () async {
-                            final result =
-                                await Provider.of<ChatMessagesService>(context,
-                                        listen: false)
-                                    .fetchMessages(context,
-                                        receiverId: widget.receiverId);
-                            if (result) {
-                              refreshController.refreshCompleted();
-                            } else {
-                              refreshController.refreshFailed();
-                            }
-                          },
-                          onLoading: () async {
-                            final result =
-                                await Provider.of<ChatMessagesService>(context,
-                                        listen: false)
-                                    .fetchMessages(context,
-                                        receiverId: widget.receiverId);
-                            if (result) {
-                              debugPrint('loadcomplete ran');
-                              //loadcomplete function loads the data again
-                              refreshController.loadComplete();
-                            } else {
-                              debugPrint('no more data');
-                              refreshController.loadNoData();
+        child:
+            Consumer<ChatMessagesService>(builder: (context, provider, child) {
+          if (provider.messagesList.isNotEmpty &&
+              provider.sendLoading == false) {
+            Future.delayed(const Duration(milliseconds: 500), () {
+              _scrollDown();
+            });
+          }
+          return Stack(
+            children: [
+              provider.isloading == false
+                  ?
+                  //chat messages
+                  Container(
+                      margin: const EdgeInsets.only(bottom: 60),
+                      child: SmartRefresher(
+                        controller: refreshController,
+                        reverse: true,
+                        enablePullUp: true,
+                        enablePullDown:
+                            context.watch<ChatMessagesService>().currentPage > 1
+                                ? false
+                                : true,
+                        onRefresh: () async {
+                          final result = await Provider.of<ChatMessagesService>(
+                                  context,
+                                  listen: false)
+                              .fetchMessages(context,
+                                  receiverId: widget.receiverId);
+                          if (result) {
+                            refreshController.refreshCompleted();
+                          } else {
+                            refreshController.refreshFailed();
+                          }
+                        },
+                        onLoading: () async {
+                          final result = await Provider.of<ChatMessagesService>(
+                                  context,
+                                  listen: false)
+                              .fetchMessages(context,
+                                  receiverId: widget.receiverId);
+                          if (result) {
+                            debugPrint('loadcomplete ran');
+                            //loadcomplete function loads the data again
+                            refreshController.loadComplete();
+                          } else {
+                            debugPrint('no more data');
+                            refreshController.loadNoData();
 
-                              Future.delayed(const Duration(seconds: 1), () {
-                                //it will reset footer no data state to idle and will let us load again
-                                refreshController.resetNoData();
-                              });
-                            }
-                          },
-                          child: Container(
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              itemCount: provider.messagesList.length,
-                              shrinkWrap: true,
-                              reverse: true,
-                              padding: const EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              physics: physicsCommon,
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      provider.messagesList[index]
-                                                  ['fromUser'] !=
-                                              widget.currentUserId
-                                          ? MainAxisAlignment.start
-                                          : MainAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      child: Consumer<RtlService>(
-                                        builder: (context, rtlP, child) =>
-                                            Container(
-                                          padding: EdgeInsets.only(
-                                              left: provider.messagesList[index]
+                            Future.delayed(const Duration(seconds: 1), () {
+                              //it will reset footer no data state to idle and will let us load again
+                              refreshController.resetNoData();
+                            });
+                          }
+                        },
+                        child: Container(
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            itemCount: provider.messagesList.length,
+                            shrinkWrap: true,
+                            reverse: true,
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              bottom: 10,
+                            ),
+                            physics: physicsCommon,
+                            itemBuilder: (context, index) {
+                              return Row(
+                                mainAxisAlignment: provider.messagesList[index]
+                                            ['fromUser'] !=
+                                        widget.currentUserId
+                                    ? MainAxisAlignment.start
+                                    : MainAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                    child: Consumer<RtlService>(
+                                      builder: (context, rtlP, child) =>
+                                          Container(
+                                        padding: EdgeInsets.only(
+                                            left: provider.messagesList[index]
+                                                        ['fromUser'] !=
+                                                    widget.currentUserId
+                                                ? rtlP.direction == 'ltr'
+                                                    ? 10
+                                                    : 90
+                                                : rtlP.direction == 'ltr'
+                                                    ? 90
+                                                    : 10,
+                                            right: provider.messagesList[index]
+                                                        ['type'] ==
+                                                    "seller"
+                                                ? rtlP.direction == 'ltr'
+                                                    ? 90
+                                                    : 10
+                                                : rtlP.direction == 'ltr'
+                                                    ? 10
+                                                    : 90,
+                                            top: 10,
+                                            bottom: 10),
+                                        child: Align(
+                                          alignment:
+                                              (provider.messagesList[index]
                                                           ['fromUser'] !=
                                                       widget.currentUserId
-                                                  ? rtlP.direction == 'ltr'
-                                                      ? 10
-                                                      : 90
-                                                  : rtlP.direction == 'ltr'
-                                                      ? 90
-                                                      : 10,
-                                              right:
-                                                  provider.messagesList[index]
-                                                              ['type'] ==
-                                                          "seller"
-                                                      ? rtlP.direction == 'ltr'
-                                                          ? 90
-                                                          : 10
-                                                      : rtlP.direction == 'ltr'
-                                                          ? 10
-                                                          : 90,
-                                              top: 10,
-                                              bottom: 10),
-                                          child: Align(
-                                            alignment:
+                                                  ? Alignment.topLeft
+                                                  : Alignment.topRight),
+                                          child: Column(
+                                            crossAxisAlignment:
                                                 (provider.messagesList[index]
                                                             ['fromUser'] !=
                                                         widget.currentUserId
-                                                    ? Alignment.topLeft
-                                                    : Alignment.topRight),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  (provider.messagesList[index]
+                                                    ? CrossAxisAlignment.start
+                                                    : CrossAxisAlignment.end),
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: (provider.messagesList[
+                                                                  index]
                                                               ['fromUser'] !=
                                                           widget.currentUserId
-                                                      ? CrossAxisAlignment.start
-                                                      : CrossAxisAlignment.end),
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    color: (provider.messagesList[
-                                                                    index]
-                                                                ['fromUser'] !=
-                                                            widget.currentUserId
-                                                        ? Colors.grey.shade200
-                                                        : cc.primaryColor),
-                                                  ),
-                                                  padding:
-                                                      const EdgeInsets.all(16),
-                                                  //message =====>
-                                                  child: Text(
-                                                    provider.messagesList[index]
-                                                            ['message']
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: (provider.messagesList[
-                                                                        index][
-                                                                    'fromUser'] !=
-                                                                widget
-                                                                    .currentUserId
-                                                            ? Colors.grey[800]
-                                                            : Colors.white)),
-                                                  ),
+                                                      ? Colors.grey.shade200
+                                                      : cc.primaryColor),
                                                 ),
-                                              ],
-                                            ),
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                                //message =====>
+                                                child: Text(
+                                                  provider.messagesList[index]
+                                                          ['message']
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: (provider.messagesList[
+                                                                      index][
+                                                                  'fromUser'] !=
+                                                              widget
+                                                                  .currentUserId
+                                                          ? Colors.grey[800]
+                                                          : Colors.white)),
+                                                ),
+                                              ),
+                                              // provider.messagesList[index]
+                                              //             ['attachment'] !=
+                                              //         null
+                                              // ? Container(
+                                              //     margin: const EdgeInsets.only(
+                                              //         top: 11),
+                                              //     child: provider.messagesList[
+                                              //                     index]
+                                              //                 ['imagePicked'] ==
+                                              //             false
+                                              //         ? InkWell(
+                                              //             onTap: () {
+                                              //               Navigator.push(
+                                              //                 context,
+                                              //                 MaterialPageRoute<
+                                              //                     void>(
+                                              //                   builder: (BuildContext
+                                              //                           context) =>
+                                              //                       ImageBigPreviewPage(
+                                              //                     networkImgLink:
+                                              //                         provider.messagesList[
+                                              //                                 index]
+                                              //                             [
+                                              //                             'attachment'],
+                                              //                   ),
+                                              //                 ),
+                                              //               );
+                                              //             },
+                                              //             child:
+                                              //                 CachedNetworkImage(
+                                              //               imageUrl: provider
+                                              //                               .messagesList[
+                                              //                           index][
+                                              //                       'attachment'] ??
+                                              //                   placeHolderUrl,
+                                              //               placeholder:
+                                              //                   (context, url) {
+                                              //                 return Image.asset(
+                                              //                     'assets/images/placeholder.png');
+                                              //               },
+                                              //               height: 150,
+                                              //               width: screenWidth /
+                                              //                       2 -
+                                              //                   50,
+                                              //               fit:
+                                              //                   BoxFit.fitWidth,
+                                              //             ),
+                                              //           )
+                                              //         : InkWell(
+                                              //             onTap: () {
+                                              //               Navigator.push(
+                                              //                 context,
+                                              //                 MaterialPageRoute<
+                                              //                     void>(
+                                              //                   builder: (BuildContext
+                                              //                           context) =>
+                                              //                       ImageBigPreviewPage(
+                                              //                     assetImgLink:
+                                              //                         provider.messagesList[
+                                              //                                 index]
+                                              //                             [
+                                              //                             'attachment'],
+                                              //                   ),
+                                              //                 ),
+                                              //               );
+                                              //             },
+                                              //             child: Image.file(
+                                              //               File(provider
+                                              //                           .messagesList[
+                                              //                       index]
+                                              //                   ['attachment']),
+                                              //               height: 150,
+                                              //               width: screenWidth /
+                                              //                       2 -
+                                              //                   50,
+                                              //               fit: BoxFit.cover,
+                                              //             ),
+                                              //           ),
+                                              //   )
+                                              // : Container()
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      )
-                    : OthersHelper().showLoading(cc.primaryColor),
-
-                //write message section
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 20, bottom: 10, top: 10, right: 10),
-                    height: 60,
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Row(
-                      children: <Widget>[
-                        pickedImage != null
-                            ? Image.file(
-                                File(pickedImage!.path),
-                                height: 40,
-                                width: 40,
-                                fit: BoxFit.cover,
-                              )
-                            : Container(),
-                        const SizedBox(
-                          width: 13,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            controller: sendMessageController,
-                            decoration: InputDecoration(
-                                hintText:
-                                    ln.getString(ConstString.writeMessage) +
-                                        '...',
-                                hintStyle:
-                                    const TextStyle(color: Colors.black54),
-                                border: InputBorder.none),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        //pick image =====>
-                        // IconButton(
-                        //     onPressed: () async {
-                        //       pickedImage = await provider.pickImage();
-                        //       setState(() {});
-                        //     },
-                        //     icon: const Icon(Icons.attachment)),
-
-                        //send message button
-                        const SizedBox(
-                          width: 13,
-                        ),
-                        FloatingActionButton(
-                          onPressed: () async {
-                            if (sendMessageController.text.isNotEmpty) {
-                              //hide keyboard
-                              FocusScope.of(context).unfocus();
-                              //send message
-
-                              provider.sendMessage(
-                                  widget.receiverId,
-                                  sendMessageController.text.trim(),
-                                  null,
-                                  context);
-                              //clear input field
-                              sendMessageController.clear();
-                              //clear image
-                              setState(() {
-                                pickedImage = null;
-                              });
-                            } else {
-                              OthersHelper().showToast(
-                                  ln.getString(
-                                      ConstString.plzWriteMessageFirst),
-                                  Colors.black);
-                            }
-                          },
-                          backgroundColor: cc.primaryColor,
-                          elevation: 0,
-                          child: provider.sendLoading == false
-                              ? const Icon(
-                                  Icons.send,
-                                  color: Colors.white,
-                                  size: 18,
-                                )
-                              : const SizedBox(
-                                  height: 14,
-                                  width: 14,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 1.5,
                                   ),
-                                ),
+
+                                  // provider.messagesList[index].type == "seller"
+                                  //     ? Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //           right: 13,
+                                  //         ),
+                                  //         width: 15,
+                                  //         height: 15,
+                                  //         decoration: const BoxDecoration(
+                                  //             shape: BoxShape.circle,
+                                  //             color: Colors.white),
+                                  //         child: ClipRRect(
+                                  //           borderRadius: BorderRadius.circular(100),
+                                  //           child: Image.network(
+                                  //             'https://cdn.pixabay.com/photo/2016/09/08/13/58/desert-1654439__340.jpg',
+                                  //             fit: BoxFit.cover,
+                                  //           ),
+                                  //         ),
+                                  //       )
+                                  //     : Container(),
+                                ],
+                              );
+                            },
+                          ),
                         ),
-                      ],
-                    ),
+                        footer: OthersHelper().commonRefreshFooter(context),
+                      ),
+                    )
+                  : OthersHelper().showLoading(cc.primaryColor),
+
+              //write message section
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                      left: 20, bottom: 10, top: 10, right: 10),
+                  height: 60,
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      pickedImage != null
+                          ? Image.file(
+                              File(pickedImage!.path),
+                              height: 40,
+                              width: 40,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(),
+                      const SizedBox(
+                        width: 13,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          controller: sendMessageController,
+                          decoration: InputDecoration(
+                              hintText:
+                                  lnProvider.getString("Write message..."),
+                              hintStyle: const TextStyle(color: Colors.black54),
+                              border: InputBorder.none),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      //pick image =====>
+                      // IconButton(
+                      //     onPressed: () async {
+                      //       pickedImage = await provider.pickImage();
+                      //       setState(() {});
+                      //     },
+                      //     icon: const Icon(Icons.attachment)),
+
+                      //send message button
+                      const SizedBox(
+                        width: 13,
+                      ),
+                      FloatingActionButton(
+                        onPressed: () async {
+                          if (sendMessageController.text.isNotEmpty) {
+                            //hide keyboard
+                            FocusScope.of(context).unfocus();
+                            //send message
+
+                            provider.sendMessage(
+                                widget.receiverId,
+                                sendMessageController.text.trim(),
+                                null,
+                                context);
+                            //clear input field
+                            sendMessageController.clear();
+                            //clear image
+                            setState(() {
+                              pickedImage = null;
+                            });
+                          } else {
+                            OthersHelper().showToast(
+                                'Please write a message first', Colors.black);
+                          }
+                        },
+                        child: provider.sendLoading == false
+                            ? const Icon(
+                                Icons.send,
+                                color: Colors.white,
+                                size: 18,
+                              )
+                            : const SizedBox(
+                                height: 14,
+                                width: 14,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 1.5,
+                                ),
+                              ),
+                        backgroundColor: cc.primaryColor,
+                        elevation: 0,
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            );
-          }),
-        ),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/jobs/create_job_page.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 class MyJobsPageAppbar extends StatelessWidget {
@@ -17,7 +16,7 @@ class MyJobsPageAppbar extends StatelessWidget {
       iconTheme: IconThemeData(color: cc.greyPrimary),
       title: Consumer<AppStringService>(
         builder: (context, ln, child) => Text(
-          ln.getString(ConstString.myJobs),
+          ln.getString('My jobs'),
           style: TextStyle(
               color: cc.greyPrimary, fontSize: 16, fontWeight: FontWeight.w600),
         ),
@@ -53,6 +52,7 @@ class MyJobsPageAppbar extends StatelessWidget {
                   // width: double.infinity,
 
                   alignment: Alignment.center,
+                  // padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                       color: cc.successColor,
                       borderRadius: BorderRadius.circular(8)),

@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -13,12 +11,13 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/profile_service.dart';
-import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class PaystackPaymentPage extends StatelessWidget {
   PaystackPaymentPage(
@@ -41,29 +40,14 @@ class PaystackPaymentPage extends StatelessWidget {
     ConstantColors cc = ConstantColors();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Paystack')),
+      appBar: CommonHelper().appbarCommon('Paystack', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
       body: WillPopScope(
         onWillPop: () async {
-          await showDialog(
-              context: context,
-              builder: (ctx) {
-                return AlertDialog(
-                  title: const Text(ConstString.areYouSure),
-                  content: const Text(''),
-                  actions: [
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        PlaceOrderService().makePaymentFailed(context);
-                      },
-                      child: Text(
-                        ConstString.yes,
-                        style: TextStyle(color: cc.primaryColor),
-                      ),
-                    )
-                  ],
-                );
-              });
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
           return false;
         },
         child: FutureBuilder(
@@ -73,9 +57,9 @@ class PaystackPaymentPage extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-              if (snapshot.hasData) {
+              if (url == null) {
                 return const Center(
-                  child: Text(ConstString.loadingFailed),
+                  child: Text('Loding failed.'),
                 );
               }
               // if (snapshot.hasError) {
@@ -88,17 +72,9 @@ class PaystackPaymentPage extends StatelessWidget {
                 // onWebViewCreated: ((controller) {
                 //   _controller = controller;
                 // }),
-                onWebResourceError: (error) => showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return const AlertDialog(
-                        title: Text(ConstString.paymentFailed),
-                        content: Text(''),
-                        actions: [
-                          Spacer(),
-                        ],
-                      );
-                    }),
+                onWebResourceError: (error) =>
+                    Provider.of<PlaceOrderService>(context, listen: false)
+                        .doNext(context, 'failed', paymentFailed: true),
                 initialUrl: url,
                 javascriptMode: JavascriptMode.unrestricted,
                 onPageFinished: (value) async {
@@ -127,25 +103,8 @@ class PaystackPaymentPage extends StatelessWidget {
                     return;
                   }
                   if (response.body.contains('Declined')) {
-                    await showDialog(
-                        context: context,
-                        builder: (ctx) {
-                          return AlertDialog(
-                            title: const Text(ConstString.paymentFailed),
-                            content: const Text(''),
-                            actions: [
-                              const Spacer(),
-                              TextButton(
-                                onPressed: () => PlaceOrderService()
-                                    .makePaymentFailed(context),
-                                child: Text(
-                                  ConstString.ok,
-                                  style: TextStyle(color: cc.primaryColor),
-                                ),
-                              )
-                            ],
-                          );
-                        });
+                    await Provider.of<PlaceOrderService>(context, listen: false)
+                        .doNext(context, 'failed', paymentFailed: true);
                   }
                 },
                 navigationDelegate: (navRequest) async {
@@ -169,7 +128,8 @@ class PaystackPaymentPage extends StatelessWidget {
                     return NavigationDecision.prevent;
                   }
                   if (navRequest.url.contains('failed')) {
-                    PlaceOrderService().makePaymentFailed(context);
+                    Provider.of<PlaceOrderService>(context, listen: false)
+                        .doNext(context, 'failed', paymentFailed: true);
                   }
                   return NavigationDecision.navigate;
                 },
@@ -219,9 +179,6 @@ class PaystackPaymentPage extends StatelessWidget {
             .userDetails
             .email ??
         'test@test.com';
-
-    String currencyCode = 'USD';
-    currencyCode = Provider.of<RtlService>(context, listen: false).currencyCode;
 
     if (isFromOrderExtraAccept == true) {
       amount = Provider.of<OrderDetailsService>(context, listen: false)
@@ -275,13 +232,15 @@ class PaystackPaymentPage extends StatelessWidget {
       "Authorization": "Bearer $paystackSecretKey",
       // Above is API server key for the Midtrans account, encoded to base64
     };
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
 
     // final orderId = Random().nextInt(23000).toInt();
     final response = await http.post(uri,
         headers: header,
         body: jsonEncode({
           "amount": amount,
-          "currency": "NGN", //"NGN" was default
+          "currency": currencyCode,
           "email": email,
           "reference_id": orderId.toString(),
           "callback_url": "http://success.com",

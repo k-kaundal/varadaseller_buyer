@@ -187,7 +187,7 @@ class ReviewsForMobile {
   int? rating;
   String? message;
   int? buyerId;
-  BuyerForMobile buyerForMobile;
+  BuyerForMobile? buyerForMobile;
 
   factory ReviewsForMobile.fromJson(Map<String, dynamic> json) =>
       ReviewsForMobile(
@@ -196,7 +196,9 @@ class ReviewsForMobile {
         rating: json["rating"],
         message: json["message"],
         buyerId: json["buyer_id"],
-        buyerForMobile: BuyerForMobile.fromJson(json["buyer_for_mobile"]),
+        buyerForMobile: json["buyer_for_mobile"] == null
+            ? null
+            : BuyerForMobile.fromJson(json["buyer_for_mobile"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -205,7 +207,7 @@ class ReviewsForMobile {
         "rating": rating,
         "message": message,
         "buyer_id": buyerId,
-        "buyer_for_mobile": buyerForMobile.toJson(),
+        "buyer_for_mobile": buyerForMobile!.toJson(),
       };
 }
 
@@ -220,12 +222,12 @@ class BuyerForMobile {
 
   factory BuyerForMobile.fromJson(Map<String, dynamic> json) => BuyerForMobile(
         id: json["id"],
-        image: json["image"] == null ? null : json["image"],
+        image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "image": image == null ? null : image,
+        "image": image,
       };
 }
 
@@ -270,13 +272,13 @@ class Link {
   bool? active;
 
   factory Link.fromJson(Map<String, dynamic> json) => Link(
-        url: json["url"] == null ? null : json["url"],
+        url: json["url"],
         label: json["label"],
         active: json["active"],
       );
 
   Map<String, dynamic> toJson() => {
-        "url": url == null ? null : url,
+        "url": url,
         "label": label,
         "active": active,
       };

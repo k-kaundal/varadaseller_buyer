@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatMessagesService with ChangeNotifier {
@@ -72,6 +73,7 @@ class ChatMessagesService with ChangeNotifier {
   }
 
   fetchMessages(context, {bool isrefresh = false, required receiverId}) async {
+    setChatSellerId(receiverId);
     if (isrefresh) {
       //making the list empty first to show loading bar (we are showing loading bar while the product list is empty)
       //we are make the list empty when the sub category or brand is selected because then the refresh is true
@@ -177,6 +179,11 @@ class ChatMessagesService with ChangeNotifier {
       var response = await dio.post(
         '$baseApi/user/chat/send',
         data: formData,
+        options: Options(
+          validateStatus: (status) {
+            return true;
+          },
+        ),
       );
       setSendLoadingFalse();
 
@@ -220,6 +227,9 @@ class ChatMessagesService with ChangeNotifier {
             .name ??
         '';
     PushNotificationService().sendNotificationToSeller(context,
-        sellerId: sellerId, title: "New chat message: $username", body: '$msg');
+        sellerId: sellerId,
+        title: lnProvider.getString("New chat message") + ": $username",
+        body: '$msg',
+        type: "message");
   }
 }

@@ -10,10 +10,10 @@ import 'package:qixer/view/booking/components/extras.dart';
 import 'package:qixer/view/booking/delivery_address_page.dart.dart';
 import 'package:qixer/view/booking/service_schedule_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 import '../../service/book_steps_service.dart';
 import 'booking_helper.dart';
@@ -42,13 +42,14 @@ class _ServicePersonalizationPageState
     ConstantColors cc = ConstantColors();
     return WillPopScope(
       onWillPop: () {
+        // BookStepsService().decreaseStep(context);
         return Future.value(true);
       },
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: CommonHelper().appbarForBookingPages(
-            ConstString.personalize, context, isPersonalizatioPage: true,
-            extraFunction: () {
+            lnProvider.getString('Personalize'), context,
+            isPersonalizatioPage: true, extraFunction: () {
           //Whatever quanity or other extra user has selected.. set the totalprice to the default service price again
           Provider.of<BookService>(context, listen: false).setTotalPrice(
               Provider.of<PersonalizationService>(context, listen: false)
@@ -59,76 +60,87 @@ class _ServicePersonalizationPageState
         body: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, ln, child) => Consumer<PersonalizationService>(
-                builder: (context, provider, child) => provider.isloading ==
-                        false
-                    ? provider.serviceExtraData != 'error'
-                        ? Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: screenPadding,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                provider.isOnline == 0
-                                    ? Steps(cc: cc)
-                                    : Container(),
+            builder: (context, asProvider, child) =>
+                Consumer<PersonalizationService>(
+                    builder: (context, provider, child) => provider.isloading ==
+                            false
+                        ? provider.serviceExtraData != 'error'
+                            ? Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: screenPadding,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    provider.isOnline == 0
+                                        ? Steps(cc: cc)
+                                        : Container(),
 
-                                provider.serviceExtraData.service
-                                            .isServiceOnline !=
-                                        1
-                                    ? Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CommonHelper().titleCommon(
-                                              '${ln.getString(ConstString.whatsIncluded)}:'),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Included(
+                                    provider.serviceExtraData.service
+                                                .isServiceOnline !=
+                                            1
+                                        ? Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CommonHelper().titleCommon(
+                                                  '${asProvider.getString('What is included')}:'),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Included(
+                                                cc: cc,
+                                                data: provider.includedList,
+                                              ),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                            ],
+                                          )
+                                        : Container(),
+
+                                    provider.extrasList.isNotEmpty
+                                        ? Extras(
                                             cc: cc,
-                                            data: provider.includedList,
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                        ],
-                                      )
-                                    : Container(),
+                                            additionalServices:
+                                                provider.extrasList,
+                                            serviceBenefits: provider
+                                                .serviceExtraData
+                                                .service
+                                                .serviceBenifit,
+                                            asProvider: asProvider,
+                                          )
+                                        : Container(),
 
-                                provider.extrasList.isNotEmpty
-                                    ? Extras(
-                                        cc: cc,
-                                        additionalServices: provider.extrasList,
-                                        serviceBenefits: provider
-                                            .serviceExtraData
-                                            .service
-                                            .serviceBenifit,
-                                        ln: ln,
-                                      )
-                                    : Container(),
+                                    // button ==================>
+                                    const SizedBox(
+                                      height: 27,
+                                    ),
+                                    // CommonHelper().buttonOrange("Next", () {
+                                    //   Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute<void>(
+                                    //       builder: (BuildContext context) =>
+                                    //           const ServiceSchedulePage(),
+                                    //     ),
+                                    //   );
+                                    // }),
 
-                                // button ==================>
-                                const SizedBox(
-                                  height: 27,
-                                ),
-
-                                const SizedBox(
-                                  height: 147,
-                                ),
-                              ],
-                            ))
-                        : Text(ln.getString(ConstString.somethingWrong))
-                    : Container(
-                        height: MediaQuery.of(context).size.height - 250,
-                        alignment: Alignment.center,
-                        child: OthersHelper().showLoading(cc.primaryColor),
-                      )),
+                                    const SizedBox(
+                                      height: 147,
+                                    ),
+                                  ],
+                                ))
+                            : Text(asProvider.getString('Something went wrong'))
+                        : Container(
+                            height: MediaQuery.of(context).size.height - 250,
+                            alignment: Alignment.center,
+                            child: OthersHelper().showLoading(cc.primaryColor),
+                          )),
           ),
         ),
         bottomSheet: Consumer<AppStringService>(
-          builder: (context, ln, child) => Consumer<BookService>(
+          builder: (context, asProvider, child) => Consumer<BookService>(
             builder: (context, provider, child) =>
                 Consumer<PersonalizationService>(
               builder: (context, personalizationProvider, child) => Container(
@@ -140,14 +152,14 @@ class _ServicePersonalizationPageState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       BookingHelper().detailsPanelRow(
-                          ln.getString(ConstString.total),
+                          asProvider.getString('Total'),
                           0,
                           '${provider.totalPrice}'),
                       const SizedBox(
                         height: 23,
                       ),
-                      CommonHelper()
-                          .buttonOrange(ln.getString(ConstString.next), () {
+                      CommonHelper().buttonOrange(asProvider.getString('Next'),
+                          () {
                         if (personalizationProvider.isloading == false) {
                           if (personalizationProvider.isOnline == 1) {
                             //if it is an online service no need to show service schedule and choose location page
@@ -164,7 +176,7 @@ class _ServicePersonalizationPageState
                             //fetch shedule
                             Provider.of<SheduleService>(context, listen: false)
                                 .fetchShedule(provider.sellerId,
-                                    firstThreeLetter(DateTime.now()));
+                                    firstThreeLetter(DateTime.now(), null));
 
                             //go to shedule page
                             Navigator.push(

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
+// ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 
@@ -9,11 +9,12 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'dart:async';
 
 import '../../service/booking_services/place_order_service.dart';
 import '../../service/payment_gateway_list_service.dart';
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class InstamojoPaymentPage extends StatefulWidget {
   const InstamojoPaymentPage(
@@ -45,7 +46,7 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
   @override
   void initState() {
     super.initState();
-    createRequest(); //creating the HTTP request
+    createRequest(context); //creating the HTTP request
   }
 
   @override
@@ -55,23 +56,15 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        leading: InkWell(
-            onTap: () {
-              isLoading = true;
-              PlaceOrderService().makePaymentFailed(context);
-            },
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            )),
-        backgroundColor: Colors.blueGrey,
-        title: const Text(ConstString.payNow),
-      ),
+      appBar: CommonHelper().appbarCommon('Instamojo', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
       body: WillPopScope(
-        onWillPop: () {
-          isLoading = true;
-          return Future.value(true);
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return true;
         },
         child: Container(
           child: Center(
@@ -159,19 +152,26 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
 //payment is successful.
       } else {
         print('failed');
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
 //payment failed or pending.
       }
     } else {
+      Provider.of<PlaceOrderService>(context, listen: false)
+          .doNext(context, 'failed', paymentFailed: true);
       print("PAYMENT STATUS FAILED");
     }
   }
 
-  Future createRequest() async {
+  Future createRequest(BuildContext context) async {
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
     Map<String, String> body = {
       "amount": widget.amount, //amount to be paid
       "purpose": "Qixer pay",
       "buyer_name": widget.name,
       "email": widget.email,
+      'currency': currencyCode,
       "allow_repeated_payments": "true",
       "send_email": "true",
       "send_sms": "false",
@@ -197,7 +197,8 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
         isLoading = false; //setting state to false after data loaded
 
         selectedUrl =
-            "${json.decode(resp.body)["payment_request"]['longurl']}?embed=form";
+            json.decode(resp.body)["payment_request"]['longurl'].toString() +
+                "?embed=form";
       });
       print(json.decode(resp.body)['message'].toString());
 //If something is wrong with the data we provided to

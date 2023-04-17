@@ -8,7 +8,6 @@ import 'package:qixer/view/home/components/section_title.dart';
 import 'package:qixer/view/home/components/service_card.dart';
 import 'package:qixer/view/services/all_services_page.dart';
 import 'package:qixer/view/services/service_details_page.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -16,10 +15,10 @@ class RecentServices extends StatelessWidget {
   const RecentServices({
     Key? key,
     required this.cc,
-    required this.ln,
+    required this.asProvider,
   }) : super(key: key);
   final ConstantColors cc;
-  final ln;
+  final asProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class RecentServices extends StatelessWidget {
                           builder: (context, allServiceProvider, child) =>
                               SectionTitle(
                             cc: cc,
-                            title: ln.getString(ConstString.recentJobs),
+                            title: asProvider.getString('Recently listed'),
                             pressed: () {
                               //when user clicks on recent see all. set sort by dropdown to latest
                               allServiceProvider
@@ -102,7 +101,7 @@ class RecentServices extends StatelessWidget {
                                         ['sellerName'],
                                     price: provider.recentServiceMap[i]
                                         ['price'],
-                                    buttonText: ConstString.bookNow,
+                                    buttonText: 'Book Now',
                                     width:
                                         MediaQuery.of(context).size.width - 85,
                                     marginRight: 17.0,
@@ -140,13 +139,13 @@ class RecentServices extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Text(ln.getString(ConstString.somethingWrong))
+                  : Text(asProvider.getString('Something went wrong'))
               : Container()
           : Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(top: 35),
-              child:
-                  Text(ln.getString(ConstString.noServiceAvailableInYourArea)),
+              child: Text(
+                  asProvider.getString('No service available in your area')),
             ),
     );
   }

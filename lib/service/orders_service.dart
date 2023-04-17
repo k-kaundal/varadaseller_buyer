@@ -9,6 +9,7 @@ import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrdersService with ChangeNotifier {
@@ -48,6 +49,7 @@ class OrdersService with ChangeNotifier {
     final decodedData = jsonDecode(response.body);
 
     if (response.statusCode == 201) {
+      print(decodedData['msg']);
       OthersHelper().showToast(decodedData['msg'], Colors.black);
 
       await Provider.of<OrderDetailsService>(context, listen: false)
@@ -66,7 +68,8 @@ class OrdersService with ChangeNotifier {
           '';
       PushNotificationService().sendNotificationToSeller(context,
           sellerId: sellerId,
-          title: "$username accepted your order completion request",
+          title: "$username " +
+              lnProvider.getString("accepted your order completion request"),
           body: 'Order id: $orderId');
 
       //

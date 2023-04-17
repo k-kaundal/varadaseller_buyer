@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/service/common_service.dart';
+import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,23 +15,31 @@ class PushNotificationService with ChangeNotifier {
 
   //
   sendNotificationToSeller(BuildContext context,
-      {required sellerId, required title, required body}) async {
+      {required sellerId,
+      required title,
+      required body,
+      type = 'notification'}) async {
     var pUrl = Provider.of<PushNotificationService>(context, listen: false)
         .pusherApiUrl;
 
     var pToken = Provider.of<PushNotificationService>(context, listen: false)
         .pusherToken;
+    var senderId = Provider.of<ProfileService>(context, listen: false)
+        .profileDetails
+        .userDetails
+        .id;
     var header = {
       //if header type is application/json then the data should be in jsonEncode method
       // "Accept": "application/json",
       "Content-Type": "application/json",
-      "Authorization": "$pToken",
+      "Authorization": "Bearer $pToken",
     };
 
     var data = jsonEncode({
       "interests": ["debug-seller$sellerId"],
       "fcm": {
-        "notification": {"title": "$title", "body": "$body"}
+        "notification": {"title": "$title", "body": "$body"},
+        "data": {"sender-id": '$senderId', "type": '$type'}
       }
     });
 
@@ -72,7 +81,7 @@ class PushNotificationService with ChangeNotifier {
     var response = await http.get(
         Uri.parse("$baseApi/user/chat/pusher/credentials"),
         headers: header);
-
+    print(response.body);
     if (response.statusCode == 201) {
       final jsonData = jsonDecode(response.body);
       pusherCredentialLoaded = true;

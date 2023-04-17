@@ -2,9 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qixer/service/all_services_service.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/change_pass_service.dart';
+import 'package:qixer/service/auth_services/delete_account_service.dart';
 import 'package:qixer/service/auth_services/email_verify_service.dart';
 import 'package:qixer/service/auth_services/facebook_login_service.dart';
 import 'package:qixer/service/auth_services/google_sign_service.dart';
@@ -19,6 +21,9 @@ import 'package:qixer/service/booking_services/personalization_service.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/booking_services/shedule_service.dart';
 import 'package:qixer/service/country_states_service.dart';
+import 'package:qixer/service/dropdowns_services/area_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/country_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/state_dropdown_services.dart';
 import 'package:qixer/service/jobs_service/create_job_service.dart';
 import 'package:qixer/service/home_services/category_service.dart';
 import 'package:qixer/service/home_services/recent_services_service.dart';
@@ -78,8 +83,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark));
     return MultiProvider(
       key: ObjectKey(userId),
       providers: [
@@ -139,24 +145,42 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ReportMessagesService()),
         ChangeNotifierProvider(create: (_) => RecentJobsService()),
         ChangeNotifierProvider(create: (_) => PermissionsService()),
+        ChangeNotifierProvider(create: (_) => CountryDropdownService()),
+        ChangeNotifierProvider(create: (_) => StateDropdownService()),
+        ChangeNotifierProvider(create: (_) => AreaDropdownService()),
+        ChangeNotifierProvider(create: (_) => DeleteAccountService()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Qixer',
-        builder: (context, rtlchild) {
-          return Consumer<RtlService>(
-            builder: (context, rtlP, child) => Directionality(
-              textDirection: rtlP.direction == 'ltr'
-                  ? TextDirection.ltr
-                  : TextDirection.rtl,
-              child: rtlchild!,
+      child: Consumer<RtlService>(
+        builder: (context, rtlProvider, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Qixer',
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              Locale(rtlProvider.langSlug.substring(0, 2)),
+              const Locale('en', "US")
+            ],
+            builder: (context, rtlchild) {
+              return Consumer<RtlService>(
+                builder: (context, rtlP, child) => Directionality(
+                  textDirection: rtlP.direction == 'ltr'
+                      ? TextDirection.ltr
+                      : TextDirection.rtl,
+                  child: rtlchild!,
+                ),
+              );
+            },
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
             ),
+            home: child,
           );
         },
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const SplashScreen(),
+        child: const SplashScreen(),
       ),
     );
   }

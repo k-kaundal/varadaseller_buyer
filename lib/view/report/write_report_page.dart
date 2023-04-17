@@ -2,15 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/leave_feedback_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/booking/components/textarea_field.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class WriteReportPage extends StatefulWidget {
   const WriteReportPage({
@@ -33,56 +32,53 @@ class _WriteReportPageState extends State<WriteReportPage> {
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon(ConstString.report, context, () {
+      appBar: CommonHelper().appbarCommon('Report', context, () {
         Navigator.pop(context);
       }),
       body: SingleChildScrollView(
         physics: physicsCommon,
-        child: Consumer<AppStringService>(
-          builder: (context, ln, child) => Consumer<ProfileService>(
-            builder: (context, profileProvider, child) => Container(
-              padding: EdgeInsets.symmetric(horizontal: screenPadding),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    sizedBox20(),
-                    Text(
-                      ln.getString(ConstString.whatWentWrong),
-                      style: TextStyle(
-                          color: cc.greyFour,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 14,
-                    ),
-                    TextareaField(
-                      notesController: reportController,
-                      hintText: ln.getString(ConstString.writeTheIssue),
-                    ),
-                    sizedBox20(),
-                    Consumer<LeaveFeedbackService>(
-                      builder: (context, lfProvider, child) => CommonHelper()
-                          .buttonOrange(ConstString.submitReport, () {
-                        if (lfProvider.reportLoading == false) {
-                          if (reportController.text.trim().isEmpty) {
-                            OthersHelper().showToast(
-                                ln.getString(ConstString.writeToSubmitReport),
-                                Colors.black);
-                            return;
-                          }
-                          lfProvider.leaveReport(context,
-                              message: reportController.text,
-                              orderId: widget.orderId,
-                              serviceId: widget.serviceId);
-                        }
-                      }, isloading: lfProvider.reportLoading),
-                    )
-                  ]),
-            ),
+        child: Consumer<ProfileService>(
+          builder: (context, profileProvider, child) => Container(
+            padding: EdgeInsets.symmetric(horizontal: screenPadding),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(
+                height: 15,
+              ),
+              sizedBox20(),
+              Text(
+                lnProvider.getString('What went wrong?'),
+                style: TextStyle(
+                    color: cc.greyFour,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 14,
+              ),
+              TextareaField(
+                notesController: reportController,
+                hintText: lnProvider.getString('Write the issue'),
+              ),
+              sizedBox20(),
+              Consumer<LeaveFeedbackService>(
+                builder: (context, lfProvider, child) =>
+                    CommonHelper().buttonOrange('Submit Report', () {
+                  if (lfProvider.reportLoading == false) {
+                    if (reportController.text.trim().isEmpty) {
+                      OthersHelper().showToast(
+                          'You must write something to submit report',
+                          Colors.black);
+                      return;
+                    }
+                    lfProvider.leaveReport(context,
+                        message: reportController.text,
+                        orderId: widget.orderId,
+                        serviceId: widget.serviceId);
+                  }
+                }, isloading: lfProvider.reportLoading),
+              )
+            ]),
           ),
         ),
       ),

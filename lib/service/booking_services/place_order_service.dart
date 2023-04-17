@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, use_build_context_synchronously
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/book_confirmation_service.dart';
 import 'package:qixer/service/book_steps_service.dart';
@@ -11,16 +12,19 @@ import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/booking_services/coupon_service.dart';
 import 'package:qixer/service/booking_services/personalization_service.dart';
 
-import 'package:qixer/service/country_states_service.dart';
+import 'package:qixer/service/dropdowns_services/area_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/country_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/state_dropdown_services.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
-import 'package:qixer/view/booking/payment_failed_page.dart';
 import 'package:qixer/view/booking/payment_success_page.dart';
 
 import 'package:qixer/view/home/landing_page.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../../view/utils/common_helper.dart';
 import '../common_service.dart';
 
 class PlaceOrderService with ChangeNotifier {
@@ -62,29 +66,26 @@ class PlaceOrderService with ChangeNotifier {
         .includedList;
     List extras =
         Provider.of<PersonalizationService>(context, listen: false).extrasList;
-
-    var serviceId = Provider.of<BookService>(context, listen: false).serviceId;
-    var sellerId = Provider.of<BookService>(context, listen: false).sellerId;
+    final bProvider = Provider.of<BookService>(context, listen: false);
+    var serviceId = bProvider.serviceId;
+    var sellerId = bProvider.sellerId;
     var buyerId = prefs.getInt('userId');
-    var name = Provider.of<BookService>(context, listen: false).name;
-    var email = Provider.of<BookService>(context, listen: false).email;
-    var phone = Provider.of<BookService>(context, listen: false).phone;
-    var post = Provider.of<BookService>(context, listen: false).postCode;
-    var address = Provider.of<BookService>(context, listen: false).address;
-    var city = Provider.of<CountryStatesService>(context, listen: false)
+    var name = bProvider.name;
+    var email = bProvider.email;
+    var phone = bProvider.phone;
+    var post = bProvider.postCode;
+    var address = bProvider.address;
+    var city = Provider.of<StateDropdownService>(context, listen: false)
         .selectedStateId;
-    var area = Provider.of<CountryStatesService>(context, listen: false)
-        .selectedAreaId;
-    var country = Provider.of<CountryStatesService>(context, listen: false)
+    var area =
+        Provider.of<AreaDropdownService>(context, listen: false).selectedAreaId;
+    var country = Provider.of<CountryDropdownService>(context, listen: false)
         .selectedCountryId;
-    var selectedDate =
-        Provider.of<BookService>(context, listen: false).selectedDateAndMonth;
-    var schedule =
-        Provider.of<BookService>(context, listen: false).selectedTime;
+    var selectedDate = DateFormat.yMMMMEEEEd().format(bProvider.selectedDate!);
+    var schedule = bProvider.selectedTime;
     var coupon =
         Provider.of<CouponService>(context, listen: false).appliedCoupon;
-    var selectedPaymentGateway =
-        Provider.of<BookService>(context, listen: false).selectedPayment;
+    var selectedPaymentGateway = bProvider.selectedPayment;
 
     var isOnline =
         Provider.of<PersonalizationService>(context, listen: false).isOnline;
@@ -246,6 +247,7 @@ class PlaceOrderService with ChangeNotifier {
       'paytm': true
     });
 
+    print(data);
     var header = {
       //if header type is application/json then the data should be in jsonEncode method
       "Accept": "application/json",
@@ -253,10 +255,12 @@ class PlaceOrderService with ChangeNotifier {
       "Authorization": "Bearer $token",
     };
 
-    var response = await dio.post(
-      '$baseApi/service/order',
-      data: formData,
-    );
+    var response = await dio.post('$baseApi/service/order', data: formData,
+        options: Options(
+      validateStatus: (status) {
+        return true;
+      },
+    ));
 
     //if paytm payment selected
     // =================>
@@ -328,7 +332,7 @@ class PlaceOrderService with ChangeNotifier {
         print(response.body);
         print(response.statusCode);
         OthersHelper().showToast(
-            'Failed to make payment status successfull', Colors.black);
+            'Failed to make payment status successful', Colors.black);
         doNext(context, 'Pending');
       }
     } else {
@@ -338,23 +342,60 @@ class PlaceOrderService with ChangeNotifier {
   }
 
   ///////////==========>
-  doNext(BuildContext context, String paymentStatus) async {
+  doNext(BuildContext context, String paymentStatus,
+      {paymentFailed = false}) async {
     //Refresh profile page so that user can see updated total orders
-    await Provider.of<ProfileService>(context, listen: false)
-        .getProfileDetails(isFromProfileupdatePage: true);
+    if (paymentFailed) {
+      showDialog(
+              context: context,
+              builder: (ctx) {
+                return AlertDialog(
+                  title: Text(lnProvider.getString('')),
+                  content: SizedBox(
+                    height: 136,
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/payment_failed.png',
+                          height: 100,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(lnProvider.getString('Payment failed!')),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: CommonHelper().borderButtonOrange(
+                          lnProvider.getString('Go to home'), () {
+                        Navigator.pop(context);
+                      }),
+                    )
+                  ],
+                );
+              })
+          .then((value) => Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const LandingPage()),
+              (Route<dynamic> route) => false));
+      setLoadingFalse();
+    } else {
+      await Provider.of<ProfileService>(context, listen: false)
+          .getProfileDetails(isFromProfileupdatePage: true);
 
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const LandingPage()),
-        (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const LandingPage()),
+          (Route<dynamic> route) => false);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => PaymentSuccessPage(
-          paymentStatus: paymentStatus,
+      Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => PaymentSuccessPage(
+            paymentStatus: paymentStatus,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     //reset steps
     Provider.of<BookStepsService>(context, listen: false).setStepsToDefault();
@@ -368,24 +409,8 @@ class PlaceOrderService with ChangeNotifier {
         '';
     PushNotificationService().sendNotificationToSeller(context,
         sellerId: sellerId,
-        title: "You have received an order from $username",
+        title: lnProvider.getString("You have received an order from") +
+            " $username",
         body: '-');
-  }
-
-  ///////////==========>
-  makePaymentFailed(BuildContext context) async {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const LandingPage()),
-        (Route<dynamic> route) => false);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => const PaymentFailedPage(),
-      ),
-    );
-
-    //reset steps
-    Provider.of<BookStepsService>(context, listen: false).setStepsToDefault();
   }
 }

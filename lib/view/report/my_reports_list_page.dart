@@ -4,9 +4,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/report_services/report_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
+import 'package:qixer/view/utils/responsive.dart';
+
+import '../utils/others_helper.dart';
 
 class MyReportListPage extends StatefulWidget {
   const MyReportListPage({Key? key}) : super(key: key);
@@ -30,7 +32,7 @@ class _MyReportListPageState extends State<MyReportListPage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon(ConstString.reports, context, () {
+        appBar: CommonHelper().appbarCommon('Reports', context, () {
           Navigator.pop(context);
           Provider.of<ReportService>(context, listen: false)
               .setReportListDefault();
@@ -77,7 +79,8 @@ class _MyReportListPageState extends State<MyReportListPage> {
             child: SingleChildScrollView(
               physics: physicsCommon,
               child: Consumer<AppStringService>(
-                builder: (context, ln, child) => Consumer<ReportService>(
+                builder: (context, asProvider, child) => Consumer<
+                        ReportService>(
                     builder: (context, provider, child) => provider
                             .reportList.isNotEmpty
                         ? Container(
@@ -113,15 +116,20 @@ class _MyReportListPageState extends State<MyReportListPage> {
                                                 // width: screenWidth - 200,
                                                 child:
                                                     CommonHelper().labelCommon(
-                                                  '${ln.getString(ConstString.reportId)}: ${provider.reportList[i]['id']}',
+                                                  lnProvider.getString(
+                                                          'Report id') +
+                                                      ': ' +
+                                                      provider.reportList[i]
+                                                              ['id']
+                                                          .toString(),
                                                 ),
                                               ),
                                               SizedBox(
                                                 width: 100,
                                                 child: CommonHelper()
                                                     .buttonOrange(
-                                                        ConstString.chatAdmin,
-                                                        () {
+                                                        lnProvider.getString(
+                                                            'Chat admin'), () {
                                                   provider.goToMessagePage(
                                                       context,
                                                       provider.reportList[i]
@@ -133,7 +141,11 @@ class _MyReportListPageState extends State<MyReportListPage> {
                                             ],
                                           ),
                                           CommonHelper().labelCommon(
-                                            '${ln.getString(ConstString.orderId)}: ${provider.reportList[i]['orderId']}',
+                                            lnProvider.getString('Order id') +
+                                                ': ' +
+                                                provider.reportList[i]
+                                                        ['orderId']
+                                                    .toString(),
                                           ),
                                         ]),
                                   )
@@ -141,9 +153,10 @@ class _MyReportListPageState extends State<MyReportListPage> {
                             ),
                           )
                         : CommonHelper().nothingfound(
-                            context, ln.getString(ConstString.noReportFound))),
+                            context, asProvider.getString('No Report'))),
               ),
             ),
+            footer: OthersHelper().commonRefreshFooter(context),
           ),
         ));
   }

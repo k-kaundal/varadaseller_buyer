@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
+// ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -62,12 +62,18 @@ class StripeService with ChangeNotifier {
 
         paymentIntentData = null;
       }).onError((error, stackTrace) {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
         debugPrint('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
       });
     } on StripeException {
+      Provider.of<PlaceOrderService>(context, listen: false)
+          .doNext(context, 'failed', paymentFailed: true);
+      // print('Exception/DISPLAYPAYMENTSHEET==> $e');
       OthersHelper().showToast("Payment cancelled", Colors.red);
-      PlaceOrderService().makePaymentFailed(context);
     } catch (e) {
+      Provider.of<PlaceOrderService>(context, listen: false)
+          .doNext(context, 'failed', paymentFailed: true);
       debugPrint('$e');
     }
   }
@@ -75,8 +81,10 @@ class StripeService with ChangeNotifier {
   calculateAmount(String amount) {
     final a = (int.parse(amount)) * 100;
     return a.toString();
+    // return amount;
   }
 
+  //  Future<Map<String, dynamic>>
   createPaymentIntent(String amount, String currency, context) async {
     try {
       Map<String, dynamic> body = {
@@ -85,19 +93,28 @@ class StripeService with ChangeNotifier {
         'payment_method_types[]': 'card'
       };
 
+      // var header ={
+      //       'Authorization':
+      //           'Bearer sk_test_51GwS1SEmGOuJLTMs2vhSliTwAGkOt4fKJMBrxzTXeCJoLrRu8HFf4I0C5QuyE3l3bQHBJm3c0qFmeVjd0V9nFb6Z00VrWDJ9Uw',
+      //       'Content-Type': 'application/x-www-form-urlencoded'
+      //     };
       var header = {
         'Authorization':
             'Bearer ${Provider.of<PaymentGatewayListService>(context, listen: false).secretKey}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
+      // print(body);
       var response = await http.post(
           Uri.parse('https://api.stripe.com/v1/payment_intents'),
           body: body,
           headers: header);
+      // print('Create Intent reponse ===> ${response.body.toString()}');
+      // debugPrint("response body is ${response.body}");
       return jsonDecode(response.body);
     } catch (err) {
+      Provider.of<PlaceOrderService>(context, listen: false)
+          .doNext(context, 'failed', paymentFailed: true);
       debugPrint('err charging user: ${err.toString()}');
-      PlaceOrderService().makePaymentFailed(context);
     }
   }
 
@@ -110,10 +127,6 @@ class StripeService with ChangeNotifier {
     String name;
     String phone;
     String email;
-
-    String currencyCode = 'USD';
-    currencyCode = Provider.of<RtlService>(context, listen: false).currencyCode;
-
     Provider.of<PlaceOrderService>(context, listen: false).setLoadingTrue();
     name = Provider.of<ProfileService>(context, listen: false)
             .profileDetails
@@ -157,10 +170,15 @@ class StripeService with ChangeNotifier {
             .toStringAsFixed(0);
       }
     }
+    print('stripe secrete key');
+    print(Provider.of<PaymentGatewayListService>(context, listen: false)
+        .secretKey);
 
     //Stripe takes only integer value
 
     try {
+      final currencyCode =
+          Provider.of<RtlService>(context, listen: false).currencyCode;
       paymentIntentData =
           await createPaymentIntent(amount, currencyCode, context);
       await Stripe.instance
@@ -180,8 +198,9 @@ class StripeService with ChangeNotifier {
       displayPaymentSheet(
           context, isFromOrderExtraAccept, isFromWalletDeposite, isFromHireJob);
     } catch (e, s) {
+      Provider.of<PlaceOrderService>(context, listen: false)
+          .doNext(context, 'failed', paymentFailed: true);
       debugPrint('exception:$e$s');
-      PlaceOrderService().makePaymentFailed(context);
     }
   }
 

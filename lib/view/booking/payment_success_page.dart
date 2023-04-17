@@ -7,9 +7,9 @@ import 'package:qixer/service/booking_services/personalization_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class PaymentSuccessPage extends StatefulWidget {
   const PaymentSuccessPage({Key? key, required this.paymentStatus})
@@ -33,17 +33,30 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon(ConstString.payment, context, () {
+        appBar: CommonHelper()
+            .appbarCommon(lnProvider.getString('Payment'), context, () {
+          // Navigator.pushReplacement<void, void>(
+          //   context,
+          //   MaterialPageRoute<void>(
+          //     builder: (BuildContext context) => const LandingPage(),
+          //   ),
+          // );
           Navigator.pop(context);
         }),
         body: WillPopScope(
           onWillPop: () {
+            // Navigator.pushReplacement<void, void>(
+            //   context,
+            //   MaterialPageRoute<void>(
+            //     builder: (BuildContext context) => const LandingPage(),
+            //   ),
+            // );
             return Future.value(true);
           },
           child: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
-              builder: (context, ln, child) => Container(
+              builder: (context, asProvider, child) => Container(
                 padding: EdgeInsets.symmetric(horizontal: screenPadding),
                 clipBehavior: Clip.none,
                 child: Consumer<BookConfirmationService>(
@@ -70,7 +83,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                   height: 7,
                                 ),
                                 Text(
-                                  '${ln.getString(ConstString.paySuccess)}!',
+                                  '${asProvider.getString('Payment successful')}!',
                                   style: TextStyle(
                                       color: cc.greyFour,
                                       fontSize: 21,
@@ -98,7 +111,8 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                             child: BookingHelper()
                                                 .bdetailsContainer(
                                                     'assets/svg/calendar.svg',
-                                                    ln.getString('Date'),
+                                                    asProvider
+                                                        .getString('Date'),
                                                     "${bookProvider.weekDay ?? ''}, ${bookProvider.selectedDateAndMonth ?? ''}"),
                                           ),
                                           const SizedBox(
@@ -108,8 +122,8 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                             child: BookingHelper()
                                                 .bdetailsContainer(
                                                     'assets/svg/clock.svg',
-                                                    ln.getString(
-                                                        ConstString.time),
+                                                    asProvider
+                                                        .getString('Time'),
                                                     bookProvider.selectedTime ??
                                                         ''),
                                           )
@@ -129,8 +143,8 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                         children: [
                                           //Package fee and extra service =============>
                                           BookingHelper().detailsPanelRow(
-                                              ln.getString(
-                                                  ConstString.packageFee),
+                                              asProvider
+                                                  .getString('Package Fee'),
                                               0,
                                               bcProvider
                                                   .includedTotalPrice(
@@ -141,7 +155,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       )
                                     : Container(),
                                 BookingHelper().detailsPanelRow(
-                                    ln.getString(ConstString.extraService),
+                                    asProvider.getString('Extra service'),
                                     0,
                                     bcProvider
                                         .extrasTotalPrice(pProvider.extrasList)
@@ -160,8 +174,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                         children: [
                                           //subtotal and tax =========>
                                           BookingHelper().detailsPanelRow(
-                                              ln.getString(
-                                                  ConstString.subtotal),
+                                              asProvider.getString('Subtotal'),
                                               0,
                                               bcProvider
                                                   .calculateSubtotal(
@@ -173,7 +186,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       )
                                     : Container(),
                                 BookingHelper().detailsPanelRow(
-                                    '${ln.getString(ConstString.tax)}(+) ${pProvider.tax}%',
+                                    '${asProvider.getString('Tax')}(+) ${pProvider.tax}%',
                                     0,
                                     bcProvider
                                         .calculateTax(
@@ -197,7 +210,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      ln.getString(ConstString.total),
+                                      asProvider.getString('Total'),
                                       style: TextStyle(
                                         color: cc.greyFour,
                                         fontSize: 14,
@@ -223,6 +236,30 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                     )
                                   ],
                                 ),
+                                // sizedBox20(),
+                                // //Gateway
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Text(
+                                //       'Payment gateway',
+                                //       style: TextStyle(
+                                //         color: cc.greyFour,
+                                //         fontSize: 14,
+                                //         fontWeight: FontWeight.w400,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       'Mobile',
+                                //       textAlign: TextAlign.right,
+                                //       style: TextStyle(
+                                //         color: cc.greyFour,
+                                //         fontSize: 14,
+                                //         fontWeight: FontWeight.w600,
+                                //       ),
+                                //     )
+                                //   ],
+                                // ),
 
                                 Container(
                                   margin:
@@ -234,15 +271,15 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                                 Row(
                                   children: [
                                     BookingHelper().colorCapsule(
-                                        ln.getString(ConstString.paymentStatus),
+                                        asProvider.getString('Payment status'),
                                         widget.paymentStatus,
                                         cc.successColor),
                                     const SizedBox(
                                       width: 30,
                                     ),
                                     BookingHelper().colorCapsule(
-                                        ln.getString(ConstString.orderStatus),
-                                        ln.getString(ConstString.pending),
+                                        asProvider.getString('Order status'),
+                                        asProvider.getString('Pending'),
                                         cc.yellowColor)
                                   ],
                                 ),

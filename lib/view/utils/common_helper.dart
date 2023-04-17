@@ -1,9 +1,12 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 import '../../service/book_steps_service.dart';
 
@@ -14,9 +17,10 @@ class CommonHelper {
     return AppBar(
       centerTitle: true,
       iconTheme: IconThemeData(color: cc.greyPrimary),
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
       title: Consumer<AppStringService>(
-        builder: (context, ln, child) => Text(
-          ln.getString(title),
+        builder: (context, asProvider, child) => Text(
+          asProvider.getString(title),
           style: TextStyle(
               color: cc.greyPrimary, fontSize: 16, fontWeight: FontWeight.w600),
         ),
@@ -39,8 +43,8 @@ class CommonHelper {
       centerTitle: true,
       iconTheme: IconThemeData(color: cc.greyPrimary),
       title: Consumer<AppStringService>(
-        builder: (context, ln, child) => Text(
-          ln.getString(title),
+        builder: (context, asProvider, child) => Text(
+          asProvider.getString(title),
           style: TextStyle(
               color: cc.greyPrimary, fontSize: 16, fontWeight: FontWeight.w600),
         ),
@@ -74,24 +78,22 @@ class CommonHelper {
       {isloading = false, bgColor, double paddingVerticle = 18}) {
     return InkWell(
       onTap: pressed,
-      child: Consumer<AppStringService>(
-        builder: (context, ln, child) => Container(
-            width: double.infinity,
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: paddingVerticle),
-            decoration: BoxDecoration(
-                color: bgColor ?? cc.primaryColor,
-                borderRadius: BorderRadius.circular(8)),
-            child: isloading == false
-                ? Text(
-                    ln.getString(title),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  )
-                : OthersHelper().showLoading(Colors.white)),
-      ),
+      child: Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(vertical: paddingVerticle),
+          decoration: BoxDecoration(
+              color: bgColor ?? cc.primaryColor,
+              borderRadius: BorderRadius.circular(8)),
+          child: isloading == false
+              ? Text(
+                  lnProvider.getString(title),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                )
+              : OthersHelper().showLoading(Colors.white)),
     );
   }
 
@@ -99,36 +101,32 @@ class CommonHelper {
       {bgColor, double paddingVerticle = 17}) {
     return InkWell(
       onTap: pressed,
-      child: Consumer<AppStringService>(
-        builder: (context, ln, child) => Container(
-            width: double.infinity,
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: paddingVerticle),
-            decoration: BoxDecoration(
-                border: Border.all(color: bgColor ?? cc.primaryColor),
-                borderRadius: BorderRadius.circular(8)),
-            child: Text(
-              ln.getString(title),
-              style: TextStyle(
-                color: bgColor ?? cc.primaryColor,
-                fontSize: 14,
-              ),
-            )),
-      ),
+      child: Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(vertical: paddingVerticle),
+          decoration: BoxDecoration(
+              border: Border.all(color: bgColor ?? cc.primaryColor),
+              borderRadius: BorderRadius.circular(8)),
+          child: Text(
+            title,
+            style: TextStyle(
+              color: bgColor ?? cc.primaryColor,
+              fontSize: 14,
+            ),
+          )),
     );
   }
 
-  labelCommon(String title) {
-    return Consumer<AppStringService>(
-      builder: (context, ln, child) => Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        child: Text(
-          ln.getString(title),
-          style: TextStyle(
-            color: cc.greyThree,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+  labelCommon(String title, {margin}) {
+    return Container(
+      margin: margin ?? const EdgeInsets.only(bottom: 15),
+      child: Text(
+        lnProvider.getString(title),
+        style: TextStyle(
+          color: cc.greyThree,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -140,7 +138,7 @@ class CommonHelper {
     color,
     textAlign = TextAlign.left,
   }) {
-    return Text(
+    return AutoSizeText(
       title,
       textAlign: textAlign,
       style: TextStyle(
@@ -154,7 +152,7 @@ class CommonHelper {
 
   titleCommon(String title, {double fontsize = 18, color, lineheight = 1.3}) {
     return Text(
-      title,
+      lnProvider.getString(title),
       style: TextStyle(
           color: color ?? cc.greyPrimary,
           fontSize: fontsize,
@@ -189,7 +187,7 @@ class CommonHelper {
       child: CachedNetworkImage(
         imageUrl: imageLink,
         placeholder: (context, url) {
-          return Image.asset('assets/images/placeholder.png');
+          return Image.asset('assets/images/loading_image.png');
         },
         height: height,
         width: width,
@@ -215,7 +213,7 @@ class CommonHelper {
               height: 7,
             ),
             Text(
-              title,
+              lnProvider.getString(title),
               style: TextStyle(color: cc.greyFour),
             ),
           ],

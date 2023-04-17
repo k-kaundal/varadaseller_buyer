@@ -9,18 +9,19 @@ import 'package:qixer/service/db/db_service.dart';
 import 'package:qixer/service/home_services/category_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class AllServicesService with ChangeNotifier {
   bool isLoading = true;
 
-  var categoryDropdownList = ['Select Category'];
+  var categoryDropdownList = [lnProvider.getString('Select Category')];
   var categoryDropdownIndexList = [0];
-  var selectedCategory = 'Select Category';
+  var selectedCategory = lnProvider.getString('Select Category');
   var selectedCategoryId = 0;
 
-  var subcatDropdownList = ['Select Subcategory'];
+  var subcatDropdownList = [lnProvider.getString('Select Subcategory')];
   var subcatDropdownIndexList = [0];
-  var selectedSubcat = 'Select Subcategory';
+  var selectedSubcat = lnProvider.getString('Select Subcategory');
   var selectedSubcatId = 0;
 
   var ratingDropdownList = [
@@ -106,9 +107,9 @@ class AllServicesService with ChangeNotifier {
   }
 
   defaultSubcategory() {
-    subcatDropdownList = ['Select Subcategory'];
+    subcatDropdownList = [lnProvider.getString('Select Subcategory')];
     subcatDropdownIndexList = [0];
-    selectedSubcat = 'Select Subcategory';
+    selectedSubcat = lnProvider.getString('Select Subcategory');
     selectedSubcatId = 0;
     notifyListeners();
   }
@@ -246,6 +247,7 @@ class AllServicesService with ChangeNotifier {
     // });
     var connection = await checkConnection();
     if (connection) {
+      setLoadingTrue();
       //if connection is ok
       var response = await http.get(Uri.parse(
           "$baseApi/service-list/category-subcategory-rating-sort-by-search/?cat=$selectedCategoryId&subcat=$selectedSubcatId&rating=$selectedRatingId&sortby=$selectedSortbyId&page=$currentPage"));
@@ -296,8 +298,10 @@ class AllServicesService with ChangeNotifier {
 
         currentPage++;
         setCurrentPage(currentPage);
+        setLoadingFalse();
         return true;
       } else {
+        setLoadingFalse();
         return false;
       }
     }

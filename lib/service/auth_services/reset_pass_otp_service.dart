@@ -19,7 +19,7 @@ class ResetPasswordOtpService {
           ),
         );
       } else {
-        OthersHelper().showToast('Otp didn\'t match', Colors.black);
+        OthersHelper().showToast("Otp didn't match", Colors.black);
       }
     } else {
       OthersHelper().showToast('Something went wrong', Colors.black);

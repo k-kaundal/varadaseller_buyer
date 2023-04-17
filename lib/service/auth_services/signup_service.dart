@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/auth_services/email_verify_service.dart';
-import 'package:qixer/service/auth_services/login_service.dart';
 import 'package:qixer/service/common_service.dart';
-import 'package:qixer/service/country_states_service.dart';
+import 'package:qixer/service/dropdowns_services/area_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/country_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/state_dropdown_services.dart';
 import 'package:qixer/view/auth/signup/components/email_verify_page.dart';
-import 'package:qixer/view/home/landing_page.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -17,7 +17,7 @@ class SignupService with ChangeNotifier {
   bool isloading = false;
 
   String phoneNumber = '0';
-  String countryCode = 'IN';
+  String countryCode = 'BD';
 
   setPhone(value) {
     phoneNumber = value;
@@ -74,13 +74,13 @@ class SignupService with ChangeNotifier {
         'phone': phoneNumber,
         'password': password,
         'service_city':
-            Provider.of<CountryStatesService>(context, listen: false)
+            Provider.of<StateDropdownService>(context, listen: false)
                 .selectedStateId,
-        'service_area':
-            Provider.of<CountryStatesService>(context, listen: false)
-                .selectedAreaId,
-        'country_id': Provider.of<CountryStatesService>(context, listen: false)
-            .selectedCountryId,
+        'service_area': Provider.of<AreaDropdownService>(context, listen: false)
+            .selectedAreaId,
+        'country_id':
+            Provider.of<CountryDropdownService>(context, listen: false)
+                .selectedCountryId,
         'terms_conditions': 1,
         'country_code': countryCode
       });
@@ -108,7 +108,7 @@ class SignupService with ChangeNotifier {
         String token = jsonDecode(response.body)['token'];
         int userId = jsonDecode(response.body)['users']['id'];
         String state = jsonDecode(response.body)['users']['state'].toString();
-        String country_id =
+        String countryId =
             jsonDecode(response.body)['users']['country_id'].toString();
 
         //Send otp
@@ -126,7 +126,7 @@ class SignupService with ChangeNotifier {
                 token: token,
                 userId: userId,
                 state: state,
-                countryId: country_id,
+                countryId: countryId,
               ),
             ),
           );

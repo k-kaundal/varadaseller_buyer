@@ -60,7 +60,7 @@ class Service {
   List<ServiceInclude> serviceInclude;
   List<ServiceBenifit> serviceBenifit;
   SellerForMobile sellerForMobile;
-  ServiceCity serviceCity;
+  ServiceCity? serviceCity;
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
         id: json["id"],
@@ -79,7 +79,9 @@ class Service {
         serviceBenifit: List<ServiceBenifit>.from(
             json["service_benifit"].map((x) => ServiceBenifit.fromJson(x))),
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
-        serviceCity: ServiceCity.fromJson(json["service_city"]),
+        serviceCity: json["service_city"] == null
+            ? null
+            : ServiceCity.fromJson(json["service_city"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -98,7 +100,7 @@ class Service {
         "service_benifit":
             List<dynamic>.from(serviceBenifit.map((x) => x.toJson())),
         "seller_for_mobile": sellerForMobile.toJson(),
-        "service_city": serviceCity.toJson(),
+        "service_city": serviceCity?.toJson(),
       };
 }
 

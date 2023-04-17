@@ -4,8 +4,6 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:qixer/service/app_string_service.dart';
-import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/service/home_services/category_service.dart';
 import 'package:qixer/service/home_services/recent_services_service.dart';
 import 'package:qixer/service/home_services/slider_service.dart';
@@ -51,14 +49,14 @@ getDate(value) {
   return d;
 }
 
-getMonthAndDate(value) {
-  final f = DateFormat("MMMM dd");
+getMonthAndDate(value, local) {
+  final f = DateFormat("MMMM dd", local);
   var d = f.format(value);
   return d;
 }
 
-firstThreeLetter(value) {
-  var weekDayName = DateFormat('EEEE').format(value).toString();
+firstThreeLetter(value, local) {
+  var weekDayName = DateFormat('EEEE', local).format(value).toString();
   return weekDayName.substring(0, 3);
 }
 
@@ -78,14 +76,14 @@ removeDollar(value) {
   return value.replaceAll(RegExp('[^0-9.]'), '');
 }
 
-runAtstart(BuildContext context) {
+runAtstart(BuildContext context) async {
   Provider.of<RtlService>(context, listen: false).fetchCurrency();
   //language direction (ltr or rtl)
-  Provider.of<RtlService>(context, listen: false).fetchDirection();
+  await Provider.of<RtlService>(context, listen: false).fetchDirection(context);
 
 //fetch translated strings
-  Provider.of<AppStringService>(context, listen: false)
-      .fetchTranslatedStrings();
+  // Provider.of<AppStringService>(context, listen: false)
+  //     .fetchTranslatedStrings();
 }
 
 runAtHome(BuildContext context) async {
@@ -98,8 +96,8 @@ runAtHome(BuildContext context) async {
   Provider.of<RecentJobsService>(context, listen: false)
       .fetchRecentJobs(context);
   Provider.of<ProfileService>(context, listen: false).getProfileDetails();
-  Provider.of<CountryStatesService>(context, listen: false)
-      .fetchCountries(context);
+  // Provider.of<CountryStatesService>(context, listen: false)
+  //     .fetchCountries(context);
 
   Provider.of<PermissionsService>(context, listen: false)
       .fetchUserPermissions(context);

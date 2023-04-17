@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/reset_password_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 import '../../utils/constant_colors.dart';
@@ -39,7 +38,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
     return Scaffold(
-      appBar: CommonHelper().appbarCommon(ConstString.changePass, context, () {
+      appBar: CommonHelper().appbarCommon('Change password', context, () {
         Navigator.pop(context);
       }),
       backgroundColor: Colors.white,
@@ -53,7 +52,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         child: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, ln, child) => Container(
+            builder: (context, asProvider, child) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               height: MediaQuery.of(context).size.height - 120,
               alignment: Alignment.center,
@@ -69,12 +68,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           height: 33,
                         ),
                         CommonHelper().titleCommon(
-                            ln.getString(ConstString.enterNewPass)),
+                            asProvider.getString('Enter new password')),
                         const SizedBox(
                           height: 13,
                         ),
                         CommonHelper().paragraphCommon(
-                          ln.getString(ConstString.newPassDifferent),
+                          asProvider.getString(
+                              'Your new password should be different from previously used passwords'),
                         ),
 
                         const SizedBox(
@@ -83,7 +83,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
                         //New password =========================>
                         CommonHelper().labelCommon(
-                            ln.getString(ConstString.enterNewPass)),
+                            asProvider.getString('Enter new password')),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -97,7 +97,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return ln.getString(ConstString.plzEnterPass);
+                                  return asProvider
+                                      .getString('Please enter your password');
                                 }
                                 return null;
                               },
@@ -152,14 +153,15 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: ln.getString(ConstString.newPass),
+                                  hintText:
+                                      asProvider.getString('New password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
 
                         //Repeat New password =========================>
                         CommonHelper().labelCommon(
-                            ln.getString(ConstString.repeatNewPass)),
+                            asProvider.getString('Repeat new password')),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -173,8 +175,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return ln
-                                      .getString(ConstString.plzRetypePass);
+                                  return asProvider
+                                      .getString('Please retype your password');
                                 }
                                 return null;
                               },
@@ -229,8 +231,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText:
-                                      ln.getString(ConstString.retypeNewPass),
+                                  hintText: asProvider
+                                      .getString('Retype new password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
@@ -242,7 +244,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         Consumer<ResetPasswordService>(
                           builder: (context, provider, child) => CommonHelper()
                               .buttonOrange(
-                                  ln.getString(ConstString.changePass), () {
+                                  asProvider.getString('Change password'), () {
                             if (provider.isloading == false) {
                               if (_formKey.currentState!.validate()) {
                                 provider.resetPassword(

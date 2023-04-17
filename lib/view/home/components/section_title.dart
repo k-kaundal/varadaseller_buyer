@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 
 import '../../utils/constant_colors.dart';
 
@@ -22,10 +21,10 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, ln, child) => Row(
+      builder: (context, asProvider, child) => Row(
         children: [
           Text(
-            ln.getString(title),
+            asProvider.getString(title),
             style: TextStyle(
               color: cc.greyFour,
               fontSize: 17,
@@ -42,7 +41,7 @@ class SectionTitle extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      ln.getString(ConstString.seeAll),
+                      asProvider.getString('See all'),
                       style: TextStyle(
                         color: cc.primaryColor,
                         fontSize: 15,

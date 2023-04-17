@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qixer/view/search/components/search_bar.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 import '../utils/constant_colors.dart';
 
@@ -21,7 +21,8 @@ class SearchBarPageWithDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon(ConstString.search, context, () {
+      appBar: CommonHelper()
+          .appbarCommon(lnProvider.getString('Search'), context, () {
         Navigator.pop(context);
       }),
       body: Listener(

@@ -124,7 +124,7 @@ class Service {
 
   SellerForMobile sellerForMobile;
   List<ReviewsForMobile> reviewsForMobile;
-  ServiceCityClass serviceCity;
+  ServiceCityClass? serviceCity;
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
         id: json["id"],
@@ -152,7 +152,9 @@ class Service {
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
         reviewsForMobile: List<ReviewsForMobile>.from(json["reviews_for_mobile"]
             .map((x) => ReviewsForMobile.fromJson(x))),
-        serviceCity: ServiceCityClass.fromJson(json["service_city"]),
+        serviceCity: json["service_city"] == null
+            ? null
+            : ServiceCityClass.fromJson(json["service_city"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -181,7 +183,7 @@ class Service {
         "seller_for_mobile": sellerForMobile.toJson(),
         "reviews_for_mobile":
             List<dynamic>.from(reviewsForMobile.map((x) => x.toJson())),
-        "service_city": serviceCity.toJson(),
+        "service_city": serviceCity!.toJson(),
       };
 }
 

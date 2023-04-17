@@ -1,16 +1,15 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
-import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/service/auth_services/signup_service.dart';
+import 'package:qixer/service/dropdowns_services/area_dropdown_service.dart';
+import 'package:qixer/service/dropdowns_services/state_dropdown_services.dart';
 import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
 import 'package:qixer/view/auth/signup/signup_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class SignupCountryStates extends StatefulWidget {
   const SignupCountryStates({
@@ -42,7 +41,7 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
     return Consumer<AppStringService>(
-      builder: (context, ln, child) => Container(
+      builder: (context, asProvider, child) => Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Column(
             children: [
@@ -58,7 +57,8 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
                 title: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    ln.getString(ConstString.iAgreeTerms),
+                    asProvider
+                        .getString("I agree with the terms and conditions"),
                     style: TextStyle(
                         color: ConstantColors().greyFour,
                         fontWeight: FontWeight.w400,
@@ -78,19 +78,20 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
                 height: 17,
               ),
               Consumer<SignupService>(
-                builder: (context, provider, child) =>
-                    CommonHelper().buttonOrange(ConstString.signUp, () {
+                builder: (context, provider, child) => CommonHelper()
+                    .buttonOrange(lnProvider.getString("Sign Up"), () {
                   if (termsAgree == false) {
                     OthersHelper().showToast(
-                        ln.getString(ConstString.registerAgreeTerms),
+                        asProvider.getString(
+                            "You must agree with the terms and conditions to register"),
                         Colors.black);
                   } else {
                     if (provider.isloading == false) {
-                      var selectedStateId = Provider.of<CountryStatesService>(
+                      var selectedStateId = Provider.of<StateDropdownService>(
                               context,
                               listen: false)
                           .selectedStateId;
-                      var selectedAreaId = Provider.of<CountryStatesService>(
+                      var selectedAreaId = Provider.of<AreaDropdownService>(
                               context,
                               listen: false)
                           .selectedAreaId;
@@ -99,7 +100,8 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
                           selectedAreaId == null) {
                         OthersHelper().showSnackBar(
                             context,
-                            ln.getString(ConstString.mustSelectStateArea),
+                            asProvider
+                                .getString("You must select a state and area"),
                             cc.warningColor);
                         return;
                       }

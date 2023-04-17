@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/all_services_service.dart';
-import 'package:qixer/service/country_states_service.dart';
 import 'package:qixer/service/jobs_service/my_jobs_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../dropdowns_services/area_dropdown_service.dart';
+import '../dropdowns_services/country_dropdown_service.dart';
+import '../dropdowns_services/state_dropdown_services.dart';
 
 class CreateJobService with ChangeNotifier {
   bool isLoading = false;
@@ -41,12 +44,13 @@ class CreateJobService with ChangeNotifier {
             .selectedSubcatId;
 
     var selectedCountryId =
-        Provider.of<CountryStatesService>(context, listen: false)
+        Provider.of<CountryDropdownService>(context, listen: false)
             .selectedCountryId;
-
     var selectedStateId =
-        Provider.of<CountryStatesService>(context, listen: false)
+        Provider.of<StateDropdownService>(context, listen: false)
             .selectedStateId;
+    var selectedAreaId =
+        Provider.of<AreaDropdownService>(context, listen: false).selectedAreaId;
 
     if (pickedImage == null) {
       OthersHelper()
@@ -89,6 +93,11 @@ class CreateJobService with ChangeNotifier {
     var response = await dio.post(
       '$baseApi/user/job/add-job',
       data: formData,
+      options: Options(
+        validateStatus: (status) {
+          return true;
+        },
+      ),
     );
 
     setLoadingStatus(false);

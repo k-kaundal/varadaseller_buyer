@@ -37,11 +37,14 @@ class ServiceDetailsService with ChangeNotifier {
         // "Content-Type": "application/json"
       };
 
+      print('$baseApi/service-details/$serviceId');
+
       var response = await http.get(
           Uri.parse('$baseApi/service-details/$serviceId'),
           headers: header);
 
       print(response.body);
+      print(response.statusCode);
       if (response.statusCode == 201) {
         // serviceAllDetails =
         //     ServiceDetailsModel.fromJson(jsonDecode(response.body));
@@ -56,8 +59,9 @@ class ServiceDetailsService with ChangeNotifier {
         notifyListeners();
         setLoadingFalse();
       } else {
-        serviceAllDetails == 'error';
+        serviceAllDetails = 'error';
 
+        print(serviceAllDetails);
         setLoadingFalse();
         OthersHelper().showToast('Something went wrong', Colors.black);
         notifyListeners();

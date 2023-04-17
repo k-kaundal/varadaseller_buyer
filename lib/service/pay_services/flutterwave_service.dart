@@ -9,11 +9,18 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/profile_service.dart';
-import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/service/wallet_service.dart';
 import 'package:uuid/uuid.dart';
 
+import '../rtl_service.dart';
+
 class FlutterwaveService {
+  // String phone = '35435413513513';
+  // String email = 'test@test.com';
+
+  String currency = 'EUR';
+  // String amount = '200';
+
   payByFlutterwave(BuildContext context,
       {bool isFromOrderExtraAccept = false,
       bool isFromWalletDeposite = false,
@@ -85,9 +92,7 @@ class FlutterwaveService {
                 .publicKey ??
             '';
 
-    String currencyCode = 'USD';
-    currencyCode = Provider.of<RtlService>(context, listen: false).currencyCode;
-
+    final currency = Provider.of<RtlService>(context, listen: false).currency;
     final style = FlutterwaveStyle(
       appBarText: "Flutterwave payment",
       buttonColor: Colors.blue,
@@ -109,7 +114,7 @@ class FlutterwaveService {
           const TextStyle(color: Colors.black, fontSize: 17, letterSpacing: 2),
       dialogBackgroundColor: Colors.white,
       appBarIcon: const Icon(Icons.arrow_back, color: Colors.white),
-      buttonText: "Pay \$ $amount",
+      buttonText: "Pay $currency$amount",
       appBarTitleTextStyle: const TextStyle(
         color: Colors.white,
         fontSize: 18,
@@ -130,6 +135,8 @@ class FlutterwaveService {
     //       transactionPercentage: 50)
     // ];
 
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
     final Flutterwave flutterwave = Flutterwave(
         context: context,
         style: style,
@@ -163,6 +170,8 @@ class FlutterwaveService {
       }
       // print("${response.toJson()}");
     } else {
+      Provider.of<PlaceOrderService>(context, listen: false)
+          .doNext(context, 'failed', paymentFailed: true);
       //User cancelled the payment
       // showLoading("No Response!");
     }

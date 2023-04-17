@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,9 +14,9 @@ class ImageBigPreviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('network image $networkImgLink');
-    GlobalKey<ScaffoldState> bigPagekey = GlobalKey<ScaffoldState>();
+    GlobalKey<ScaffoldState> _bigPagekey = GlobalKey<ScaffoldState>();
     return Scaffold(
-      key: bigPagekey,
+      key: _bigPagekey,
       // appBar: AppBar(),
       body: Stack(
         children: [
@@ -30,7 +28,7 @@ class ImageBigPreviewPage extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: networkImgLink,
                     placeholder: (context, url) {
-                      return Image.asset('assets/images/placeholder.png');
+                      return Image.asset('assets/images/loading_image.png');
                     },
                     height: screenHeight - 150,
                     width: screenWidth,

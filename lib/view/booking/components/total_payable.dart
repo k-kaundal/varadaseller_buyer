@@ -8,7 +8,6 @@ import 'package:qixer/service/booking_services/personalization_service.dart';
 import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class TotalPayable extends StatelessWidget {
@@ -52,7 +51,7 @@ class TotalPayable extends StatelessWidget {
                       }
 
                       return BookingHelper().detailsPanelRow(
-                          ln.getString(ConstString.totalPayable), 0, price);
+                          ln.getString('Total Payable'), 0, price);
                     },
                   )),
         ),

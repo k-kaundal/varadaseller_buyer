@@ -6,7 +6,6 @@ import 'package:qixer/service/orders_service.dart';
 import 'package:qixer/view/tabs/orders/components/decline_order_page.dart';
 import 'package:qixer/view/tabs/orders/orders_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
@@ -19,7 +18,7 @@ class CompleteRequest extends StatelessWidget {
   Widget build(BuildContext context) {
     final cc = ConstantColors();
     return Consumer<AppStringService>(
-      builder: (context, ln, child) => Consumer<OrderDetailsService>(
+      builder: (context, asProvider, child) => Consumer<OrderDetailsService>(
         builder: (context, provider, child) => Consumer<OrdersService>(
           builder: (context, oProvider, child) => provider
                       .orderDetails.orderCompleteRequest !=
@@ -43,7 +42,7 @@ class CompleteRequest extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonHelper().titleCommon(
-                                ln.getString(ConstString.completeReq)),
+                                asProvider.getString('Complete Request')),
                             const SizedBox(
                               height: 15,
                             ),
@@ -52,14 +51,14 @@ class CompleteRequest extends StatelessWidget {
                             //==========>
                             if (provider.orderDetails.orderCompleteRequest == 3)
                               OrdersHelper().statusCapsule(
-                                  ln.getString(ConstString.declined),
+                                  asProvider.getString('Declined'),
                                   cc.warningColor),
 
                             //Completed
                             //==========>
                             if (provider.orderDetails.orderCompleteRequest == 2)
                               OrdersHelper().statusCapsule(
-                                  ln.getString(ConstString.orderCompleted),
+                                  asProvider.getString('Order completed'),
                                   cc.successColor),
 
                             //accept reject button
@@ -69,15 +68,16 @@ class CompleteRequest extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonHelper().paragraphCommon(
-                                      ln.getString(
-                                          ConstString.sellerReqestedToComplete),
+                                      asProvider.getString(
+                                          'Seller requested to mark this order complete'),
                                       fontsize: 16),
                                   sizedBoxCustom(20),
                                   Row(
                                     children: [
                                       Expanded(
                                           child: CommonHelper().buttonOrange(
-                                              ConstString.decline, () {
+                                              asProvider.getString('Decline'),
+                                              () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -96,7 +96,8 @@ class CompleteRequest extends StatelessWidget {
                                       ),
                                       Expanded(
                                           child: CommonHelper().buttonOrange(
-                                              ConstString.accept, () {
+                                              asProvider.getString('Accept'),
+                                              () {
                                         if (oProvider.markLoading) return;
 
                                         oProvider.completeOrder(context,

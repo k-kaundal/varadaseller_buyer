@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,7 +14,6 @@ import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/booking/components/deposite_amount_section.dart';
 import 'package:qixer/view/booking/components/total_payable.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -53,17 +50,17 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
 
     //fetch payment gateway list
     Provider.of<PaymentGatewayListService>(context, listen: false)
-        .fetchGatewayList();
+        .fetchGatewayList(context);
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CommonHelper().appbarCommon(ConstString.payment, context, () {
+        appBar: CommonHelper().appbarCommon('Payment', context, () {
           Navigator.pop(context);
         }),
         body: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, ln, child) => Container(
+            builder: (context, asProvider, child) => Container(
               padding: EdgeInsets.symmetric(horizontal: screenPadding),
               child: Consumer<PaymentGatewayListService>(
                 builder: (context, pgProvider, child) => pgProvider
@@ -97,8 +94,8 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                   child: CommonHelper().dividerCommon(),
                                 ),
 
-                              CommonHelper().titleCommon(
-                                  ln.getString(ConstString.choosePayMethod)),
+                              CommonHelper().titleCommon(asProvider
+                                  .getString('Choose payment method')),
 
                               //payment method card
                               GridView.builder(
@@ -157,7 +154,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                                     ['logo_link'],
                                             placeholder: (context, url) {
                                               return Image.asset(
-                                                  'assets/images/placeholder.png');
+                                                  'assets/images/loading_image.png');
                                             },
                                             // fit: BoxFit.fitWidth,
                                           ),
@@ -190,8 +187,8 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                                     height: 30,
                                                   ),
                                                   CommonHelper().buttonOrange(
-                                                      ln.getString(ConstString
-                                                          .chooseImage), () {
+                                                      asProvider.getString(
+                                                          'Choose image'), () {
                                                     btProvider
                                                         .pickImage(context);
                                                   }),
@@ -230,7 +227,8 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
-                                    ln.getString(ConstString.iAgreeTerms),
+                                    asProvider.getString(
+                                        'I agree with terms and conditions'),
                                     style: TextStyle(
                                         color: ConstantColors().greyFour,
                                         fontWeight: FontWeight.w400,
@@ -252,7 +250,7 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                 height: 20,
                               ),
                               CommonHelper().buttonOrange(
-                                  ln.getString(ConstString.payConfirm),
+                                  asProvider.getString('Pay & Confirm'),
                                   () async {
                                 var w = await Provider.of<WalletService>(
                                         context,
@@ -264,7 +262,8 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
 
                                 if (termsAgree == false) {
                                   OthersHelper().showToast(
-                                      ln.getString(ConstString.mustAgreeTerms),
+                                      asProvider.getString(
+                                          'You must agree with the terms and conditions to place the order'),
                                       Colors.black);
                                   return;
                                 }

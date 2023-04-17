@@ -542,7 +542,7 @@ hireUsingWallet(BuildContext context) async {
   if (double.parse(amount) > double.parse(removeDollar(walletBalance))) {
     Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
     OthersHelper()
-        .showToast('You don\'t have enough wallet balance', Colors.black);
+        .showToast("You don't have enough wallet balance", Colors.black);
     return;
   }
 

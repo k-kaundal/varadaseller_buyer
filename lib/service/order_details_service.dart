@@ -14,6 +14,7 @@ import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/booking/components/order_extra_accept_success_page.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'common_service.dart';
@@ -183,6 +184,11 @@ class OrderDetailsService with ChangeNotifier {
     var response = await dio.post(
       '$baseApi/user/order/extra-service/accept',
       data: formData,
+      options: Options(
+        validateStatus: (status) {
+          return true;
+        },
+      ),
     );
 
     setLoadingStatus(false);
@@ -209,10 +215,14 @@ class OrderDetailsService with ChangeNotifier {
               .userDetails
               .name ??
           '';
+      var orderId = Provider.of<OrderDetailsService>(context, listen: false)
+          .orderDetails
+          .id;
       PushNotificationService().sendNotificationToSeller(context,
           sellerId: sellerId,
-          title: "$username accepted your order extra request",
-          body: '-');
+          title: "$username " +
+              lnProvider.getString("accepted your order extra request"),
+          body: lnProvider.getString("Order Id") + ': $orderId');
 
       return true;
     } else {
@@ -253,10 +263,24 @@ class OrderDetailsService with ChangeNotifier {
           Uri.parse('$baseApi/user/order/extra-service/decline'),
           headers: header,
           body: data);
-
+      print(data);
       if (response.statusCode == 201) {
         await fetchOrderDetails(orderId, context);
         setLoadingStatus(false);
+        var sellerId = Provider.of<OrderDetailsService>(context, listen: false)
+            .orderDetails
+            .sellerDetails
+            .id;
+        var username = Provider.of<ProfileService>(context, listen: false)
+                .profileDetails
+                .userDetails
+                .name ??
+            '';
+        PushNotificationService().sendNotificationToSeller(context,
+            sellerId: sellerId,
+            title: "$username " +
+                lnProvider.getString("declined your order extra request"),
+            body: lnProvider.getString("Order Id") + ': $orderId');
         Navigator.pop(context);
 
         notifyListeners();

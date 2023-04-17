@@ -10,7 +10,7 @@ import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/booking/payment_choose_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class AmountDetails extends StatelessWidget {
   const AmountDetails({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class AmountDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, ln, child) => Consumer<OrderDetailsService>(
+      builder: (context, asProvider, child) => Consumer<OrderDetailsService>(
         builder: (context, provider, child) => Column(
           children: [
             Container(
@@ -30,7 +30,7 @@ class AmountDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonHelper()
-                        .titleCommon(ln.getString(ConstString.amountDetails)),
+                        .titleCommon(asProvider.getString('Amount Details')),
                     const SizedBox(
                       height: 25,
                     ),
@@ -39,50 +39,51 @@ class AmountDetails extends StatelessWidget {
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          ConstString.packageFee,
+                          asProvider.getString('Package fee'),
                           provider.orderDetails.packageFee.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          ConstString.extraService,
+                          asProvider.getString('Extra Service'),
                           provider.orderDetails.extraService.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.subtotal),
+                          asProvider.getString('Sub total'),
                           provider.orderDetails.subTotal.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.tax),
+                          asProvider.getString('Tax'),
                           provider.orderDetails.tax.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.total),
+                          asProvider.getString('Total'),
                           provider.orderDetails.total.toString()),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                         'null',
-                        ln.getString(ConstString.paymentStatus),
-                        provider.orderDetails.paymentStatus,
+                        asProvider.getString('Payment status'),
+                        asProvider
+                            .getString(provider.orderDetails.paymentStatus),
                       ),
                     ),
 
                     Container(
                       child: BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.paymentMethod),
+                          asProvider.getString('Payment method'),
                           removeUnderscore(
                               provider.orderDetails.paymentGateway),
                           lastBorder: false),
@@ -95,8 +96,8 @@ class AmountDetails extends StatelessWidget {
                             "manual_payment")
                       Container(
                         margin: const EdgeInsets.only(top: 20),
-                        child:
-                            CommonHelper().buttonOrange(ConstString.payNow, () {
+                        child: CommonHelper()
+                            .buttonOrange(lnProvider.getString('Pay now'), () {
                           //At first, set the address details
                           Provider.of<BookService>(context, listen: false)
                               .setDeliveryDetailsBasedOnProfile(context);

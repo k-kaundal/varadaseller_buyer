@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'common_service.dart';
@@ -39,7 +41,7 @@ class PaymentGatewayListService with ChangeNotifier {
     notifyListeners();
   }
 
-  Future fetchGatewayList() async {
+  Future fetchGatewayList(BuildContext context) async {
 //TODO if no payment gateway is selected by user.
 //set default public and secret key
 
@@ -76,6 +78,12 @@ class PaymentGatewayListService with ChangeNotifier {
           "name": "wallet",
           "logo_link": "https://i.postimg.cc/y8pMmqF4/wallet.png"
         });
+        try {
+          setSelectedMethodName(paymentList.first?['name']);
+          setKey(paymentList.first?['name'], 0);
+          Provider.of<BookService>(context, listen: false)
+              .setSelectedPayment(paymentList.first?['name']);
+        } catch (e) {}
       } else {
         //something went wrong
         print(response.body);

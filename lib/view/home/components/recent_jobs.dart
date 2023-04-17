@@ -9,9 +9,9 @@ import 'package:qixer/view/home/components/section_title.dart';
 import 'package:qixer/view/jobs/components/my_jobs_card.dart';
 import 'package:qixer/view/jobs/job_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class RecentJobs extends StatelessWidget {
   const RecentJobs({
@@ -24,14 +24,16 @@ class RecentJobs extends StatelessWidget {
 
     return Consumer<RecentJobsService>(
         builder: (context, provider, child) => Consumer<AppStringService>(
-              builder: (context, ln, child) => provider.recentJobs != null
+              builder: (context, asProvider, child) => provider.recentJobs !=
+                          null &&
+                      provider.recentJobs.isNotEmpty
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         sizedBoxCustom(30),
                         SectionTitle(
                           cc: cc,
-                          title: ln.getString(ConstString.recentJobs),
+                          title: lnProvider.getString('Recent jobs'),
                           hasSeeAllBtn: false,
                           pressed: () {},
                         ),
@@ -53,6 +55,10 @@ class RecentJobs extends StatelessWidget {
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () {
+                                    // print(provider.myJobsListMap[i]
+                                    //         ['id']
+                                    //     .toString());
+
                                     Provider.of<MyJobsService>(context,
                                             listen: false)
                                         .setOrderDetailsLoadingStatus(true);
@@ -97,7 +103,7 @@ class RecentJobs extends StatelessWidget {
                                         Row(
                                           children: [
                                             AutoSizeText(
-                                              '${ln.getString(ConstString.startsFrom)}:',
+                                              '${asProvider.getString('Starts from')}:',
                                               textAlign: TextAlign.start,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,

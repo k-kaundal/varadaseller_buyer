@@ -3,13 +3,15 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../view/home/landing_page.dart';
-import '../../view/utils/constant_colors.dart';
 import '../../view/utils/others_helper.dart';
 import '../common_service.dart';
 import 'package:http/http.dart' as http;
+
+import '../push_notification_service.dart';
 
 class GoogleSignInService with ChangeNotifier {
   bool isloading = false;
@@ -49,7 +51,7 @@ class GoogleSignInService with ChangeNotifier {
       // _user.
     } else {
       OthersHelper().showToast(
-          'Didnt get any user info after google sign in. visit google sign in service file',
+          "Didn't get any user info after google sign in. visit google sign in service file",
           Colors.black);
     }
     notifyListeners();
@@ -91,6 +93,11 @@ class GoogleSignInService with ChangeNotifier {
         int userId = jsonDecode(response.body)['users']['id'];
         await saveDetailsAfterSocialLogin(
             email, username, token, userId, isGoogleLogin);
+        await Provider.of<PushNotificationService>(context, listen: false)
+            .fetchPusherCredential();
+        var pusherInstance =
+            Provider.of<PushNotificationService>(context, listen: false)
+                .pusherInstance;
         Navigator.pushReplacement<void, void>(
           context,
           MaterialPageRoute<void>(

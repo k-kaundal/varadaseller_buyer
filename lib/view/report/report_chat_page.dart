@@ -4,12 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/report_services/report_message_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/tabs/settings/supports/image_big_preview.dart';
 import 'package:qixer/view/tabs/settings/supports/support_ticket_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -74,9 +72,12 @@ class _ReportChatPageState extends State<ReportChatPage> {
                       color: cc.greyParagraph,
                     ),
                   ),
+                  const SizedBox(
+                    width: 2,
+                  ),
 
                   const SizedBox(
-                    width: 14,
+                    width: 12,
                   ),
                   Expanded(
                     child: Column(
@@ -246,7 +247,7 @@ class _ReportChatPageState extends State<ReportChatPage> {
                                                             placeholder:
                                                                 (context, url) {
                                                               return Image.asset(
-                                                                  'assets/images/placeholder.png');
+                                                                  'assets/images/loading_image.png');
                                                             },
                                                             height: 150,
                                                             width: screenWidth /
@@ -302,98 +303,93 @@ class _ReportChatPageState extends State<ReportChatPage> {
                   : OthersHelper().showLoading(cc.primaryColor),
 
               //write message section
-              Consumer<AppStringService>(
-                builder: (context, ln, child) => Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 20, bottom: 10, top: 10, right: 10),
-                    height: 60,
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Row(
-                      children: <Widget>[
-                        pickedImage != null
-                            ? Image.file(
-                                File(pickedImage!.path),
-                                height: 40,
-                                width: 40,
-                                fit: BoxFit.cover,
-                              )
-                            : Container(),
-                        const SizedBox(
-                          width: 13,
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                      left: 20, bottom: 10, top: 10, right: 10),
+                  height: 60,
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      pickedImage != null
+                          ? Image.file(
+                              File(pickedImage!.path),
+                              height: 40,
+                              width: 40,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(),
+                      const SizedBox(
+                        width: 13,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          controller: sendMessageController,
+                          decoration: InputDecoration(
+                              hintText:
+                                  lnProvider.getString("Write message") + "...",
+                              hintStyle: const TextStyle(color: Colors.black54),
+                              border: InputBorder.none),
                         ),
-                        Expanded(
-                          child: TextField(
-                            controller: sendMessageController,
-                            decoration: InputDecoration(
-                                hintText:
-                                    "${ln.getString(ConstString.writeMessage)}...",
-                                hintStyle:
-                                    const TextStyle(color: Colors.black54),
-                                border: InputBorder.none),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        //pick image =====>
-                        IconButton(
-                            onPressed: () async {
-                              pickedImage = await provider.pickImage();
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.attachment)),
-
-                        //send message button
-                        const SizedBox(
-                          width: 13,
-                        ),
-                        FloatingActionButton(
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      //pick image =====>
+                      IconButton(
                           onPressed: () async {
-                            if (sendMessageController.text.isNotEmpty) {
-                              //hide keyboard
-                              FocusScope.of(context).unfocus();
-                              //send message
-                              provider.sendMessage(
-                                widget.ticketId,
-                                sendMessageController.text,
-                                pickedImage?.path,
-                              );
-
-                              //clear input field
-                              sendMessageController.clear();
-                              //clear image
-                              setState(() {
-                                pickedImage = null;
-                              });
-                            } else {
-                              OthersHelper().showToast(
-                                  ln.getString(
-                                      ConstString.plzWriteMessageFirst),
-                                  Colors.black);
-                            }
+                            pickedImage = await provider.pickImage();
+                            setState(() {});
                           },
-                          backgroundColor: cc.primaryColor,
-                          elevation: 0,
-                          child: provider.sendLoading == false
-                              ? const Icon(
-                                  Icons.send,
+                          icon: const Icon(Icons.attachment)),
+
+                      //send message button
+                      const SizedBox(
+                        width: 13,
+                      ),
+                      FloatingActionButton(
+                        onPressed: () async {
+                          if (sendMessageController.text.isNotEmpty) {
+                            //hide keyboard
+                            FocusScope.of(context).unfocus();
+                            //send message
+                            provider.sendMessage(
+                              widget.ticketId,
+                              sendMessageController.text,
+                              pickedImage?.path,
+                            );
+
+                            //clear input field
+                            sendMessageController.clear();
+                            //clear image
+                            setState(() {
+                              pickedImage = null;
+                            });
+                          } else {
+                            OthersHelper().showToast(
+                                'Please write a message first', Colors.black);
+                          }
+                        },
+                        child: provider.sendLoading == false
+                            ? const Icon(
+                                Icons.send,
+                                color: Colors.white,
+                                size: 18,
+                              )
+                            : const SizedBox(
+                                height: 14,
+                                width: 14,
+                                child: CircularProgressIndicator(
                                   color: Colors.white,
-                                  size: 18,
-                                )
-                              : const SizedBox(
-                                  height: 14,
-                                  width: 14,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 1.5,
-                                  ),
+                                  strokeWidth: 1.5,
                                 ),
-                        ),
-                      ],
-                    ),
+                              ),
+                        backgroundColor: cc.primaryColor,
+                        elevation: 0,
+                      ),
+                    ],
                   ),
                 ),
               ),

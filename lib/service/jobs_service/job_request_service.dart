@@ -10,12 +10,14 @@ import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/view/home/landing_page.dart';
 import 'package:qixer/view/jobs/components/hire_job_success_page.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class JobRequestService with ChangeNotifier {
   List jobReqList = [];
   bool isloading = false;
+  var showJobDescriptionId;
 
   late int totalPages;
 
@@ -34,6 +36,14 @@ class JobRequestService with ChangeNotifier {
 
   setLoadingStatus(bool status) {
     isloading = status;
+    notifyListeners();
+  }
+
+  setShowJobDescriptionId(value) {
+    if (value == showJobDescriptionId) {
+      return;
+    }
+    showJobDescriptionId = value;
     notifyListeners();
   }
 
@@ -79,9 +89,9 @@ class JobRequestService with ChangeNotifier {
           headers: header);
 
       setLoadingStatus(false);
-
+      print("$baseApi/user/job/request/request-lists?page=$currentPage");
       final decodedData = jsonDecode(response.body);
-
+      print(decodedData);
       if (response.statusCode == 201 &&
           decodedData.containsKey('all_job_request') &&
           decodedData['all_job_request']['data'].isNotEmpty) {
@@ -160,18 +170,23 @@ class JobRequestService with ChangeNotifier {
               filename: 'hireJobbankTransfer.jpg')
           : null,
     });
-
+    print('$baseApi/user/job/request/seller-hire/$selectedRequestId');
     var response = await dio.post(
       '$baseApi/user/job/request/seller-hire/$selectedRequestId',
       data: formData,
+      options: Options(
+        validateStatus: (status) {
+          return true;
+        },
+      ),
     );
 
     Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
-
-    print(response.data);
+    print("createHireJobRequest");
     print(response.statusCode);
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    if (response.statusCode == 200 ||
+        response.data.toString().toLowerCase().contains("success")) {
       if (isManualOrCod == true) {
         print('manual or cod ran');
         goToJobSuccessPage(context);
@@ -182,7 +197,17 @@ class JobRequestService with ChangeNotifier {
       return true;
     } else {
       print('error ${response.data}');
-
+      try {
+        final resData = response.data;
+        if (resData['msg'] != null) {
+          OthersHelper()
+              .showToast(lnProvider.getString(resData['msg']), Colors.black);
+          return false;
+        }
+      } catch (e) {
+        print(e);
+        print("json decode failed");
+      }
       OthersHelper().showToast('Something went wrong', Colors.black);
       return false;
     }

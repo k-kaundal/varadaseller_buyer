@@ -1,9 +1,12 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:qixer/service/booking_services/place_order_service.dart';
+import 'package:provider/provider.dart';
 import 'package:qixer/service/pay_services/paypal_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../service/booking_services/place_order_service.dart';
+import '../../service/rtl_service.dart';
 
 class PaypalPayment extends StatefulWidget {
   final Function onFinish;
@@ -66,7 +69,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
           executeUrl = res["executeUrl"];
         });
       } catch (e) {
-        print('exception: $e');
+        print('exception: ' + e.toString());
         final snackBar = SnackBar(
           content: Text(e.toString()),
           duration: const Duration(seconds: 10),
@@ -74,7 +77,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
             label: 'Close',
             onPressed: () {
               // Some code to undo the change.
-              PlaceOrderService().makePaymentFailed(context);
+              Navigator.pop(context);
             },
           ),
         );
@@ -118,6 +121,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
     String addressCountry = 'India';
     String addressState = 'Delhi';
     String addressPhoneNumber = phone;
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
 
     Map<String, dynamic> temp = {
       "intent": "sale",
@@ -126,7 +131,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
         {
           "amount": {
             "total": totalAmount,
-            "currency": defaultCurrency["currency"],
+            "currency": context,
             "details": {
               "subtotal": subTotalAmount,
               "shipping": shippingCost,
@@ -141,7 +146,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
             "items": items,
             if (isEnableShipping && isEnableAddress)
               "shipping_address": {
-                "recipient_name": "$userFirstName $userLastName",
+                "recipient_name": userFirstName + " " + userLastName,
                 "line1": addressStreet,
                 "line2": "",
                 "city": addressCity,
@@ -169,7 +174,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
           backgroundColor: Theme.of(context).colorScheme.background,
           leading: GestureDetector(
             child: const Icon(Icons.arrow_back_ios),
-            onTap: () => PlaceOrderService().makePaymentFailed(context),
+            onTap: () => Provider.of<PlaceOrderService>(context, listen: false)
+                .doNext(context, 'failed', paymentFailed: true),
           ),
         ),
         body: WebView(

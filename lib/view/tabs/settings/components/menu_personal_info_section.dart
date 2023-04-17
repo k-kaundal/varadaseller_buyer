@@ -4,7 +4,6 @@ import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class MenuPersonalInfoSection extends StatelessWidget {
@@ -13,48 +12,48 @@ class MenuPersonalInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStringService>(
-      builder: (context, ln, child) => Consumer<ProfileService>(
+      builder: (context, asProvider, child) => Consumer<ProfileService>(
           builder: (context, profileProvider, child) => Container(
                 padding: EdgeInsets.symmetric(horizontal: screenPadding),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CommonHelper()
-                          .titleCommon(ln.getString(ConstString.personalInfos)),
+                      CommonHelper().titleCommon(
+                          asProvider.getString("Personal information's")),
                       const SizedBox(
                         height: 25,
                       ),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.email),
+                          asProvider.getString("Email"),
                           profileProvider.profileDetails.userDetails.email ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.city),
+                          asProvider.getString("City"),
                           profileProvider.profileDetails.userDetails.city
                                   .serviceCity ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.area),
+                          asProvider.getString("Area"),
                           profileProvider.profileDetails.userDetails.area
                                   .serviceArea ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.country),
+                          asProvider.getString("Country"),
                           profileProvider
                                   .profileDetails.userDetails.country.country ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.postCode),
+                          asProvider.getString("Post Code"),
                           profileProvider.profileDetails.userDetails.postCode ??
                               ''),
                       BookingHelper().bRow(
                           'null',
-                          ln.getString(ConstString.address),
+                          asProvider.getString("Address"),
                           profileProvider.profileDetails.userDetails.address ??
                               '',
                           lastBorder: false),

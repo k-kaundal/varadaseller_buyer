@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, non_constant_identifier_names
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -8,45 +8,34 @@ import 'package:qixer/model/area_dropdown_model.dart';
 import 'package:qixer/model/country_dropdown_model.dart';
 import 'package:qixer/model/states_dropdown_model.dart';
 import 'package:qixer/service/profile_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/others_helper.dart';
-
-var defaultId = '0';
+import 'package:qixer/view/utils/responsive.dart';
 
 class CountryStatesService with ChangeNotifier {
   var countryDropdownList = [];
   var countryDropdownIndexList = [];
-  dynamic selectedCountry = ConstString.selectCountry;
-  dynamic selectedCountryId = defaultId;
+  var selectedCountry;
+  var selectedCountryId;
 
   var statesDropdownList = [];
   var statesDropdownIndexList = [];
-
-  dynamic selectedState = ConstString.selectState;
-  dynamic selectedStateId = defaultId;
+  // var oldStateDropdownList;
+  // var oldStatesDropdownIndexList = [];
+  var selectedState;
+  var selectedStateId;
 
   var areaDropdownList = [];
   var areaDropdownIndexList = [];
-  dynamic selectedArea = ConstString.selectArea;
-  dynamic selectedAreaId = defaultId;
+  var selectedArea;
+  var selectedAreaId;
 
   bool isLoading = false;
 
-  setStateDefault() {
-    statesDropdownList = [];
-    statesDropdownIndexList = [];
-    selectedState = ConstString.selectState;
-    selectedStateId = defaultId;
-    notifyListeners();
-  }
-
-  setAreaDefault() {
-    areaDropdownList = [];
-    areaDropdownIndexList = [];
-    selectedArea = ConstString.selectArea;
-    selectedAreaId = defaultId;
-    notifyListeners();
-  }
+  // setStateAndAreaValueToDefault() {
+  //   statesDropdownList = oldStateDropdownList;
+  //   statesDropdownIndexList = oldStatesDropdownIndexList;
+  //   notifyListeners();
+  // }
 
   setCountryValue(value) {
     selectedCountry = value;
@@ -102,12 +91,12 @@ class CountryStatesService with ChangeNotifier {
             .userDetails
             .country
             .country ??
-        ConstString.selectCountry;
+        lnProvider.getString('Select Country');
     selectedCountryId = Provider.of<ProfileService>(context, listen: false)
             .profileDetails
             .userDetails
             .countryId ??
-        defaultId;
+        '0';
 
     Future.delayed(const Duration(milliseconds: 500), () {
       notifyListeners();
@@ -122,13 +111,13 @@ class CountryStatesService with ChangeNotifier {
             .userDetails
             .city
             .serviceCity ??
-        ConstString.selectState;
+        lnProvider.getString('Select State');
     selectedStateId = Provider.of<ProfileService>(context, listen: false)
             .profileDetails
             .userDetails
             .city
             .id ??
-        defaultId;
+        '0';
     print(statesDropdownList);
     print(statesDropdownIndexList);
     print('selected state $selectedState');
@@ -146,13 +135,13 @@ class CountryStatesService with ChangeNotifier {
             .userDetails
             .area
             .serviceArea ??
-        ConstString.selectArea;
+        lnProvider.getString('Select Area');
     selectedAreaId = Provider.of<ProfileService>(context, listen: false)
             .profileDetails
             .userDetails
             .area
             .id ??
-        defaultId;
+        '0';
     // Future.delayed(const Duration(milliseconds: 500), () {
     //   notifyListeners();
     // });
@@ -178,23 +167,26 @@ class CountryStatesService with ChangeNotifier {
         setCountry(context, data: data);
 
         notifyListeners();
+        fetchStates(selectedCountryId, context);
       } else {
         //error fetching data
-        countryDropdownList.add(ConstString.selectCountry);
-        countryDropdownIndexList.add(defaultId);
-        selectedCountry = ConstString.selectState;
-        selectedCountryId = defaultId;
+        countryDropdownList.add(lnProvider.getString('Select Country'));
+        countryDropdownIndexList.add('0');
+        selectedCountry = lnProvider.getString('Select Country');
+        selectedCountryId = '0';
+        fetchStates(selectedCountryId, context);
         notifyListeners();
       }
     } else {
       //country list already loaded from api
       setCountry(context);
+      fetchStates(selectedCountryId, context);
       // set_State(context);
       // setArea(context);
     }
   }
 
-  Future<bool> fetchStates(BuildContext context) async {
+  Future<bool> fetchStates(countryId, BuildContext context) async {
     //make states list empty first
     statesDropdownList = [];
     statesDropdownIndexList = [];
@@ -202,8 +194,8 @@ class CountryStatesService with ChangeNotifier {
       notifyListeners();
     });
 
-    var response = await http
-        .get(Uri.parse('$baseApi/country/service-city/$selectedCountryId'));
+    var response =
+        await http.get(Uri.parse('$baseApi/country/service-city/$countryId'));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = StatesDropdownModel.fromJson(jsonDecode(response.body));
@@ -218,28 +210,28 @@ class CountryStatesService with ChangeNotifier {
 
       set_State(context, data: data);
       notifyListeners();
+      fetchArea(countryId, selectedStateId, context);
       return true;
     } else {
+      fetchArea(countryId, selectedStateId, context);
       //error fetching data
-      statesDropdownList.add(ConstString.selectState);
-      statesDropdownIndexList.add(defaultId);
-      selectedState = ConstString.selectState;
-      selectedStateId = defaultId;
+      statesDropdownList.add(lnProvider.getString('Select State'));
+      statesDropdownIndexList.add('0');
+      selectedState = lnProvider.getString('Select State');
+      selectedStateId = '0';
       notifyListeners();
       return false;
     }
   }
 
-  fetchArea(BuildContext context) async {
+  fetchArea(countryId, stateId, BuildContext context) async {
     //make states list empty first
     areaDropdownList = [];
     areaDropdownIndexList = [];
-    Future.delayed(const Duration(milliseconds: 500), () {
-      notifyListeners();
-    });
+    notifyListeners();
 
     var response = await http.get(Uri.parse(
-        '$baseApi/country/service-city/service-area/$selectedCountryId/$selectedStateId'));
+        '$baseApi/country/service-city/service-area/$countryId/$stateId'));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = AreaDropdownModel.fromJson(jsonDecode(response.body));
@@ -251,10 +243,10 @@ class CountryStatesService with ChangeNotifier {
       setArea(context, data: data);
       notifyListeners();
     } else {
-      areaDropdownList.add(ConstString.selectArea);
-      areaDropdownIndexList.add(defaultId);
-      selectedArea = ConstString.selectArea;
-      selectedAreaId = defaultId;
+      areaDropdownList.add(lnProvider.getString('Select Area'));
+      areaDropdownIndexList.add('0');
+      selectedArea = lnProvider.getString('Select Area');
+      selectedAreaId = '0';
       notifyListeners();
     }
   }

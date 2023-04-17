@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/reset_password_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 
 import '../../utils/constant_colors.dart';
 import '../../utils/custom_input.dart';
@@ -26,7 +25,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
     return Scaffold(
-      appBar: CommonHelper().appbarCommon(ConstString.resetPass, context, () {
+      appBar: CommonHelper().appbarCommon('Reset password', context, () {
         Navigator.pop(context);
       }),
       backgroundColor: Colors.white,
@@ -39,7 +38,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
         },
         child: SingleChildScrollView(
           child: Consumer<AppStringService>(
-            builder: (context, ln, child) => Container(
+            builder: (context, asProvider, child) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               height: MediaQuery.of(context).size.height - 120,
               alignment: Alignment.center,
@@ -55,7 +54,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                           height: 33,
                         ),
                         Text(
-                          ln.getString(ConstString.resetPass),
+                          asProvider.getString("Reset password"),
                           style: TextStyle(
                               color: cc.greyPrimary,
                               fontSize: 18,
@@ -65,7 +64,8 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                           height: 13,
                         ),
                         CommonHelper().paragraphCommon(
-                          ln.getString(ConstString.enterEmailToGetInstruction),
+                          asProvider.getString(
+                              "Enter the email you used to create account and we'll send instruction for resetting password"),
                         ),
 
                         const SizedBox(
@@ -74,18 +74,19 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
 
                         //Name ============>
                         CommonHelper().labelCommon(
-                          ConstString.enterEmail,
+                          asProvider.getString("Enter Email"),
                         ),
 
                         CustomInput(
                           controller: emailController,
                           validation: (value) {
                             if (value == null || value.isEmpty) {
-                              return ln.getString(ConstString.plzEnterEmail);
+                              return asProvider
+                                  .getString("Please enter your email");
                             }
                             return null;
                           },
-                          hintText: ln.getString(ConstString.email),
+                          hintText: "Email",
                           icon: 'assets/icons/email.png',
                           textInputAction: TextInputAction.next,
                         ),
@@ -97,7 +98,7 @@ class _ResetPassEmailPageState extends State<ResetPassEmailPage> {
                         Consumer<ResetPasswordService>(
                           builder: (context, provider, child) => CommonHelper()
                               .buttonOrange(
-                                  ln.getString(ConstString.sendInstructions),
+                                  asProvider.getString("Send Instructions"),
                                   () {
                             if (provider.isloading == false) {
                               if (_formKey.currentState!.validate()) {

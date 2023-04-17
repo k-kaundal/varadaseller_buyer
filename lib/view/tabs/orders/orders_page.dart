@@ -1,17 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/my_orders_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 
 import 'package:qixer/view/tabs/orders/order_details_page.dart';
+import 'package:qixer/view/tabs/orders/order_sort.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 import 'orders_helper.dart';
 
@@ -26,43 +27,69 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<MyOrdersService>(context, listen: false).fetchMyOrders();
   }
 
+  final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
+    controller.addListener(() {
+      scrollListener(context);
+    });
 
     return Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            physics: physicsCommon,
-            child: Consumer<MyOrdersService>(
-              builder: (context, provider, child) => Consumer<AppStringService>(
-                builder: (context, ln, child) => Container(
-                  padding: EdgeInsets.symmetric(horizontal: screenPadding),
-                  child: provider.isLoading == false
-                      ? provider.myServices != 'error'
-                          ? provider.myServices.isNotEmpty
-                              ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                      const SizedBox(
-                                        height: 25,
-                                      ),
-                                      CommonHelper().titleCommon(
-                                          ln.getString(ConstString.myOrders)),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-
-                                      ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemCount: provider.myServices.length,
-                                          itemBuilder: ((context, i) => InkWell(
+        body: FutureBuilder(
+            future: Provider.of<MyOrdersService>(context, listen: false)
+                .fetchMyOrders(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.height - 120,
+                    child: OthersHelper().showLoading(cc.primaryColor));
+              }
+              return Consumer<MyOrdersService>(
+                builder: (context, provider, child) => Container(
+                    padding: EdgeInsets.symmetric(horizontal: screenPadding),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 25),
+                          CommonHelper()
+                              .titleCommon(lnProvider.getString('My Orders')),
+                          const SizedBox(height: 10),
+                          const OrderSort(),
+                          // for (int i = 0;
+                          //     i < provider.myServices.length;
+                          //     i++)
+                          Expanded(
+                            child: !provider.isLoading
+                                ? provider.myServices != 'error'
+                                    ? provider.myServices.isNotEmpty
+                                        ? ListView.separated(
+                                            shrinkWrap: true,
+                                            physics: physicsCommon,
+                                            itemCount: provider.nextPageUrl !=
+                                                    null
+                                                ? provider.myServices.length + 1
+                                                : provider.myServices.length,
+                                            controller: controller,
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const SizedBox(height: 16),
+                                            itemBuilder: ((context, i) {
+                                              if (i ==
+                                                  provider.myServices.length) {
+                                                return SizedBox(
+                                                  height: 40,
+                                                  child: Center(
+                                                      child: OthersHelper()
+                                                          .showLoading(
+                                                              cc.primaryColor)),
+                                                );
+                                              }
+                                              return InkWell(
                                                 onTap: () {
                                                   Navigator.push(
                                                       context,
@@ -79,10 +106,6 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 },
                                                 child: Container(
                                                   alignment: Alignment.center,
-                                                  margin: const EdgeInsets.only(
-                                                    top: 20,
-                                                    bottom: 10,
-                                                  ),
                                                   decoration: BoxDecoration(
                                                       border: Border.all(
                                                           color:
@@ -114,11 +137,11 @@ class _OrdersPageState extends State<OrdersPage> {
                                                           Row(
                                                             children: [
                                                               OrdersHelper().statusCapsule(
-                                                                  OrderDetailsService()
+                                                                  lnProvider.getString(OrderDetailsService()
                                                                       .getOrderStatus(provider
                                                                           .myServices[
                                                                               i]
-                                                                          .status),
+                                                                          .status)),
                                                                   cc.greyFour),
 
                                                               //popup button
@@ -145,7 +168,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                                           if (j == 1 &&
                                                                               (provider.myServices[i].paymentStatus == 'complete' || provider.myServices[i].status != 0)) {
                                                                             //0 means pending
-                                                                            OthersHelper().showToast(ln.getString(ConstString.cannotCancel),
+                                                                            OthersHelper().showToast('You can not cancel this order',
                                                                                 Colors.black);
                                                                             return;
                                                                           }
@@ -157,8 +180,8 @@ class _OrdersPageState extends State<OrdersPage> {
                                                                         });
                                                                       },
                                                                       child: Text(
-                                                                          ln.getString(
-                                                                              OrdersHelper().ordersPopupMenuList[j])),
+                                                                          lnProvider
+                                                                              .getString(OrdersHelper().ordersPopupMenuList[j])),
                                                                     ),
                                                                 ],
                                                               )
@@ -192,13 +215,18 @@ class _OrdersPageState extends State<OrdersPage> {
                                                                 OrdersHelper()
                                                                     .orderRow(
                                                                   'assets/svg/calendar.svg',
-                                                                  ln.getString(
-                                                                      ConstString
-                                                                          .date),
-                                                                  provider
-                                                                      .myServices[
-                                                                          i]
-                                                                      .date,
+                                                                  'Date',
+                                                                  provider.myServices[i].date ==
+                                                                          null
+                                                                      ? lnProvider
+                                                                          .getString(
+                                                                              "No date found")
+                                                                      : DateFormat.MMMMEEEEd(rtlProvider.langSlug.substring(
+                                                                              0,
+                                                                              2))
+                                                                          .format(provider
+                                                                              .myServices[i]
+                                                                              .date),
                                                                 ),
                                                                 Container(
                                                                   margin: const EdgeInsets
@@ -227,13 +255,11 @@ class _OrdersPageState extends State<OrdersPage> {
                                                                 OrdersHelper()
                                                                     .orderRow(
                                                                   'assets/svg/clock.svg',
-                                                                  ln.getString(
-                                                                      ConstString
-                                                                          .schedule),
-                                                                  provider
+                                                                  'Schedule',
+                                                                  lnProvider.getString(provider
                                                                       .myServices[
                                                                           i]
-                                                                      .schedule,
+                                                                      .schedule),
                                                                 ),
                                                                 Container(
                                                                   margin: const EdgeInsets
@@ -259,9 +285,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                             OrdersHelper()
                                                                 .orderRow(
                                                           'assets/svg/bill.svg',
-                                                          ln.getString(
-                                                              ConstString
-                                                                  .billed),
+                                                          'Billed',
                                                           rtlP.currencyDirection ==
                                                                   'left'
                                                               ? '${rtlP.currency}${provider.myServices[i].total.toStringAsFixed(2)}'
@@ -271,22 +295,38 @@ class _OrdersPageState extends State<OrdersPage> {
                                                     )
                                                   ]),
                                                 ),
-                                              )))
+                                              );
+                                            }))
+                                        : CommonHelper().nothingfound(
+                                            context, "No active order")
+                                    : CommonHelper().nothingfound(
+                                        context, "No active order")
+                                : Container(
+                                    alignment: Alignment.center,
+                                    height: MediaQuery.of(context).size.height -
+                                        200,
+                                    child: OthersHelper()
+                                        .showLoading(cc.primaryColor)),
+                          ),
 
-                                      //
-                                    ])
-                              : CommonHelper().nothingfound(context,
-                                  ln.getString(ConstString.noActiveOrder))
-                          : CommonHelper().nothingfound(
-                              context, ln.getString(ConstString.noActiveOrder))
-                      : Container(
-                          alignment: Alignment.center,
-                          height: MediaQuery.of(context).size.height - 120,
-                          child: OthersHelper().showLoading(cc.primaryColor)),
-                ),
-              ),
-            ),
-          ),
-        ));
+                          //
+                        ])),
+              );
+            }));
+  }
+
+  scrollListener(BuildContext context) async {
+    final moProvider = Provider.of<MyOrdersService>(context, listen: false);
+    if (controller.offset >= controller.position.maxScrollExtent &&
+        !controller.position.outOfRange) {
+      if (moProvider.nextPageUrl == null) {
+        return;
+      }
+      if (moProvider.nextPageUrl != null && !moProvider.isLoadingNextPage) {
+        print('fetching next page orders');
+        await moProvider.fetchNextOrders();
+        return;
+      }
+    }
   }
 }

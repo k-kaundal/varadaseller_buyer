@@ -1,16 +1,14 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pusher_beams/pusher_beams.dart';
-import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
+import 'package:qixer/service/searchbar_with_dropdown_service.dart';
 import 'package:qixer/view/home/home.dart';
 import 'package:qixer/view/notification/push_notification_helper.dart';
 import 'package:qixer/view/tabs/saved_item_page.dart';
 import 'package:qixer/view/tabs/search/search_tab.dart';
 import 'package:qixer/view/tabs/settings/menu_page.dart';
-import 'package:qixer/view/utils/const_strings.dart';
+import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import '../tabs/orders/orders_page.dart';
@@ -27,19 +25,28 @@ class LandingPage extends StatefulWidget {
 class _HomePageState extends State<LandingPage> {
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     initPusherBeams(context);
+    setChatSellerId(null);
   }
 
   DateTime? currentBackPressTime;
 
   void onTabTapped(int index) {
+    if (index == 3) {
+      Provider.of<SearchBarWithDropdownService>(context, listen: false)
+          .resetSearchParams();
+      Provider.of<SearchBarWithDropdownService>(context, listen: false)
+          .fetchService(context);
+    }
     setState(() {
       _currentIndex = index;
     });
   }
 
   int _currentIndex = 0;
+  //Bottom nav pages
   final List<Widget> _children = [
     const Homepage(),
     const OrdersPage(),
@@ -78,16 +85,17 @@ class _HomePageState extends State<LandingPage> {
   }
 
   void _onMessageReceivedInTheForeground(Map<Object?, Object?> data) {
-    print('notification received');
+    Map metaData = data["data"] is Map ? data["data"] as Map : {};
+    if (metaData["type"] == "message" &&
+        metaData["sender-id"] == chatSellerId) {
+      return;
+    }
     PushNotificationHelper().notificationAlert(
         context, data["title"].toString(), data["body"].toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    var pressAgainTxt = Provider.of<AppStringService>(context, listen: false)
-        .getString(ConstString.pressAgainToExit);
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: WillPopScope(
@@ -97,7 +105,7 @@ class _HomePageState extends State<LandingPage> {
                 now.difference(currentBackPressTime!) >
                     const Duration(seconds: 2)) {
               currentBackPressTime = now;
-              OthersHelper().showToast(pressAgainTxt, Colors.black);
+              OthersHelper().showToast("Press again to exit", Colors.black);
               return Future.value(false);
             }
             return Future.value(true);

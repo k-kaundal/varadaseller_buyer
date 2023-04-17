@@ -138,6 +138,11 @@ class SupportMessagesService with ChangeNotifier {
       var response = await dio.post(
         '$baseApi/user/ticket/message-send',
         data: formData,
+        options: Options(
+          validateStatus: (status) {
+            return true;
+          },
+        ),
       );
       setSendLoadingFalse();
 

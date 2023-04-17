@@ -11,9 +11,9 @@ import 'package:qixer/view/auth/signup/signup_helper.dart';
 import 'package:qixer/view/booking/book_confirmation_page.dart';
 import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 import '../../service/book_steps_service.dart';
 import '../utils/custom_input.dart';
@@ -104,9 +104,10 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
           // resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,
           appBar: CommonHelper()
-              .appbarForBookingPages(ConstString.address, context),
+              .appbarForBookingPages(lnProvider.getString('Address'), context),
           body: Consumer<AppStringService>(
-            builder: (context, ln, child) => Consumer<PersonalizationService>(
+            builder: (context, asProvider, child) =>
+                Consumer<PersonalizationService>(
               builder: (context, personalizatioProvider, child) => Column(
                 children: [
                   Expanded(
@@ -125,7 +126,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                   : Container(),
 
                               CommonHelper().titleCommon(
-                                  ln.getString(ConstString.bookInfos)),
+                                  asProvider.getString('Booking Information')),
 
                               const SizedBox(
                                 height: 22,
@@ -138,19 +139,19 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                   children: [
                                     // name ============>
                                     CommonHelper().labelCommon(
-                                        ln.getString(ConstString.name)),
+                                        asProvider.getString('Name')),
 
                                     CustomInput(
                                       controller: userNameController,
                                       validation: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return ln.getString(
-                                              ConstString.plzEnterName);
+                                          return asProvider.getString(
+                                              'Please enter your name');
                                         }
                                         return null;
                                       },
-                                      hintText:
-                                          ln.getString(ConstString.enterName),
+                                      hintText: asProvider
+                                          .getString('Enter your name'),
                                       icon: 'assets/icons/user.png',
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -160,19 +161,19 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
 
                                     //Email ============>
                                     CommonHelper().labelCommon(
-                                        ln.getString(ConstString.email)),
+                                        asProvider.getString('Email')),
 
                                     CustomInput(
                                       controller: emailController,
                                       validation: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return ln.getString(
-                                              ConstString.plzEnterEmail);
+                                          return asProvider.getString(
+                                              'Please enter your email');
                                         }
                                         return null;
                                       },
-                                      hintText:
-                                          ln.getString(ConstString.enterEmail),
+                                      hintText: lnProvider
+                                          .getString("Enter your email"),
                                       icon: 'assets/icons/email-grey.png',
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -182,7 +183,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
 
                                     //Phone number field
                                     CommonHelper().labelCommon(
-                                        ln.getString(ConstString.phone)),
+                                        asProvider.getString('Phone')),
                                     Consumer<RtlService>(
                                       builder: (context, rtlP, child) =>
                                           IntlPhoneField(
@@ -192,12 +193,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                             ? TextAlign.left
                                             : TextAlign.right,
                                         decoration: SignupHelper()
-                                            .phoneFieldDecoration(
-                                                labelText: ln.getString(
-                                                    ConstString.phoneNumber),
-                                                hintText: ln.getString(
-                                                    ConstString
-                                                        .enterPhoneNumber)),
+                                            .phoneFieldDecoration(),
                                         initialCountryCode: countryCode,
                                         onChanged: (phone) {
                                           print(phone.completeNumber);
@@ -214,22 +210,21 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CommonHelper().labelCommon(
-                                                  ln.getString(
-                                                      ConstString.postCode)),
+                                                  asProvider
+                                                      .getString('Post code')),
 
                                               CustomInput(
                                                 controller: postCodeController,
                                                 validation: (value) {
                                                   if (value == null ||
                                                       value.isEmpty) {
-                                                    return ln.getString(
-                                                        ConstString
-                                                            .plzEnterPost);
+                                                    return asProvider.getString(
+                                                        'Please enter post code');
                                                   }
                                                   return null;
                                                 },
-                                                hintText: ln.getString(
-                                                    ConstString.enterPostCode),
+                                                hintText: asProvider.getString(
+                                                    'Enter your post code'),
                                                 icon:
                                                     'assets/icons/location.png',
                                                 textInputAction:
@@ -243,22 +238,21 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                               ),
 
                                               CommonHelper().labelCommon(
-                                                  ln.getString(
-                                                      ConstString.yourAddress)),
+                                                  asProvider.getString(
+                                                      'Your address')),
 
                                               CustomInput(
                                                 controller: addressController,
                                                 validation: (value) {
                                                   if (value == null ||
                                                       value.isEmpty) {
-                                                    return ln.getString(
-                                                        ConstString
-                                                            .plzEnterAddress);
+                                                    return asProvider.getString(
+                                                        'Please enter your address');
                                                   }
                                                   return null;
                                                 },
-                                                hintText: ln.getString(
-                                                    ConstString.enterAddress),
+                                                hintText: asProvider.getString(
+                                                    'Enter your address'),
                                                 icon:
                                                     'assets/icons/location.png',
                                                 textInputAction:
@@ -289,7 +283,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CommonHelper()
-                              .buttonOrange(ln.getString(ConstString.next), () {
+                              .buttonOrange(asProvider.getString('Next'), () {
                             if (_formKey.currentState!.validate()) {
                               //increase page steps by one
                               BookStepsService().onNext(context);

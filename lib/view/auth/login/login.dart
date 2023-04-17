@@ -2,16 +2,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
-import 'package:qixer/service/auth_services/facebook_login_service.dart';
 import 'package:qixer/service/auth_services/google_sign_service.dart';
 import 'package:qixer/service/auth_services/login_service.dart';
 import 'package:qixer/view/auth/login/login_helper.dart';
 import 'package:qixer/view/auth/reset_password/reset_pass_email_page.dart';
 import 'package:qixer/view/auth/signup/signup.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/custom_input.dart';
+import 'package:qixer/view/utils/responsive.dart';
+import '../../../service/auth_services/facebook_login_service.dart';
 import '../../utils/constant_styles.dart';
 
 class LoginPage extends StatefulWidget {
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           physics: physicsCommon,
           child: Consumer<AppStringService>(
-            builder: (context, ln, child) => Column(
+            builder: (context, asProvider, child) => Column(
               children: [
                 Stack(
                   children: [
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         CommonHelper().titleCommon(
-                            ln.getString(ConstString.welcomeBackLogin)),
+                            asProvider.getString('Welcome back! Login')),
 
                         const SizedBox(
                           height: 33,
@@ -91,17 +91,17 @@ class _LoginPageState extends State<LoginPage> {
 
                         //Name ============>
                         CommonHelper()
-                            .labelCommon(ln.getString(ConstString.email)),
+                            .labelCommon(asProvider.getString("Email")),
 
                         CustomInput(
                           controller: emailController,
                           validation: (value) {
                             if (value == null || value.isEmpty) {
-                              return ln.getString(ConstString.plzEnterEmail);
+                              return 'Please enter your email';
                             }
                             return null;
                           },
-                          hintText: ln.getString(ConstString.email),
+                          hintText: asProvider.getString("Email"),
                           icon: 'assets/icons/user.png',
                           textInputAction: TextInputAction.next,
                         ),
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         //password ===========>
                         CommonHelper()
-                            .labelCommon(ln.getString(ConstString.pass)),
+                            .labelCommon(asProvider.getString("Password")),
 
                         Container(
                             margin: const EdgeInsets.only(bottom: 19),
@@ -125,7 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                               style: const TextStyle(fontSize: 14),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return ln.getString(ConstString.plzEnterPass);
+                                  return lnProvider
+                                      .getString('Please enter your password');
                                 }
                                 return null;
                               },
@@ -179,7 +180,8 @@ class _LoginPageState extends State<LoginPage> {
                                       borderSide: BorderSide(
                                           color:
                                               ConstantColors().primaryColor)),
-                                  hintText: ln.getString(ConstString.enterPass),
+                                  hintText:
+                                      lnProvider.getString('Enter password'),
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 18)),
                             )),
@@ -198,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
-                                    ln.getString(ConstString.rememberMe),
+                                    asProvider.getString("Remember Me"),
                                     style: TextStyle(
                                         color: ConstantColors().greyFour,
                                         fontWeight: FontWeight.w400,
@@ -231,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: SizedBox(
                                 width: 122,
                                 child: Text(
-                                  ln.getString(ConstString.forgotPass),
+                                  asProvider.getString("Forgot Password?"),
                                   style: TextStyle(
                                       color: cc.primaryColor,
                                       fontSize: 13,
@@ -249,8 +251,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         Consumer<LoginService>(
                           builder: (context, provider, child) => CommonHelper()
-                              .buttonOrange(ln.getString(ConstString.login),
-                                  () {
+                              .buttonOrange(asProvider.getString("Login"), () {
                             if (provider.isloading == false) {
                               if (_formKey.currentState!.validate()) {
                                 provider.login(
@@ -282,8 +283,9 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             RichText(
                               text: TextSpan(
-                                text:
-                                    '${ln.getString(ConstString.dontHaveAccount)}  ',
+                                text: lnProvider
+                                        .getString("Don't have account?") +
+                                    "  ",
                                 style: const TextStyle(
                                     color: Color(0xff646464), fontSize: 14),
                                 children: <TextSpan>[
@@ -296,7 +298,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   builder: (context) =>
                                                       const SignupPage()));
                                         },
-                                      text: ln.getString(ConstString.register),
+                                      text: lnProvider.getString('Register'),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,
@@ -326,7 +328,7 @@ class _LoginPageState extends State<LoginPage> {
                               alignment: Alignment.center,
                               margin: const EdgeInsets.only(bottom: 25),
                               child: Text(
-                                ln.getString(ConstString.or),
+                                asProvider.getString("OR"),
                                 style: TextStyle(
                                     color: cc.greyPrimary,
                                     fontSize: 17,
@@ -354,7 +356,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: LoginHelper().commonButton(
                                   'assets/icons/google.png',
-                                  ln.getString(ConstString.loginGoogle),
+                                  lnProvider.getString("Login with Google"),
                                   isloading: gProvider.isloading == false
                                       ? false
                                       : true)),
@@ -371,7 +373,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             child: LoginHelper().commonButton(
                                 'assets/icons/facebook.png',
-                                ln.getString(ConstString.loginFb),
+                                lnProvider.getString("Login with Facebook"),
                                 isloading: fProvider.isloading == false
                                     ? false
                                     : true),

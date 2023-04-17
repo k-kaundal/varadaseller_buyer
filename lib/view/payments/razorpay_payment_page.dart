@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +9,7 @@ import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../service/booking_services/place_order_service.dart';
 import '../../service/payment_gateway_list_service.dart';
+import '../../service/rtl_service.dart';
 
 class RazorpayPaymentPage extends StatefulWidget {
   const RazorpayPaymentPage(
@@ -40,7 +41,9 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
   @override
   void initState() {
     super.initState();
-
+    // amount = Provider.of<BookConfirmationService>(context, listen: false)
+    //     .totalPriceAfterAllcalculation
+    //     .toString();
     initializeRazorPay();
   }
 
@@ -55,6 +58,17 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
   void launchRazorPay(BuildContext context) {
     double amountToPay = double.parse(widget.amount) * 100;
 
+    // var options = {
+    //   'key': 'rzp_test_FSFnXQOqPP1YbJ',
+    //   'amount': "$amountToPay",
+    //   'name': name,
+    //   'description': ' ',
+    //   'prefill': {'contact': phone, 'email': email}
+    // };
+
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
+
     var options = {
       'key': Provider.of<PaymentGatewayListService>(context, listen: false)
               .publicKey ??
@@ -62,6 +76,7 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
       'amount': "$amountToPay",
       'name': widget.name,
       'description': ' ',
+      'currency': currencyCode,
       'prefill': {'contact': widget.phone, 'email': widget.email}
     };
 
@@ -89,12 +104,16 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
       Provider.of<PlaceOrderService>(context, listen: false)
           .makePaymentSuccess(context);
     }
+
+    // print(
+    //     "${response.orderId} \n${response.paymentId} \n${response.signature}");
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     print("Payemt Failed");
-    Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
-    PlaceOrderService().makePaymentFailed(context);
+    Provider.of<PlaceOrderService>(context, listen: false)
+        .doNext(context, 'failed', paymentFailed: true);
+    // print("${response.code}\n${response.message}");
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -121,6 +140,15 @@ class _RazorpayPaymentPageState extends State<RazorpayPaymentPage> {
                 child:
                     BookingHelper().detailsPanelRow('Total', 0, widget.amount),
               ),
+              // textField(size, "Name", false, name),
+              // textField(size, "Phone no.", false, phoneNo),
+              // textField(size, "Email", false, email),
+              // textField(size, "Description", false, description),
+              // textField(size, "amount", true, amount),
+              // ElevatedButton(
+              //   onPressed: launchRazorPay,
+              //   child: const Text("Pay Now"),
+              // ),
             ],
           ),
         ),

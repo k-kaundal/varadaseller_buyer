@@ -7,10 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
-import 'package:qixer/view/utils/others_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class SquareUpPayment extends StatelessWidget {
   SquareUpPayment(
@@ -39,86 +40,92 @@ class SquareUpPayment extends StatelessWidget {
       Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
     });
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Square"),
+      appBar: CommonHelper().appbarCommon('SquareUp', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
+      body: WillPopScope(
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return false;
+        },
+        child: FutureBuilder(
+            future: waitForIt(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              if (snapshot.hasData) {
+                return WebView(
+                  initialUrl: url,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  navigationDelegate: (NavigationRequest request) async {
+                    print('navigation delegate link ' + request.url);
+                    if (request.url.contains('http://www.xgenious.com')) {
+                      // String status = await verifyPayment(request.url);
+                      // if (status == 'paid') {
+                      //   await Provider.of<PlaceOrderService>(context, listen: false)
+                      //       .makePaymentSuccess(context);
+                      // }
+                      // if (status == 'open') {
+                      //   await showDialog(
+                      //       context: context,
+                      //       builder: (ctx) {
+                      //         return const AlertDialog(
+                      //           title: Text('Payment cancelled!'),
+                      //           content: Text('Payment has been cancelled.'),
+                      //         );
+                      //       });
+                      //   Navigator.pop(context);
+                      // }
+                      // if (status == 'failed') {
+                      //   await showDialog(
+                      //       context: context,
+                      //       builder: (ctx) {
+                      //         return const AlertDialog(
+                      //           title: Text('Payment failed!'),
+                      //         );
+                      //       });
+                      //   Navigator.pop(context);
+                      // }
+                      // if (status == 'expired') {
+                      //   await showDialog(
+                      //       context: context,
+                      //       builder: (ctx) {
+                      //         return const AlertDialog(
+                      //           title: Text('Payment failed!'),
+                      //           content: Text('Payment has been expired.'),
+                      //         );
+                      //       });
+                      //   Navigator.pop(context);
+                      // }
+
+                      return NavigationDecision.prevent;
+                    }
+                    if (request.url.contains('https://pub.dev/')) {
+                      Provider.of<PlaceOrderService>(context, listen: false)
+                          .doNext(context, 'failed', paymentFailed: true);
+
+                      return NavigationDecision.prevent;
+                    }
+                    return NavigationDecision.navigate;
+                  },
+                );
+              } else {
+                return const Text('Something went wrong');
+              }
+            }),
       ),
-      body: FutureBuilder(
-          future: waitForIt(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            if (snapshot.hasData) {
-              return WebView(
-                initialUrl: url,
-                javascriptMode: JavascriptMode.unrestricted,
-                navigationDelegate: (NavigationRequest request) async {
-                  print('navigation delegate link ${request.url}');
-                  if (request.url.contains('http://www.xgenious.com')) {
-                    // String status = await verifyPayment(request.url);
-                    // if (status == 'paid') {
-                    //   await Provider.of<PlaceOrderService>(context, listen: false)
-                    //       .makePaymentSuccess(context);
-                    // }
-                    // if (status == 'open') {
-                    //   await showDialog(
-                    //       context: context,
-                    //       builder: (ctx) {
-                    //         return const AlertDialog(
-                    //           title: Text('Payment cancelled!'),
-                    //           content: Text('Payment has been cancelled.'),
-                    //         );
-                    //       });
-                    //   Navigator.pop(context);
-                    // }
-                    // if (status == 'failed') {
-                    //   await showDialog(
-                    //       context: context,
-                    //       builder: (ctx) {
-                    //         return const AlertDialog(
-                    //           title: Text('Payment failed!'),
-                    //         );
-                    //       });
-                    //   Navigator.pop(context);
-                    // }
-                    // if (status == 'expired') {
-                    //   await showDialog(
-                    //       context: context,
-                    //       builder: (ctx) {
-                    //         return const AlertDialog(
-                    //           title: Text('Payment failed!'),
-                    //           content: Text('Payment has been expired.'),
-                    //         );
-                    //       });
-                    //   Navigator.pop(context);
-                    // }
-
-                    return NavigationDecision.prevent;
-                  }
-                  if (request.url.contains('https://pub.dev/')) {
-                    print('payment failed');
-                    OthersHelper().showSnackBar(
-                        context, ConstString.paymentFailed, Colors.red);
-                    PlaceOrderService().makePaymentFailed(context);
-
-                    return NavigationDecision.prevent;
-                  }
-                  return NavigationDecision.navigate;
-                },
-              );
-            } else {
-              return const Text(ConstString.somethingWrong);
-            }
-          }),
     );
   }
 
@@ -130,6 +137,8 @@ class SquareUpPayment extends StatelessWidget {
     final locationId =
         Provider.of<PaymentGatewayListService>(context, listen: false)
             .squareLocationId;
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
 
     // const secretKey =
     //     'EAAAEDsGeASjEG2t6YD1XqJxdyMXEJMS9m50rukk07akibxyMeCTjV2UHwdIsTtl';
@@ -154,7 +163,7 @@ class SquareUpPayment extends StatelessWidget {
           "quick_pay": {
             "location_id": locationId,
             "name": "Qixer payment",
-            "price_money": {"amount": 100, "currency": "USD"}
+            "price_money": {"amount": amount, "currency": currencyCode}
           },
           "payment_note": "Qixer payment",
           "redirect_url": "https://xgenious.com/",

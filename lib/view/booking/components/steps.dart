@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/book_steps_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
@@ -24,7 +23,7 @@ class Steps extends StatelessWidget {
     return Column(
       children: [
         Consumer<AppStringService>(
-          builder: (context, ln, child) => Consumer<BookStepsService>(
+          builder: (context, asProvider, child) => Consumer<BookStepsService>(
             builder: (context, bsProvider, child) => Row(
               children: [
                 CircularStepProgressIndicator(
@@ -66,7 +65,7 @@ class Steps extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonHelper().titleCommon(ln.getString(bsProvider
+                    CommonHelper().titleCommon(asProvider.getString(bsProvider
                         .stepsNameList[bsProvider.currentStep - 1].title)),
                     const SizedBox(
                       height: 6,
@@ -80,7 +79,7 @@ class Steps extends StatelessWidget {
                             ? Row(
                                 children: [
                                   Text(
-                                    '${ln.getString(ConstString.next)}:',
+                                    '${asProvider.getString('Next')}:',
                                     textAlign: TextAlign.start,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -97,7 +96,7 @@ class Steps extends StatelessWidget {
                               )
                             : Container(),
                         Text(
-                          ln.getString(bsProvider
+                          asProvider.getString(bsProvider
                               .stepsNameList[bsProvider.currentStep - 1]
                               .subtitle),
                           style: TextStyle(
@@ -126,7 +125,7 @@ class Steps extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: sProvider.serviceImage ?? placeHolderUrl,
                   placeholder: (context, url) {
-                    return Image.asset('assets/images/placeholder.png');
+                    return Image.asset('assets/images/loading_image.png');
                   },
                   height: 60,
                   width: 60,

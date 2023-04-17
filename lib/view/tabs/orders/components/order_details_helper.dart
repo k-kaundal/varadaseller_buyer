@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -42,10 +41,10 @@ class OrderDetailsHelper {
               ],
             ),
             child: Consumer<AppStringService>(
-              builder: (context, ln, child) => Column(
+              builder: (context, asProvider, child) => Column(
                 children: [
                   Text(
-                    '${ln.getString(ConstString.areYouSure)}?',
+                    '${asProvider.getString('Are you sure?')}?',
                     style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                   ),
                   const SizedBox(
@@ -55,15 +54,15 @@ class OrderDetailsHelper {
                     children: [
                       Expanded(
                           child: CommonHelper().borderButtonOrange(
-                              ln.getString(ConstString.cancel), () {
+                              asProvider.getString('Cancel'), () {
                         Navigator.pop(context);
                       }, bgColor: cc.greyFour)),
                       const SizedBox(
                         width: 16,
                       ),
                       Expanded(
-                          child: CommonHelper().buttonOrange(
-                              ln.getString(ConstString.delete), () {
+                          child: CommonHelper()
+                              .buttonOrange(asProvider.getString('Delete'), () {
                         provider.declineOrderExtra(context,
                             extraId: extraId, orderId: orderId);
                       }, isloading: provider.isLoading, bgColor: Colors.red)),

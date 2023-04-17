@@ -95,6 +95,13 @@ class Datum {
   Datum({
     this.id,
     this.sellerId,
+    this.sellerImage,
+    this.sellerName,
+    this.sellerCountry,
+    this.sellerCity,
+    this.sellerArea,
+    this.completedOrder,
+    this.orderCompletionRate,
     this.buyerId,
     this.jobPostId,
     this.isHired,
@@ -103,6 +110,7 @@ class Datum {
     this.createdAt,
     this.updatedAt,
     this.job,
+    this.seller,
   });
 
   int? id;
@@ -110,23 +118,39 @@ class Datum {
   int? buyerId;
   int? jobPostId;
   int? isHired;
+  String? sellerImage;
+  String? sellerName;
   int? expectedSalary;
   String? coverLetter;
+  String? completedOrder;
+  String? orderCompletionRate;
+  String? sellerCountry;
+  String? sellerCity;
+  String? sellerArea;
   DateTime? createdAt;
   DateTime? updatedAt;
   Job? job;
+  Seller? seller;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         sellerId: json["seller_id"],
+        sellerImage: json['seller_image'],
+        sellerCountry: json['seller_country'],
+        sellerCity: json['seller_city'],
+        sellerArea: json['seller_area'],
+        sellerName: json['seller']?['name'],
         buyerId: json["buyer_id"],
         jobPostId: json["job_post_id"],
         isHired: json["is_hired"],
         expectedSalary: json["expected_salary"],
         coverLetter: json["cover_letter"],
+        orderCompletionRate: json['seller_complete_order'].toString(),
+        completedOrder: json['order_completion_rate'].toString(),
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        job: Job.fromJson(json["job"]),
+        job: json["job"] != null ? Job.fromJson(json["job"]) : null,
+        seller: json["seller"] == null ? null : Seller.fromJson(json["seller"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -141,6 +165,121 @@ class Datum {
         "updated_at": updatedAt?.toIso8601String(),
         "job": job?.toJson(),
       };
+}
+
+class Seller {
+  Seller({
+    this.id,
+    this.name,
+    this.email,
+    this.username,
+    this.phone,
+    this.image,
+    this.profileBackground,
+    this.serviceCity,
+    this.serviceArea,
+    this.userType,
+    this.userStatus,
+    this.termsCondition,
+    this.address,
+    this.state,
+    this.about,
+    this.postCode,
+    this.countryId,
+    this.emailVerified,
+    this.emailVerifyToken,
+    this.facebookId,
+    this.googleId,
+    this.countryCode,
+    this.createdAt,
+    this.updatedAt,
+    this.fbUrl,
+    this.twUrl,
+    this.goUrl,
+    this.liUrl,
+    this.yoUrl,
+    this.inUrl,
+    this.twiUrl,
+    this.piUrl,
+    this.drUrl,
+    this.reUrl,
+  });
+
+  final int? id;
+  final String? name;
+  final String? email;
+  final String? username;
+  final String? phone;
+  final String? image;
+  final dynamic profileBackground;
+  final String? serviceCity;
+  final String? serviceArea;
+  final int? userType;
+  final int? userStatus;
+  final int? termsCondition;
+  final String? address;
+  final String? state;
+  final String? about;
+  final String? postCode;
+  final int? countryId;
+  final int? emailVerified;
+  final String? emailVerifyToken;
+  final dynamic facebookId;
+  final dynamic googleId;
+  final dynamic countryCode;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final dynamic fbUrl;
+  final dynamic twUrl;
+  final dynamic goUrl;
+  final dynamic liUrl;
+  final dynamic yoUrl;
+  final dynamic inUrl;
+  final dynamic twiUrl;
+  final dynamic piUrl;
+  final dynamic drUrl;
+  final dynamic reUrl;
+
+  factory Seller.fromJson(Map<String, dynamic> json) => Seller(
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        username: json["username"],
+        phone: json["phone"],
+        image: json["image"],
+        profileBackground: json["profile_background"],
+        serviceCity: json["service_city"],
+        serviceArea: json["service_area"],
+        userType: json["user_type"],
+        userStatus: json["user_status"],
+        termsCondition: json["terms_condition"],
+        address: json["address"],
+        state: json["state"],
+        about: json["about"],
+        postCode: json["post_code"],
+        countryId: json["country_id"],
+        emailVerified: json["email_verified"],
+        emailVerifyToken: json["email_verify_token"],
+        facebookId: json["facebook_id"],
+        googleId: json["google_id"],
+        countryCode: json["country_code"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        fbUrl: json["fb_url"],
+        twUrl: json["tw_url"],
+        goUrl: json["go_url"],
+        liUrl: json["li_url"],
+        yoUrl: json["yo_url"],
+        inUrl: json["in_url"],
+        twiUrl: json["twi_url"],
+        piUrl: json["pi_url"],
+        drUrl: json["dr_url"],
+        reUrl: json["re_url"],
+      );
 }
 
 class Job {
@@ -239,13 +378,13 @@ class Link {
   bool? active;
 
   factory Link.fromJson(Map<String, dynamic> json) => Link(
-        url: json["url"] ?? null,
+        url: json["url"],
         label: json["label"],
         active: json["active"],
       );
 
   Map<String, dynamic> toJson() => {
-        "url": url ?? null,
+        "url": url,
         "label": label,
         "active": active,
       };

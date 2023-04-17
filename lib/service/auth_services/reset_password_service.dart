@@ -6,7 +6,6 @@ import 'package:qixer/view/auth/login/login.dart';
 import 'package:qixer/view/auth/reset_password/reset_pass_otp_page.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordService with ChangeNotifier {
   bool isloading = false;
@@ -72,7 +71,7 @@ class ResetPasswordService with ChangeNotifier {
 
   resetPassword(newPass, repeatNewPass, email, BuildContext context) async {
     if (newPass != repeatNewPass) {
-      OthersHelper().showToast('Password didn\'t match', Colors.black);
+      OthersHelper().showToast("Password didn't match", Colors.black);
     } else {
       //check internet connection
       var connectivityResult = await (Connectivity().checkConnectivity());

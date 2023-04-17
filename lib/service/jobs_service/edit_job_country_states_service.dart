@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/model/states_dropdown_model.dart';
-import 'package:qixer/service/country_states_service.dart';
+import 'package:qixer/service/dropdowns_services/country_dropdown_service.dart';
 import 'package:qixer/service/jobs_service/my_jobs_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:qixer/view/utils/others_helper.dart';
@@ -54,11 +54,11 @@ class EditJobCountryStatesService with ChangeNotifier {
 
   getCountryState(BuildContext context, {required jobIndex}) {
     countryDropdownList =
-        Provider.of<CountryStatesService>(context, listen: false)
+        Provider.of<CountryDropdownService>(context, listen: false)
             .countryDropdownList;
 
     countryDropdownIndexList =
-        Provider.of<CountryStatesService>(context, listen: false)
+        Provider.of<CountryDropdownService>(context, listen: false)
             .countryDropdownIndexList;
 
     //set Country id based on job

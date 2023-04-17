@@ -14,17 +14,19 @@ class MyordersListModel {
   MyordersListModel({
     required this.myOrders,
     required this.userId,
+    this.nextPage,
   });
 
   List<MyOrder> myOrders;
   int userId;
+  String? nextPage;
 
   factory MyordersListModel.fromJson(Map<String, dynamic> json) =>
       MyordersListModel(
-        myOrders: List<MyOrder>.from(
-            json["my_orders"].map((x) => MyOrder.fromJson(x))),
-        userId: json["user_id"],
-      );
+          myOrders: List<MyOrder>.from(
+              json["my_orders"]['data'].map((x) => MyOrder.fromJson(x))),
+          userId: json["user_id"],
+          nextPage: json['my_orders']['next_page_url']);
 
   Map<String, dynamic> toJson() => {
         "my_orders": List<dynamic>.from(myOrders.map((x) => x.toJson())),
@@ -82,7 +84,7 @@ class MyOrder {
   int? city;
   int? area;
   int? country;
-  String? date;
+  DateTime? date;
   String? schedule;
   var packageFee;
   var extraService;
@@ -119,7 +121,7 @@ class MyOrder {
         city: json["city"],
         area: json["area"],
         country: json["country"],
-        date: json["date"],
+        date: json["date"] == null ? null : DateTime.parse(json['date']),
         schedule: json["schedule"],
         packageFee: json["package_fee"],
         extraService: json["extra_service"],

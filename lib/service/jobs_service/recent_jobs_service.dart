@@ -27,7 +27,7 @@ class RecentJobsService with ChangeNotifier {
     var response = await http.get(
       Uri.parse('$baseApi/job/recent-jobs'),
     );
-
+    print('$baseApi/job/recent-jobs');
     if (response.statusCode == 201) {
       var data = RecentJobsModel.fromJson(jsonDecode(response.body));
 

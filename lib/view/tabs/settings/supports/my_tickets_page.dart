@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +7,11 @@ import 'package:qixer/service/support_ticket/support_ticket_service.dart';
 import 'package:qixer/view/tabs/orders/orders_helper.dart';
 import 'package:qixer/view/tabs/settings/supports/create_ticket_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/responsive.dart';
+
+import '../../../utils/others_helper.dart';
 
 class MyTicketsPage extends StatefulWidget {
   const MyTicketsPage({Key? key}) : super(key: key);
@@ -39,8 +38,8 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: cc.greyPrimary),
           title: Consumer<AppStringService>(
-            builder: (context, ln, child) => Text(
-              ln.getString('Support tickets'),
+            builder: (context, asProvider, child) => Text(
+              asProvider.getString('Support tickets'),
               style: TextStyle(
                   color: cc.greyPrimary,
                   fontSize: 16,
@@ -60,7 +59,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
           ),
           actions: [
             Consumer<AppStringService>(
-              builder: (context, ln, child) => Container(
+              builder: (context, asProvider, child) => Container(
                 width: screenWidth / 4,
                 padding: const EdgeInsets.symmetric(
                   vertical: 9,
@@ -84,7 +83,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                           color: cc.primaryColor,
                           borderRadius: BorderRadius.circular(8)),
                       child: AutoSizeText(
-                        ln.getString(ConstString.create),
+                        asProvider.getString('Create'),
                         maxLines: 1,
                         style: const TextStyle(
                           color: Colors.white,
@@ -136,7 +135,8 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
           child: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
-              builder: (context, ln, child) => Consumer<SupportTicketService>(
+              builder: (context, asProvider, child) => Consumer<
+                      SupportTicketService>(
                   builder: (context, provider, child) => provider
                           .ticketList.isNotEmpty
                       ? Container(
@@ -203,8 +203,8 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                                                                 i]['id']);
                                                       },
                                                       value: index,
-                                                      child: Text(ln.getString(
-                                                          ConstString.chat)),
+                                                      child: Text(asProvider
+                                                          .getString('Chat')),
                                                     );
                                                   });
                                                 },
@@ -230,16 +230,18 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                                           Row(
                                             children: [
                                               OrdersHelper().statusCapsule(
-                                                  provider.ticketList[i]
-                                                      ['priority'],
+                                                  lnProvider.getString(
+                                                      provider.ticketList[i]
+                                                          ['priority']),
                                                   cc.greyThree),
                                               const SizedBox(
                                                 width: 11,
                                               ),
                                               OrdersHelper()
                                                   .statusCapsuleBordered(
-                                                      provider.ticketList[i]
-                                                          ['status'],
+                                                      lnProvider.getString(
+                                                          provider.ticketList[i]
+                                                              ['status']),
                                                       cc.greyParagraph),
                                             ],
                                           )
@@ -249,10 +251,11 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                             ],
                           ),
                         )
-                      : CommonHelper()
-                          .nothingfound(context, ln.getString('No ticket'))),
+                      : CommonHelper().nothingfound(
+                          context, asProvider.getString('No ticket'))),
             ),
           ),
+          footer: OthersHelper().commonRefreshFooter(context),
         ));
   }
 }

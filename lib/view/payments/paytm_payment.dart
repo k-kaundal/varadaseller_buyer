@@ -6,9 +6,9 @@ import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
-import 'package:qixer/view/utils/others_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../utils/common_helper.dart';
 
 class PaytmPayment extends StatefulWidget {
   const PaytmPayment(
@@ -45,55 +45,63 @@ class _PaytmPaymentState extends State<PaytmPayment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Paytm')),
-      body: WebView(
-        onWebViewCreated: (controller) {
-          _controller = controller;
-
-          var paytmHtmlString =
-              Provider.of<PlaceOrderService>(context, listen: false)
-                  .paytmHtmlForm as String;
-
-          controller.loadHtmlString(paytmHtmlString);
+      appBar: CommonHelper().appbarCommon('Paytm', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
+      body: WillPopScope(
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return false;
         },
-        initialUrl: "url",
-        javascriptMode: JavascriptMode.unrestricted,
-        navigationDelegate: (NavigationRequest request) async {
-          print('current url is ${request.url}');
-          print('success url is $successUrl');
-          print('failed url is $failedUrl');
-          if (request.url.contains(successUrl)) {
-            //if payment is success, then the page is refreshing twice.
-            //which is causing the screen pop twice.
-            //So, this alreadySuccess = true trick will prevent that
+        child: WebView(
+          onWebViewCreated: (controller) {
+            _controller = controller;
 
-            print('payment success');
-            if (widget.isFromOrderExtraAccept == true) {
-              Provider.of<OrderDetailsService>(context, listen: false)
-                  .acceptOrderExtra(context);
-            } else if (widget.isFromWalletDeposite) {
-              Provider.of<WalletService>(context, listen: false)
-                  .makeDepositeToWalletSuccess(context);
-            } else if (widget.isFromHireJob) {
-              Provider.of<JobRequestService>(context, listen: false)
-                  .goToJobSuccessPage(context);
-            } else {
-              await Provider.of<PlaceOrderService>(context, listen: false)
-                  .makePaymentSuccess(context);
+            var paytmHtmlString =
+                Provider.of<PlaceOrderService>(context, listen: false)
+                    .paytmHtmlForm as String;
+
+            controller.loadHtmlString(paytmHtmlString);
+          },
+          initialUrl: "url",
+          javascriptMode: JavascriptMode.unrestricted,
+          navigationDelegate: (NavigationRequest request) async {
+            print('current url is ${request.url}');
+            print('success url is $successUrl');
+            print('failed url is $failedUrl');
+            if (request.url.contains(successUrl)) {
+              //if payment is success, then the page is refreshing twice.
+              //which is causing the screen pop twice.
+              //So, this alreadySuccess = true trick will prevent that
+
+              print('payment success');
+              if (widget.isFromOrderExtraAccept == true) {
+                Provider.of<OrderDetailsService>(context, listen: false)
+                    .acceptOrderExtra(context);
+              } else if (widget.isFromWalletDeposite) {
+                Provider.of<WalletService>(context, listen: false)
+                    .makeDepositeToWalletSuccess(context);
+              } else if (widget.isFromHireJob) {
+                Provider.of<JobRequestService>(context, listen: false)
+                    .goToJobSuccessPage(context);
+              } else {
+                await Provider.of<PlaceOrderService>(context, listen: false)
+                    .makePaymentSuccess(context);
+              }
+
+              return NavigationDecision.prevent;
             }
+            if (request.url.contains('order-cancel-static')) {
+              Provider.of<PlaceOrderService>(context, listen: false)
+                  .doNext(context, 'failed', paymentFailed: true);
 
-            return NavigationDecision.prevent;
-          }
-          if (request.url.contains('order-cancel-static')) {
-            print('payment failed');
-            OthersHelper()
-                .showSnackBar(context, ConstString.paymentFailed, Colors.red);
-            PlaceOrderService().makePaymentFailed(context);
-
-            return NavigationDecision.prevent;
-          }
-          return NavigationDecision.navigate;
-        },
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
       ),
     );
   }

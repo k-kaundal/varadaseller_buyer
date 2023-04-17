@@ -4,11 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/jobs_service/job_conversation_service.dart';
 import 'package:qixer/service/rtl_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../utils/responsive.dart';
 
 class JobConversationPage extends StatefulWidget {
   const JobConversationPage(
@@ -80,28 +81,26 @@ class _JobConversationPageState extends State<JobConversationPage> {
                     width: 12,
                   ),
                   Expanded(
-                    child: Consumer<AppStringService>(
-                      builder: (context, ln, child) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            widget.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "${ln.getString(ConstString.jobReqId)}: #${widget.jobRequestId}",
-                            style:
-                                TextStyle(color: cc.primaryColor, fontSize: 13),
-                          ),
-                        ],
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          widget.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          "${lnProvider.getString('Job Request ID')}: #${widget.jobRequestId}",
+                          style:
+                              TextStyle(color: cc.primaryColor, fontSize: 13),
+                        ),
+                      ],
                     ),
                   ),
                   // Icon(
@@ -262,7 +261,8 @@ class _JobConversationPageState extends State<JobConversationPage> {
                                                             child: Row(
                                                               children: [
                                                                 Text(
-                                                                  'Attachment',
+                                                                  ln.getString(
+                                                                      'Attachment'),
                                                                   style: TextStyle(
                                                                       fontSize:
                                                                           15,
@@ -373,9 +373,7 @@ class _JobConversationPageState extends State<JobConversationPage> {
                           child: TextField(
                             controller: sendMessageController,
                             decoration: InputDecoration(
-                                hintText:
-                                    ln.getString(ConstString.writeMessage) +
-                                        '...',
+                                hintText: ln.getString("Write message..."),
                                 hintStyle:
                                     const TextStyle(color: Colors.black54),
                                 border: InputBorder.none),
@@ -417,13 +415,10 @@ class _JobConversationPageState extends State<JobConversationPage> {
                               });
                             } else {
                               OthersHelper().showToast(
-                                  ln.getString(
-                                      ConstString.plzWriteMessageFirst),
+                                  ln.getString('Please write a message first'),
                                   Colors.black);
                             }
                           },
-                          backgroundColor: cc.primaryColor,
-                          elevation: 0,
                           child: provider.sendLoading == false
                               ? const Icon(
                                   Icons.send,
@@ -438,6 +433,8 @@ class _JobConversationPageState extends State<JobConversationPage> {
                                     strokeWidth: 1.5,
                                   ),
                                 ),
+                          backgroundColor: cc.primaryColor,
+                          elevation: 0,
                         ),
                       ],
                     ),

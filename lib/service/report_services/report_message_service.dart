@@ -142,6 +142,11 @@ class ReportMessagesService with ChangeNotifier {
       var response = await dio.post(
         '$baseApi/user/report/send-message',
         data: formData,
+        options: Options(
+          validateStatus: (status) {
+            return true;
+          },
+        ),
       );
       setSendLoadingFalse();
 

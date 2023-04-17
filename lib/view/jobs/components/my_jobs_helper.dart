@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/jobs_service/my_jobs_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -41,11 +40,11 @@ class MyJobsHelper {
             ],
           ),
           child: Consumer<AppStringService>(
-            builder: (context, ln, child) => Consumer<MyJobsService>(
+            builder: (context, asProvider, child) => Consumer<MyJobsService>(
               builder: (context, provider, child) => Column(
                 children: [
                   Text(
-                    '${ln.getString(ConstString.areYouSure)}?',
+                    '${asProvider.getString('Are you sure?')}',
                     style: TextStyle(color: cc.greyPrimary, fontSize: 17),
                   ),
                   const SizedBox(
@@ -55,19 +54,19 @@ class MyJobsHelper {
                     children: [
                       Expanded(
                           child: CommonHelper().borderButtonOrange(
-                              ln.getString(ConstString.cancel), () {
+                              asProvider.getString('Cancel'), () {
                         Navigator.pop(context);
                       }, bgColor: Colors.grey)),
                       const SizedBox(
                         width: 16,
                       ),
                       Expanded(
-                          child: CommonHelper().buttonOrange(ConstString.delete,
-                              () {
+                          child: CommonHelper()
+                              .buttonOrange(asProvider.getString('Delete'), () {
                         provider.deleteJob(context, index: index, jobId: jobId);
                       },
-                              bgColor: Colors.red,
-                              isloading: provider.loadingDeleteJob))
+                                  bgColor: Colors.red,
+                                  isloading: provider.loadingDeleteJob))
                     ],
                   )
                 ],

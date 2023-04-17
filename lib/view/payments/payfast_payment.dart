@@ -9,9 +9,11 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import '../../service/rtl_service.dart';
+import '../utils/common_helper.dart';
 
 class PayfastPayment extends StatelessWidget {
   PayfastPayment(
@@ -42,66 +44,74 @@ class PayfastPayment extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Payfast'),
-      ),
-      body: FutureBuilder(
-          future: waitForIt(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            if (snapshot.hasData) {
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            return WebView(
-              onWebResourceError: (error) {
-                showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return const AlertDialog(
-                        title: Text(ConstString.loadingFailed),
-                        content: Text(ConstString.loadingFailed),
-                      );
-                    });
+      appBar: CommonHelper().appbarCommon('Payfast', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
+      body: WillPopScope(
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return false;
+        },
+        child: FutureBuilder(
+            future: waitForIt(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasData) {
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              return WebView(
+                onWebResourceError: (error) {
+                  showDialog(
+                      context: context,
+                      builder: (ctx) {
+                        return const AlertDialog(
+                          title: Text('Loading failed!'),
+                          content: Text('Failed to load payment page.'),
+                        );
+                      });
 
-                PlaceOrderService().makePaymentFailed(context);
-              },
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (value) async {
-                if (value.contains('finish')) {
-                  bool paySuccess = await verifyPayment(value);
-                  if (paySuccess) {
-                    if (isFromOrderExtraAccept == true) {
-                      await Provider.of<OrderDetailsService>(context,
-                              listen: false)
-                          .acceptOrderExtra(context);
-                    } else if (isFromWalletDeposite) {
-                      await Provider.of<WalletService>(context, listen: false)
-                          .makeDepositeToWalletSuccess(context);
-                    } else if (isFromHireJob) {
-                      Provider.of<JobRequestService>(context, listen: false)
-                          .goToJobSuccessPage(context);
-                    } else {
-                      await Provider.of<PlaceOrderService>(context,
-                              listen: false)
-                          .makePaymentSuccess(context);
+                  Navigator.pop(context);
+                },
+                initialUrl: url,
+                javascriptMode: JavascriptMode.unrestricted,
+                onPageFinished: (value) async {
+                  if (value.contains('finish')) {
+                    bool paySuccess = await verifyPayment(value);
+                    if (paySuccess) {
+                      if (isFromOrderExtraAccept == true) {
+                        await Provider.of<OrderDetailsService>(context,
+                                listen: false)
+                            .acceptOrderExtra(context);
+                      } else if (isFromWalletDeposite) {
+                        await Provider.of<WalletService>(context, listen: false)
+                            .makeDepositeToWalletSuccess(context);
+                      } else if (isFromHireJob) {
+                        Provider.of<JobRequestService>(context, listen: false)
+                            .goToJobSuccessPage(context);
+                      } else {
+                        await Provider.of<PlaceOrderService>(context,
+                                listen: false)
+                            .makePaymentSuccess(context);
+                      }
+                      return;
                     }
-                    return;
                   }
-                }
-              },
-            );
-          }),
+                },
+              );
+            }),
+      ),
     );
   }
 
@@ -113,13 +123,15 @@ class PayfastPayment extends StatelessWidget {
     final merchantKey =
         Provider.of<PaymentGatewayListService>(context, listen: false)
             .secretKey;
+    final currencyCode =
+        Provider.of<RtlService>(context, listen: false).currencyCode;
 
     // final merchantId = '10024000';
 
     // final merchantKey = '77jcu5v4ufdod';
 
     url =
-        'https://sandbox.payfast.co.za/eng/process?merchant_id=$merchantId&merchant_key=$merchantKey&amount=$amount&item_name=GrenmartGroceries';
+        'https://sandbox.payfast.co.za/eng/process?merchant_id=$merchantId&merchant_key=$merchantKey&amount=$amount&currency=$currencyCode&item_name=GrenmartGroceries';
     //   return;
     // }
 

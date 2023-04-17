@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
+// ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'dart:async';
 import 'dart:convert';
@@ -11,7 +11,7 @@ import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'package:qixer/view/utils/const_strings.dart';
+import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -45,48 +45,51 @@ class BillplzPayment extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BillPlz'),
+      appBar: CommonHelper().appbarCommon('BillPlz', context, () {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+      }),
+      body: WillPopScope(
+        onWillPop: () async {
+          await Provider.of<PlaceOrderService>(context, listen: false)
+              .doNext(context, 'failed', paymentFailed: true);
+          return true;
+        },
+        child: FutureBuilder(
+            future: waitForIt(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasData) {
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Center(
+                  child: Text('Loding failed.'),
+                );
+              }
+              return WebView(
+                // onWebViewCreated: ((controller) {
+                //   _controller = controller;
+                // }),
+                onWebResourceError: (error) =>
+                    Provider.of<PlaceOrderService>(context, listen: false)
+                        .doNext(context, 'failed', paymentFailed: true),
+                initialUrl: url,
+                javascriptMode: JavascriptMode.unrestricted,
+                onPageFinished: (value) async {
+                  verifyPayment(value, context, isFromOrderExtraAccept,
+                      isFromWalletDeposite, isFromHireJob);
+                },
+              );
+            }),
       ),
-      body: FutureBuilder(
-          future: waitForIt(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasData) {
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Center(
-                child: Text(ConstString.loadingFailed),
-              );
-            }
-            return WebView(
-              // onWebViewCreated: ((controller) {
-              //   _controller = controller;
-              // }),
-              onWebResourceError: (error) => showDialog(
-                  context: context,
-                  builder: (ctx) {
-                    return const AlertDialog(
-                      title: Text(ConstString.loadingFailed),
-                      content: Text(ConstString.loadingFailed),
-                    );
-                  }),
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (value) async {
-                verifyPayment(value, context, isFromOrderExtraAccept,
-                    isFromWalletDeposite, isFromHireJob);
-              },
-            );
-          }),
     );
   }
 
@@ -165,8 +168,8 @@ Future verifyPayment(String url, BuildContext context, isFromOrderExtraAccept,
     return;
   }
   if (response.body.contains('your payment was not')) {
-    OthersHelper().showSnackBar(context, ConstString.paymentFailed, Colors.red);
-    PlaceOrderService().makePaymentFailed(context);
+    OthersHelper().showSnackBar(context, 'Payment failed', Colors.red);
+    Navigator.pop(context);
     return;
   }
 }

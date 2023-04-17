@@ -7,9 +7,9 @@ import 'package:qixer/service/service_details_service.dart';
 import 'package:qixer/view/services/components/service_filter_dropdowns.dart';
 import 'package:qixer/view/services/service_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
-import 'package:qixer/view/utils/const_strings.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 import '../home/components/service_card.dart';
 
@@ -36,7 +36,7 @@ class _AllServicePageState extends State<AllServicePage> {
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon(ConstString.allServices, context, () {
+      appBar: CommonHelper().appbarCommon('All Services', context, () {
         Navigator.pop(context);
       }),
       body: SmartRefresher(
@@ -84,12 +84,27 @@ class _AllServicePageState extends State<AllServicePage> {
                         //Dropdown ==========>
                         const ServiceFilterDropdowns(),
 
-                        provider.serviceMap.isNotEmpty
+                        !provider.isLoading
                             ? Column(children: [
                                 // Service List ===============>
                                 const SizedBox(
                                   height: 35,
                                 ),
+                                if (provider.serviceMap.isEmpty)
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 20),
+                                        child: Text(
+                                          lnProvider
+                                              .getString("No result found"),
+                                          style:
+                                              TextStyle(color: cc.greyPrimary),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 for (int i = 0;
                                     i < provider.serviceMap.length;
                                     i++)
@@ -172,6 +187,7 @@ class _AllServicePageState extends State<AllServicePage> {
                     )),
           ),
         ),
+        footer: OthersHelper().commonRefreshFooter(context),
       ),
     );
   }
