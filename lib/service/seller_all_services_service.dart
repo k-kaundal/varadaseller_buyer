@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:qixer/model/service_models/seller_all_service_model.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/db/db_service.dart';
@@ -35,7 +34,6 @@ class SellerAllServicesService with ChangeNotifier {
     currentPage = 1;
     averageRateList = [];
     hasError = false;
-    notifyListeners();
   }
 
   fetchSellerAllService(context, sellerId, {bool isrefresh = false}) async {
@@ -48,23 +46,26 @@ class SellerAllServicesService with ChangeNotifier {
       serviceMap = [];
       notifyListeners();
 
-      Provider.of<SellerAllServicesService>(context, listen: false)
-          .setCurrentPage(currentPage);
+      setCurrentPage(1);
     } else {
       // if (currentPage > 2) {
       //   refreshController.loadNoData();
       //   return false;
       // }
     }
+    if (!isrefresh && currentPage > totalPages) {
+      return false;
+    }
 
     var connection = await checkConnection();
     if (connection) {
       //if connection is ok
 
-      String apiLink = '$baseApi/seller-services/$sellerId?page=$currentPage';
+      String apiLink =
+          '$baseApi/services-by-seller-id?seller_id=$sellerId?page=$currentPage';
       var response = await http.get(Uri.parse(apiLink));
-
-      if (response.statusCode == 201) {
+      print(response.statusCode);
+      if (response.statusCode == 200) {
         var data = SellerAllServiceModel.fromJson(jsonDecode(response.body));
 
         setTotalPage(data.services.lastPage);
@@ -122,15 +123,15 @@ class SellerAllServicesService with ChangeNotifier {
       serviceMap.add({
         'serviceId': data[i].id,
         'title': data[i].title,
-        'sellerName': data[i].sellerForMobile.name,
+        'sellerName': data[i].sellerName ?? '',
         'price': data[i].price,
         'rating': averageRateList[i],
         'image': data[i].imageUrl,
         'isSaved': false,
         'sellerId': data[i].sellerId,
       });
-      checkIfAlreadySaved(data[i].id, data[i].title,
-          data[i].sellerForMobile.name, serviceMap.length - 1);
+      checkIfAlreadySaved(data[i].id, data[i].title, data[i].sellerName ?? '',
+          serviceMap.length - 1);
     }
   }
 

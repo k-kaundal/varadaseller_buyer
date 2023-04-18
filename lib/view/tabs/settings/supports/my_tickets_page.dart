@@ -101,13 +101,11 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
         body: SmartRefresher(
           controller: refreshController,
           enablePullUp: true,
-          enablePullDown: context.watch<SupportTicketService>().currentPage > 1
-              ? false
-              : true,
+          enablePullDown: true,
           onRefresh: () async {
             final result =
                 await Provider.of<SupportTicketService>(context, listen: false)
-                    .fetchTicketList(context);
+                    .fetchTicketList(context, isrefresh: true);
             if (result) {
               refreshController.refreshCompleted();
             } else {

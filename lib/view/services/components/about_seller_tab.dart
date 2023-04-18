@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qixer/service/common_service.dart';
-import 'package:qixer/view/services/services_of_user.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
+import '../seller_all_service_page.dart';
 import '../service_helper.dart';
 
 class AboutSellerTab extends StatelessWidget {
@@ -22,9 +22,12 @@ class AboutSellerTab extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => const ServicesOfUser(),
-              ),
+              MaterialPageRoute(
+                  builder: (context) => SellerAllServicePage(
+                        sellerId: provider.sellerId,
+                        sellerName:
+                            provider.serviceAllDetails.serviceSellerName,
+                      )),
             );
           },
           child: Row(

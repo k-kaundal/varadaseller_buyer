@@ -94,6 +94,7 @@ class AllJobRequest {
 class Datum {
   Datum({
     this.id,
+    this.jobImage,
     this.sellerId,
     this.sellerImage,
     this.sellerName,
@@ -114,6 +115,7 @@ class Datum {
   });
 
   int? id;
+  String? jobImage;
   int? sellerId;
   int? buyerId;
   int? jobPostId;
@@ -134,6 +136,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
+        jobImage: json["job_image"],
         sellerId: json["seller_id"],
         sellerImage: json['seller_image'],
         sellerCountry: json['seller_country'],

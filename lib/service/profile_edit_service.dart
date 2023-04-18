@@ -13,7 +13,7 @@ class ProfileEditService with ChangeNotifier {
 
   setCountryCode(code) {
     countryCode = code;
-    notifyListeners();
+    // notifyListeners();
   }
 
   setLoadingTrue() {
@@ -95,7 +95,7 @@ class ProfileEditService with ChangeNotifier {
       OthersHelper().showToast('Profile updated successfully', Colors.black);
       print(response.data);
       Navigator.pop(context);
-      Provider.of<ProfileService>(context, listen: false)
+      await Provider.of<ProfileService>(context, listen: false)
           .getProfileDetails(isFromProfileupdatePage: true);
       return true;
     } else {

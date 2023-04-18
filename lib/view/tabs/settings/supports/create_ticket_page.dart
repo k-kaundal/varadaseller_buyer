@@ -23,12 +23,11 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<CreateTicketService>(context, listen: false)
-        .fetchOrderDropdown(context);
   }
 
   TextEditingController descController = TextEditingController();
   TextEditingController titleController = TextEditingController();
+  TextEditingController orderIdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +36,6 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: CommonHelper().appbarCommon('Create ticket', context, () {
-          Provider.of<CreateTicketService>(context, listen: false)
-              .makeOrderlistEmpty();
           Navigator.pop(context);
         }),
         body: WillPopScope(
@@ -110,84 +107,27 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
                         ),
 
                         //Order dropdown =======>
-                        provider.hasOrder == true
-                            ? provider.orderDropdownList.isNotEmpty
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      sizedBox20(),
-                                      CommonHelper()
-                                          .labelCommon("Order number"),
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15),
-                                        decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: cc.greyFive),
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                        child: DropdownButtonHideUnderline(
-                                          child: DropdownButton<String>(
-                                            // menuMaxHeight: 200,
-                                            // isExpanded: true,
-                                            value: provider.selectedOrder
-                                                .toString(),
-                                            icon: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: cc.greyFour),
-                                            iconSize: 26,
-                                            elevation: 17,
-                                            style:
-                                                TextStyle(color: cc.greyFour),
-                                            onChanged: (newValue) {
-                                              provider.setOrderValue(newValue);
-
-                                              //setting the id of selected value
-                                              provider.setSelectedOrderId(
-                                                  provider.orderDropdownIndexList[
-                                                      provider.orderDropdownList
-                                                          .indexOf(newValue!)]);
-                                            },
-                                            items: provider.orderDropdownList
-                                                .map<DropdownMenuItem<String>>(
-                                                    (value) {
-                                              return DropdownMenuItem(
-                                                value: value.toString(),
-                                                child: Text(
-                                                  value.toString(),
-                                                  style: TextStyle(
-                                                      color: cc.greyPrimary
-                                                          .withOpacity(.8)),
-                                                ),
-                                              );
-                                            }).toList(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                : Container(
-                                    margin: const EdgeInsets.only(top: 15),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        OthersHelper()
-                                            .showLoading(cc.primaryColor)
-                                      ],
-                                    ),
-                                  )
-                            : Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                child: Text(
-                                  lnProvider.getString(
-                                      "You don't have any active order"),
-                                  style: TextStyle(color: cc.warningColor),
-                                )),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20),
+                            CommonHelper().labelCommon("Order Id"),
+                            CustomInput(
+                              controller: orderIdController,
+                              validation: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return lnProvider
+                                      .getString('Please enter order id');
+                                }
+                                return null;
+                              },
+                              hintText: lnProvider.getString("Order Id"),
+                              // icon: 'assets/icons/user.png',
+                              paddingHorizontal: 18,
+                              textInputAction: TextInputAction.next,
+                            ),
+                          ],
+                        ),
 
                         sizedBox20(),
                         CommonHelper()
@@ -233,11 +173,12 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
                             if (provider.isLoading == false &&
                                 provider.hasOrder == true) {
                               provider.createTicket(
-                                  context,
-                                  titleController.text,
-                                  provider.selectedPriority,
-                                  descController.text,
-                                  provider.selectedOrderId);
+                                context,
+                                titleController.text,
+                                provider.selectedPriority,
+                                descController.text,
+                                orderIdController.text,
+                              );
                             }
                           }
                         },

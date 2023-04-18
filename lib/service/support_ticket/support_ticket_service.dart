@@ -41,8 +41,7 @@ class SupportTicketService with ChangeNotifier {
 
       notifyListeners();
 
-      Provider.of<SupportTicketService>(context, listen: false)
-          .setCurrentPage(currentPage);
+      setCurrentPage(1);
     } else {}
 
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -344,8 +344,11 @@ class _JobRequestPageState extends State<JobRequestPage> {
                                                             builder: (BuildContext
                                                                     context) =>
                                                                 JobDetailsPage(
-                                                              imageLink:
-                                                                  placeHolderUrl,
+                                                              imageLink: provider
+                                                                      .jobReqList[
+                                                                          i]
+                                                                      .jobImage ??
+                                                                  '',
                                                               jobId: provider
                                                                   .jobReqList[i]
                                                                   .job

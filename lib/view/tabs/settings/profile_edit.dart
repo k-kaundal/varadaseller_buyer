@@ -55,41 +55,22 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       Provider.of<ProfileEditService>(context, listen: false)
           .setCountryCode(countryCode);
     });
+    final pProvider = Provider.of<ProfileService>(context, listen: false);
+    fullNameController.text = pProvider.profileDetails.userDetails.name ?? '';
+    emailController.text = pProvider.profileDetails.userDetails.email ?? '';
 
-    fullNameController.text =
-        Provider.of<ProfileService>(context, listen: false)
-                .profileDetails
-                .userDetails
-                .name ??
-            '';
-    emailController.text = Provider.of<ProfileService>(context, listen: false)
-            .profileDetails
-            .userDetails
-            .email ??
-        '';
-
-    phoneController.text = Provider.of<ProfileService>(context, listen: false)
-            .profileDetails
-            .userDetails
-            .phone ??
-        '';
+    phoneController.text = pProvider.profileDetails.userDetails.phone ?? '';
     postCodeController.text =
-        Provider.of<ProfileService>(context, listen: false)
-                .profileDetails
-                .userDetails
-                .postCode ??
-            '';
-    addressController.text = Provider.of<ProfileService>(context, listen: false)
-            .profileDetails
-            .userDetails
-            .address ??
-        '';
+        pProvider.profileDetails.userDetails.postCode ?? '';
+    addressController.text = pProvider.profileDetails.userDetails.address ?? '';
     Provider.of<CountryDropdownService>(context, listen: false)
         .setCountryBasedOnUserProfile(context);
     Provider.of<StateDropdownService>(context, listen: false)
         .setStateBasedOnUserProfile(context);
     Provider.of<AreaDropdownService>(context, listen: false)
         .setAreaBasedOnUserProfile(context);
+    Provider.of<ProfileEditService>(context, listen: false)
+        .setCountryCode(pProvider.profileDetails.userDetails.countryCode);
   }
 
   late AnimationController localAnimationController;

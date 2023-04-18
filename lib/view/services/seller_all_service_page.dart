@@ -29,6 +29,8 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
   @override
   void initState() {
     super.initState();
+    Provider.of<SellerAllServicesService>(context, listen: false)
+        .setEverythingToDefault();
   }
 
   @override
@@ -46,14 +48,11 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
       body: SmartRefresher(
         controller: refreshController,
         enablePullUp: true,
-        enablePullDown:
-            context.watch<SellerAllServicesService>().currentPage > 1
-                ? false
-                : true,
+        enablePullDown: true,
         onRefresh: () async {
           final result = await Provider.of<SellerAllServicesService>(context,
                   listen: false)
-              .fetchSellerAllService(context, widget.sellerId);
+              .fetchSellerAllService(context, widget.sellerId, isrefresh: true);
           if (result) {
             refreshController.refreshCompleted();
           } else {

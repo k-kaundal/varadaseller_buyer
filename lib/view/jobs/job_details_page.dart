@@ -54,6 +54,24 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              height: 180,
+                              width: double.infinity,
+                              imageUrl: widget.imageLink,
+                              errorWidget: (context, url, error) => Padding(
+                                padding: const EdgeInsets.all(24),
+                                child: Image.asset(
+                                  'assets/images/icon.png',
+                                  color: Colors.white.withOpacity(.5),
+                                  colorBlendMode: BlendMode.lighten,
+                                ),
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          sizedBoxCustom(22),
                           Text(
                             provider.jobDetails.title.toString(),
                             style: TextStyle(
@@ -63,19 +81,6 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                                 fontWeight: FontWeight.bold),
                           ),
                           sizedBoxCustom(22),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              height: 180,
-                              width: double.infinity,
-                              imageUrl: widget.imageLink,
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          sizedBoxCustom(22),
-
                           //Overview
                           Row(
                             children: [

@@ -14,7 +14,7 @@ class CreateTicketService with ChangeNotifier {
   //priority dropdown
   var priorityDropdownList = ['Urgent', 'High', 'Medium', 'Low'];
   var priorityDropdownIndexList = ['Urgent', 'High', 'Medium', 'Low'];
-  var selectedPriority = 'Urgent';
+  var selectedPriority = 'High';
   var selectedPriorityId = '';
 
   setPriorityValue(value) {
@@ -105,15 +105,21 @@ class CreateTicketService with ChangeNotifier {
       isLoading = false;
       notifyListeners();
       if (response.statusCode == 201) {
-        OthersHelper().showToast('Ticket created successfully', Colors.black);
+        OthersHelper()
+            .showToast(jsonDecode(response.body)['message'], Colors.black);
 
-        Provider.of<SupportTicketService>(context, listen: false)
-            .addNewDataToTicketList(
-                subject,
-                jsonDecode(response.body)['ticket_info']['id'],
-                priority,
-                'open');
-        Navigator.pop(context);
+        // Provider.of<SupportTicketService>(context, listen: false)
+        //     .addNewDataToTicketList(
+        //         subject,
+        //         jsonDecode(response.body)['ticket_info']['id'],
+        //         priority,
+        //         'open');
+
+        if (jsonDecode(response.body)['ticket_info'] != null) {
+          await Provider.of<SupportTicketService>(context, listen: false)
+              .fetchTicketList(context, isrefresh: true);
+          Navigator.pop(context);
+        }
       } else {
         OthersHelper().showToast('Something went wrong', Colors.black);
       }

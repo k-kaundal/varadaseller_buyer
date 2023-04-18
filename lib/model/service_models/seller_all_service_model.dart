@@ -95,6 +95,7 @@ class Datum {
   Datum({
     this.id,
     this.sellerId,
+    this.sellerName,
     this.title,
     this.price,
     this.image,
@@ -109,6 +110,7 @@ class Datum {
 
   int? id;
   int? sellerId;
+  String? sellerName;
   String? title;
   double? price;
   String? image;
@@ -116,13 +118,14 @@ class Datum {
   int? serviceCityId;
   String? imageUrl;
   String? sellerImageUrl;
-  SellerForMobile sellerForMobile;
+  SellerForMobile? sellerForMobile;
   List<ReviewsForMobile> reviewsForMobile;
-  ServiceCityClass serviceCity;
+  ServiceCityClass? serviceCity;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         sellerId: json["seller_id"],
+        sellerName: json['seller_name'],
         title: json["title"],
         price: json["price"].toDouble(),
         image: json["image"],
@@ -130,10 +133,16 @@ class Datum {
         serviceCityId: json["service_city_id"],
         imageUrl: json["image_url"],
         sellerImageUrl: json["seller_image_url"],
-        sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
-        reviewsForMobile: List<ReviewsForMobile>.from(json["reviews_for_mobile"]
-            .map((x) => ReviewsForMobile.fromJson(x))),
-        serviceCity: ServiceCityClass.fromJson(json["service_city"]),
+        sellerForMobile: json["seller_for_mobile"] == null
+            ? null
+            : SellerForMobile.fromJson(json["seller_for_mobile"]),
+        reviewsForMobile: json["reviews_for_mobile"] is List
+            ? []
+            : List<ReviewsForMobile>.from(json["reviews_for_mobile"]
+                .map((x) => ReviewsForMobile.fromJson(x))),
+        serviceCity: json["service_city"] == null
+            ? null
+            : ServiceCityClass.fromJson(json["service_city"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -146,10 +155,10 @@ class Datum {
         "service_city_id": serviceCityId,
         "image_url": imageUrl,
         "seller_image_url": sellerImageUrl,
-        "seller_for_mobile": sellerForMobile.toJson(),
+        "seller_for_mobile": sellerForMobile?.toJson(),
         "reviews_for_mobile":
             List<dynamic>.from(reviewsForMobile.map((x) => x.toJson())),
-        "service_city": serviceCity.toJson(),
+        "service_city": serviceCity?.toJson(),
       };
 }
 
