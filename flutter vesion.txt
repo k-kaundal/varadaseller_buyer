@@ -1,4 +1,4 @@
-Flutter (Channel stable, 3.7.11, on macOS 13.0.1 22A400 darwin-arm64, locale en-BD)
+Flutter (Channel stable, 3.7.12, on macOS 13.0.1 22A400 darwin-arm64, locale en-BD)
 [✓] Android toolchain - develop for Android devices (Android SDK version 32.1.0-rc1)
 [✓] Xcode - develop for iOS and macOS (Xcode 14.2)
 [✓] Chrome - develop for the web

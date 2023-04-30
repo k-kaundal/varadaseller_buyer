@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/view/jobs/create_job_page.dart';
@@ -14,6 +15,7 @@ class MyJobsPageAppbar extends StatelessWidget {
     ConstantColors cc = ConstantColors();
     return AppBar(
       iconTheme: IconThemeData(color: cc.greyPrimary),
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
       title: Consumer<AppStringService>(
         builder: (context, ln, child) => Text(
           ln.getString('My jobs'),

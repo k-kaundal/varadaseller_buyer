@@ -20,24 +20,24 @@ class MyOrdersService with ChangeNotifier {
     "complete",
     "delivered",
     "cancelled",
-    "----"
+    "All"
   ];
-  var paymentStatusOptions = ['pending', 'complete', "----"];
-  var selectedPaymentSort = "----";
-  var selectedOrderSort = "----";
+  var paymentStatusOptions = ['pending', 'complete', "All"];
+  var selectedPaymentSort = "All";
+  var selectedOrderSort = "All";
 
   late int totalPages;
   int currentPage = 1;
 
   String get paymentStatusCode {
-    if (selectedPaymentSort == "----") {
+    if (selectedPaymentSort == "All") {
       return '';
     }
     return paymentStatusOptions.indexOf(selectedPaymentSort).toString();
   }
 
   String get orderStatusCode {
-    if (selectedOrderSort == "----") {
+    if (selectedOrderSort == "All") {
       return '';
     }
     return orderStatusOptions.indexOf(selectedOrderSort).toString();

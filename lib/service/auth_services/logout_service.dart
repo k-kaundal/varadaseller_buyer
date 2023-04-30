@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pusher_beams/pusher_beams.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/auth/login/login.dart';
@@ -40,6 +41,7 @@ class LogoutService with ChangeNotifier {
       );
       if (response.statusCode == 201) {
         notifyListeners();
+        await PusherBeams.instance.clearAllState();
 
         Navigator.pushAndRemoveUntil<dynamic>(
           context,

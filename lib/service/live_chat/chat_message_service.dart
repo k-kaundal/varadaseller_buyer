@@ -137,7 +137,8 @@ class ChatMessagesService with ChangeNotifier {
       messagesList.add({
         'id': dataList[i].id,
         'message': dataList[i].message,
-        'attachment': dataList[i].senderProfileImage,
+        'attachment':
+            dataList[i].imageUrl.isNotEmpty ? dataList[i].imageUrl : null,
         'fromUser': dataList[i].fromUser,
         'imagePicked':
             false //check if this image is just got picked from device in that case we will show it from device location
@@ -208,13 +209,14 @@ class ChatMessagesService with ChangeNotifier {
   }
 
   addNewMessage(message, imagePath, userId) async {
+    print(imagePath);
     messagesList.insert(0, {
       'id': '',
       'message': message,
-      'attachment': null,
+      'attachment': imagePath,
       'fromUser': userId,
-      'imagePicked':
-          false //check if this image is just got picked from device in that case we will show it from device location
+      'imagePicked': imagePath !=
+          null //check if this image is just got picked from device in that case we will show it from device location
     });
     notifyListeners();
   }

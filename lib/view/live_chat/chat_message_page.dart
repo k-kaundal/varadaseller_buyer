@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,8 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
+
+import '../tabs/settings/supports/image_big_preview.dart';
 
 class ChatMessagePage extends StatefulWidget {
   const ChatMessagePage({
@@ -250,10 +253,7 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                             itemCount: provider.messagesList.length,
                             shrinkWrap: true,
                             reverse: true,
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                              bottom: 10,
-                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             physics: physicsCommon,
                             itemBuilder: (context, index) {
                               return Row(
@@ -332,86 +332,89 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                                                           : Colors.white)),
                                                 ),
                                               ),
-                                              // provider.messagesList[index]
-                                              //             ['attachment'] !=
-                                              //         null
-                                              // ? Container(
-                                              //     margin: const EdgeInsets.only(
-                                              //         top: 11),
-                                              //     child: provider.messagesList[
-                                              //                     index]
-                                              //                 ['imagePicked'] ==
-                                              //             false
-                                              //         ? InkWell(
-                                              //             onTap: () {
-                                              //               Navigator.push(
-                                              //                 context,
-                                              //                 MaterialPageRoute<
-                                              //                     void>(
-                                              //                   builder: (BuildContext
-                                              //                           context) =>
-                                              //                       ImageBigPreviewPage(
-                                              //                     networkImgLink:
-                                              //                         provider.messagesList[
-                                              //                                 index]
-                                              //                             [
-                                              //                             'attachment'],
-                                              //                   ),
-                                              //                 ),
-                                              //               );
-                                              //             },
-                                              //             child:
-                                              //                 CachedNetworkImage(
-                                              //               imageUrl: provider
-                                              //                               .messagesList[
-                                              //                           index][
-                                              //                       'attachment'] ??
-                                              //                   placeHolderUrl,
-                                              //               placeholder:
-                                              //                   (context, url) {
-                                              //                 return Image.asset(
-                                              //                     'assets/images/placeholder.png');
-                                              //               },
-                                              //               height: 150,
-                                              //               width: screenWidth /
-                                              //                       2 -
-                                              //                   50,
-                                              //               fit:
-                                              //                   BoxFit.fitWidth,
-                                              //             ),
-                                              //           )
-                                              //         : InkWell(
-                                              //             onTap: () {
-                                              //               Navigator.push(
-                                              //                 context,
-                                              //                 MaterialPageRoute<
-                                              //                     void>(
-                                              //                   builder: (BuildContext
-                                              //                           context) =>
-                                              //                       ImageBigPreviewPage(
-                                              //                     assetImgLink:
-                                              //                         provider.messagesList[
-                                              //                                 index]
-                                              //                             [
-                                              //                             'attachment'],
-                                              //                   ),
-                                              //                 ),
-                                              //               );
-                                              //             },
-                                              //             child: Image.file(
-                                              //               File(provider
-                                              //                           .messagesList[
-                                              //                       index]
-                                              //                   ['attachment']),
-                                              //               height: 150,
-                                              //               width: screenWidth /
-                                              //                       2 -
-                                              //                   50,
-                                              //               fit: BoxFit.cover,
-                                              //             ),
-                                              //           ),
-                                              //   )
-                                              // : Container()
+                                              provider.messagesList[index]
+                                                          ['attachment'] !=
+                                                      null
+                                                  ? Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 11),
+                                                      child: provider.messagesList[
+                                                                      index][
+                                                                  'imagePicked'] ==
+                                                              false
+                                                          ? InkWell(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute<
+                                                                      void>(
+                                                                    builder: (BuildContext
+                                                                            context) =>
+                                                                        ImageBigPreviewPage(
+                                                                      networkImgLink:
+                                                                          provider.messagesList[index]
+                                                                              [
+                                                                              'attachment'],
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                imageUrl: provider
+                                                                            .messagesList[index]
+                                                                        [
+                                                                        'attachment'] ??
+                                                                    placeHolderUrl,
+                                                                placeholder:
+                                                                    (context,
+                                                                        url) {
+                                                                  return Image
+                                                                      .asset(
+                                                                          'assets/images/loading_image.png');
+                                                                },
+                                                                width:
+                                                                    screenWidth /
+                                                                            2 -
+                                                                        50,
+                                                                fit: BoxFit
+                                                                    .fitWidth,
+                                                              ),
+                                                            )
+                                                          : InkWell(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute<
+                                                                      void>(
+                                                                    builder: (BuildContext
+                                                                            context) =>
+                                                                        ImageBigPreviewPage(
+                                                                      assetImgLink:
+                                                                          provider.messagesList[index]
+                                                                              [
+                                                                              'attachment'],
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                              child: Image.file(
+                                                                File(provider
+                                                                            .messagesList[
+                                                                        index][
+                                                                    'attachment']),
+                                                                height: 150,
+                                                                width:
+                                                                    screenWidth /
+                                                                            2 -
+                                                                        50,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                    )
+                                                  : Container()
                                             ],
                                           ),
                                         ),
@@ -484,12 +487,12 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                         width: 15,
                       ),
                       //pick image =====>
-                      // IconButton(
-                      //     onPressed: () async {
-                      //       pickedImage = await provider.pickImage();
-                      //       setState(() {});
-                      //     },
-                      //     icon: const Icon(Icons.attachment)),
+                      IconButton(
+                          onPressed: () async {
+                            pickedImage = await provider.pickImage();
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.attachment)),
 
                       //send message button
                       const SizedBox(
@@ -505,7 +508,7 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                             provider.sendMessage(
                                 widget.receiverId,
                                 sendMessageController.text.trim(),
-                                null,
+                                pickedImage?.path,
                                 context);
                             //clear input field
                             sendMessageController.clear();

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/service/app_string_service.dart';
@@ -37,6 +38,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           iconTheme: IconThemeData(color: cc.greyPrimary),
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           title: Consumer<AppStringService>(
             builder: (context, asProvider, child) => Text(
               asProvider.getString('Support tickets'),

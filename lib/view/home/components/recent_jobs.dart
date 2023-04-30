@@ -68,8 +68,12 @@ class RecentJobs extends StatelessWidget {
                                       MaterialPageRoute<void>(
                                         builder: (BuildContext context) =>
                                             JobDetailsPage(
-                                          imageLink: provider
-                                              .recentJobsImages[i].imgUrl,
+                                          imageLink:
+                                              provider.recentJobsImages.length >
+                                                      i
+                                                  ? provider.recentJobsImages[i]
+                                                      .imgUrl
+                                                  : '',
                                           jobId: provider.recentJobs[i].id,
                                         ),
                                       ),
@@ -90,8 +94,12 @@ class RecentJobs extends StatelessWidget {
                                         sizedBoxCustom(13),
                                         MyJobsCardContents(
                                           cc: cc,
-                                          imageLink: provider
-                                              .recentJobsImages[i].imgUrl,
+                                          imageLink:
+                                              provider.recentJobsImages.length >
+                                                      i
+                                                  ? provider.recentJobsImages[i]
+                                                      .imgUrl
+                                                  : '',
                                           title: provider.recentJobs[i].title,
                                           viewCount:
                                               provider.recentJobs[i].view,

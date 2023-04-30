@@ -81,7 +81,7 @@ class PlaceOrderService with ChangeNotifier {
         Provider.of<AreaDropdownService>(context, listen: false).selectedAreaId;
     var country = Provider.of<CountryDropdownService>(context, listen: false)
         .selectedCountryId;
-    var selectedDate = DateFormat.yMMMMEEEEd().format(bProvider.selectedDate!);
+    var selectedDate;
     var schedule = bProvider.selectedTime;
     var coupon =
         Provider.of<CouponService>(context, listen: false).appliedCoupon;
@@ -91,6 +91,7 @@ class PlaceOrderService with ChangeNotifier {
         Provider.of<PersonalizationService>(context, listen: false).isOnline;
 
     if (isOnline == 0) {
+      selectedDate = DateFormat.yMMMMEEEEd().format(bProvider.selectedDate!);
       total = Provider.of<BookConfirmationService>(context, listen: false)
               .totalPriceAfterAllcalculation -
           Provider.of<BookConfirmationService>(context, listen: false).taxPrice;
@@ -411,6 +412,6 @@ class PlaceOrderService with ChangeNotifier {
         sellerId: sellerId,
         title: lnProvider.getString("You have received an order from") +
             " $username",
-        body: '-');
+        body: lnProvider.getString('Order id') + ': $orderId');
   }
 }

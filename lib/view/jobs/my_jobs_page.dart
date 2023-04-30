@@ -14,6 +14,8 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
+import '../../service/all_services_service.dart';
+
 class MyJobsPage extends StatefulWidget {
   const MyJobsPage({Key? key}) : super(key: key);
 
@@ -25,6 +27,8 @@ class _MyJobsPageState extends State<MyJobsPage> {
   @override
   void initState() {
     super.initState();
+    Provider.of<AllServicesService>(context, listen: false)
+        .fetchCategories(context);
   }
 
   final RefreshController refreshController =

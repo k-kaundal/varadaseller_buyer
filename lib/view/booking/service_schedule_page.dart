@@ -34,8 +34,10 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
   }
 
   int selectedShedule = 0;
-  var _selectedWeekday = firstThreeLetter(DateTime.now().toLocal(), "es");
-  var _monthAndDate = getMonthAndDate(DateTime.now().toLocal(), "es");
+  var _selectedWeekday = firstThreeLetter(
+      DateTime.now().toLocal(), rtlProvider.langSlug.substring(0, 2));
+  var _monthAndDate = getMonthAndDate(
+      DateTime.now().toLocal(), rtlProvider.langSlug.substring(0, 2));
   var _selectedTime;
   DateTime _selectedDate = DateTime.now();
 
