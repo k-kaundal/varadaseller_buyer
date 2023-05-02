@@ -16,7 +16,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatMessagesService with ChangeNotifier {
-  List messagesList = [];
+  var messagesList;
 
   bool isloading = false;
   bool sendLoading = false;
@@ -35,9 +35,8 @@ class ChatMessagesService with ChangeNotifier {
   }
 
   setMessageListDefault() {
-    messagesList = [];
+    messagesList = null;
     currentPage = 1;
-    notifyListeners();
   }
 
   setLoadingTrue() {
@@ -77,12 +76,9 @@ class ChatMessagesService with ChangeNotifier {
     if (isrefresh) {
       //making the list empty first to show loading bar (we are showing loading bar while the product list is empty)
       //we are make the list empty when the sub category or brand is selected because then the refresh is true
-      messagesList = [];
+      messagesList = null;
 
-      notifyListeners();
-
-      Provider.of<ChatMessagesService>(context, listen: false)
-          .setCurrentPage(currentPage);
+      setCurrentPage(1);
     } else {}
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -110,29 +106,28 @@ class ChatMessagesService with ChangeNotifier {
 
         setTotalPage(data.messages.lastPage);
 
-        if (isrefresh) {
-          print('refresh true');
-          //if refreshed, then remove all service from list and insert new data
-          //make the list empty first so that existing data doesn't stay
-          // setServiceList(data.tickets.data, false);
-        } else {
-          print('add new data');
+        print('add new data');
 
-          //else add new data
-          setMessageList(data.messages.data);
-        }
+        //else add new data
+
+        setMessageList(data.messages.data, receiverId);
 
         currentPage++;
         setCurrentPage(currentPage);
         return true;
       } else {
+        messagesList ??= [];
         print(response.body);
         return false;
       }
     }
   }
 
-  setMessageList(dataList) {
+  setMessageList(dataList, userId) {
+    if (userId.toString() != chatSellerId.toString()) {
+      return;
+    }
+    messagesList ??= [];
     for (int i = 0; i < dataList.length; i++) {
       messagesList.add({
         'id': dataList[i].id,

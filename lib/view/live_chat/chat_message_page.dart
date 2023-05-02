@@ -45,6 +45,8 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
         Provider.of<PushNotificationService>(context, listen: false).secret;
     cluster = Provider.of<PushNotificationService>(context, listen: false)
         .pusherCluster;
+    Provider.of<ChatMessagesService>(context, listen: false)
+        .fetchMessages(context, receiverId: widget.receiverId, isrefresh: true);
 
     connectToPusher();
     channelName = 'private-chat-message.${widget.currentUserId}';
@@ -194,12 +196,6 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
         },
         child:
             Consumer<ChatMessagesService>(builder: (context, provider, child) {
-          if (provider.messagesList.isNotEmpty &&
-              provider.sendLoading == false) {
-            Future.delayed(const Duration(milliseconds: 500), () {
-              _scrollDown();
-            });
-          }
           return Stack(
             children: [
               provider.isloading == false
@@ -211,22 +207,19 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                         controller: refreshController,
                         reverse: true,
                         enablePullUp: true,
-                        enablePullDown:
-                            context.watch<ChatMessagesService>().currentPage > 1
-                                ? false
-                                : true,
-                        onRefresh: () async {
-                          final result = await Provider.of<ChatMessagesService>(
-                                  context,
-                                  listen: false)
-                              .fetchMessages(context,
-                                  receiverId: widget.receiverId);
-                          if (result) {
-                            refreshController.refreshCompleted();
-                          } else {
-                            refreshController.refreshFailed();
-                          }
-                        },
+                        enablePullDown: false,
+                        // onRefresh: () async {
+                        //   final result = await Provider.of<ChatMessagesService>(
+                        //           context,
+                        //           listen: false)
+                        //       .fetchMessages(context,
+                        //           receiverId: widget.receiverId);
+                        //   if (result) {
+                        //     refreshController.refreshCompleted();
+                        //   } else {
+                        //     refreshController.refreshFailed();
+                        //   }
+                        // },
                         onLoading: () async {
                           final result = await Provider.of<ChatMessagesService>(
                                   context,
@@ -247,205 +240,207 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                             });
                           }
                         },
-                        child: Container(
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            itemCount: provider.messagesList.length,
-                            shrinkWrap: true,
-                            reverse: true,
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            physics: physicsCommon,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                mainAxisAlignment: provider.messagesList[index]
-                                            ['fromUser'] !=
-                                        widget.currentUserId
-                                    ? MainAxisAlignment.start
-                                    : MainAxisAlignment.end,
-                                children: [
-                                  Expanded(
-                                    child: Consumer<RtlService>(
-                                      builder: (context, rtlP, child) =>
-                                          Container(
-                                        padding: EdgeInsets.only(
-                                            left: provider.messagesList[index]
-                                                        ['fromUser'] !=
-                                                    widget.currentUserId
-                                                ? rtlP.direction == 'ltr'
-                                                    ? 10
-                                                    : 90
-                                                : rtlP.direction == 'ltr'
-                                                    ? 90
-                                                    : 10,
-                                            right: provider.messagesList[index]
-                                                        ['type'] ==
-                                                    "seller"
-                                                ? rtlP.direction == 'ltr'
-                                                    ? 90
-                                                    : 10
-                                                : rtlP.direction == 'ltr'
-                                                    ? 10
-                                                    : 90,
-                                            top: 10,
-                                            bottom: 10),
-                                        child: Align(
-                                          alignment:
-                                              (provider.messagesList[index]
-                                                          ['fromUser'] !=
-                                                      widget.currentUserId
-                                                  ? Alignment.topLeft
-                                                  : Alignment.topRight),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                (provider.messagesList[index]
-                                                            ['fromUser'] !=
-                                                        widget.currentUserId
-                                                    ? CrossAxisAlignment.start
-                                                    : CrossAxisAlignment.end),
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  color: (provider.messagesList[
-                                                                  index]
-                                                              ['fromUser'] !=
+                        child: provider.messagesList == null
+                            ? OthersHelper().showLoading(cc.primaryColor)
+                            : Container(
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  itemCount: provider.messagesList.length,
+                                  shrinkWrap: true,
+                                  reverse: true,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  physics: physicsCommon,
+                                  itemBuilder: (context, index) {
+                                    final messageData =
+                                        provider.messagesList[index];
+                                    return Row(
+                                      mainAxisAlignment:
+                                          messageData['fromUser'] !=
+                                                  widget.currentUserId
+                                              ? MainAxisAlignment.start
+                                              : MainAxisAlignment.end,
+                                      children: [
+                                        Expanded(
+                                          child: Consumer<RtlService>(
+                                            builder: (context, rtlP, child) =>
+                                                Container(
+                                              padding: EdgeInsets.only(
+                                                  left: messageData[
+                                                              'fromUser'] !=
                                                           widget.currentUserId
-                                                      ? Colors.grey.shade200
-                                                      : cc.primaryColor),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                //message =====>
-                                                child: Text(
-                                                  provider.messagesList[index]
-                                                          ['message']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: (provider.messagesList[
-                                                                      index][
+                                                      ? rtlP.direction == 'ltr'
+                                                          ? 10
+                                                          : 90
+                                                      : rtlP.direction == 'ltr'
+                                                          ? 90
+                                                          : 10,
+                                                  right: messageData['type'] ==
+                                                          "seller"
+                                                      ? rtlP.direction == 'ltr'
+                                                          ? 90
+                                                          : 10
+                                                      : rtlP.direction == 'ltr'
+                                                          ? 10
+                                                          : 90,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              child: Align(
+                                                alignment:
+                                                    (messageData['fromUser'] !=
+                                                            widget.currentUserId
+                                                        ? Alignment.topLeft
+                                                        : Alignment.topRight),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      (messageData[
                                                                   'fromUser'] !=
                                                               widget
                                                                   .currentUserId
-                                                          ? Colors.grey[800]
-                                                          : Colors.white)),
+                                                          ? CrossAxisAlignment
+                                                              .start
+                                                          : CrossAxisAlignment
+                                                              .end),
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        color: (messageData[
+                                                                    'fromUser'] !=
+                                                                widget
+                                                                    .currentUserId
+                                                            ? Colors
+                                                                .grey.shade200
+                                                            : cc.primaryColor),
+                                                      ),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      //message =====>
+                                                      child: Text(
+                                                        messageData['message']
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: (messageData[
+                                                                        'fromUser'] !=
+                                                                    widget
+                                                                        .currentUserId
+                                                                ? Colors
+                                                                    .grey[800]
+                                                                : Colors
+                                                                    .white)),
+                                                      ),
+                                                    ),
+                                                    messageData['attachment'] !=
+                                                            null
+                                                        ? Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 11),
+                                                            child: messageData[
+                                                                        'imagePicked'] ==
+                                                                    false
+                                                                ? InkWell(
+                                                                    onTap: () {
+                                                                      Navigator
+                                                                          .push(
+                                                                        context,
+                                                                        MaterialPageRoute<
+                                                                            void>(
+                                                                          builder: (BuildContext context) =>
+                                                                              ImageBigPreviewPage(
+                                                                            networkImgLink:
+                                                                                messageData['attachment'],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    child:
+                                                                        CachedNetworkImage(
+                                                                      imageUrl: provider.messagesList[index]
+                                                                              [
+                                                                              'attachment'] ??
+                                                                          placeHolderUrl,
+                                                                      placeholder:
+                                                                          (context,
+                                                                              url) {
+                                                                        return Image.asset(
+                                                                            'assets/images/loading_image.png');
+                                                                      },
+                                                                      width: screenWidth /
+                                                                              2 -
+                                                                          50,
+                                                                      fit: BoxFit
+                                                                          .fitWidth,
+                                                                    ),
+                                                                  )
+                                                                : InkWell(
+                                                                    onTap: () {
+                                                                      Navigator
+                                                                          .push(
+                                                                        context,
+                                                                        MaterialPageRoute<
+                                                                            void>(
+                                                                          builder: (BuildContext context) =>
+                                                                              ImageBigPreviewPage(
+                                                                            assetImgLink:
+                                                                                messageData['attachment'],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    child: Image
+                                                                        .file(
+                                                                      File(provider
+                                                                              .messagesList[index]
+                                                                          [
+                                                                          'attachment']),
+                                                                      height:
+                                                                          150,
+                                                                      width: screenWidth /
+                                                                              2 -
+                                                                          50,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    ),
+                                                                  ),
+                                                          )
+                                                        : Container()
+                                                  ],
                                                 ),
                                               ),
-                                              provider.messagesList[index]
-                                                          ['attachment'] !=
-                                                      null
-                                                  ? Container(
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              top: 11),
-                                                      child: provider.messagesList[
-                                                                      index][
-                                                                  'imagePicked'] ==
-                                                              false
-                                                          ? InkWell(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute<
-                                                                      void>(
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        ImageBigPreviewPage(
-                                                                      networkImgLink:
-                                                                          provider.messagesList[index]
-                                                                              [
-                                                                              'attachment'],
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              child:
-                                                                  CachedNetworkImage(
-                                                                imageUrl: provider
-                                                                            .messagesList[index]
-                                                                        [
-                                                                        'attachment'] ??
-                                                                    placeHolderUrl,
-                                                                placeholder:
-                                                                    (context,
-                                                                        url) {
-                                                                  return Image
-                                                                      .asset(
-                                                                          'assets/images/loading_image.png');
-                                                                },
-                                                                width:
-                                                                    screenWidth /
-                                                                            2 -
-                                                                        50,
-                                                                fit: BoxFit
-                                                                    .fitWidth,
-                                                              ),
-                                                            )
-                                                          : InkWell(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute<
-                                                                      void>(
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        ImageBigPreviewPage(
-                                                                      assetImgLink:
-                                                                          provider.messagesList[index]
-                                                                              [
-                                                                              'attachment'],
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              child: Image.file(
-                                                                File(provider
-                                                                            .messagesList[
-                                                                        index][
-                                                                    'attachment']),
-                                                                height: 150,
-                                                                width:
-                                                                    screenWidth /
-                                                                            2 -
-                                                                        50,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              ),
-                                                            ),
-                                                    )
-                                                  : Container()
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
 
-                                  // provider.messagesList[index].type == "seller"
-                                  //     ? Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //           right: 13,
-                                  //         ),
-                                  //         width: 15,
-                                  //         height: 15,
-                                  //         decoration: const BoxDecoration(
-                                  //             shape: BoxShape.circle,
-                                  //             color: Colors.white),
-                                  //         child: ClipRRect(
-                                  //           borderRadius: BorderRadius.circular(100),
-                                  //           child: Image.network(
-                                  //             'https://cdn.pixabay.com/photo/2016/09/08/13/58/desert-1654439__340.jpg',
-                                  //             fit: BoxFit.cover,
-                                  //           ),
-                                  //         ),
-                                  //       )
-                                  //     : Container(),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
+                                        // messageData.type == "seller"
+                                        //     ? Container(
+                                        //         margin: const EdgeInsets.only(
+                                        //           right: 13,
+                                        //         ),
+                                        //         width: 15,
+                                        //         height: 15,
+                                        //         decoration: const BoxDecoration(
+                                        //             shape: BoxShape.circle,
+                                        //             color: Colors.white),
+                                        //         child: ClipRRect(
+                                        //           borderRadius: BorderRadius.circular(100),
+                                        //           child: Image.network(
+                                        //             'https://cdn.pixabay.com/photo/2016/09/08/13/58/desert-1654439__340.jpg',
+                                        //             fit: BoxFit.cover,
+                                        //           ),
+                                        //         ),
+                                        //       )
+                                        //     : Container(),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
                         footer: OthersHelper().commonRefreshFooter(context),
                       ),
                     )
@@ -463,11 +458,35 @@ class _ChatMessagePageState extends State<ChatMessagePage> {
                   child: Row(
                     children: <Widget>[
                       pickedImage != null
-                          ? Image.file(
-                              File(pickedImage!.path),
-                              height: 40,
-                              width: 40,
-                              fit: BoxFit.cover,
+                          ? GestureDetector(
+                              onTap: () {
+                                pickedImage = null;
+                                setState(() {});
+                              },
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(4),
+                                    child: Image.file(
+                                      File(pickedImage!.path),
+                                      height: 36,
+                                      width: 36,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor:
+                                        cc.warningColor.withOpacity(1),
+                                    child: const Icon(
+                                      Icons.close,
+                                      size: 10,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
+                              ),
                             )
                           : Container(),
                       const SizedBox(
