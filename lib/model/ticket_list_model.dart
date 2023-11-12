@@ -63,19 +63,29 @@ class Tickets {
   int? total;
 
   factory Tickets.fromJson(Map<String, dynamic> json) => Tickets(
-        currentPage: json["current_page"],
+        currentPage: int.parse(json["current_page"].toString() == "null"
+            ? "0"
+            : json["current_page"].toString()),
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         firstPageUrl: json["first_page_url"],
-        from: json["from"],
-        lastPage: json["last_page"],
+        from: int.parse(
+            json["from"].toString() == "null" ? "0" : json["from"].toString()),
+        lastPage: int.parse(json["last_page"].toString() == "null"
+            ? "0"
+            : json["last_page"].toString()),
         lastPageUrl: json["last_page_url"],
         links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
         nextPageUrl: json["next_page_url"],
         path: json["path"],
-        perPage: json["per_page"],
+        perPage: int.parse(json["per_page"].toString() == "null"
+            ? "0"
+            : json["per_page"].toString()),
         prevPageUrl: json["prev_page_url"],
-        to: json["to"],
-        total: json["total"],
+        to: int.parse(
+            json["to"].toString() == "null" ? "0" : json["to"].toString()),
+        total: int.parse(json["total"].toString() == "null"
+            ? "0"
+            : json["total"].toString()),
       );
 
   Map<String, dynamic> toJson() => {

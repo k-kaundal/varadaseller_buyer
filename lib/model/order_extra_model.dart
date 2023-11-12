@@ -54,14 +54,14 @@ class ExtraServiceList {
   factory ExtraServiceList.fromJson(Map<String, dynamic> json) =>
       ExtraServiceList(
           id: json["id"],
-          orderId: json["order_id"],
+          orderId: int.parse(json["order_id"].toString()=="null"?"0":json["order_id"].toString()),
           title: json["title"],
-          quantity: json["quantity"],
-          price: json["price"],
-          tax: json["tax"].toDouble(),
-          subTotal: json["sub_total"],
-          total: json["total"].toDouble(),
-          status: json["status"]);
+          quantity: int.parse(json["quantity"].toString()=="null"?"0":json["quantity"].toString()),
+          price: int.parse(json["price"].toString()=="null"?"0":json["price"].toString()),
+          tax: int.parse(json["tax"].toString()=="null"?"0":json["tax"].toString()).toDouble(),
+          subTotal: int.parse(json["sub_total"].toString()=="null"?"0":json["sub_total"].toString()),
+          total: int.parse(json["total"].toString()=="null"?"0":json["total"].toString()).toDouble(),
+          status: int.parse(json["status"].toString()=="null"?"0":json["status"].toString()));
 
   Map<String, dynamic> toJson() => {
         "id": id,

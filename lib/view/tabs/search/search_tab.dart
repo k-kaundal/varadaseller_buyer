@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
-import 'package:qixer/view/search/components/search_bar.dart';
+import 'package:qixer/view/search/components/search_bar.dart' as sb;
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
@@ -48,7 +48,7 @@ class _SearchTabState extends State<SearchTab> {
                         CommonHelper().titleCommon(
                             asProvider.getString('Search services')),
                         sizedBox20(),
-                        const SearchBar(),
+                        const sb.SearchBar(),
                       ]),
                 ),
               ),

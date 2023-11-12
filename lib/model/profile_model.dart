@@ -49,6 +49,8 @@ class UserDetails {
     this.phone,
     this.address,
     this.about,
+    this.googleId,
+    this.facebookId,
     this.countryId,
     this.serviceCity,
     this.serviceArea,
@@ -67,6 +69,8 @@ class UserDetails {
   String? address;
   dynamic about;
   int? countryId;
+  dynamic googleId;
+  dynamic facebookId;
   String? serviceCity;
   String? serviceArea;
   String? postCode;
@@ -83,9 +87,11 @@ class UserDetails {
         phone: json["phone"],
         address: json["address"],
         about: json["about"],
-        countryId: json["country_id"],
+        countryId: int.parse(json["country_id"]),
         serviceCity: json["service_city"],
         serviceArea: json["service_area"],
+        googleId: json["google_id"],
+        facebookId: json["facebook_id"],
         postCode: json["post_code"],
         image: json["image"],
         countryCode: json["country_code"],
@@ -131,9 +137,9 @@ class Area {
   factory Area.fromJson(Map<String?, dynamic>? json) => Area(
         id: json?["id"],
         serviceArea: json?["service_area"],
-        serviceCityId: json?["service_city_id"],
-        countryId: json?["country_id"],
-        status: json?["status"],
+        serviceCityId: int.parse(json?["service_city_id"]),
+        countryId: int.parse(json?["country_id"]),
+        status: int.parse(json?["status"]),
       );
 
   Map<String?, dynamic>? toJson() => {
@@ -161,8 +167,8 @@ class City {
   factory City.fromJson(Map<String?, dynamic>? json) => City(
         id: json?["id"],
         serviceCity: json?["service_city"],
-        countryId: json?["country_id"],
-        status: json?["status"],
+        countryId: int.parse(json?["country_id"]),
+        status: int.parse(json?["status"]),
       );
 
   Map<String?, dynamic>? toJson() => {
@@ -187,7 +193,7 @@ class Country {
   factory Country.fromJson(Map<String?, dynamic>? json) => Country(
         id: json?["id"],
         country: json?["country"],
-        status: json?["status"],
+        status: int.parse(json?["status"]),
       );
 
   Map<String?, dynamic>? toJson() => {

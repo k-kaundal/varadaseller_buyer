@@ -36,7 +36,7 @@ class BookConfirmationService with ChangeNotifier {
   includedTotalPrice(List includedList) {
     var total = 0.0;
     for (int i = 0; i < includedList.length; i++) {
-      total = total + (includedList[i]['price'] * includedList[i]['qty']);
+      total = total + (int.parse(includedList[i]['price']) * includedList[i]['qty']);
     }
     return total;
   }

@@ -65,10 +65,10 @@ class AllMessage {
 
   factory AllMessage.fromJson(Map<String, dynamic> json) => AllMessage(
         id: json["id"],
-        reportId: json["report_id"],
-        adminId: json["admin_id"],
-        sellerId: json["seller_id"],
-        buyerId: json["buyer_id"],
+        reportId: int.parse(json["report_id"].toString()=="null"?"0":json["report_id"].toString()),
+        adminId: int.parse(json["admin_id"].toString()=="null"?"0":json["admin_id"].toString()),
+        sellerId: int.parse(json["seller_id"].toString()=="null"?"0":json["seller_id"].toString()),
+        buyerId: int.parse(json["buyer_id"].toString()=="null"?"0":json["buyer_id"].toString()),
         message: json["message"],
         type: json["type"],
         notify: json["notify"],

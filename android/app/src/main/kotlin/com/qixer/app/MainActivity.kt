@@ -1,4 +1,4 @@
-package com.qixer.app
+package com.xgenious.qixer_buyer
 
 import io.flutter.embedding.android.FlutterActivity
 

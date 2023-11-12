@@ -144,7 +144,7 @@ class ServiceBenifit {
 
   factory ServiceBenifit.fromJson(Map<String, dynamic> json) => ServiceBenifit(
         id: json["id"],
-        serviceId: json["service_id"],
+        serviceId: int.parse(json["service_id"].toString()=="null"?"0":json["service_id"].toString()),
         benifits: json["benifits"],
       );
 
@@ -202,22 +202,22 @@ class ServiceDetails {
 
   factory ServiceDetails.fromJson(Map<String, dynamic> json) => ServiceDetails(
         id: json["id"],
-        categoryId: json["category_id"],
-        subcategoryId: json["subcategory_id"],
-        sellerId: json["seller_id"],
-        serviceCityId: json["service_city_id"],
+        categoryId: int.parse(json["category_id"].toString()=="null"?"0":json["category_id"].toString()),
+        subcategoryId: int.parse(json["subcategory_id"].toString()=="null"?"0":json["subcategory_id"].toString()),
+        sellerId: int.parse(json["seller_id"].toString()=="null"?"0":json["seller_id"].toString()),
+        serviceCityId: int.parse(json["service_city_id"].toString()=="null"?"0":json["service_city_id"].toString()),
         title: json["title"],
         slug: json["slug"],
         description: json["description"],
         image: json["image"],
         video: json["video"],
-        status: json["status"],
-        isServiceOn: json["is_service_on"],
-        price: json["price"],
-        tax: json["tax"],
-        view: json["view"],
-        soldCount: json["sold_count"],
-        featured: json["featured"],
+        status: int.parse(json["status"].toString()=="null"?"0":json["status"].toString()),
+        isServiceOn: int.parse(json["is_service_on"].toString()=="null"?"0":json["is_service_on"].toString()),
+        price: int.parse(json["price"].toString()=="null"?"0":json["price"].toString()),
+        tax: int.parse(json["tax"].toString()=="null"?"0":json["tax"].toString()),
+        view: int.parse(json["view"].toString()=="null"?"0":json["view"].toString()),
+        soldCount: int.parse(json["sold_count"].toString()=="null"?"0":json["sold_count"].toString()),
+        featured: int.parse(json["featured"].toString()=="null"?"0":json["featured"].toString()),
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
         reviewsForMobile: List<ServiceReview>.from(
             json["reviews_for_mobile"].map((x) => ServiceReview.fromJson(x))),
@@ -306,8 +306,8 @@ class ServiceFaq {
 
   factory ServiceFaq.fromJson(Map<String, dynamic> json) => ServiceFaq(
         id: json["id"],
-        serviceId: json["service_id"],
-        sellerId: json["seller_id"],
+        serviceId: int.parse(json["service_id"].toString()=="null"?"0":json["service_id"].toString()),
+        sellerId: int.parse(json["seller_id"].toString()=="null"?"0":json["seller_id"].toString()),
         title: json["title"],
         description: json["description"],
       );
@@ -361,7 +361,7 @@ class SellerForMobile {
         id: json["id"],
         name: json["name"],
         image: json["image"],
-        countryId: json["country_id"],
+        countryId: int.parse(json["country_id"].toString()=="null"?"0":json["country_id"].toString()),
         country:
             json["country"] == null ? null : Country.fromJson(json["country"]),
       );
@@ -389,7 +389,7 @@ class Country {
   factory Country.fromJson(Map<String, dynamic> json) => Country(
         id: json["id"],
         country: json["country"],
-        status: json["status"],
+        status: int.parse(json["status"].toString()=="null"?"0":json["status"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
@@ -412,7 +412,7 @@ class ServiceInclude {
 
   factory ServiceInclude.fromJson(Map<String, dynamic> json) => ServiceInclude(
         id: json["id"],
-        serviceId: json["service_id"],
+        serviceId: int.parse(json["service_id"].toString()=="null"?"0":json["service_id"].toString()),
         includeServiceTitle: json["include_service_title"],
       );
 

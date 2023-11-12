@@ -56,12 +56,12 @@ class SearchBar extends StatelessWidget {
                               }
                             },
                             onChanged: (value) {
-                              if (value.isNotEmpty) {
-                                provider.fetchService(
-                                  context,
-                                  searchText: value,
-                                );
-                              }
+                              // if (value.isNotEmpty) {
+                              provider.fetchService(
+                                context,
+                                searchText: value,
+                              );
+                              // }
                             },
                             style: const TextStyle(fontSize: 14),
                             decoration: InputDecoration(

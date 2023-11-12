@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -148,13 +149,16 @@ class PersonalizationService with ChangeNotifier {
       var response = await http.get(
           Uri.parse('$baseApi/service-list/service-book/$serviceId'),
           headers: header);
+      print('$baseApi/service-list/service-book/$serviceId');
+
+      log(response.body.toString());
 
       if (response.statusCode == 201) {
         var data = ServiceExtraModel.fromJson(jsonDecode(response.body));
         isOnline = data.service.isServiceOnline ?? 0;
         print('tax is ${data.service.tax}');
 
-        tax = (data.service.tax).toDouble() ?? 0.0;
+        tax = (int.parse(data.service.tax)).toDouble() ?? 0.0;
 
         //adding included list
         for (int i = 0; i < data.service.serviceInclude.length; i++) {
@@ -180,7 +184,7 @@ class PersonalizationService with ChangeNotifier {
         notifyListeners();
         setLoadingFalse();
       } else {
-        serviceExtraData == 'error';
+        serviceExtraData = 'error';
         setLoadingFalse();
         OthersHelper().showToast('Something went wrong', Colors.black);
         notifyListeners();

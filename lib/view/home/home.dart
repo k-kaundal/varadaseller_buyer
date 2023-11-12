@@ -18,6 +18,7 @@ import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
+import '../../service/searchbar_with_dropdown_service.dart';
 import '../utils/constant_styles.dart';
 import 'components/section_title.dart';
 
@@ -143,6 +144,12 @@ class _HomepageState extends State<Homepage> {
                       margin: const EdgeInsets.only(bottom: 15),
                       child: InkWell(
                           onTap: () {
+                            Provider.of<SearchBarWithDropdownService>(context,
+                                    listen: false)
+                                .resetSearchParams();
+                            Provider.of<SearchBarWithDropdownService>(context,
+                                    listen: false)
+                                .fetchService(context);
                             Navigator.push(
                                 context,
                                 PageTransition(

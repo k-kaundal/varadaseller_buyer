@@ -128,27 +128,27 @@ class Service {
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
         id: json["id"],
-        categoryId: json["category_id"],
-        subcategoryId: json["subcategory_id"],
-        sellerId: json["seller_id"],
-        serviceCityId: json["service_city_id"],
+        categoryId: int.parse(json["category_id"].toString()=="null"?"0":json["category_id"].toString()),
+        subcategoryId: int.parse(json["subcategory_id"].toString()=="null"?"0":json["subcategory_id"].toString()),
+        sellerId: int.parse(json["seller_id"].toString()=="null"?"0":json["seller_id"].toString()),
+        serviceCityId: int.parse(json["service_city_id"].toString()=="null"?"0":json["service_city_id"].toString()),
         title: json["title"],
         slug: json["slug"],
         description: json["description"],
         image: json["image"],
         imageGallery: json["image_gallery"],
         video: json["video"],
-        status: json["status"],
-        isServiceOn: json["is_service_on"],
-        price: json["price"].toDouble(),
-        onlineServicePrice: json["online_service_price"],
-        deliveryDays: json["delivery_days"],
-        revision: json["revision"],
-        isServiceOnline: json["is_service_online"],
-        tax: json["tax"].toDouble(),
-        view: json["view"],
-        soldCount: json["sold_count"],
-        featured: json["featured"],
+        status: int.parse(json["status"].toString()=="null"?"0":json["status"].toString()),
+        isServiceOn: int.parse(json["is_service_on"].toString()=="null"?"0":json["is_service_on"].toString()),
+        price: int.parse(json["price"].toString()=="null"?"0":json["price"].toString()).toDouble(),
+        onlineServicePrice: int.parse(json["online_service_price"].toString()=="null"?"0":json["online_service_price"].toString()),
+        deliveryDays: int.parse(json["delivery_days"].toString()=="null"?"0":json["delivery_days"].toString()),
+        revision: int.parse(json["revision"].toString()=="null"?"0":json["revision"].toString()),
+        isServiceOnline: int.parse(json["is_service_online"].toString()=="null"?"0":json["is_service_online"].toString()),
+        tax: int.parse(json["tax"].toString()=="null"?"0":json["tax"].toString()).toDouble(),
+        view: int.parse(json["view"].toString()=="null"?"0":json["view"].toString()),
+        soldCount: int.parse(json["sold_count"].toString()=="null"?"0":json["sold_count"].toString()),
+        featured: int.parse(json["featured"].toString()=="null"?"0":json["featured"].toString()),
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
         reviewsForMobile: List<ReviewsForMobile>.from(json["reviews_for_mobile"]
             .map((x) => ReviewsForMobile.fromJson(x))),
@@ -205,10 +205,10 @@ class ReviewsForMobile {
   factory ReviewsForMobile.fromJson(Map<String, dynamic> json) =>
       ReviewsForMobile(
         id: json["id"],
-        serviceId: json["service_id"],
-        rating: json["rating"],
+        serviceId: int.parse(json["service_id"].toString()=="null"?"0":json["service_id"].toString()),
+        rating: int.parse(json["rating"].toString()=="null"?"0":json["rating"].toString()),
         message: json["message"],
-        buyerId: json["buyer_id"],
+        buyerId: int.parse(json["buyer_id"].toString()=="null"?"0":json["buyer_id"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
@@ -238,7 +238,7 @@ class SellerForMobile {
         id: json["id"],
         name: json["name"],
         image: json["image"],
-        countryId: json["country_id"],
+        countryId: int.parse(json["country_id"].toString()=="null"?"0":json["country_id"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
@@ -266,8 +266,8 @@ class ServiceCityClass {
       ServiceCityClass(
         id: json["id"],
         serviceCity: json["service_city"],
-        countryId: json["country_id"],
-        status: json["status"],
+        countryId: int.parse(json["country_id"].toString()=="null"?"0":json["country_id"].toString()),
+        status: int.parse(json["status"].toString()=="null"?"0":json["status"].toString()),
       );
 
   Map<String, dynamic> toJson() => {

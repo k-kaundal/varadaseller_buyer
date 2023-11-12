@@ -67,8 +67,8 @@ class LatestService {
         id: json["id"],
         title: json["title"],
         image: json["image"],
-        price: json["price"],
-        sellerId: json["seller_id"],
+        price: int.parse(json["price"].toString()=="null"?"0":json["price"].toString()),
+        sellerId: int.parse(json["seller_id"].toString()=="null"?"0":json["seller_id"].toString()),
         reviewsForMobile: List<ReviewsForMobile>.from(json["reviews_for_mobile"]
             .map((x) => ReviewsForMobile.fromJson(x))),
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
@@ -161,7 +161,7 @@ class SellerForMobile {
         id: json["id"],
         name: json["name"],
         image: json["image"],
-        countryId: json["country_id"],
+        countryId: int.parse(json["country_id"].toString()=="null"?"0":json["country_id"].toString()),
       );
 
   Map<String, dynamic> toJson() => {

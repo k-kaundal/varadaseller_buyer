@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-double screenPadding = 25;
+double screenPadding = 22;
 
 sizedBox20() {
   return const SizedBox(

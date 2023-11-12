@@ -10,6 +10,7 @@ class OrderSort extends StatelessWidget {
   const OrderSort({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Consumer<MyOrdersService>(builder: (context, moProvider, child) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -20,7 +21,7 @@ class OrderSort extends StatelessWidget {
               CommonHelper().labelCommon(lnProvider.getString('Order') + ' ',
                   margin: EdgeInsets.zero),
               SizedBox(
-                width: MediaQuery.of(context).size.width / 3.3,
+                width: MediaQuery.of(context).size.width / 4.0,
                 child: CustomDropdown(
                   lnProvider.getString("Select status"),
                   moProvider.orderStatusOptions,

@@ -44,7 +44,9 @@ class Day {
   factory Day.fromJson(Map<String, dynamic> json) => Day(
         id: json["id"],
         day: json["day"],
-        totalDay: json["total_day"],
+        totalDay: int.parse(json["total_day"].toString() == "null"
+            ? "0"
+            : json["total_day"].toString()),
       );
 
   Map<String, dynamic> toJson() => {

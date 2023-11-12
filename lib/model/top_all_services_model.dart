@@ -101,16 +101,22 @@ class TopServices {
         currentPage: json["current_page"],
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         firstPageUrl: json["first_page_url"],
-        from: json["from"],
-        lastPage: json["last_page"],
+        from: int.parse(
+            json["from"].toString() == "null" ? "0" : json["from"].toString()),
+        lastPage: int.parse(json["last_page"].toString() == "null"
+            ? "0"
+            : json["last_page"].toString()),
         lastPageUrl: json["last_page_url"],
         links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
         nextPageUrl: json["next_page_url"],
         path: json["path"],
         perPage: json["per_page"],
         prevPageUrl: json["prev_page_url"],
-        to: json["to"],
-        total: json["total"],
+        to: int.parse(
+            json["to"].toString() == "null" ? "0" : json["to"].toString()),
+        total: int.parse(json["total"].toString() == "null"
+            ? "0"
+            : json["total"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
@@ -153,8 +159,13 @@ class Datum {
         id: json["id"],
         title: json["title"],
         image: json["image"],
-        price: json["price"].toDouble(),
-        sellerId: json["seller_id"],
+        price: int.parse(json["price"].toString() == "null"
+                ? "0"
+                : json["price"].toString())
+            .toDouble(),
+        sellerId: int.parse(json["seller_id"].toString() == "null"
+            ? "0"
+            : json["seller_id"].toString()),
         reviewsForMobile: List<ReviewsForMobile>.from(json["reviews_for_mobile"]
             .map((x) => ReviewsForMobile.fromJson(x))),
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
@@ -192,10 +203,16 @@ class ReviewsForMobile {
   factory ReviewsForMobile.fromJson(Map<String, dynamic> json) =>
       ReviewsForMobile(
         id: json["id"],
-        serviceId: json["service_id"],
-        rating: json["rating"],
+        serviceId: int.parse(json["service_id"].toString() == "null"
+            ? "0"
+            : json["service_id"].toString()),
+        rating: int.parse(json["rating"].toString() == "null"
+            ? "0"
+            : json["rating"].toString()),
         message: json["message"],
-        buyerId: json["buyer_id"],
+        buyerId: int.parse(json["buyer_id"].toString() == "null"
+            ? "0"
+            : json["buyer_id"].toString()),
         buyerForMobile: json["buyer_for_mobile"] == null
             ? null
             : BuyerForMobile.fromJson(json["buyer_for_mobile"]),
@@ -249,7 +266,9 @@ class SellerForMobile {
         id: json["id"],
         name: json["name"],
         image: json["image"],
-        countryId: json["country_id"],
+        countryId: int.parse(json["country_id"].toString() == "null"
+            ? "0"
+            : json["country_id"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
