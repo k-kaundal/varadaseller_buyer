@@ -13,7 +13,7 @@ class SplashService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? keepLogin = prefs.getBool('keepLoggedIn');
     String? email = prefs.getString('email');
-    if (keepLogin == null) {
+    if (keepLogin.toString() == "null") {
       //that means user is opening the app for the first time.. so , show the intro
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushReplacement<void, void>(

@@ -146,7 +146,7 @@ class _ServicePersonalizationPageState
               builder: (context, personalizationProvider, child) => Container(
                 height: 157,
                 padding: EdgeInsets.only(
-                    left: screenPadding, top: 30, right: screenPadding),
+                    left: screenPadding, top: 20, right: screenPadding),
                 decoration: BookingHelper().bottomSheetDecoration(),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

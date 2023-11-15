@@ -158,7 +158,7 @@ class PersonalizationService with ChangeNotifier {
         isOnline = data.service.isServiceOnline ?? 0;
         print('tax is ${data.service.tax}');
 
-        tax = (int.parse(data.service.tax)).toDouble() ?? 0.0;
+        tax = (int.parse(data.service.tax.toString())).toDouble() ?? 0.0;
 
         //adding included list
         for (int i = 0; i < data.service.serviceInclude.length; i++) {

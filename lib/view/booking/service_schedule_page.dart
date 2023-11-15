@@ -212,7 +212,7 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                                                             BorderRadius
                                                                 .circular(5)),
                                                     padding: const EdgeInsets
-                                                            .symmetric(
+                                                        .symmetric(
                                                         horizontal: 13,
                                                         vertical: 15),
                                                     child: Text(

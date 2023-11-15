@@ -1,50 +1,41 @@
 {
   "project_info": {
-    "project_number": "459121000418",
-    "project_id": "qixer-buyer-app",
-    "storage_bucket": "qixer-buyer-app.appspot.com"
+    "project_number": "247728311555",
+    "project_id": "varadaseller",
+    "storage_bucket": "varadaseller.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:459121000418:android:6427657ac38e9c06df43bb",
+        "mobilesdk_app_id": "1:247728311555:android:a22465af1519ca6d2bad36",
         "android_client_info": {
-          "package_name": "com.xgenious.qixer_buyer"
+          "package_name": "com.varadaseller.byuer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "459121000418-23rrh89hk8dog02r4jpv8a7a7fkdcm5m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.xgenious.qixer_buyer",
-            "certificate_hash": "30a06d5b7db695bae46e802ba55c98cff7174e11"
-          }
-        },
-        {
-          "client_id": "459121000418-6c5ls2v4chpjhu806nr76rjvonuvicdm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.xgenious.qixer_buyer",
-            "certificate_hash": "6bcce48d491e775a0596cc33bba731e29833a5ca"
-          }
-        },
-        {
-          "client_id": "459121000418-hli5si8j1e353fdfk0loarat84cttvb0.apps.googleusercontent.com",
+          "client_id": "247728311555-b6baje0ip0nb0ilnlgucbifbnibneusc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDs8wg76Zym2bJgHQAyZZ9fz8AW95ivI80"
+          "current_key": "AIzaSyAe9GC5y5XsynPWlNR68Ll9-7ydkpbUPAg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "459121000418-hli5si8j1e353fdfk0loarat84cttvb0.apps.googleusercontent.com",
+              "client_id": "247728311555-b6baje0ip0nb0ilnlgucbifbnibneusc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "247728311555-q7d7drel4vsf3f4h737j5fnk98advedv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.qixerios.app"
+              }
             }
           ]
         }

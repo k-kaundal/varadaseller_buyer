@@ -66,10 +66,13 @@ import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/intro/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -171,7 +174,7 @@ class MyApp extends StatelessWidget {
         builder: (context, rtlProvider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Qixer',
+            title: 'Varada Seller',
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -191,7 +194,7 @@ class MyApp extends StatelessWidget {
                 ),
               );
             },
-            theme: ThemeData.light(useMaterial3: true),
+            theme: ThemeData.light(),
             // darkTheme: ThemeData.dark(useMaterial3: true),
             home: child,
           );

@@ -38,12 +38,13 @@ class StripeService with ChangeNotifier {
     try {
       await Stripe.instance
           .presentPaymentSheet(
-              parameters: PresentPaymentSheetParameters(
-        clientSecret: paymentIntentData!['client_secret'],
-        confirmPayment: true,
-      ))
-          .then((newValue) async {
-        print('stripe payment successfull');
+              options: PaymentSheetPresentOptions(
+      //   clientSecret: paymentIntentData!['client_secret'],
+      //   confirmPayment: true,
+      // )
+      ));
+        //   .then((newValue) async {
+        // print('stripe payment successfull');
 
         if (isFromOrderExtraAccept == true) {
           Provider.of<OrderDetailsService>(context, listen: false)
@@ -61,16 +62,17 @@ class StripeService with ChangeNotifier {
         //payment successs ================>
 
         paymentIntentData = null;
-      }).onError((error, stackTrace) {
-        Provider.of<PlaceOrderService>(context, listen: false)
-            .doNext(context, 'failed', paymentFailed: true);
-        debugPrint('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
-      });
-    } on StripeException {
-      Provider.of<PlaceOrderService>(context, listen: false)
-          .doNext(context, 'failed', paymentFailed: true);
-      // print('Exception/DISPLAYPAYMENTSHEET==> $e');
-      OthersHelper().showToast("Payment cancelled", Colors.red);
+//       }
+// .onError((error, stackTrace) {
+//         Provider.of<PlaceOrderService>(context, listen: false)
+//             .doNext(context, 'failed', paymentFailed: true);
+//         debugPrint('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
+//       });
+//     } on StripeException {
+//       Provider.of<PlaceOrderService>(context, listen: false)
+//           .doNext(context, 'failed', paymentFailed: true);
+//       // print('Exception/DISPLAYPAYMENTSHEET==> $e');
+//       OthersHelper().showToast("Payment cancelled", Colors.red);
     } catch (e) {
       Provider.of<PlaceOrderService>(context, listen: false)
           .doNext(context, 'failed', paymentFailed: true);
@@ -186,11 +188,11 @@ class StripeService with ChangeNotifier {
               paymentSheetParameters: SetupPaymentSheetParameters(
                   paymentIntentClientSecret:
                       paymentIntentData!['client_secret'],
-                  applePay: true,
-                  googlePay: true,
-                  testEnv: true,
+                  // applePay: true,
+                  // googlePay: true,
+                  // testEnv: true,
                   style: ThemeMode.light,
-                  merchantCountryCode: 'US',
+                  // merchantCountryCode: 'US',
                   merchantDisplayName: name))
           .then((value) {});
 

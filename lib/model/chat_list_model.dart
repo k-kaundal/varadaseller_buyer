@@ -45,7 +45,7 @@ class ChatSellerList {
   SellerList? sellerList;
 
   factory ChatSellerList.fromJson(Map<String, dynamic> json) => ChatSellerList(
-        sellerId: json["seller_id"],
+        sellerId: int.parse(json["seller_id"].toString()=="null"?"0":json["seller_id"].toString()),
         dateTimeStr: json["date_time_str"],
         dateHumanReadable: json["date_human_readable"],
         imageUrl: json["image_url"],
@@ -147,13 +147,13 @@ class SellerList {
         serviceCity: json["service_city"],
         serviceArea: json["service_area"],
         userType: json["user_type"],
-        userStatus: json["user_status"],
-        termsCondition: json["terms_condition"],
+        userStatus: int.parse(json["user_status"].toString()=="null"?"0":json["user_status"].toString()),
+        termsCondition: int.parse(json["terms_condition"].toString()=="null"?"0":json["terms_condition"].toString()),
         address: json["address"],
         state: json["state"],
         about: json["about"],
         postCode: json["post_code"],
-        countryId: json["country_id"],
+        countryId: int.parse(json["country_id"].toString()=="null"?"0":json["country_id"].toString()),
         emailVerified: json["email_verified"],
         emailVerifyToken: json["email_verify_token"],
         facebookId: json["facebook_id"],
