@@ -7,10 +7,10 @@ import 'package:qixer/view/utils/others_helper.dart';
 
 class Categories extends StatelessWidget {
   const Categories({
-    Key? key,
+    super.key,
     required this.cc,
     required this.asProvider,
-  }) : super(key: key);
+  });
   final ConstantColors cc;
   final asProvider;
   @override
@@ -22,7 +22,7 @@ class Categories extends StatelessWidget {
             ? provider.categories != 'error'
                 ? Container(
                     margin: const EdgeInsets.only(top: 5),
-                    height: 100,
+                    height: 104,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,

@@ -8,7 +8,7 @@ import '../../../utils/responsive.dart';
 
 class StateDropdown extends StatelessWidget {
   final textWidth;
-  const StateDropdown({this.textWidth, Key? key}) : super(key: key);
+  const StateDropdown({this.textWidth, super.key});
 
   @override
   Widget build(BuildContext context) {

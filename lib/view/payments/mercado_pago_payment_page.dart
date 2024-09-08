@@ -23,11 +23,11 @@ import '../utils/common_helper.dart';
 
 class MercadopagoPaymentPage extends StatefulWidget {
   const MercadopagoPaymentPage({
-    Key? key,
+    super.key,
     required this.isFromOrderExtraAccept,
     required this.isFromWalletDeposite,
     required this.isFromHireJob,
-  }) : super(key: key);
+  });
 
   final bool isFromOrderExtraAccept;
   final bool isFromWalletDeposite;

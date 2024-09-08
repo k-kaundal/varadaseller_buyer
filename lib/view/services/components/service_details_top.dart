@@ -15,9 +15,9 @@ import '../service_helper.dart';
 
 class ServiceDetailsTop extends StatelessWidget {
   const ServiceDetailsTop({
-    Key? key,
+    super.key,
     required this.cc,
-  }) : super(key: key);
+  });
 
   final ConstantColors cc;
 
@@ -169,15 +169,14 @@ class ServiceDetailsTop extends StatelessWidget {
 
 class ServiceTitleAndUser extends StatelessWidget {
   const ServiceTitleAndUser(
-      {Key? key,
+      {super.key,
       required this.cc,
       required this.title,
       this.userImg,
       required this.sellerName,
       required this.videoLink,
       required this.sellerId,
-      required this.onTap})
-      : super(key: key);
+      required this.onTap});
   final ConstantColors cc;
   final String title;
   final userImg;
@@ -204,9 +203,9 @@ class ServiceTitleAndUser extends StatelessWidget {
                   //               videoUrl: videoLink,
                   //             ))));
                 },
-                child: Text(lnProvider.getString('Watch video')),
                 style: ElevatedButton.styleFrom(
-                    elevation: 0, backgroundColor: cc.successColor))
+                    elevation: 0, backgroundColor: cc.successColor),
+                child: Text(lnProvider.getString('Watch video')))
             : Container(),
 
         const SizedBox(

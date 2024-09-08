@@ -1,13 +1,17 @@
 import 'dart:convert';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/context_extension.dart';
+import 'package:qixer/helper/extension/string_extension.dart';
 import 'package:qixer/service/auth_services/login_service.dart';
 import 'package:qixer/service/auth_services/reset_password_service.dart';
-import 'package:qixer/view/home/landing_page.dart';
+import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
-import 'package:http/http.dart' as http;
+
+import '../push_notification_service.dart';
 
 class EmailVerifyService with ChangeNotifier {
   bool isloading = false;
@@ -54,16 +58,15 @@ class EmailVerifyService with ChangeNotifier {
         return true;
       } else {
         print(response.body);
-        OthersHelper()
-            .showToast(jsonDecode(response.body)['message'], Colors.black);
+        jsonDecode(response.body)['message']?.toString().showToast();
 
         return false;
       }
     }
   }
 
-  verifyOtpAndLogin(enteredOtp, BuildContext context, email, password, token,
-      userId, state, countryId) async {
+  verifyOtpAndLogin(enteredOtp, BuildContext context, email, token, userId,
+      state, countryId) async {
     var otpNumber =
         Provider.of<ResetPasswordService>(context, listen: false).otpNumber;
     if (otpNumber != null) {
@@ -90,16 +93,20 @@ class EmailVerifyService with ChangeNotifier {
         notifyListeners();
 
         if (response.statusCode == 201) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) => const LandingPage(),
-            ),
-          );
-
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute<void>(
+          //     builder: (BuildContext context) => const LandingPage(),
+          //   ),
           //save the details for later login
-          LoginService()
-              .saveDetails(email, password, token, userId, state, countryId);
+          LoginService().saveDetails(email, token, userId, state, countryId);
+          // );
+          await Provider.of<ProfileService>(context, listen: false).fetchData();
+          await Provider.of<PushNotificationService>(context, listen: false)
+              .fetchPusherCredential(context: context);
+
+          context.popTrue;
+          context.popTrue;
         } else {
           print(response.body);
           OthersHelper().showToast(

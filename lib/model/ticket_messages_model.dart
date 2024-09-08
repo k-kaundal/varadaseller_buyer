@@ -63,10 +63,7 @@ class AllMessage {
         notify: json["notify"] == null ? null : json["notify"],
         attachment: json["attachment"],
         type: json["type"],
-        supportTicketId: int.tryParse(
-            json["support_ticket_id"].toString() == "null"
-                ? "0"
-                : json["support_ticket_id"].toString()),
+        supportTicketId: json["support_ticket_id"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
       );

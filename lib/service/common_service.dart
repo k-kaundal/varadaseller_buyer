@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +11,7 @@ import 'package:qixer/service/home_services/top_rated_services_service.dart';
 import 'package:qixer/service/jobs_service/recent_jobs_service.dart';
 import 'package:qixer/service/permissions_service.dart';
 import 'package:qixer/service/profile_service.dart';
+import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/service/rtl_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
@@ -79,14 +80,17 @@ removeDollar(value) {
 runAtstart(BuildContext context) async {
   Provider.of<RtlService>(context, listen: false).fetchCurrency();
   //language direction (ltr or rtl)
-  await Provider.of<RtlService>(context, listen: false).fetchDirection(context);
 
+  await Provider.of<RtlService>(context, listen: false).fetchDirection(context);
+  await Provider.of<ProfileService>(context, listen: false).fetchData();
 //fetch translated strings
   // Provider.of<AppStringService>(context, listen: false)
   //     .fetchTranslatedStrings();
 }
 
 runAtHome(BuildContext context) async {
+  await Provider.of<PushNotificationService>(context, listen: false)
+      .fetchPusherCredential(context: context);
   Provider.of<SliderService>(context, listen: false).loadSlider();
   Provider.of<CategoryService>(context, listen: false).fetchCategory();
   Provider.of<TopRatedServicesSerivce>(context, listen: false)

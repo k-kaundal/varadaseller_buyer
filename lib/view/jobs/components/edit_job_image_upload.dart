@@ -7,8 +7,7 @@ import 'package:qixer/service/jobs_service/edit_job_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 
 class EditJobUploadImage extends StatelessWidget {
-  const EditJobUploadImage({Key? key, required this.prevImageLink})
-      : super(key: key);
+  const EditJobUploadImage({super.key, required this.prevImageLink});
 
   final prevImageLink;
 

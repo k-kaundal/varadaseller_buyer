@@ -7,7 +7,7 @@ import 'package:qixer/service/jobs_service/create_job_service.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 
 class CreateJobUploadImage extends StatelessWidget {
-  const CreateJobUploadImage({Key? key}) : super(key: key);
+  const CreateJobUploadImage({super.key});
 
   @override
   Widget build(BuildContext context) {

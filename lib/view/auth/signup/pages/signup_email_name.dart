@@ -10,11 +10,10 @@ import '../../../utils/constant_colors.dart';
 
 class SignupEmailName extends StatefulWidget {
   const SignupEmailName(
-      {Key? key,
+      {super.key,
       this.fullNameController,
       this.userNameController,
-      this.emailController})
-      : super(key: key);
+      this.emailController});
 
   final fullNameController;
   final userNameController;

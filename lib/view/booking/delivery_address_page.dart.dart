@@ -20,7 +20,7 @@ import '../utils/custom_input.dart';
 import 'components/steps.dart';
 
 class DeliveryAddressPage extends StatefulWidget {
-  const DeliveryAddressPage({Key? key}) : super(key: key);
+  const DeliveryAddressPage({super.key});
 
   @override
   _DeliveryAddressPageState createState() => _DeliveryAddressPageState();
@@ -44,41 +44,41 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
 
     countryCode = Provider.of<ProfileService>(context, listen: false)
         .profileDetails
-        .userDetails
+        ?.userDetails
         .countryCode;
 
     userNameController.text =
         Provider.of<ProfileService>(context, listen: false)
                 .profileDetails
-                .userDetails
+                ?.userDetails
                 .name ??
             '';
     emailController.text = Provider.of<ProfileService>(context, listen: false)
             .profileDetails
-            .userDetails
+            ?.userDetails
             .email ??
         '';
 
     phoneController.text = Provider.of<ProfileService>(context, listen: false)
             .profileDetails
-            .userDetails
+            ?.userDetails
             .phone ??
         '';
     postCodeController.text =
         Provider.of<ProfileService>(context, listen: false)
                 .profileDetails
-                .userDetails
+                ?.userDetails
                 .postCode ??
             '';
     addressController.text = Provider.of<ProfileService>(context, listen: false)
             .profileDetails
-            .userDetails
+            ?.userDetails
             .address ??
         '';
 
     addressController.text = Provider.of<ProfileService>(context, listen: false)
             .profileDetails
-            .userDetails
+            ?.userDetails
             .address ??
         '';
   }

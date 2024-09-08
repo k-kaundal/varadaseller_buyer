@@ -17,7 +17,7 @@ import '../../booking/booking_helper.dart';
 import '../../utils/others_helper.dart';
 
 class OrderDetailsPage extends StatefulWidget {
-  const OrderDetailsPage({Key? key, required this.orderId}) : super(key: key);
+  const OrderDetailsPage({super.key, required this.orderId});
 
   final orderId;
 

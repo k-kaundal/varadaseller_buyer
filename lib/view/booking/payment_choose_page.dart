@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:flutterzilla_fixed_grid/flutterzilla_fixed_grid.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/context_extension.dart';
+import 'package:qixer/helper/extension/int_extension.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
@@ -18,14 +22,15 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
+import '../auth/signup/pages/tac_pp.dart';
+
 class PaymentChoosePage extends StatefulWidget {
   const PaymentChoosePage(
-      {Key? key,
+      {super.key,
       this.isFromOrderExtraAccept = false,
       this.isFromDepositeToWallet = false,
       this.payAgain = false,
-      this.isFromHireJob = false})
-      : super(key: key);
+      this.isFromHireJob = false});
 
   final bool isFromOrderExtraAccept;
   final bool payAgain;
@@ -180,6 +185,29 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                                       builder: (context, btProvider, child) =>
                                           Column(
                                             children: [
+                                              if (pgProvider.paymentList[
+                                                          selectedMethod]
+                                                      ['details'] !=
+                                                  null) ...[
+                                                12.toHeight,
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(20),
+                                                  decoration: BoxDecoration(
+                                                      color: cc.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      border: Border.all(
+                                                        color: cc.borderColor,
+                                                      )),
+                                                  child: HtmlWidget(pgProvider
+                                                                  .paymentList[
+                                                              selectedMethod]
+                                                          ['details'] ??
+                                                      ""),
+                                                )
+                                              ],
                                               //pick image button =====>
                                               Column(
                                                 children: [
@@ -219,31 +247,72 @@ class _PaymentChoosePageState extends State<PaymentChoosePage> {
                               //Agreement checkbox ===========>
                               sizedBoxCustom(20),
 
-                              CheckboxListTile(
-                                checkColor: Colors.white,
-                                activeColor: ConstantColors().primaryColor,
-                                contentPadding: const EdgeInsets.all(0),
-                                title: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5),
-                                  child: Text(
-                                    asProvider.getString(
-                                        'I agree with terms and conditions'),
-                                    style: TextStyle(
-                                        color: ConstantColors().greyFour,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14),
+                              Row(children: [
+                                Checkbox(
+                                  checkColor: Colors.white,
+                                  activeColor: ConstantColors().primaryColor,
+                                  value: termsAgree,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      termsAgree = !termsAgree;
+                                    });
+                                  },
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: RichText(
+                                    softWrap: true,
+                                    maxLines: 4,
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                        text:
+                                            asProvider.getString("I agree to") +
+                                                " ",
+                                        style: TextStyle(
+                                          color: cc.black5,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  context.toPage(const TacPP(
+                                                    route:
+                                                        "/terms-and-condition",
+                                                  ));
+                                                  FocusScope.of(context)
+                                                      .unfocus();
+                                                },
+                                              text: asProvider.getString(
+                                                  "Terms & Conditions"),
+                                              style: TextStyle(
+                                                color: cc.primaryColor,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                          TextSpan(
+                                              text:
+                                                  "${" " + asProvider.getString("and")} ",
+                                              style:
+                                                  TextStyle(color: cc.black5)),
+                                          TextSpan(
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  context.toPage(const TacPP(
+                                                    route: "/privacy-policy",
+                                                  ));
+                                                  FocusScope.of(context)
+                                                      .unfocus();
+                                                },
+                                              text: asProvider
+                                                  .getString("Privacy policy"),
+                                              style: TextStyle(
+                                                color: cc.primaryColor,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                        ]),
                                   ),
                                 ),
-                                value: termsAgree,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    termsAgree = !termsAgree;
-                                  });
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                              ),
+                              ]),
 
                               //pay button =============>
                               const SizedBox(

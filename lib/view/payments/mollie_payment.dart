@@ -18,7 +18,7 @@ import '../utils/common_helper.dart';
 
 class MolliePayment extends StatelessWidget {
   MolliePayment(
-      {Key? key,
+      {super.key,
       required this.amount,
       required this.name,
       required this.phone,
@@ -26,8 +26,7 @@ class MolliePayment extends StatelessWidget {
       required this.isFromOrderExtraAccept,
       required this.orderId,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   final amount;
   final name;

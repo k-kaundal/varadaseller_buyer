@@ -12,10 +12,9 @@ import 'package:qixer/view/utils/constant_styles.dart';
 
 class TotalPayable extends StatelessWidget {
   const TotalPayable(
-      {Key? key,
+      {super.key,
       required this.isFromOrderExtraAccept,
-      required this.isFromJobHire})
-      : super(key: key);
+      required this.isFromJobHire});
 
   final isFromOrderExtraAccept;
   final isFromJobHire;

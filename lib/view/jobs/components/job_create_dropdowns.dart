@@ -8,7 +8,7 @@ import '../../auth/signup/dropdowns/state_dropdown.dart';
 import '../../utils/constant_styles.dart';
 
 class JobCreateDropdowns extends StatefulWidget {
-  const JobCreateDropdowns({Key? key}) : super(key: key);
+  const JobCreateDropdowns({super.key});
 
   @override
   State<JobCreateDropdowns> createState() => _JobCreateDropdownsState();

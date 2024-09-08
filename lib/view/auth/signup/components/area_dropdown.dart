@@ -7,7 +7,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 import '../../../../service/app_string_service.dart';
 
 class AreaDropdown extends StatelessWidget {
-  const AreaDropdown({Key? key}) : super(key: key);
+  const AreaDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {

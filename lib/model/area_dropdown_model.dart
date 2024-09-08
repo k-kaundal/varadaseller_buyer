@@ -35,7 +35,7 @@ class ServiceArea {
     this.serviceArea,
   });
 
-  int? id;
+  dynamic id;
   String? serviceArea;
 
   factory ServiceArea.fromJson(Map<String, dynamic> json) => ServiceArea(

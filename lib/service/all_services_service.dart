@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/model/service_by_filter_model.dart';
 import 'package:qixer/model/sub_category_model.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/db/db_service.dart';
 import 'package:qixer/service/home_services/category_service.dart';
-import 'package:http/http.dart' as http;
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
@@ -233,8 +233,7 @@ class AllServicesService with ChangeNotifier {
       serviceMap = [];
       notifyListeners();
 
-      Provider.of<AllServicesService>(context, listen: false)
-          .setCurrentPage(currentPage);
+      setCurrentPage(1);
     } else {
       // if (currentPage > 2) {
       //   refreshController.loadNoData();
@@ -297,6 +296,8 @@ class AllServicesService with ChangeNotifier {
         }
 
         currentPage++;
+        imageList = [];
+        averageRateList = [];
         setCurrentPage(currentPage);
         setLoadingFalse();
         return true;

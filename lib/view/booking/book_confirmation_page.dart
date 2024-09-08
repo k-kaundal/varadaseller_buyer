@@ -20,7 +20,7 @@ import '../../service/common_service.dart';
 import 'components/steps.dart';
 
 class BookConfirmationPage extends StatefulWidget {
-  const BookConfirmationPage({Key? key}) : super(key: key);
+  const BookConfirmationPage({super.key});
 
   @override
   _BookConfirmationPageState createState() => _BookConfirmationPageState();
@@ -36,7 +36,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
 
   @override
   Widget build(BuildContext context) {
-    PanelController _pc = PanelController();
+    PanelController pc = PanelController();
     final countryProvider =
         Provider.of<CountryDropdownService>(context, listen: false);
     final cityProvider =
@@ -56,7 +56,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
             .appbarForBookingPages(lnProvider.getString('Details'), context),
         body: Consumer<BookConfirmationService>(
           builder: (context, bcProvider, child) => SlidingUpPanel(
-            controller: _pc,
+            controller: pc,
             borderRadius: const BorderRadius.only(
               topRight: Radius.circular(20),
               topLeft: Radius.circular(20),
@@ -71,7 +71,7 @@ class _BookConfirmationPageState extends State<BookConfirmationPage> {
             ],
             minHeight: 200,
             panel: OrderDetailsPanel(
-              panelController: _pc,
+              panelController: pc,
             ),
             // collapsed: const OrderDetailsPanelProceed(),
             onPanelOpened: () {

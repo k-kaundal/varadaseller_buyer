@@ -1,9 +1,9 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterzilla_fixed_grid/flutterzilla_fixed_grid.dart';
-
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/context_extension.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/book_steps_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
@@ -11,17 +11,19 @@ import 'package:qixer/service/booking_services/coupon_service.dart';
 import 'package:qixer/service/booking_services/shedule_service.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/rtl_service.dart';
+import 'package:qixer/view/auth/login/login.dart';
 import 'package:qixer/view/booking/booking_location_page.dart';
-
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
+
+import '../../service/profile_service.dart';
 import 'components/steps.dart';
 
 class ServiceSchedulePage extends StatefulWidget {
-  const ServiceSchedulePage({Key? key}) : super(key: key);
+  const ServiceSchedulePage({super.key});
 
   @override
   _ServiceSchedulePageState createState() => _ServiceSchedulePageState();
@@ -123,11 +125,10 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
 
                               DatePicker(
                                 DateTime.now(),
+                                height: 100,
                                 locale: rtlPorvider.langSlug,
                                 initialSelectedDate: DateTime.now(),
-                                daysCount: provider.totalDay == 0
-                                    ? 7
-                                    : provider.totalDay,
+                                daysCount: 30,
                                 selectionColor: cc.primaryColor,
                                 selectedTextColor: Colors.white,
                                 onDateChange: (value) {
@@ -296,24 +297,36 @@ class _ServiceSchedulePageState extends State<ServiceSchedulePage> {
                           // const SizedBox(
                           //   height: 23,
                           // ),
-                          CommonHelper()
-                              .buttonOrange(asProvider.getString('Next'), () {
-                            if (_selectedTime != null &&
-                                _selectedWeekday != null) {
-                              //increase page steps by one
-                              BookStepsService().onNext(context);
-                              //set selected shedule so that we can use it later
-                              Provider.of<BookService>(context, listen: false)
-                                  .setDateTime(_monthAndDate, _selectedTime,
-                                      _selectedWeekday,
-                                      date: _selectedDate);
-                              print(_selectedDate);
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.rightToLeft,
-                                      child: const BookingLocationPage()));
-                            }
+                          Consumer<ProfileService>(
+                              builder: (context, ps, child) {
+                            return CommonHelper().buttonOrange(
+                                ps.profileDetails == null ||
+                                        ps.profileDetails is String
+                                    ? "Sing In"
+                                    : asProvider.getString('Next'), () {
+                              if (ps.profileDetails == null ||
+                                  ps.profileDetails is String) {
+                                context.toPage(const LoginPage());
+
+                                return;
+                              }
+                              if (_selectedTime != null &&
+                                  _selectedWeekday != null) {
+                                //increase page steps by one
+                                BookStepsService().onNext(context);
+                                //set selected shedule so that we can use it later
+                                Provider.of<BookService>(context, listen: false)
+                                    .setDateTime(_monthAndDate, _selectedTime,
+                                        _selectedWeekday,
+                                        date: _selectedDate);
+                                print(_selectedDate);
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: const BookingLocationPage()));
+                              }
+                            });
                           }),
                           const SizedBox(
                             height: 30,

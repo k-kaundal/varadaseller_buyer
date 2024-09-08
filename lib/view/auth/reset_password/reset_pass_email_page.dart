@@ -8,7 +8,7 @@ import '../../utils/constant_colors.dart';
 import '../../utils/custom_input.dart';
 
 class ResetPassEmailPage extends StatefulWidget {
-  const ResetPassEmailPage({Key? key}) : super(key: key);
+  const ResetPassEmailPage({super.key});
 
   @override
   _ResetPassEmailPageState createState() => _ResetPassEmailPageState();

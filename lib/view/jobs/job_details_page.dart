@@ -14,10 +14,10 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class JobDetailsPage extends StatefulWidget {
   const JobDetailsPage({
-    Key? key,
+    super.key,
     required this.imageLink,
     required this.jobId,
-  }) : super(key: key);
+  });
 
   final imageLink;
   final jobId;
@@ -47,106 +47,103 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
       }),
       body: SingleChildScrollView(
           child: Consumer<MyJobsService>(
-        builder: (context, provider, child) =>
-            provider.loadingOrderDetails == false
-                ? Container(
-                    padding: EdgeInsets.symmetric(horizontal: screenPadding),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              height: 180,
-                              width: double.infinity,
-                              imageUrl: widget.imageLink,
-                              errorWidget: (context, url, error) => Padding(
-                                padding: const EdgeInsets.all(24),
-                                child: Image.asset(
-                                  'assets/images/icon.png',
-                                  color: Colors.white.withOpacity(.5),
-                                  colorBlendMode: BlendMode.lighten,
-                                ),
-                              ),
-                              fit: BoxFit.cover,
+        builder: (context, provider, child) => provider.loadingOrderDetails ==
+                false
+            ? Container(
+                padding: EdgeInsets.symmetric(horizontal: screenPadding),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          height: 180,
+                          width: double.infinity,
+                          imageUrl: widget.imageLink,
+                          errorWidget: (context, url, error) => Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Image.asset(
+                              'assets/images/icon.png',
+                              color: Colors.white.withOpacity(.5),
+                              colorBlendMode: BlendMode.lighten,
                             ),
                           ),
-                          sizedBoxCustom(22),
-                          Text(
-                            provider.jobDetails.title.toString(),
-                            style: TextStyle(
-                                color: cc.greyFour,
-                                fontSize: 18,
-                                height: 1.4,
-                                fontWeight: FontWeight.bold),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      sizedBoxCustom(22),
+                      Text(
+                        provider.jobDetails.title.toString(),
+                        style: TextStyle(
+                            color: cc.greyFour,
+                            fontSize: 18,
+                            height: 1.4,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      sizedBoxCustom(22),
+                      //Overview
+                      Row(
+                        children: [
+                          OverviewBox(
+                            title: lnProvider.getString('Budget'),
+                            subtitle: rtlProvider.currencyDirection == 'left'
+                                ? '${rtlProvider.currency}${provider.jobDetails.price}'
+                                : '${provider.jobDetails.price}${rtlProvider.currency}',
                           ),
-                          sizedBoxCustom(22),
-                          //Overview
-                          Row(
-                            children: [
-                              OverviewBox(
-                                title: lnProvider.getString('Budget'),
-                                subtitle:
-                                    rtlProvider.currencyDirection == 'left'
-                                        ? rtlProvider.currency +
-                                            '${provider.jobDetails.price}'
-                                        : '${provider.jobDetails.price}' +
-                                            rtlProvider.currency,
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-
-                              OverviewBox(
-                                title: lnProvider.getString('Deadline'),
-                                subtitle:
-                                    '${getDate(provider.jobDetails.deadLine)}',
-                              ),
-
-                              // const OverviewBox(
-                              //   title: 'Location',
-                              //   subtitle: 'Dhaka, Bangladesh',
-                              // ),
-                            ],
+                          const SizedBox(
+                            width: 15,
                           ),
 
-                          sizedBoxCustom(14),
+                          OverviewBox(
+                            title: lnProvider.getString('Deadline'),
+                            subtitle:
+                                '${getDate(provider.jobDetails.deadLine)}',
+                          ),
 
-                          //Overview
-                          // Row(
-                          //   children: [
-                          //     OverviewBox(
-                          //       title: 'Deadline',
-                          //       subtitle:
-                          //           '${getDate(provider.jobDetails.deadLine)}',
-                          //     ),
-                          //     const SizedBox(
-                          //       width: 15,
-                          //     ),
-                          //     // const OverviewBox(
-                          //     //   title: 'Category',
-                          //     //   subtitle: 'Medical',
-                          //     // ),
-                          //   ],
+                          // const OverviewBox(
+                          //   title: 'Location',
+                          //   subtitle: 'Dhaka, Bangladesh',
                           // ),
+                        ],
+                      ),
 
-                          //Description
-                          // ===============>
-                          // sizedBoxCustom(15),
+                      sizedBoxCustom(14),
 
-                          HtmlWidget('''${provider.jobDetails.description}'''),
-                          // CommonHelper().paragraphCommon(
-                          //     provider.jobDetails.description.toString(),
-                          //     TextAlign.left),
+                      //Overview
+                      // Row(
+                      //   children: [
+                      //     OverviewBox(
+                      //       title: 'Deadline',
+                      //       subtitle:
+                      //           '${getDate(provider.jobDetails.deadLine)}',
+                      //     ),
+                      //     const SizedBox(
+                      //       width: 15,
+                      //     ),
+                      //     // const OverviewBox(
+                      //     //   title: 'Category',
+                      //     //   subtitle: 'Medical',
+                      //     // ),
+                      //   ],
+                      // ),
 
-                          sizedBoxCustom(20),
-                        ]),
-                  )
-                : Container(
-                    height: screenHeight - 120,
-                    alignment: Alignment.center,
-                    child: OthersHelper().showLoading(cc.primaryColor),
-                  ),
+                      //Description
+                      // ===============>
+                      // sizedBoxCustom(15),
+
+                      HtmlWidget('''${provider.jobDetails.description}'''),
+                      // CommonHelper().paragraphCommon(
+                      //     provider.jobDetails.description.toString(),
+                      //     TextAlign.left),
+
+                      sizedBoxCustom(20),
+                    ]),
+              )
+            : Container(
+                height: screenHeight - 120,
+                alignment: Alignment.center,
+                child: OthersHelper().showLoading(cc.primaryColor),
+              ),
       )),
     );
   }

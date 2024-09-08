@@ -1,15 +1,18 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, non_constant_identifier_names
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:qixer/model/area_dropdown_model.dart';
-import 'package:qixer/model/country_dropdown_model.dart';
-import 'package:qixer/model/states_dropdown_model.dart';
+// import 'package:qixer/model/country_dropdown_model.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
+
+import '../model/dropdown_models/area_dropdown_model.dart';
+import '../model/dropdown_models/country_dropdown_model.dart';
+import '../model/dropdown_models/states_dropdown_model.dart';
 
 class CountryStatesService with ChangeNotifier {
   var countryDropdownList = [];
@@ -56,7 +59,7 @@ class CountryStatesService with ChangeNotifier {
 
   setSelectedCountryId(value) {
     selectedCountryId = value;
-    print('selected country id $value');
+    print('selected country id $selectedCountryId');
     notifyListeners();
   }
 
@@ -159,9 +162,9 @@ class CountryStatesService with ChangeNotifier {
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.body);
         var data = CountryDropdownModel.fromJson(jsonDecode(response.body));
-        for (int i = 0; i < data.countries.length; i++) {
-          countryDropdownList.add(data.countries[i].country);
-          countryDropdownIndexList.add(data.countries[i].id);
+        for (int i = 0; i < data.countries.data.length; i++) {
+          countryDropdownList.add(data.countries.data[i].country);
+          countryDropdownIndexList.add(data.countries.data[i].id);
         }
 
         setCountry(context, data: data);
@@ -199,9 +202,9 @@ class CountryStatesService with ChangeNotifier {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = StatesDropdownModel.fromJson(jsonDecode(response.body));
-      for (int i = 0; i < data.serviceCities.length; i++) {
-        statesDropdownList.add(data.serviceCities[i].serviceCity);
-        statesDropdownIndexList.add(data.serviceCities[i].id);
+      for (int i = 0; i < data.serviceCities.data.length; i++) {
+        statesDropdownList.add(data.serviceCities.data[i].serviceCity);
+        statesDropdownIndexList.add(data.serviceCities.data[i].id);
       }
 
       //keeping the data
@@ -235,9 +238,9 @@ class CountryStatesService with ChangeNotifier {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = AreaDropdownModel.fromJson(jsonDecode(response.body));
-      for (int i = 0; i < data.serviceAreas.length; i++) {
-        areaDropdownList.add(data.serviceAreas[i].serviceArea);
-        areaDropdownIndexList.add(data.serviceAreas[i].id);
+      for (int i = 0; i < data.serviceAreas.data.length; i++) {
+        areaDropdownList.add(data.serviceAreas.data[i].serviceArea);
+        areaDropdownIndexList.add(data.serviceAreas.data[i].id);
       }
 
       setArea(context, data: data);

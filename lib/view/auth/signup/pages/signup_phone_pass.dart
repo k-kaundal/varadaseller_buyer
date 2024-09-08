@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/string_extension.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/signup_service.dart';
 import 'package:qixer/service/rtl_service.dart';
@@ -12,8 +13,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 
 class SignupPhonePass extends StatefulWidget {
   const SignupPhonePass(
-      {Key? key, this.passController, this.repeatPassController})
-      : super(key: key);
+      {super.key, this.passController, this.repeatPassController});
 
   final passController;
   final repeatPassController;
@@ -62,7 +62,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                     onChanged: (phone) {
                       provider.setCountryCode(phone.countryISOCode);
 
-                      provider.setPhone(phone.number);
+                      provider.setPhone(phone.completeNumber);
                     },
                   ),
                 ),
@@ -83,11 +83,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                       obscureText: !_newpasswordVisible,
                       style: const TextStyle(fontSize: 14),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return asProvider
-                              .getString("Please enter your password");
-                        }
-                        return null;
+                        return value.toString().validPass;
                       },
                       decoration: InputDecoration(
                           prefixIcon: Column(
@@ -156,7 +152,7 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
                       obscureText: !_repeatnewpasswordVisible,
                       style: const TextStyle(fontSize: 14),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (widget.passController.text != value) {
                           return asProvider
                               .getString("Please retype your password");
                         }
@@ -222,6 +218,10 @@ class _SignupPhonePassState extends State<SignupPhonePass> {
 
                 CommonHelper().buttonOrange(asProvider.getString("Continue"),
                     () {
+                  final valid = _formKey.currentState?.validate();
+                  if (valid != true) {
+                    return;
+                  }
                   if (widget.passController.text !=
                       widget.repeatPassController.text) {
                     OthersHelper().showToast(

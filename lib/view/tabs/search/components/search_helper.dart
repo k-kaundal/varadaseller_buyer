@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
-import 'package:qixer/view/services/components/service_filter_dropdowns.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SearchHelper {
@@ -21,8 +19,8 @@ class SearchHelper {
             titleStyle: const TextStyle(),
             animationType: AnimationType.grow,
             animationDuration: const Duration(milliseconds: 500)),
-        content: Column(
-          children: const [
+        content: const Column(
+          children: [
             // CountryStatesDropdowns(),
             SizedBox(
               height: 23,

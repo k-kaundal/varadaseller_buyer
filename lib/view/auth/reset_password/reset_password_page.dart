@@ -8,7 +8,7 @@ import 'package:qixer/view/utils/constant_styles.dart';
 import '../../utils/constant_colors.dart';
 
 class ResetPasswordPage extends StatefulWidget {
-  const ResetPasswordPage({Key? key, this.email}) : super(key: key);
+  const ResetPasswordPage({super.key, this.email});
 
   final email;
 

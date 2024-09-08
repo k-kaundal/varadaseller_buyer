@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/view/utils/others_helper.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_string_service.dart';
@@ -75,7 +75,7 @@ class RtlService with ChangeNotifier {
         } else {
           print('Loading translations from local');
           await Provider.of<AppStringService>(context, listen: false)
-              .fetchTranslatedStrings(context, doNotLoad: true);
+              .fetchTranslatedStrings(context, doNotLoad: false);
         }
 
         alreadyRtlLoaded == true;

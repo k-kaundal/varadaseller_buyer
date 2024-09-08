@@ -15,7 +15,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../../../utils/others_helper.dart';
 
 class MyTicketsPage extends StatefulWidget {
-  const MyTicketsPage({Key? key}) : super(key: key);
+  const MyTicketsPage({super.key});
 
   @override
   _MyTicketsPageState createState() => _MyTicketsPageState();
@@ -132,6 +132,7 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
               });
             }
           },
+          footer: OthersHelper().commonRefreshFooter(context),
           child: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<AppStringService>(
@@ -255,7 +256,6 @@ class _MyTicketsPageState extends State<MyTicketsPage> {
                           context, asProvider.getString('No ticket'))),
             ),
           ),
-          footer: OthersHelper().commonRefreshFooter(context),
         ));
   }
 }

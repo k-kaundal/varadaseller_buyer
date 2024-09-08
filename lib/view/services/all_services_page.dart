@@ -14,7 +14,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../home/components/service_card.dart';
 
 class AllServicePage extends StatefulWidget {
-  const AllServicePage({Key? key}) : super(key: key);
+  const AllServicePage({super.key});
 
   @override
   State<AllServicePage> createState() => _AllServicePageState();
@@ -72,6 +72,7 @@ class _AllServicePageState extends State<AllServicePage> {
             });
           }
         },
+        footer: OthersHelper().commonRefreshFooter(context),
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -187,7 +188,6 @@ class _AllServicePageState extends State<AllServicePage> {
                     )),
           ),
         ),
-        footer: OthersHelper().commonRefreshFooter(context),
       ),
     );
   }

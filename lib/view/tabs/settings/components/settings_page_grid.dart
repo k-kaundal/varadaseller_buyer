@@ -12,8 +12,8 @@ import '../settings_helper.dart';
 
 class SettingsPageGrid extends StatelessWidget {
   const SettingsPageGrid({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class SettingsPageGrid extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisSpacing: 15,
               crossAxisSpacing: 15,
-              height: 70),
+              height: 76),
           padding: const EdgeInsets.only(top: 30),
           itemCount: 4,
           shrinkWrap: true,

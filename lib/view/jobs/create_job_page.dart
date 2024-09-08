@@ -13,7 +13,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class CreateJobPage extends StatefulWidget {
-  const CreateJobPage({Key? key}) : super(key: key);
+  const CreateJobPage({super.key});
 
   @override
   _CreateJobPageState createState() => _CreateJobPageState();
@@ -144,6 +144,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
                       hintText: asProvider.getString("Title"),
                       paddingHorizontal: 15,
                       textInputAction: TextInputAction.next,
+                      maxLength: 190,
                     ),
                     sizedBoxCustom(20),
 

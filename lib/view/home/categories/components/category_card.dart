@@ -1,20 +1,21 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
+import '../../../../service/serviceby_category_service.dart';
 import '../../../services/service_by_category_page.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard(
-      {Key? key,
+      {super.key,
       required this.name,
       required this.id,
       required this.cc,
       required this.index,
       required this.marginRight,
-      required this.imagelink})
-      : super(key: key);
+      required this.imagelink});
 
   final name;
   final id;
@@ -29,10 +30,13 @@ class CategoryCard extends StatelessWidget {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: () {
+        final sbcProvider =
+            Provider.of<ServiceByCategoryService>(context, listen: false);
+        sbcProvider.fetchSubcategoryList(id);
         Navigator.push(
           context,
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => ServicebyCategoryPage(
+            builder: (BuildContext context) => ServiceCategoryPage(
               categoryName: name,
               categoryId: id,
             ),

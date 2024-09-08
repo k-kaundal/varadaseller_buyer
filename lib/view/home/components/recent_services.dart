@@ -13,10 +13,10 @@ import 'package:qixer/view/utils/others_helper.dart';
 
 class RecentServices extends StatelessWidget {
   const RecentServices({
-    Key? key,
+    super.key,
     required this.cc,
     required this.asProvider,
-  }) : super(key: key);
+  });
   final ConstantColors cc;
   final asProvider;
 
@@ -46,7 +46,7 @@ class RecentServices extends StatelessWidget {
 
                               //fetch service
                               allServiceProvider.setEverythingToDefault();
-                              allServiceProvider.fetchServiceByFilter(context);
+                              // allServiceProvider.fetchServiceByFilter(context);
 
                               Navigator.push(
                                 context,
@@ -63,7 +63,7 @@ class RecentServices extends StatelessWidget {
                         ),
                         Container(
                           margin: const EdgeInsets.only(top: 5),
-                          height: 190,
+                          height: 194,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,

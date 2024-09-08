@@ -10,7 +10,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class SavedItemPage extends StatefulWidget {
-  const SavedItemPage({Key? key}) : super(key: key);
+  const SavedItemPage({super.key});
 
   @override
   _SavedItemPageState createState() => _SavedItemPageState();

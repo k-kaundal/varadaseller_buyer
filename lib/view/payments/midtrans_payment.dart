@@ -17,15 +17,14 @@ import '../utils/common_helper.dart';
 
 class MidtransPayment extends StatelessWidget {
   MidtransPayment(
-      {Key? key,
+      {super.key,
       required this.amount,
       required this.name,
       required this.phone,
       required this.email,
       required this.isFromOrderExtraAccept,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   final amount;
   final name;

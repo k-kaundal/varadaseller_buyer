@@ -6,11 +6,10 @@ import '../../../utils/common_helper.dart';
 
 class EmailNameFields extends StatelessWidget {
   const EmailNameFields(
-      {Key? key,
+      {super.key,
       this.fullNameController,
       this.userNameController,
-      this.emailController})
-      : super(key: key);
+      this.emailController});
 
   final fullNameController;
   final userNameController;

@@ -3,9 +3,7 @@ import 'package:flutterzilla_fixed_grid/flutterzilla_fixed_grid.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qixer/service/all_services_service.dart';
-
 import 'package:qixer/view/home/categories/components/category_card.dart';
-
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
@@ -14,7 +12,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 import '../../../service/home_services/category_service.dart';
 
 class AllCategoriesPage extends StatefulWidget {
-  const AllCategoriesPage({Key? key}) : super(key: key);
+  const AllCategoriesPage({super.key});
 
   @override
   State<AllCategoriesPage> createState() => _AllCategoriesPageState();

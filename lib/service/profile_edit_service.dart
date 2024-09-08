@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/string_extension.dart';
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,7 +42,12 @@ class ProfileEditService with ChangeNotifier {
   updateProfile(name, email, phone, cityId, areaId, countryId, postCode,
       address, about, String? imagePath, context) async {
     setLoadingTrue();
-
+    if (baseApi.toLowerCase().contains("qixer.bytesed.com")) {
+      await Future.delayed(const Duration(seconds: 2));
+      "This feature is turned off for demo app".showToast();
+      setLoadingFalse();
+      return false;
+    }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
@@ -89,14 +95,14 @@ class ProfileEditService with ChangeNotifier {
         },
       ),
     );
-
+    debugPrint(response.statusCode.toString());
     if (response.statusCode == 201) {
       setLoadingFalse();
       OthersHelper().showToast('Profile updated successfully', Colors.black);
       print(response.data);
-      Navigator.pop(context);
       await Provider.of<ProfileService>(context, listen: false)
           .getProfileDetails(isFromProfileupdatePage: true);
+      Navigator.pop(context);
       return true;
     } else {
       setLoadingFalse();

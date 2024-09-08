@@ -11,9 +11,9 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class WriteReviewPage extends StatefulWidget {
   const WriteReviewPage({
-    Key? key,
+    super.key,
     required this.serviceId,
-  }) : super(key: key);
+  });
 
   final serviceId;
   @override

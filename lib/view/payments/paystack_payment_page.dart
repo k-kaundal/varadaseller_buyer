@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/service/book_confirmation_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
@@ -14,18 +15,16 @@ import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/wallet_service.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:http/http.dart' as http;
 
 import '../../service/rtl_service.dart';
 import '../utils/common_helper.dart';
 
 class PaystackPaymentPage extends StatelessWidget {
   PaystackPaymentPage(
-      {Key? key,
+      {super.key,
       required this.isFromOrderExtraAccept,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   String? url;
   final isFromOrderExtraAccept;
@@ -236,7 +235,7 @@ class PaystackPaymentPage extends StatelessWidget {
     final response = await http.post(uri,
         headers: header,
         body: jsonEncode({
-          "amount": amount,
+          "amount": amount * 100,
           "currency": currencyCode,
           "email": email,
           "reference_id": orderId.toString(),

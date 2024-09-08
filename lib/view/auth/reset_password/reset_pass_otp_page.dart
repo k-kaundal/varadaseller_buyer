@@ -13,7 +13,7 @@ import '../../utils/common_helper.dart';
 import '../../utils/constant_colors.dart';
 
 class ResetPassOtpPage extends StatefulWidget {
-  const ResetPassOtpPage({Key? key, this.email}) : super(key: key);
+  const ResetPassOtpPage({super.key, this.email});
 
   final email;
 

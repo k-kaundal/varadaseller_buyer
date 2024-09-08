@@ -10,7 +10,7 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class CompleteRequest extends StatelessWidget {
-  const CompleteRequest({Key? key, required this.orderId}) : super(key: key);
+  const CompleteRequest({super.key, required this.orderId});
 
   final orderId;
 

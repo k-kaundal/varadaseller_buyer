@@ -7,39 +7,32 @@ import 'package:qixer/service/serviceby_category_service.dart';
 import 'package:qixer/view/services/service_details_page.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
+import 'package:qixer/view/utils/custom_dropdown.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 import '../home/components/service_card.dart';
 
-class ServicebyCategoryPage extends StatefulWidget {
-  const ServicebyCategoryPage(
-      {Key? key, this.categoryName = '', required this.categoryId})
-      : super(key: key);
+class ServiceCategoryPage extends StatelessWidget {
+  ServiceCategoryPage(
+      {super.key, this.categoryName = '', required this.categoryId});
 
   final String categoryName;
-  final categoryId;
+  final dynamic categoryId;
 
-  @override
-  State<ServicebyCategoryPage> createState() => _ServicebyCategoryPageState();
-}
-
-class _ServicebyCategoryPageState extends State<ServicebyCategoryPage> {
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final sbcProvider =
+        Provider.of<ServiceByCategoryService>(context, listen: false);
+    debugPrint("page auto loading".toString());
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper().appbarCommon(widget.categoryName, context, () {
-        Provider.of<ServiceByCategoryService>(context, listen: false)
-            .setEverythingToDefault();
+      appBar: CommonHelper().appbarCommon(categoryName, context, () {
+        sbcProvider.setEverythingToDefault();
 
         Navigator.pop(context);
       }),
@@ -51,9 +44,8 @@ class _ServicebyCategoryPageState extends State<ServicebyCategoryPage> {
                 ? false
                 : true,
         onRefresh: () async {
-          final result = await Provider.of<ServiceByCategoryService>(context,
-                  listen: false)
-              .fetchCategoryService(context, widget.categoryId);
+          final result =
+              await sbcProvider.fetchCategoryService(context, categoryId);
           if (result) {
             refreshController.refreshCompleted();
           } else {
@@ -61,9 +53,8 @@ class _ServicebyCategoryPageState extends State<ServicebyCategoryPage> {
           }
         },
         onLoading: () async {
-          final result = await Provider.of<ServiceByCategoryService>(context,
-                  listen: false)
-              .fetchCategoryService(context, widget.categoryId);
+          final result =
+              await sbcProvider.fetchCategoryService(context, categoryId);
           if (result) {
             debugPrint('loadcomplete ran');
             //loadcomplete function loads the data again
@@ -78,105 +69,128 @@ class _ServicebyCategoryPageState extends State<ServicebyCategoryPage> {
             });
           }
         },
+        footer: OthersHelper().commonRefreshFooter(context),
         child: WillPopScope(
           onWillPop: () {
-            Provider.of<ServiceByCategoryService>(context, listen: false)
-                .setEverythingToDefault();
+            sbcProvider.setEverythingToDefault();
             return Future.value(true);
           },
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Consumer<ServiceByCategoryService>(
-                builder: (context, provider, child) => provider.hasError != true
-                    ? provider.serviceMap.isNotEmpty
-                        ? Column(children: [
-                            // Service List ===============>
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            for (int i = 0; i < provider.serviceMap.length; i++)
-                              Column(
-                                children: [
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute<void>(
-                                          builder: (BuildContext context) =>
-                                              const ServiceDetailsPage(),
-                                        ),
-                                      );
-                                      Provider.of<ServiceDetailsService>(
-                                              context,
-                                              listen: false)
-                                          .fetchServiceDetails(provider
-                                              .serviceMap[i]['serviceId']);
-                                    },
-                                    child: ServiceCard(
-                                      cc: cc,
-                                      imageLink: provider.serviceMap[i]
-                                              ['image'] ??
-                                          placeHolderUrl,
-                                      rating: twoDouble(
-                                          provider.serviceMap[i]['rating']),
-                                      title: provider.serviceMap[i]['title'],
-                                      sellerName: provider.serviceMap[i]
-                                          ['sellerName'],
-                                      price: provider.serviceMap[i]['price'],
-                                      buttonText: 'Book Now',
-                                      width: double.infinity,
-                                      marginRight: 0.0,
-                                      pressed: () {
-                                        provider.saveOrUnsave(
-                                            provider.serviceMap[i]['serviceId'],
-                                            provider.serviceMap[i]['title'],
-                                            provider.serviceMap[i]['image'],
-                                            provider.serviceMap[i]['price']
-                                                .round(),
-                                            provider.serviceMap[i]
-                                                ['sellerName'],
-                                            twoDouble(provider.serviceMap[i]
-                                                ['rating']),
-                                            i,
+                builder: (context, provider, child) => Column(
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomDropdown(
+                      lnProvider.getString('Select Subcategory'),
+                      provider.subCatList.map((e) => e.name).toList(),
+                      (newValue) {
+                        provider.selectSubCategory(
+                            context, categoryId, newValue);
+                      },
+                      value: provider.selectedSubCat?.name,
+                    ),
+                    provider.hasError != true
+                        ? provider.serviceMap.isNotEmpty
+                            ? Column(children: [
+                                // Service List ===============>
+
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                for (int i = 0;
+                                    i < provider.serviceMap.length;
+                                    i++)
+                                  Column(
+                                    children: [
+                                      InkWell(
+                                        splashColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () {
+                                          Navigator.push(
                                             context,
-                                            provider.serviceMap[i]['sellerId']);
-                                      },
-                                      isSaved: provider.serviceMap[i]
-                                                  ['isSaved'] ==
-                                              true
-                                          ? true
-                                          : false,
-                                      serviceId: provider.serviceMap[i]
-                                          ['serviceId'],
-                                      sellerId: provider.serviceMap[i]
-                                          ['sellerId'],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 25,
-                                  ),
-                                ],
+                                            MaterialPageRoute<void>(
+                                              builder: (BuildContext context) =>
+                                                  const ServiceDetailsPage(),
+                                            ),
+                                          );
+                                          Provider.of<ServiceDetailsService>(
+                                                  context,
+                                                  listen: false)
+                                              .fetchServiceDetails(provider
+                                                  .serviceMap[i]['serviceId']);
+                                        },
+                                        child: ServiceCard(
+                                          cc: cc,
+                                          imageLink: provider.serviceMap[i]
+                                                  ['image'] ??
+                                              placeHolderUrl,
+                                          rating: twoDouble(
+                                              provider.serviceMap[i]['rating']),
+                                          title: provider.serviceMap[i]
+                                              ['title'],
+                                          sellerName: provider.serviceMap[i]
+                                              ['sellerName'],
+                                          price: provider.serviceMap[i]
+                                              ['price'],
+                                          buttonText: 'Book Now',
+                                          width: double.infinity,
+                                          marginRight: 0.0,
+                                          pressed: () {
+                                            provider.saveOrUnsave(
+                                                provider.serviceMap[i]
+                                                    ['serviceId'],
+                                                provider.serviceMap[i]['title'],
+                                                provider.serviceMap[i]['image'],
+                                                provider.serviceMap[i]['price']
+                                                    .round(),
+                                                provider.serviceMap[i]
+                                                    ['sellerName'],
+                                                twoDouble(provider.serviceMap[i]
+                                                    ['rating']),
+                                                i,
+                                                context,
+                                                provider.serviceMap[i]
+                                                    ['sellerId']);
+                                          },
+                                          isSaved: provider.serviceMap[i]
+                                                      ['isSaved'] ==
+                                                  true
+                                              ? true
+                                              : false,
+                                          serviceId: provider.serviceMap[i]
+                                              ['serviceId'],
+                                          sellerId: provider.serviceMap[i]
+                                              ['sellerId'],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 25,
+                                      ),
+                                    ],
+                                  )
+                              ])
+                            : Container(
+                                alignment: Alignment.center,
+                                height: screenHeight - 140,
+                                child:
+                                    OthersHelper().showLoading(cc.primaryColor),
                               )
-                          ])
                         : Container(
                             alignment: Alignment.center,
                             height: screenHeight - 140,
-                            child: OthersHelper().showLoading(cc.primaryColor),
+                            child: Text(
+                                lnProvider.getString("No service available")),
                           )
-                    : Container(
-                        alignment: Alignment.center,
-                        height: screenHeight - 140,
-                        child:
-                            Text(lnProvider.getString("No service available")),
-                      ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-        footer: OthersHelper().commonRefreshFooter(context),
       ),
     );
   }

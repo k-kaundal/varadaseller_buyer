@@ -14,8 +14,8 @@ import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class ReportChatPage extends StatefulWidget {
-  const ReportChatPage({Key? key, required this.title, required this.ticketId})
-      : super(key: key);
+  const ReportChatPage(
+      {super.key, required this.title, required this.ticketId});
 
   final String title;
   final ticketId;
@@ -404,6 +404,8 @@ class _ReportChatPageState extends State<ReportChatPage> {
                                 'Please write a message first', Colors.black);
                           }
                         },
+                        backgroundColor: cc.primaryColor,
+                        elevation: 0,
                         child: provider.sendLoading == false
                             ? const Icon(
                                 Icons.send,
@@ -418,8 +420,6 @@ class _ReportChatPageState extends State<ReportChatPage> {
                                   strokeWidth: 1.5,
                                 ),
                               ),
-                        backgroundColor: cc.primaryColor,
-                        elevation: 0,
                       ),
                     ],
                   ),

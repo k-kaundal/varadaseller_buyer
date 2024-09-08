@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/rtl_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../service/common_service.dart';
 
@@ -10,10 +11,23 @@ late double screenHeight;
 late AppStringService lnProvider;
 late RtlService rtlProvider;
 var _chatSellerId;
+late SharedPreferences sPref;
 
-getScreenSize(BuildContext context) {
+String get getToken {
+  debugPrint(sPref.getString("token").toString());
+  return sPref.getString("token") ?? "";
+}
+
+setToken(token) {
+  sPref.setString("token", token ?? "");
+}
+
+get commonAuthHeader => {'Authorization': 'Bearer $getToken'};
+
+getScreenSize(BuildContext context) async {
   screenWidth = MediaQuery.of(context).size.width;
   screenHeight = MediaQuery.of(context).size.height;
+  sPref = await SharedPreferences.getInstance();
 }
 
 initializeLNProvider(BuildContext context) {

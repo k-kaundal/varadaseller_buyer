@@ -52,10 +52,8 @@ class PaytabsService {
     } else if (isFromWalletDeposite) {
       amount = Provider.of<WalletService>(context, listen: false).amountToAdd;
 
-      orderId = 'wallet' +
-          Provider.of<WalletService>(context, listen: false)
-              .walletHistoryId
-              .toString();
+      orderId =
+          'wallet${Provider.of<WalletService>(context, listen: false).walletHistoryId}';
     } else if (isFromHireJob) {
       amount = Provider.of<JobRequestService>(context, listen: false)
           .selectedJobPrice;

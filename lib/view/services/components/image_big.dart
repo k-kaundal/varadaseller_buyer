@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/rtl_service.dart';
 
 class ImageBig extends StatelessWidget {
-  const ImageBig({Key? key, required this.serviceName, required this.imageLink})
-      : super(key: key);
+  const ImageBig(
+      {super.key, required this.serviceName, required this.imageLink});
   final serviceName;
   final imageLink;
 

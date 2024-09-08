@@ -51,10 +51,8 @@ class MollieService {
       amount = Provider.of<WalletService>(context, listen: false).amountToAdd;
       amount = double.parse(amount).toStringAsFixed(2);
 
-      orderId = 'wallet' +
-          Provider.of<WalletService>(context, listen: false)
-              .walletHistoryId
-              .toString();
+      orderId =
+          'wallet${Provider.of<WalletService>(context, listen: false).walletHistoryId}';
     } else if (isFromHireJob) {
       amount = Provider.of<JobRequestService>(context, listen: false)
           .selectedJobPrice;

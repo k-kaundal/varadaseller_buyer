@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
+import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/service/service_details_service.dart';
 import 'package:qixer/view/booking/service_personalization_page.dart';
 import 'package:qixer/view/live_chat/chat_message_page.dart';
@@ -20,8 +21,8 @@ import 'components/service_details_top.dart';
 
 class ServiceDetailsPage extends StatefulWidget {
   const ServiceDetailsPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   // final serviceId;
 
@@ -267,39 +268,44 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage>
 
 class ServiceDetailsChatIcon extends StatelessWidget {
   const ServiceDetailsChatIcon({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final cc = ConstantColors();
-    return Consumer<ServiceDetailsService>(
-      builder: (context, provider, child) => InkWell(
-        onTap: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          var currentUserId = prefs.getInt('userId')!;
+    final pusherInstance =
+        Provider.of<PushNotificationService>(context, listen: false)
+            .pusherInstance;
+    return pusherInstance == null
+        ? const SizedBox()
+        : Consumer<ServiceDetailsService>(
+            builder: (context, provider, child) => InkWell(
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                var currentUserId = prefs.getInt('userId')!;
 
-          //======>
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) => ChatMessagePage(
-                receiverId: provider.sellerId,
-                currentUserId: currentUserId,
-                userName: provider.serviceAllDetails.serviceSellerName,
+                //======>
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => ChatMessagePage(
+                      receiverId: provider.sellerId,
+                      currentUserId: currentUserId,
+                      userName: provider.serviceAllDetails.serviceSellerName,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.only(left: 13, bottom: 6, top: 6),
+                child: Icon(
+                  Icons.message_outlined,
+                  size: 40,
+                  color: cc.greyFour,
+                ),
               ),
             ),
           );
-        },
-        child: Container(
-          padding: const EdgeInsets.only(left: 13, bottom: 6, top: 6),
-          child: Icon(
-            Icons.message_outlined,
-            size: 40,
-            color: cc.greyFour,
-          ),
-        ),
-      ),
-    );
   }
 }

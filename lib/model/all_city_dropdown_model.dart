@@ -34,7 +34,7 @@ class ServiceCity {
     required this.serviceCity,
   });
 
-  int id;
+  dynamic id;
   String serviceCity;
 
   factory ServiceCity.fromJson(Map<String, dynamic> json) => ServiceCity(

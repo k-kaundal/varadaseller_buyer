@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'common_service.dart';
 
 class PaymentGatewayListService with ChangeNotifier {
@@ -86,6 +88,7 @@ class PaymentGatewayListService with ChangeNotifier {
         } catch (e) {}
       } else {
         //something went wrong
+        debugPrint("Payment gateway list".toString());
         print(response.body);
       }
     } else {

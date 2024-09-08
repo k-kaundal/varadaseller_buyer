@@ -9,7 +9,7 @@ import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
+  const SignupPage({super.key});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -31,44 +31,47 @@ class _SignupPageState extends State<SignupPage> {
     super.initState();
     Provider.of<SignupService>(context, listen: false)
         .setPageController(_pageController);
+    Provider.of<SignupService>(context, listen: false).setSelectedPageO(0);
   }
 
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
-    return Listener(
-      onPointerDown: (_) {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.focusedChild?.unfocus();
-        }
-      },
-      child: Consumer<AppStringService>(
-        builder: (context, asProvider, child) => Consumer<SignupService>(
-          builder: (context, provider, child) => WillPopScope(
-            onWillPop: () {
+    return Consumer<AppStringService>(
+      builder: (context, asProvider, child) => Consumer<SignupService>(
+        builder: (context, provider, child) => WillPopScope(
+          onWillPop: () {
+            if (provider.selectedPage == 0) {
+              return Future.value(true);
+            } else {
+              _pageController.animateToPage(provider.selectedPage - 1,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease);
+              return Future.value(false);
+            }
+            // return Future.value(false);
+          },
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: CommonHelper().appbarCommon('', context, () {
               if (provider.selectedPage == 0) {
-                return Future.value(true);
+                Navigator.pop(context);
               } else {
                 _pageController.animateToPage(provider.selectedPage - 1,
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.ease);
-                return Future.value(false);
               }
-              // return Future.value(false);
-            },
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              appBar: CommonHelper().appbarCommon('', context, () {
-                if (provider.selectedPage == 0) {
-                  Navigator.pop(context);
-                } else {
-                  _pageController.animateToPage(provider.selectedPage - 1,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease);
+            }),
+            body: Listener(
+              onPointerDown: (_) {
+                debugPrint("Listener is working---------------------------"
+                    .toString());
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.focusedChild?.unfocus();
                 }
-              }),
-              body: Column(
+              },
+              child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
@@ -148,10 +151,12 @@ class _SignupPageState extends State<SignupPage> {
                           height: 750,
                           child: PageView.builder(
                               controller: _pageController,
+                              physics: const NeverScrollableScrollPhysics(),
                               onPageChanged: (value) {
                                 provider.setSelectedPage(value);
                               },
                               itemCount: 3,
+                              // physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, i) {
                                 if (i == 0) {
                                   return SignupEmailName(

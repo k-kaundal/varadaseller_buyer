@@ -8,11 +8,11 @@ import '../../utils/constant_colors.dart';
 
 class SliderHome extends StatelessWidget {
   const SliderHome({
-    Key? key,
+    super.key,
     required this.cc,
     this.sliderDetailsList,
     this.sliderImageList,
-  }) : super(key: key);
+  });
 
   final ConstantColors cc;
   final sliderDetailsList;
@@ -55,7 +55,7 @@ class SliderHome extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width / 2,
                         child: Text(
                           sliderDetailsList[itemIndex]['title'],
@@ -70,7 +70,7 @@ class SliderHome extends StatelessWidget {
                       const SizedBox(
                         height: 7,
                       ),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width / 2 - 20,
                         child: Text(
                           sliderDetailsList[itemIndex]['subtitle'],

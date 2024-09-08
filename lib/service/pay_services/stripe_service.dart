@@ -1,9 +1,10 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/book_confirmation_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
@@ -38,13 +39,13 @@ class StripeService with ChangeNotifier {
     try {
       await Stripe.instance
           .presentPaymentSheet(
-              options: PaymentSheetPresentOptions(
-      //   clientSecret: paymentIntentData!['client_secret'],
-      //   confirmPayment: true,
-      // )
-      ));
-        //   .then((newValue) async {
-        // print('stripe payment successfull');
+              //         parameters: PresentPaymentSheetParameters(
+              //   clientSecret: paymentIntentData!['client_secret'],
+              //   confirmPayment: true,
+              // )
+              )
+          .then((newValue) async {
+        print('stripe payment successfull');
 
         if (isFromOrderExtraAccept == true) {
           Provider.of<OrderDetailsService>(context, listen: false)
@@ -62,17 +63,16 @@ class StripeService with ChangeNotifier {
         //payment successs ================>
 
         paymentIntentData = null;
-//       }
-// .onError((error, stackTrace) {
-//         Provider.of<PlaceOrderService>(context, listen: false)
-//             .doNext(context, 'failed', paymentFailed: true);
-//         debugPrint('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
-//       });
-//     } on StripeException {
-//       Provider.of<PlaceOrderService>(context, listen: false)
-//           .doNext(context, 'failed', paymentFailed: true);
-//       // print('Exception/DISPLAYPAYMENTSHEET==> $e');
-//       OthersHelper().showToast("Payment cancelled", Colors.red);
+      }).onError((error, stackTrace) {
+        Provider.of<PlaceOrderService>(context, listen: false)
+            .doNext(context, 'failed', paymentFailed: true);
+        debugPrint('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
+      });
+    } on StripeException {
+      Provider.of<PlaceOrderService>(context, listen: false)
+          .doNext(context, 'failed', paymentFailed: true);
+      // print('Exception/DISPLAYPAYMENTSHEET==> $e');
+      OthersHelper().showToast("Payment cancelled", Colors.red);
     } catch (e) {
       Provider.of<PlaceOrderService>(context, listen: false)
           .doNext(context, 'failed', paymentFailed: true);
@@ -125,7 +125,9 @@ class StripeService with ChangeNotifier {
       bool isFromWalletDeposite = false,
       bool isFromHireJob = false}) async {
     var amount;
-
+    var publishableKey = await StripeService().getStripeKey();
+    Stripe.publishableKey = publishableKey;
+    Stripe.instance.applySettings();
     String name;
     String phone;
     String email;

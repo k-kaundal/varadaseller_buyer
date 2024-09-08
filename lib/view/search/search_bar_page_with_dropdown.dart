@@ -7,10 +7,10 @@ import '../utils/constant_colors.dart';
 
 class SearchBarPageWithDropdown extends StatelessWidget {
   SearchBarPageWithDropdown({
-    Key? key,
+    super.key,
     required this.cc,
     this.isHomePage = false,
-  }) : super(key: key);
+  });
 
   final bool isHomePage;
 
@@ -21,10 +21,13 @@ class SearchBarPageWithDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonHelper()
-          .appbarCommon(lnProvider.getString('Search'), context, () {
-        Navigator.pop(context);
-      }),
+      appBar: CommonHelper().appbarCommon(
+        lnProvider.getString('Search'),
+        context,
+        () {
+          Navigator.pop(context);
+        },
+      ),
       body: Listener(
         onPointerDown: (_) {
           FocusScopeNode currentFocus = FocusScope.of(context);
@@ -32,17 +35,17 @@ class SearchBarPageWithDropdown extends StatelessWidget {
             currentFocus.focusedChild?.unfocus();
           }
         },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CommonHelper().dividerCommon(),
-              Container(
+        child: Column(
+          children: [
+            CommonHelper().dividerCommon(),
+            Expanded(
+              child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 margin: const EdgeInsets.only(top: 25),
                 child: const sb.SearchBar(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -10,7 +10,7 @@ import '../utils/constant_styles.dart';
 
 class ServicesOfUser extends StatelessWidget {
   final sellerName;
-  const ServicesOfUser(this.sellerName, {Key? key}) : super(key: key);
+  const ServicesOfUser(this.sellerName, {super.key});
 
   @override
   Widget build(BuildContext context) {

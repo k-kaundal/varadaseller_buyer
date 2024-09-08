@@ -10,7 +10,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class AreaDropdownPopup extends StatelessWidget {
-  const AreaDropdownPopup({Key? key}) : super(key: key);
+  const AreaDropdownPopup({super.key});
 
   @override
   Widget build(BuildContext context) {

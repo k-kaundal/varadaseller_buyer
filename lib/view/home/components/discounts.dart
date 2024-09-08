@@ -4,9 +4,9 @@ import 'package:qixer/view/utils/constant_colors.dart';
 
 class Discounts extends StatelessWidget {
   const Discounts({
-    Key? key,
+    super.key,
     required this.cc,
-  }) : super(key: key);
+  });
   final ConstantColors cc;
 
   @override

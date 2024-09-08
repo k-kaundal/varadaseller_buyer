@@ -18,15 +18,14 @@ import 'package:http/http.dart' as http;
 
 class BillplzPayment extends StatelessWidget {
   BillplzPayment(
-      {Key? key,
+      {super.key,
       required this.amount,
       required this.name,
       required this.phone,
       required this.email,
       required this.isFromOrderExtraAccept,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   final amount;
   final name;

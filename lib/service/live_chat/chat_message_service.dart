@@ -5,11 +5,11 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/model/chat_messages_model.dart';
 import 'package:qixer/service/common_service.dart';
-import 'package:http/http.dart' as http;
 import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
@@ -107,17 +107,17 @@ class ChatMessagesService with ChangeNotifier {
 
         setTotalPage(data.messages.lastPage);
 
-        print('add new data');
-
         //else add new data
 
         setMessageList(data.messages.data, receiverId);
 
+        messagesList ??= [];
         currentPage++;
         setCurrentPage(currentPage);
         return true;
       } else {
         messagesList ??= [];
+        notifyListeners();
         print(response.body);
         return false;
       }

@@ -10,7 +10,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../service_helper.dart';
 
 class OverviewTab extends StatelessWidget {
-  const OverviewTab({Key? key, required this.provider}) : super(key: key);
+  const OverviewTab({super.key, required this.provider});
 
   final provider;
   @override

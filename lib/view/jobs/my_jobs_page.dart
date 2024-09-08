@@ -17,7 +17,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 import '../../service/all_services_service.dart';
 
 class MyJobsPage extends StatefulWidget {
-  const MyJobsPage({Key? key}) : super(key: key);
+  const MyJobsPage({super.key});
 
   @override
   _MyJobsPageState createState() => _MyJobsPageState();
@@ -78,6 +78,7 @@ class _MyJobsPageState extends State<MyJobsPage> {
               });
             }
           },
+          footer: OthersHelper().commonRefreshFooter(context),
           child: SingleChildScrollView(
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: screenPadding),
@@ -286,7 +287,6 @@ class _MyJobsPageState extends State<MyJobsPage> {
                   }),
                 )),
           ),
-          footer: OthersHelper().commonRefreshFooter(context),
         ),
       ),
     );

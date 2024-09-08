@@ -13,10 +13,10 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class WriteReportPage extends StatefulWidget {
   const WriteReportPage({
-    Key? key,
+    super.key,
     required this.serviceId,
     required this.orderId,
-  }) : super(key: key);
+  });
 
   final serviceId;
   final orderId;

@@ -12,13 +12,12 @@ class PaypalPayment extends StatefulWidget {
   final Function onFinish;
 
   const PaypalPayment(
-      {Key? key,
+      {super.key,
       required this.onFinish,
       required this.amount,
       required this.name,
       required this.phone,
-      required this.email})
-      : super(key: key);
+      required this.email});
 
   final amount;
   final name;
@@ -69,7 +68,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
           executeUrl = res["executeUrl"];
         });
       } catch (e) {
-        print('exception: ' + e.toString());
+        print('exception: $e');
         final snackBar = SnackBar(
           content: Text(e.toString()),
           duration: const Duration(seconds: 10),
@@ -146,7 +145,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
             "items": items,
             if (isEnableShipping && isEnableAddress)
               "shipping_address": {
-                "recipient_name": userFirstName + " " + userLastName,
+                "recipient_name": "$userFirstName $userLastName",
                 "line1": addressStreet,
                 "line2": "",
                 "city": addressCity,
@@ -171,7 +170,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
     if (checkoutUrl != null) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           leading: GestureDetector(
             child: const Icon(Icons.arrow_back_ios),
             onTap: () => Provider.of<PlaceOrderService>(context, listen: false)

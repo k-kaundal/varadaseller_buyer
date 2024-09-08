@@ -4,7 +4,7 @@ import 'package:qixer/service/live_chat/chat_list_service.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class ChatSearch extends StatelessWidget {
-  const ChatSearch({Key? key}) : super(key: key);
+  const ChatSearch({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 class ReviewTab extends StatelessWidget {
-  const ReviewTab({Key? key, required this.provider}) : super(key: key);
+  const ReviewTab({super.key, required this.provider});
   final provider;
   @override
   Widget build(BuildContext context) {

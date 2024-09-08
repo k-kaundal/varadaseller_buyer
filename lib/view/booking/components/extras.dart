@@ -9,12 +9,11 @@ import '../../utils/constant_colors.dart';
 
 class Extras extends StatefulWidget {
   const Extras(
-      {Key? key,
+      {super.key,
       required this.cc,
       required this.additionalServices,
       required this.serviceBenefits,
-      required this.asProvider})
-      : super(key: key);
+      required this.asProvider});
   final ConstantColors cc;
   final additionalServices;
   final serviceBenefits;
@@ -38,7 +37,7 @@ class _ExtrasState extends State<Extras> {
         ),
         Container(
           margin: const EdgeInsets.only(top: 5),
-          height: 145,
+          height: 150,
           child: ListView(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,

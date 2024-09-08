@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:qixer/service/jobs_service/job_request_service.dart';
 import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/wallet_service.dart';
-import 'dart:async';
 
 import '../../service/booking_services/place_order_service.dart';
 import '../../service/payment_gateway_list_service.dart';
@@ -18,14 +18,13 @@ import '../utils/common_helper.dart';
 
 class InstamojoPaymentPage extends StatefulWidget {
   const InstamojoPaymentPage(
-      {Key? key,
+      {super.key,
       required this.amount,
       required this.name,
       required this.email,
       required this.isFromOrderExtraAccept,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   final amount;
   final name;
@@ -197,8 +196,7 @@ class _InstamojoPaymentPageState extends State<InstamojoPaymentPage> {
         isLoading = false; //setting state to false after data loaded
 
         selectedUrl =
-            json.decode(resp.body)["payment_request"]['longurl'].toString() +
-                "?embed=form";
+            "${json.decode(resp.body)["payment_request"]['longurl']}?embed=form";
       });
       print(json.decode(resp.body)['message'].toString());
 //If something is wrong with the data we provided to

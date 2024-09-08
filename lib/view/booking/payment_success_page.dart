@@ -12,8 +12,7 @@ import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class PaymentSuccessPage extends StatefulWidget {
-  const PaymentSuccessPage({Key? key, required this.paymentStatus})
-      : super(key: key);
+  const PaymentSuccessPage({super.key, required this.paymentStatus});
 
   final String paymentStatus;
 

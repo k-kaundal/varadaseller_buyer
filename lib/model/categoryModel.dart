@@ -16,7 +16,7 @@ class CategoryModel {
 
   List<Category> category;
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
+  factory CategoryModel.fromJson(Map json) => CategoryModel(
         category: List<Category>.from(
             json["category"].map((x) => Category.fromJson(x))),
       );
@@ -34,7 +34,7 @@ class Category {
     this.mobileIcon,
   });
 
-  int? id;
+  dynamic id;
   String? name;
   String? icon;
   String? mobileIcon;

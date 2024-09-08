@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/context_extension.dart';
+import 'package:qixer/helper/extension/string_extension.dart';
+import 'package:qixer/helper/extension/widget_extension.dart';
 import 'package:qixer/service/app_string_service.dart';
+import 'package:qixer/view/home_map_view/home_map_view.dart';
 import 'package:qixer/view/search/components/search_bar.dart' as sb;
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class SearchTab extends StatefulWidget {
-  const SearchTab({Key? key}) : super(key: key);
+  const SearchTab({super.key});
 
   @override
   _SearchTabState createState() => _SearchTabState();
 }
 
 class _SearchTabState extends State<SearchTab> {
+  ValueNotifier<bool> viewMap = ValueNotifier(false);
   @override
   void initState() {
     super.initState();
@@ -33,24 +38,35 @@ class _SearchTabState extends State<SearchTab> {
       child: Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
-            child: SingleChildScrollView(
-              physics: physicsCommon,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: screenPadding),
-                clipBehavior: Clip.none,
-                child: Consumer<AppStringService>(
-                  builder: (context, asProvider, child) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        CommonHelper().titleCommon(
-                            asProvider.getString('Search services')),
-                        sizedBox20(),
-                        const sb.SearchBar(),
-                      ]),
-                ),
+            child: Container(
+              clipBehavior: Clip.none,
+              child: Consumer<AppStringService>(
+                builder: (context, asProvider, child) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CommonHelper().titleCommon(
+                                asProvider.getString('Search services')),
+                            ValueListenableBuilder<bool>(
+                                valueListenable: viewMap,
+                                builder: (context, view, child) => IconButton(
+                                    onPressed: () {
+                                      context.toPage(HomeMapView());
+                                      // debugPrint(view.toString());
+                                      // viewMap.value = !view;
+                                    },
+                                    icon:
+                                        "map".toSVGSized(24, color: cc.black4)))
+                          ]).hp20,
+                      sizedBox20(),
+                      Expanded(
+                          child: ValueListenableBuilder<bool>(
+                              valueListenable: viewMap,
+                              builder: (context, map, _) =>
+                                  map ? HomeMapView() : const sb.SearchBar())),
+                    ]),
               ),
             ),
           )),

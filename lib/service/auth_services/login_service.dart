@@ -1,16 +1,18 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:pusher_beams/pusher_beams.dart';
+import 'package:qixer/helper/extension/string_extension.dart';
 import 'package:qixer/service/common_service.dart';
-import 'package:qixer/service/pay_services/stripe_service.dart';
+import 'package:qixer/service/profile_service.dart';
 import 'package:qixer/service/push_notification_service.dart';
-import 'package:qixer/view/home/landing_page.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../view/auth/signup/components/email_verify_page.dart';
+import 'email_verify_service.dart';
 
 class LoginService with ChangeNotifier {
   bool isloading = false;
@@ -50,16 +52,41 @@ class LoginService with ChangeNotifier {
           OthersHelper()
               .showToast("Login successful", ConstantColors().successColor);
         }
-        setLoadingFalse();
-
+        var responseData = jsonDecode(response.body);
         String token = jsonDecode(response.body)['token'];
         int userId = jsonDecode(response.body)['users']['id'];
         String state = jsonDecode(response.body)['users']['state'].toString();
         String countryId =
             jsonDecode(response.body)['users']['country_id'].toString();
+        if (responseData["users"]["email_verified"].toString() != "1") {
+          var isOtepSent =
+              await Provider.of<EmailVerifyService>(context, listen: false)
+                  .sendOtpForEmailValidation(
+                      responseData["users"]["email"], context, token);
+
+          if (isOtepSent) {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => EmailVerifyPage(
+                  email: responseData["users"]["email"].toString(),
+                  token: token,
+                  userId: userId,
+                  state: state,
+                  countryId: countryId,
+                ),
+              ),
+            );
+          } else {
+            "Otp send failed".tr().showToast();
+          }
+          setLoadingFalse();
+          return false;
+        }
 
         if (keepLoggedIn) {
-          saveDetails(email, pass, token, userId, state, countryId);
+          saveDetails(email, token, userId, state, countryId,
+              pass: pass, keepLogin: keepLoggedIn);
         } else {
           setKeepLoggedInFalseSaveToken(token);
         }
@@ -67,28 +94,20 @@ class LoginService with ChangeNotifier {
         //start pusher
         //============>
         await Provider.of<PushNotificationService>(context, listen: false)
-            .fetchPusherCredential();
-        var pusherInstance =
-            Provider.of<PushNotificationService>(context, listen: false)
-                .pusherInstance;
+            .fetchPusherCredential(context: context);
 
-        if (pusherInstance != null) {
-          await PusherBeams.instance.start(pusherInstance);
-        }
-
+        await Provider.of<ProfileService>(context, listen: false).fetchData();
         //start stripe
         //============>
-        var publishableKey = await StripeService().getStripeKey();
-        Stripe.publishableKey = publishableKey;
-        Stripe.instance.applySettings();
 
         // =======>
-        Navigator.pushReplacement<void, void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => const LandingPage(),
-          ),
-        );
+        // Navigator.pushReplacement<void, void>(
+        //   context,
+        //   MaterialPageRoute<void>(
+        //     builder: (BuildContext context) => const LandingPage(),
+        //   ),
+        // );
+        setLoadingFalse();
 
         return true;
       } else {
@@ -107,19 +126,20 @@ class LoginService with ChangeNotifier {
     }
   }
 
-  saveDetails(
-      String email, pass, String token, int userId, state, countryId) async {
+  saveDetails(String email, String token, int userId, state, countryId,
+      {String? pass, bool keepLogin = true}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("email", email);
-    prefs.setBool('keepLoggedIn', true);
-    prefs.setString("pass", pass);
+    prefs.setBool('keepLoggedIn', keepLogin);
+    if (keepLogin) {
+      prefs.setString("pass", pass ?? "");
+    } else {
+      prefs.remove("pass");
+    }
     prefs.setString("token", token);
     prefs.setInt('userId', userId);
     prefs.setString("state", state);
     prefs.setString("countryId", countryId);
-    print('token is $token');
-    print('user id is $userId');
-    print('user state id is $state');
   }
 
   setKeepLoggedInFalseSaveToken(token) async {

@@ -8,7 +8,7 @@ import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class MenuNameImageSection extends StatelessWidget {
-  const MenuNameImageSection({Key? key}) : super(key: key);
+  const MenuNameImageSection({super.key});
 
   @override
   Widget build(BuildContext context) {

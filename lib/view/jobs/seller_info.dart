@@ -32,8 +32,8 @@ class SellerInfo extends StatelessWidget {
     this.sellerCountry,
     this.sellerCity,
     this.imgUrl,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,7 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class CountryStatesDropdowns extends StatefulWidget {
-  const CountryStatesDropdowns({Key? key}) : super(key: key);
+  const CountryStatesDropdowns({super.key});
 
   @override
   State<CountryStatesDropdowns> createState() => _CountryStatesDropdownsState();
@@ -70,7 +70,7 @@ class _CountryStatesDropdownsState extends State<CountryStatesDropdowns> {
 dropdownPlaceholder({required String hintText, textWidth}) {
   return Container(
     width: double.infinity,
-    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
     decoration: BoxDecoration(
         border: Border.all(
           color: ConstantColors().greyFive,

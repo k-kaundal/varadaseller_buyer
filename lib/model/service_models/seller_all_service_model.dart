@@ -124,15 +124,13 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        sellerId: int.parse(json["seller_id"].toString() == "null"
-            ? "0"
-            : json["seller_id"].toString()),
+        sellerId: json["seller_id"],
         sellerName: json['seller_name'],
         title: json["title"],
-        price: int.parse(json["price"].toString()=="null"?"0":json["price"].toString()).toDouble(),
+        price: json["price"].toDouble(),
         image: json["image"],
-        isServiceOnline: int.parse(json["is_service_online"].toString()=="null"?"0":json["is_service_online"].toString()),
-        serviceCityId: int.parse(json["service_city_id"].toString()=="null"?"0":json["service_city_id"].toString()),
+        isServiceOnline: json["is_service_online"],
+        serviceCityId: json["service_city_id"],
         imageUrl: json["image_url"],
         sellerImageUrl: json["seller_image_url"],
         sellerForMobile: json["seller_for_mobile"] == null

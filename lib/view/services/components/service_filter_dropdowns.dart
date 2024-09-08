@@ -7,7 +7,7 @@ import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class ServiceFilterDropdowns extends StatelessWidget {
-  const ServiceFilterDropdowns({Key? key}) : super(key: key);
+  const ServiceFilterDropdowns({super.key});
 
   @override
   Widget build(BuildContext context) {

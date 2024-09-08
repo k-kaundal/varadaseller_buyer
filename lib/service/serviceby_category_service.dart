@@ -2,18 +2,24 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qixer/data/network/network_api_services.dart';
 import 'package:qixer/model/serviceby_category_model.dart';
+import 'package:qixer/model/sub_category_model.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/db/db_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 class ServiceByCategoryService with ChangeNotifier {
   var serviceMap = [];
   bool alreadySaved = false;
   bool hasError = false;
+
+  List<SubCategory> subCatList = [];
+  SubCategory? selectedSubCat;
+  var currentCategory;
 
   late int totalPages;
 
@@ -24,7 +30,7 @@ class ServiceByCategoryService with ChangeNotifier {
 
   setCurrentPage(newValue) {
     currentPage = newValue;
-    notifyListeners();
+    // notifyListeners();
   }
 
   setTotalPage(newPageNumber) {
@@ -32,9 +38,23 @@ class ServiceByCategoryService with ChangeNotifier {
     notifyListeners();
   }
 
+  selectSubCategory(context, categoryId, name) {
+    try {
+      selectedSubCat = subCatList.firstWhere((element) => element.name == name);
+      serviceMap = [];
+      currentPage = 1;
+
+      imageList = [];
+      hasError = false;
+      fetchCategoryService(context, categoryId, isrefresh: true);
+    } catch (e) {}
+  }
+
   setEverythingToDefault() {
     serviceMap = [];
     currentPage = 1;
+    selectedSubCat = null;
+    subCatList = [];
     averageRateList = [];
     imageList = [];
     hasError = false;
@@ -44,15 +64,8 @@ class ServiceByCategoryService with ChangeNotifier {
   fetchCategoryService(context, categoryId, {bool isrefresh = false}) async {
     //=================>
     String apiLink;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var stateId = prefs.getString('state');
-    if (stateId == null) {
-      apiLink =
-          '$baseApi/service-list/search-by-category/$categoryId?page=$currentPage';
-    } else {
-      apiLink =
-          '$baseApi/service-list/search-by-category/$categoryId?page=$currentPage&state_id=$stateId';
-    }
+    apiLink =
+        '$baseApi/service-list/category-subcategory-rating-sort-by-search/?cat=$categoryId&subcat=${selectedSubCat?.id ?? ""}&page=$currentPage';
     //====================>
 
     if (isrefresh) {
@@ -62,7 +75,7 @@ class ServiceByCategoryService with ChangeNotifier {
       notifyListeners();
 
       Provider.of<ServiceByCategoryService>(context, listen: false)
-          .setCurrentPage(currentPage);
+          .setCurrentPage(1);
     } else {
       // if (currentPage > 2) {
       //   refreshController.loadNoData();
@@ -86,7 +99,7 @@ class ServiceByCategoryService with ChangeNotifier {
 
       if (response.statusCode == 201) {
         var data = ServicebyCategoryModel.fromJson(jsonDecode(response.body));
-
+        imageList = [];
         setTotalPage(data.allServices.lastPage);
 
         for (int i = 0; i < data.allServices.data.length; i++) {
@@ -206,6 +219,19 @@ class ServiceByCategoryService with ChangeNotifier {
           await DbService().checkIfSaved(serviceId, title, sellerName);
       newListMap[index]['isSaved'] = alreadySaved;
       serviceMap = newListMap;
+      notifyListeners();
+    }
+  }
+
+  fetchSubcategoryList(catId) async {
+    subCatList = [];
+    var responseData = await NetworkApiServices().getApi(
+        "$baseApi/category/sub-category/$catId", "Subcategory list",
+        headers: commonAuthHeader);
+
+    if (responseData != null) {
+      debugPrint(responseData.toString());
+      subCatList = SubcategoryModel.fromJson(responseData).subCategories;
       notifyListeners();
     }
   }

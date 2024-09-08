@@ -13,8 +13,7 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class SellerAllServicePage extends StatefulWidget {
   const SellerAllServicePage(
-      {Key? key, this.sellerName = '', required this.sellerId})
-      : super(key: key);
+      {super.key, this.sellerName = '', required this.sellerId});
 
   final String sellerName;
   final sellerId;
@@ -77,6 +76,7 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
             });
           }
         },
+        footer: OthersHelper().commonRefreshFooter(context),
         child: WillPopScope(
           onWillPop: () {
             Provider.of<SellerAllServicesService>(context, listen: false)
@@ -175,7 +175,6 @@ class _ServicebyCategoryPageState extends State<SellerAllServicePage> {
             ),
           ),
         ),
-        footer: OthersHelper().commonRefreshFooter(context),
       ),
     );
   }

@@ -6,8 +6,7 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
 class EditJobCountryStates extends StatefulWidget {
-  const EditJobCountryStates({Key? key, required this.jobIndex})
-      : super(key: key);
+  const EditJobCountryStates({super.key, required this.jobIndex});
 
   final jobIndex;
 

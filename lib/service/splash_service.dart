@@ -6,14 +6,19 @@ import 'package:qixer/view/auth/login/login.dart';
 import 'package:qixer/view/intro/introduction_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../view/utils/responsive.dart';
-
 class SplashService {
   loginOrGoHome(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? keepLogin = prefs.getBool('keepLoggedIn');
     String? email = prefs.getString('email');
-    if (keepLogin.toString() == "null") {
+    // Navigator.pushReplacement<void, void>(
+    //   context,
+    //   MaterialPageRoute<void>(
+    //     builder: (BuildContext context) => HomeMapView(),
+    //   ),
+    // );
+    // return;
+    if (keepLogin == null) {
       //that means user is opening the app for the first time.. so , show the intro
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushReplacement<void, void>(

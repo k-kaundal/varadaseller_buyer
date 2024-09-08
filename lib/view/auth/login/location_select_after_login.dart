@@ -9,7 +9,7 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class LocationSelectAfterLoginPage extends StatelessWidget {
-  const LocationSelectAfterLoginPage({Key? key}) : super(key: key);
+  const LocationSelectAfterLoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {

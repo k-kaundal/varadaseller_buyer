@@ -13,7 +13,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../../utils/constant_colors.dart';
 
 class OrderDetailsPanel extends StatefulWidget {
-  const OrderDetailsPanel({Key? key, this.panelController}) : super(key: key);
+  const OrderDetailsPanel({super.key, this.panelController});
   final panelController;
 
   @override

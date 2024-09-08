@@ -12,9 +12,9 @@ import '../../utils/constant_colors.dart';
 
 class Steps extends StatelessWidget {
   const Steps({
-    Key? key,
+    super.key,
     required this.cc,
-  }) : super(key: key);
+  });
 
   final ConstantColors cc;
 
@@ -126,6 +126,17 @@ class Steps extends StatelessWidget {
                   imageUrl: sProvider.serviceImage ?? placeHolderUrl,
                   placeholder: (context, url) {
                     return Image.asset('assets/images/loading_image.png');
+                  },
+                  errorWidget: (_, string, obj) {
+                    return Container(
+                      margin: const EdgeInsets.all(12),
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                "assets/images/app_icon.png",
+                              ),
+                              opacity: .5)),
+                    );
                   },
                   height: 60,
                   width: 60,

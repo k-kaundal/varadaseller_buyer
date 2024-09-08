@@ -5,10 +5,10 @@ import 'package:qixer/view/utils/constant_styles.dart';
 
 class OverviewBox extends StatelessWidget {
   const OverviewBox({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
-  }) : super(key: key);
+  });
 
   final String title;
   final String subtitle;

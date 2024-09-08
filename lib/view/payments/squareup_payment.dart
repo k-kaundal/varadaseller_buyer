@@ -15,15 +15,14 @@ import '../utils/common_helper.dart';
 
 class SquareUpPayment extends StatelessWidget {
   SquareUpPayment(
-      {Key? key,
+      {super.key,
       required this.amount,
       required this.name,
       required this.phone,
       required this.email,
       required this.isFromOrderExtraAccept,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   final amount;
   final name;
@@ -70,7 +69,7 @@ class SquareUpPayment extends StatelessWidget {
                   initialUrl: url,
                   javascriptMode: JavascriptMode.unrestricted,
                   navigationDelegate: (NavigationRequest request) async {
-                    print('navigation delegate link ' + request.url);
+                    print('navigation delegate link ${request.url}');
                     if (request.url.contains('http://www.xgenious.com')) {
                       // String status = await verifyPayment(request.url);
                       // if (status == 'paid') {

@@ -11,7 +11,7 @@ import '../../../booking/components/textarea_field.dart';
 import '../../../utils/others_helper.dart';
 
 class CreateTicketPage extends StatefulWidget {
-  const CreateTicketPage({Key? key}) : super(key: key);
+  const CreateTicketPage({super.key});
 
   @override
   _CreateTicketPageState createState() => _CreateTicketPageState();

@@ -6,7 +6,7 @@ import 'package:qixer/view/booking/booking_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 
 class SellerDetails extends StatelessWidget {
-  const SellerDetails({Key? key}) : super(key: key);
+  const SellerDetails({super.key});
 
   @override
   Widget build(BuildContext context) {

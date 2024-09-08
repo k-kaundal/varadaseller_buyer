@@ -13,11 +13,10 @@ import '../utils/responsive.dart';
 
 class JobConversationPage extends StatefulWidget {
   const JobConversationPage(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.jobRequestId,
-      required this.sellerId})
-      : super(key: key);
+      required this.sellerId});
 
   final String title;
 
@@ -419,6 +418,8 @@ class _JobConversationPageState extends State<JobConversationPage> {
                                   Colors.black);
                             }
                           },
+                          backgroundColor: cc.primaryColor,
+                          elevation: 0,
                           child: provider.sendLoading == false
                               ? const Icon(
                                   Icons.send,
@@ -433,8 +434,6 @@ class _JobConversationPageState extends State<JobConversationPage> {
                                     strokeWidth: 1.5,
                                   ),
                                 ),
-                          backgroundColor: cc.primaryColor,
-                          elevation: 0,
                         ),
                       ],
                     ),

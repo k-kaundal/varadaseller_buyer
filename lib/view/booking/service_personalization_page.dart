@@ -22,8 +22,8 @@ import 'components/steps.dart';
 
 class ServicePersonalizationPage extends StatefulWidget {
   const ServicePersonalizationPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _ServicePersonalizationPageState createState() =>
@@ -144,9 +144,9 @@ class _ServicePersonalizationPageState
             builder: (context, provider, child) =>
                 Consumer<PersonalizationService>(
               builder: (context, personalizationProvider, child) => Container(
-                height: 157,
+                height: 162,
                 padding: EdgeInsets.only(
-                    left: screenPadding, top: 20, right: screenPadding),
+                    left: screenPadding, top: 30, right: screenPadding),
                 decoration: BookingHelper().bottomSheetDecoration(),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +188,7 @@ class _ServicePersonalizationPageState
                         }
                       }),
                       const SizedBox(
-                        height: 30,
+                        height: 24,
                       ),
                     ]),
               ),

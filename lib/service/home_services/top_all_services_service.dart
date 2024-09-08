@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:qixer/model/service_by_filter_model.dart';
 import 'package:qixer/model/top_all_services_model.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/db/db_service.dart';
-import 'package:http/http.dart' as http;
 import 'package:qixer/view/utils/others_helper.dart';
 
 class TopAllServicesService with ChangeNotifier {
@@ -88,7 +87,7 @@ class TopAllServicesService with ChangeNotifier {
         setTotalPage(data.topServices.lastPage);
 
         for (int i = 0; i < data.topServices.data.length; i++) {
-          var serviceImage;
+          String? serviceImage;
 
           if (data.serviceImage.length > i) {
             serviceImage = data.serviceImage[i].imgUrl;
@@ -126,6 +125,7 @@ class TopAllServicesService with ChangeNotifier {
               data.topServices.data, averageRateList, imageList, true);
         }
 
+        imageList = [];
         currentPage++;
         setCurrentPage(currentPage);
         return true;

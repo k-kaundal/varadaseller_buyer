@@ -5,11 +5,11 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class MyJobsPopupMenu extends StatelessWidget {
   const MyJobsPopupMenu({
-    Key? key,
+    super.key,
     required this.jobId,
     required this.imageLink,
     required this.jobIndex,
-  }) : super(key: key);
+  });
 
   final jobId;
   final imageLink;

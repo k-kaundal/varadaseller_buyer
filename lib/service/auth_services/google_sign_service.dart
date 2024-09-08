@@ -12,6 +12,7 @@ import '../../view/utils/others_helper.dart';
 import '../common_service.dart';
 import 'package:http/http.dart' as http;
 
+import '../profile_service.dart';
 import '../push_notification_service.dart';
 
 class GoogleSignInService with ChangeNotifier {
@@ -95,8 +96,10 @@ class GoogleSignInService with ChangeNotifier {
         int userId = jsonDecode(response.body)['users']['id'];
         await saveDetailsAfterSocialLogin(
             email, username, token, userId, isGoogleLogin);
+        await Provider.of<ProfileService>(context, listen: false)
+            .getProfileDetails();
         await Provider.of<PushNotificationService>(context, listen: false)
-            .fetchPusherCredential();
+            .fetchPusherCredential(context: context);
         var pusherInstance =
             Provider.of<PushNotificationService>(context, listen: false)
                 .pusherInstance;

@@ -9,7 +9,7 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class JobCreateDropdowns extends StatefulWidget {
-  const JobCreateDropdowns({Key? key}) : super(key: key);
+  const JobCreateDropdowns({super.key});
 
   @override
   State<JobCreateDropdowns> createState() => _JobCreateDropdownsState();

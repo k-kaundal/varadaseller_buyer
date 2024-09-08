@@ -6,8 +6,8 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class OrderExtraAcceptSuccessPage extends StatefulWidget {
   const OrderExtraAcceptSuccessPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _OrderExtraAcceptSuccessPageState createState() =>

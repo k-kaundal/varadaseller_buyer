@@ -13,17 +13,14 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class EmailVerifyPage extends StatefulWidget {
   const EmailVerifyPage(
-      {Key? key,
+      {super.key,
       required this.email,
-      required this.pass,
       required this.token,
       required this.userId,
       required this.state,
-      required this.countryId})
-      : super(key: key);
+      required this.countryId});
 
   final email;
-  final pass;
   final token;
   final userId;
   final state;
@@ -37,7 +34,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
   TextEditingController textEditingController = TextEditingController();
   StreamController<ErrorAnimationType>? errorController;
 
-  String currentText = "";
+  // String currentText = "";
   @override
   Widget build(BuildContext context) {
     ConstantColors cc = ConstantColors();
@@ -110,16 +107,15 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
                           otp,
                           context,
                           widget.email,
-                          widget.pass,
                           widget.token,
                           widget.userId,
                           widget.state,
                           widget.countryId);
                     },
                     onChanged: (value) {
-                      setState(() {
-                        currentText = value;
-                      });
+                      // setState(() {
+                      //   currentText = value;
+                      // });
                     },
                     beforeTextPaste: (text) {
                       //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.

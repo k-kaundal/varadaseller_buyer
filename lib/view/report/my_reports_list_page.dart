@@ -11,7 +11,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../utils/others_helper.dart';
 
 class MyReportListPage extends StatefulWidget {
-  const MyReportListPage({Key? key}) : super(key: key);
+  const MyReportListPage({super.key});
 
   @override
   _MyReportListPageState createState() => _MyReportListPageState();
@@ -76,6 +76,7 @@ class _MyReportListPageState extends State<MyReportListPage> {
                 });
               }
             },
+            footer: OthersHelper().commonRefreshFooter(context),
             child: SingleChildScrollView(
               physics: physicsCommon,
               child: Consumer<AppStringService>(
@@ -156,7 +157,6 @@ class _MyReportListPageState extends State<MyReportListPage> {
                             context, asProvider.getString('No Report'))),
               ),
             ),
-            footer: OthersHelper().commonRefreshFooter(context),
           ),
         ));
   }

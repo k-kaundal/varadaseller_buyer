@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:qixer/view/auth/login/login.dart';
+import 'package:qixer/helper/extension/context_extension.dart';
+import 'package:qixer/helper/extension/int_extension.dart';
 import 'package:qixer/view/intro/intro_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../home/landing_page.dart';
 
 class IntroductionPage extends StatefulWidget {
-  const IntroductionPage({Key? key}) : super(key: key);
+  const IntroductionPage({super.key});
 
   @override
   State<IntroductionPage> createState() => _IntroductionPageState();
@@ -30,11 +34,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
           //Slider =============>
           SizedBox(
             height: screenHeight < fourinchScreenHeight
-                ? screenHeight - 490
-                : screenHeight - 550,
+                ? screenHeight - 530
+                : screenHeight - 590,
           ),
           SizedBox(
-            height: screenHeight < fourinchScreenHeight ? 290 : 370,
+            height: screenHeight < fourinchScreenHeight ? 320 : 400,
             child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: (value) {
@@ -121,11 +125,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                        (Route<dynamic> route) => false);
+                  onTap: () async {
+                    context.toUntilPage(const LandingPage());
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setBool('intro', true);
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -149,12 +153,12 @@ class _IntroductionPageState extends State<IntroductionPage> {
               ),
               Expanded(
                 child: InkWell(
-                  onTap: () {
+                  onTap: () async {
                     if (_selectedSlide == 2) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()));
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setBool('intro', true);
+                      context.toUntilPage(const LandingPage());
                     } else {
                       _pageController.animateToPage(_selectedSlide + 1,
                           duration: const Duration(milliseconds: 300),
@@ -178,7 +182,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
                 ),
               ),
             ],
-          )
+          ),
+          20.toHeight,
         ]),
       ),
     );

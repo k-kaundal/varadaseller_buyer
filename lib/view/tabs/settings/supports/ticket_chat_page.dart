@@ -15,10 +15,10 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class TicketChatPage extends StatefulWidget {
   const TicketChatPage({
-    Key? key,
+    super.key,
     required this.title,
     required this.ticketId,
-  }) : super(key: key);
+  });
 
   final String title;
   final ticketId;
@@ -397,6 +397,8 @@ class _TicketChatPageState extends State<TicketChatPage> {
                                 'Please write a message first', Colors.black);
                           }
                         },
+                        backgroundColor: cc.primaryColor,
+                        elevation: 0,
                         child: provider.sendLoading == false
                             ? const Icon(
                                 Icons.send,
@@ -411,8 +413,6 @@ class _TicketChatPageState extends State<TicketChatPage> {
                                   strokeWidth: 1.5,
                                 ),
                               ),
-                        backgroundColor: cc.primaryColor,
-                        elevation: 0,
                       ),
                     ],
                   ),

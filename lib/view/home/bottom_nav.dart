@@ -9,8 +9,7 @@ class BottomNav extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTabTapped;
   const BottomNav(
-      {Key? key, required this.currentIndex, required this.onTabTapped})
-      : super(key: key);
+      {super.key, required this.currentIndex, required this.onTabTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +20,7 @@ class BottomNav extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
+        backgroundColor: cc.white,
         selectedLabelStyle: const TextStyle(fontSize: 12),
         selectedItemColor: ConstantColors().primaryColor,
         unselectedItemColor: ConstantColors().greyFour,

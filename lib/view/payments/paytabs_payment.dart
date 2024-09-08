@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/jobs_service/job_request_service.dart';
@@ -11,14 +12,13 @@ import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/service/wallet_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:http/http.dart' as http;
 
 import '../../service/rtl_service.dart';
 import '../utils/common_helper.dart';
 
 class PayTabsPayment extends StatelessWidget {
   PayTabsPayment(
-      {Key? key,
+      {super.key,
       required this.amount,
       required this.name,
       required this.phone,
@@ -26,8 +26,7 @@ class PayTabsPayment extends StatelessWidget {
       required this.orderId,
       required this.isFromOrderExtraAccept,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   final amount;
   final name;

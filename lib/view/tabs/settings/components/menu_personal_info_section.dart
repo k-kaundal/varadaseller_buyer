@@ -7,7 +7,7 @@ import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 
 class MenuPersonalInfoSection extends StatelessWidget {
-  const MenuPersonalInfoSection({Key? key}) : super(key: key);
+  const MenuPersonalInfoSection({super.key});
 
   @override
   Widget build(BuildContext context) {

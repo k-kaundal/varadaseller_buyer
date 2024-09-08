@@ -74,10 +74,8 @@ class TopServices {
     this.from,
     this.lastPage,
     this.lastPageUrl,
-    required this.links,
     this.nextPageUrl,
     this.path,
-    this.perPage,
     this.prevPageUrl,
     this.to,
     this.total,
@@ -86,37 +84,27 @@ class TopServices {
   int? currentPage;
   List<Datum> data;
   String? firstPageUrl;
-  int? from;
-  int? lastPage;
+  dynamic from;
+  dynamic lastPage;
   String? lastPageUrl;
-  List<Link> links;
   String? nextPageUrl;
   String? path;
-  String? perPage;
   dynamic prevPageUrl;
-  int? to;
+  dynamic to;
   int? total;
 
   factory TopServices.fromJson(Map<String, dynamic> json) => TopServices(
         currentPage: json["current_page"],
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         firstPageUrl: json["first_page_url"],
-        from: int.parse(
-            json["from"].toString() == "null" ? "0" : json["from"].toString()),
-        lastPage: int.parse(json["last_page"].toString() == "null"
-            ? "0"
-            : json["last_page"].toString()),
+        from: json["from"],
+        lastPage: json["last_page"],
         lastPageUrl: json["last_page_url"],
-        links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
         nextPageUrl: json["next_page_url"],
         path: json["path"],
-        perPage: json["per_page"],
         prevPageUrl: json["prev_page_url"],
-        to: int.parse(
-            json["to"].toString() == "null" ? "0" : json["to"].toString()),
-        total: int.parse(json["total"].toString() == "null"
-            ? "0"
-            : json["total"].toString()),
+        to: json["to"],
+        total: json["total"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -126,10 +114,8 @@ class TopServices {
         "from": from,
         "last_page": lastPage,
         "last_page_url": lastPageUrl,
-        "links": List<dynamic>.from(links.map((x) => x.toJson())),
         "next_page_url": nextPageUrl,
         "path": path,
-        "per_page": perPage,
         "prev_page_url": prevPageUrl,
         "to": to,
         "total": total,
@@ -159,13 +145,8 @@ class Datum {
         id: json["id"],
         title: json["title"],
         image: json["image"],
-        price: int.parse(json["price"].toString() == "null"
-                ? "0"
-                : json["price"].toString())
-            .toDouble(),
-        sellerId: int.parse(json["seller_id"].toString() == "null"
-            ? "0"
-            : json["seller_id"].toString()),
+        price: json["price"].toDouble(),
+        sellerId: json["seller_id"],
         reviewsForMobile: List<ReviewsForMobile>.from(json["reviews_for_mobile"]
             .map((x) => ReviewsForMobile.fromJson(x))),
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
@@ -203,16 +184,10 @@ class ReviewsForMobile {
   factory ReviewsForMobile.fromJson(Map<String, dynamic> json) =>
       ReviewsForMobile(
         id: json["id"],
-        serviceId: int.parse(json["service_id"].toString() == "null"
-            ? "0"
-            : json["service_id"].toString()),
-        rating: int.parse(json["rating"].toString() == "null"
-            ? "0"
-            : json["rating"].toString()),
+        serviceId: json["service_id"],
+        rating: json["rating"],
         message: json["message"],
-        buyerId: int.parse(json["buyer_id"].toString() == "null"
-            ? "0"
-            : json["buyer_id"].toString()),
+        buyerId: json["buyer_id"],
         buyerForMobile: json["buyer_for_mobile"] == null
             ? null
             : BuyerForMobile.fromJson(json["buyer_for_mobile"]),
@@ -266,9 +241,7 @@ class SellerForMobile {
         id: json["id"],
         name: json["name"],
         image: json["image"],
-        countryId: int.parse(json["country_id"].toString() == "null"
-            ? "0"
-            : json["country_id"].toString()),
+        countryId: json["country_id"],
       );
 
   Map<String, dynamic> toJson() => {

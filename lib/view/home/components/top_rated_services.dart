@@ -12,10 +12,10 @@ import 'package:qixer/view/utils/others_helper.dart';
 
 class TopRatedServices extends StatelessWidget {
   const TopRatedServices({
-    Key? key,
+    super.key,
     required this.cc,
     required this.asProvider,
-  }) : super(key: key);
+  });
   final ConstantColors cc;
   final asProvider;
 
@@ -48,7 +48,7 @@ class TopRatedServices extends StatelessWidget {
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 5),
-                      height: 190,
+                      height: 194,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,

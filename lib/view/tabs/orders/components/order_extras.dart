@@ -11,8 +11,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../orders_helper.dart';
 
 class OrderExtras extends StatelessWidget {
-  const OrderExtras({Key? key, required this.orderId, required this.sellerId})
-      : super(key: key);
+  const OrderExtras({super.key, required this.orderId, required this.sellerId});
   final orderId;
   final sellerId;
 

@@ -17,8 +17,7 @@ class SubcategoryModel {
 
   List<SubCategory> subCategories;
 
-  factory SubcategoryModel.fromJson(Map<String, dynamic> json) =>
-      SubcategoryModel(
+  factory SubcategoryModel.fromJson(Map json) => SubcategoryModel(
         subCategories: List<SubCategory>.from(
             json["sub_categories"].map((x) => SubCategory.fromJson(x))),
       );
@@ -35,7 +34,7 @@ class SubCategory {
     this.name,
   });
 
-  int? id;
+  dynamic id;
   String? name;
 
   factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(

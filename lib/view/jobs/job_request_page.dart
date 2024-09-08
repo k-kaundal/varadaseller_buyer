@@ -18,7 +18,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../../service/rtl_service.dart';
 
 class JobRequestPage extends StatefulWidget {
-  const JobRequestPage({Key? key}) : super(key: key);
+  const JobRequestPage({super.key});
 
   @override
   _JobRequestPageState createState() => _JobRequestPageState();
@@ -84,6 +84,7 @@ class _JobRequestPageState extends State<JobRequestPage> {
               });
             }
           },
+          footer: OthersHelper().commonRefreshFooter(context),
           child: SingleChildScrollView(
             physics: physicsCommon,
             child: Consumer<JobRequestService>(
@@ -510,7 +511,6 @@ class _JobRequestPageState extends State<JobRequestPage> {
                   : OthersHelper().showError(context, msg: 'No request found'),
             ),
           ),
-          footer: OthersHelper().commonRefreshFooter(context),
         ),
       ),
     );

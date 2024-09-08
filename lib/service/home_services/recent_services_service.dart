@@ -2,12 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:qixer/model/recent_service_model.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/db/db_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RecentServicesService with ChangeNotifier {
   var recentServiceMap = [];
@@ -17,13 +16,8 @@ class RecentServicesService with ChangeNotifier {
   fetchRecentService() async {
     if (recentServiceMap.isEmpty) {
       String apiLink;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var stateId = prefs.getString('state');
-      if (stateId == null) {
-        apiLink = '$baseApi/latest-services';
-      } else {
-        apiLink = '$baseApi/latest-services?state_id=$stateId';
-      }
+      apiLink = '$baseApi/latest-services';
+
       print(apiLink);
       var connection = await checkConnection();
       if (connection) {

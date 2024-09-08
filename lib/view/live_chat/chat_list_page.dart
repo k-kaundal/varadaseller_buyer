@@ -11,7 +11,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatListPage extends StatefulWidget {
-  const ChatListPage({Key? key}) : super(key: key);
+  const ChatListPage({super.key});
 
   @override
   State<ChatListPage> createState() => _ChatListPageState();
@@ -139,8 +139,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                                                 crossAxisAlignment:
                                                                     CrossAxisAlignment
                                                                         .start,
-                                                                children: <
-                                                                    Widget>[
+                                                                children: <Widget>[
                                                                   Text(
                                                                     provider
                                                                         .chatList[

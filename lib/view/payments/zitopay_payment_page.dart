@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
@@ -13,13 +14,12 @@ import '../utils/common_helper.dart';
 
 class ZitopayPaymentPage extends StatefulWidget {
   const ZitopayPaymentPage(
-      {Key? key,
+      {super.key,
       required this.userName,
       required this.amount,
       required this.isFromOrderExtraAccept,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   final userName;
   final amount;

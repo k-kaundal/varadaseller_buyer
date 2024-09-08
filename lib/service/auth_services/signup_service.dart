@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/service/auth_services/email_verify_service.dart';
 import 'package:qixer/service/common_service.dart';
@@ -39,6 +40,10 @@ class SignupService with ChangeNotifier {
   setSelectedPage(int i) {
     selectedPage = i;
     notifyListeners();
+  }
+
+  setSelectedPageO(int i) {
+    selectedPage = i;
   }
 
   prevPage(int i) {
@@ -122,7 +127,6 @@ class SignupService with ChangeNotifier {
             MaterialPageRoute<void>(
               builder: (BuildContext context) => EmailVerifyPage(
                 email: email,
-                pass: password,
                 token: token,
                 userId: userId,
                 state: state,

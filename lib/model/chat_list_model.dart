@@ -37,7 +37,7 @@ class ChatSellerList {
     this.sellerList,
   });
 
-  int? sellerId;
+  dynamic sellerId;
   String? dateTimeStr;
   dynamic dateHumanReadable;
   String? imageUrl;
@@ -45,7 +45,7 @@ class ChatSellerList {
   SellerList? sellerList;
 
   factory ChatSellerList.fromJson(Map<String, dynamic> json) => ChatSellerList(
-        sellerId: int.parse(json["seller_id"].toString()=="null"?"0":json["seller_id"].toString()),
+        sellerId: json["seller_id"],
         dateTimeStr: json["date_time_str"],
         dateHumanReadable: json["date_human_readable"],
         imageUrl: json["image_url"],
@@ -101,7 +101,7 @@ class SellerList {
     this.reUrl,
   });
 
-  int? id;
+  dynamic id;
   String? name;
   String? email;
   String? username;
@@ -112,13 +112,13 @@ class SellerList {
   String? serviceArea;
   int? userType;
   int? userStatus;
-  int? termsCondition;
+  dynamic termsCondition;
   String? address;
   String? state;
   String? about;
   String? postCode;
-  int? countryId;
-  int? emailVerified;
+  dynamic countryId;
+  dynamic emailVerified;
   String? emailVerifyToken;
   dynamic facebookId;
   dynamic googleId;
@@ -147,13 +147,13 @@ class SellerList {
         serviceCity: json["service_city"],
         serviceArea: json["service_area"],
         userType: json["user_type"],
-        userStatus: int.parse(json["user_status"].toString()=="null"?"0":json["user_status"].toString()),
-        termsCondition: int.parse(json["terms_condition"].toString()=="null"?"0":json["terms_condition"].toString()),
+        userStatus: json["user_status"],
+        termsCondition: json["terms_condition"],
         address: json["address"],
         state: json["state"],
         about: json["about"],
         postCode: json["post_code"],
-        countryId: int.parse(json["country_id"].toString()=="null"?"0":json["country_id"].toString()),
+        countryId: json["country_id"],
         emailVerified: json["email_verified"],
         emailVerifyToken: json["email_verify_token"],
         facebookId: json["facebook_id"],

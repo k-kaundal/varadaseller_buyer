@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:qixer/model/profile_model.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class ProfileService with ChangeNotifier {
   bool isloading = false;
@@ -14,8 +13,7 @@ class ProfileService with ChangeNotifier {
   var profileDetails;
   var profileImage;
 
-  List ordersList = [];
-
+  List ordersList = [0, 0, 0, 0];
   setLoadingTrue() {
     isloading = true;
     notifyListeners();
@@ -29,7 +27,7 @@ class ProfileService with ChangeNotifier {
   setEverythingToDefault() {
     profileDetails = null;
     profileImage = null;
-    ordersList = [];
+    ordersList = [0, 0, 0, 0];
     notifyListeners();
   }
 
@@ -72,15 +70,14 @@ class ProfileService with ChangeNotifier {
 
     var response =
         await http.get(Uri.parse('$baseApi/user/profile'), headers: header);
-    log(response.body);
     if (response.statusCode == 201) {
       var data = ProfileModel.fromJson(jsonDecode(response.body));
       profileDetails = data;
 
-      ordersList.add(profileDetails.pendingOrder);
-      ordersList.add(profileDetails.activeOrder);
-      ordersList.add(profileDetails.completeOrder);
-      ordersList.add(profileDetails.totalOrder);
+      ordersList[0] = profileDetails.pendingOrder;
+      ordersList[1] = profileDetails.activeOrder;
+      ordersList[2] = profileDetails.completeOrder;
+      ordersList[3] = profileDetails.totalOrder;
 
       if (jsonDecode(response.body)['profile_image'] is List) {
         //then dont do anything because it means image is missing from database
@@ -95,7 +92,7 @@ class ProfileService with ChangeNotifier {
       print(response.body);
       profileDetails == 'error';
       setLoadingFalse();
-      OthersHelper().showToast('Something went wrong', Colors.black);
+      // OthersHelper().showToast('Something went wrong', Colors.black);
       notifyListeners();
 
       return false;

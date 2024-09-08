@@ -8,8 +8,8 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class DeclineHistory extends StatelessWidget {
   const DeclineHistory({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

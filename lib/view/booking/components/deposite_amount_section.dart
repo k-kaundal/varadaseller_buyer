@@ -8,7 +8,7 @@ import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/custom_input.dart';
 
 class DepositeAmountSection extends StatefulWidget {
-  const DepositeAmountSection({Key? key}) : super(key: key);
+  const DepositeAmountSection({super.key});
 
   @override
   State<DepositeAmountSection> createState() => _DepositeAmountSectionState();

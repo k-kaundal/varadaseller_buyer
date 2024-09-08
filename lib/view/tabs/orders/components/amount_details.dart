@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/string_extension.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/book_confirmation_service.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
@@ -13,7 +14,7 @@ import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class AmountDetails extends StatelessWidget {
-  const AmountDetails({Key? key}) : super(key: key);
+  const AmountDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -109,8 +110,10 @@ class AmountDetails extends StatelessWidget {
                               .setOnlineOffline(isOnline);
 
                           //set total amount
-                          var total = double.parse(
-                              removeDollar(provider.orderDetails.total));
+                          var total = double.parse(provider.orderDetails.total
+                              .toString()
+                              .tryToParse
+                              .toString());
 
                           if (isOnline == 1) {
                             Provider.of<BookConfirmationService>(context,

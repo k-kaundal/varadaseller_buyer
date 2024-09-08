@@ -10,12 +10,18 @@ import '../../service/app_string_service.dart';
 
 //===========================>
 
-String baseApi = 'https://varadaseller.com/api/v1';
+String siteLink = "https://qixer.bytesed.com";
+
+String get baseApi => '$siteLink/api/v1';
 
 String placeHolderUrl = 'https://i.postimg.cc/rpsKNndW/New-Project.png';
 String userPlaceHolderUrl =
     'https://i.postimg.cc/ZYQp5Xv1/blank-profile-picture-gb26b7fbdf-1280.png';
 String appVersion = 'v1.0';
+String mapApiKey = '';
+
+//only needed for apple sign-in setup
+String clientSecret = '';
 
 class OthersHelper with ChangeNotifier {
   ConstantColors cc = ConstantColors();
@@ -95,5 +101,18 @@ class OthersHelper with ChangeNotifier {
         );
       },
     );
+  }
+}
+
+extension PriceConverter on String {
+  num get tryToParse {
+    RegExp numberPattern = RegExp(r'\d+(\.\d+)?');
+
+    // Replace all matches with an empty string
+    String originalCurrency = replaceAll(",", "").replaceAll(numberPattern, '');
+    return num.tryParse(replaceAll(originalCurrency, "")
+            .replaceAll(",", "")
+            .replaceAll(rtlProvider.currency, "")) ??
+        0;
   }
 }

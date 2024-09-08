@@ -13,7 +13,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../../../../service/searchbar_with_dropdown_service.dart';
 
 class CountryDropdownPopup extends StatelessWidget {
-  const CountryDropdownPopup({Key? key}) : super(key: key);
+  const CountryDropdownPopup({super.key});
 
   @override
   Widget build(BuildContext context) {

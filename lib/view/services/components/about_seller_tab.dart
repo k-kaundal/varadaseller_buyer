@@ -9,7 +9,7 @@ import '../seller_all_service_page.dart';
 import '../service_helper.dart';
 
 class AboutSellerTab extends StatelessWidget {
-  const AboutSellerTab({Key? key, required this.provider}) : super(key: key);
+  const AboutSellerTab({super.key, required this.provider});
   final provider;
   @override
   Widget build(BuildContext context) {

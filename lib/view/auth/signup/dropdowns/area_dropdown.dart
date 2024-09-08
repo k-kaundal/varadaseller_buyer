@@ -7,7 +7,7 @@ import 'package:qixer/view/auth/signup/dropdowns/country_states_dropdowns.dart';
 import '../../../utils/responsive.dart';
 
 class AreaDropdown extends StatelessWidget {
-  const AreaDropdown({Key? key}) : super(key: key);
+  const AreaDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {

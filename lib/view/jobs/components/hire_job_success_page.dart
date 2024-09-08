@@ -6,8 +6,8 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class HireJobSuccessPage extends StatefulWidget {
   const HireJobSuccessPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _HireJobSuccessPageState createState() => _HireJobSuccessPageState();

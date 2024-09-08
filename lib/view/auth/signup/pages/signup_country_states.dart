@@ -1,10 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/context_extension.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/signup_service.dart';
 import 'package:qixer/service/dropdowns_services/area_dropdown_service.dart';
 import 'package:qixer/service/dropdowns_services/state_dropdown_services.dart';
 import 'package:qixer/view/auth/signup/components/country_states_dropdowns.dart';
+import 'package:qixer/view/auth/signup/pages/tac_pp.dart';
 import 'package:qixer/view/auth/signup/signup_helper.dart';
 import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
@@ -13,12 +16,12 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class SignupCountryStates extends StatefulWidget {
   const SignupCountryStates({
-    Key? key,
+    super.key,
     this.fullNameController,
     this.userNameController,
     this.emailController,
     this.passController,
-  }) : super(key: key);
+  });
 
   final fullNameController;
   final userNameController;
@@ -50,29 +53,63 @@ class _SignupCountryStatesState extends State<SignupCountryStates> {
               const SizedBox(
                 height: 17,
               ),
-              CheckboxListTile(
-                checkColor: Colors.white,
-                activeColor: ConstantColors().primaryColor,
-                contentPadding: const EdgeInsets.all(0),
-                title: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    asProvider
-                        .getString("I agree with the terms and conditions"),
-                    style: TextStyle(
-                        color: ConstantColors().greyFour,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14),
+              Row(children: [
+                Checkbox(
+                  checkColor: Colors.white,
+                  activeColor: ConstantColors().primaryColor,
+                  value: termsAgree,
+                  onChanged: (newValue) {
+                    setState(() {
+                      termsAgree = !termsAgree;
+                    });
+                  },
+                ),
+                Expanded(
+                  flex: 1,
+                  child: RichText(
+                    softWrap: true,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                        text: asProvider.getString("I agree to") + " ",
+                        style: TextStyle(
+                          color: cc.black5,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        children: [
+                          TextSpan(
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context.toPage(const TacPP(
+                                    route: "/terms-and-condition",
+                                  ));
+                                  FocusScope.of(context).unfocus();
+                                },
+                              text: asProvider.getString("Terms & Conditions"),
+                              style: TextStyle(
+                                color: cc.primaryColor,
+                                fontWeight: FontWeight.w600,
+                              )),
+                          TextSpan(
+                              text: "${" " + asProvider.getString("and")} ",
+                              style: TextStyle(color: cc.black5)),
+                          TextSpan(
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context.toPage(const TacPP(
+                                    route: "/privacy-policy",
+                                  ));
+                                  FocusScope.of(context).unfocus();
+                                },
+                              text: asProvider.getString("Privacy policy"),
+                              style: TextStyle(
+                                color: cc.primaryColor,
+                                fontWeight: FontWeight.w600,
+                              )),
+                        ]),
                   ),
                 ),
-                value: termsAgree,
-                onChanged: (newValue) {
-                  setState(() {
-                    termsAgree = !termsAgree;
-                  });
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-              ),
+              ]),
               //Login button ==================>
               const SizedBox(
                 height: 17,

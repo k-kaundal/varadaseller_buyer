@@ -95,9 +95,7 @@ class TopService {
         title: json["title"],
         image: json["image"],
         price: json["price"],
-        sellerId: int.parse(json["seller_id"].toString() == "null"
-            ? "0"
-            : json["seller_id"].toString()),
+        sellerId: json["seller_id"],
         reviewsForMobile: List<ReviewsForMobile>.from(json["reviews_for_mobile"]
             .map((x) => ReviewsForMobile.fromJson(x))),
         sellerForMobile: SellerForMobile.fromJson(json["seller_for_mobile"]),
@@ -135,16 +133,10 @@ class ReviewsForMobile {
   factory ReviewsForMobile.fromJson(Map<String, dynamic> json) =>
       ReviewsForMobile(
         id: json["id"],
-        serviceId: int.parse(json["service_id"].toString() == "null"
-            ? "0"
-            : json["service_id"].toString()),
-        rating: int.parse(json["rating"].toString() == "null"
-            ? "0"
-            : json["rating"].toString()),
+        serviceId: json["service_id"],
+        rating: json["rating"],
         message: json["message"],
-        buyerId: int.parse(json["buyer_id"].toString() == "null"
-            ? "0"
-            : json["buyer_id"].toString()),
+        buyerId: json["buyer_id"],
         buyerForMobile: BuyerForMobile.fromJson(json["buyer_for_mobile"]),
       );
 
@@ -196,9 +188,7 @@ class SellerForMobile {
         id: json["id"],
         name: json["name"],
         image: json["image"],
-        countryId: int.parse(json["country_id"].toString() == "null"
-            ? "0"
-            : json["country_id"].toString()),
+        countryId: json["country_id"],
       );
 
   Map<String, dynamic> toJson() => {

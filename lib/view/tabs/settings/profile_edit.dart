@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/app_string_service.dart';
@@ -26,7 +25,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../utils/custom_input.dart';
 
 class ProfileEditPage extends StatefulWidget {
-  const ProfileEditPage({Key? key}) : super(key: key);
+  const ProfileEditPage({super.key});
 
   @override
   State<ProfileEditPage> createState() => _ProfileEditPageState();
@@ -247,7 +246,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               searchText:
                                   asProvider.getString("Search country"),
                               initialCountryCode: provider.countryCode,
-                              controller: phoneController,
+                              initialValue: phoneController.text,
+                              // controller: phoneController,
                               decoration: SignupHelper().phoneFieldDecoration(),
                               disableLengthCheck: true,
                               textAlign: rtlP.direction == 'ltr'
@@ -255,6 +255,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                   : TextAlign.right,
                               onChanged: (phone) {
                                 provider.setCountryCode(phone.countryISOCode);
+                                phoneController.text = phone.completeNumber;
                               },
                             ),
                           ),
@@ -321,6 +322,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ),
                       CommonHelper().buttonOrange(asProvider.getString('Save'),
                           () async {
+                        provider.setLoadingFalse();
                         var selectedStateId = Provider.of<StateDropdownService>(
                                 context,
                                 listen: false)
@@ -350,7 +352,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             return;
                           }
                           showTopSnackBar(
-                              context,
+                              Overlay.of(context),
                               CustomSnackBar.success(
                                 message: asProvider.getString(
                                     'Updating profile...It may take few seconds'),

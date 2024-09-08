@@ -6,10 +6,10 @@ import 'package:qixer/view/utils/constant_colors.dart';
 
 class Included extends StatelessWidget {
   const Included({
-    Key? key,
+    super.key,
     required this.cc,
     required this.data,
-  }) : super(key: key);
+  });
 
   final ConstantColors cc;
   final data;

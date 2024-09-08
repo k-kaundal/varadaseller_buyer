@@ -87,7 +87,7 @@ class UserDetails {
         phone: json["phone"],
         address: json["address"],
         about: json["about"],
-        countryId: int.parse(json["country_id"]),
+        countryId: json["country_id"],
         serviceCity: json["service_city"],
         serviceArea: json["service_area"],
         googleId: json["google_id"],
@@ -137,9 +137,9 @@ class Area {
   factory Area.fromJson(Map<String?, dynamic>? json) => Area(
         id: json?["id"],
         serviceArea: json?["service_area"],
-        serviceCityId: int.parse(json?["service_city_id"]),
-        countryId: int.parse(json?["country_id"]),
-        status: int.parse(json?["status"]),
+        serviceCityId: json?["service_city_id"],
+        countryId: json?["country_id"],
+        status: json?["status"],
       );
 
   Map<String?, dynamic>? toJson() => {
@@ -167,8 +167,8 @@ class City {
   factory City.fromJson(Map<String?, dynamic>? json) => City(
         id: json?["id"],
         serviceCity: json?["service_city"],
-        countryId: int.parse(json?["country_id"]),
-        status: int.parse(json?["status"]),
+        countryId: json?["country_id"],
+        status: json?["status"],
       );
 
   Map<String?, dynamic>? toJson() => {
@@ -193,7 +193,7 @@ class Country {
   factory Country.fromJson(Map<String?, dynamic>? json) => Country(
         id: json?["id"],
         country: json?["country"],
-        status: int.parse(json?["status"]),
+        status: json?["status"],
       );
 
   Map<String?, dynamic>? toJson() => {

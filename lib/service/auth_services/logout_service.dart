@@ -1,12 +1,14 @@
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:pusher_beams/pusher_beams.dart';
+import 'package:qixer/helper/extension/context_extension.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/service/profile_service.dart';
-import 'package:qixer/view/auth/login/login.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../push_notification_service.dart';
 
 class LogoutService with ChangeNotifier {
   bool isloading = false;
@@ -42,18 +44,24 @@ class LogoutService with ChangeNotifier {
       if (response.statusCode == 201) {
         notifyListeners();
         try {
-          await PusherBeams.instance.clearAllState();
+          var pusherInstance =
+              Provider.of<PushNotificationService>(context, listen: false)
+                  .pusherInstance;
+
+          if (pusherInstance != null) {
+            await PusherBeams.instance.clearAllState();
+          }
         } catch (e) {}
 
-        Navigator.pushAndRemoveUntil<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => const LoginPage(
-              hasBackButton: false,
-            ),
-          ),
-          (route) => false,
-        );
+        // Navigator.pushAndRemoveUntil<dynamic>(
+        //   context,
+        //   MaterialPageRoute<dynamic>(
+        //     builder: (BuildContext context) => const LoginPage(
+        //       hasBackButton: false,
+        //     ),
+        //   ),
+        //   (route) => false,
+        // );
 
         // clear profile data =====>
         Provider.of<ProfileService>(context, listen: false)
@@ -61,6 +69,7 @@ class LogoutService with ChangeNotifier {
 
         clear();
         setLoadingFalse();
+        context.popTrue;
       } else {
         print(response.body);
         OthersHelper().showToast('Something went wrong', Colors.black);

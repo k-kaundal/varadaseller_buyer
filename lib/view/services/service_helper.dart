@@ -65,7 +65,7 @@ class ServiceHelper {
 //===================>
   watchVideoPopup(BuildContext context, String videoLink) {
     String videoId = YoutubePlayer.convertUrlToId(videoLink)!;
-    YoutubePlayerController _controller = YoutubePlayerController(
+    YoutubePlayerController controller = YoutubePlayerController(
       initialVideoId: videoId,
       flags: const YoutubePlayerFlags(
         autoPlay: false,
@@ -107,7 +107,7 @@ class ServiceHelper {
                 color: cc.primaryColor,
                 height: 200,
                 child: YoutubePlayer(
-                  controller: _controller,
+                  controller: controller,
                   showVideoProgressIndicator: true,
                 ),
               ),

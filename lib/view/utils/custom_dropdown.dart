@@ -8,8 +8,7 @@ class CustomDropdown extends StatelessWidget {
   String? value;
   void Function(dynamic)? onChanged;
   CustomDropdown(this.hintText, this.listData, this.onChanged,
-      {this.value, Key? key})
-      : super(key: key);
+      {this.value, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class CustomDropdown extends StatelessWidget {
         ),
         underline: Container(),
         isExpanded: true,
-        elevation: 0,
+        elevation: 1,
         isDense: true,
         value: value,
         style: Theme.of(context).textTheme.titleSmall!.copyWith(

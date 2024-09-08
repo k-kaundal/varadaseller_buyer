@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/model/order_details_model.dart';
 import 'package:qixer/model/order_extra_model.dart';
@@ -16,7 +17,7 @@ import 'package:qixer/view/booking/components/order_extra_accept_success_page.da
 import 'package:qixer/view/utils/others_helper.dart';
 import 'package:qixer/view/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+
 import 'common_service.dart';
 
 class OrderDetailsService with ChangeNotifier {

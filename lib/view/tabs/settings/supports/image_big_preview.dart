@@ -2,21 +2,20 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:qixer/view/utils/responsive.dart';
 
 class ImageBigPreviewPage extends StatelessWidget {
-  const ImageBigPreviewPage({Key? key, this.networkImgLink, this.assetImgLink})
-      : super(key: key);
+  const ImageBigPreviewPage(
+      {super.key, this.networkImgLink, this.assetImgLink});
 
   final networkImgLink;
   final assetImgLink;
   @override
   Widget build(BuildContext context) {
     print('network image $networkImgLink');
-    GlobalKey<ScaffoldState> _bigPagekey = GlobalKey<ScaffoldState>();
+    GlobalKey<ScaffoldState> bigPagekey = GlobalKey<ScaffoldState>();
     return Scaffold(
-      key: _bigPagekey,
+      key: bigPagekey,
       // appBar: AppBar(),
       body: Stack(
         children: [

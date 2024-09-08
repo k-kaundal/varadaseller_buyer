@@ -11,7 +11,7 @@ class AreaDropdownPopup extends StatelessWidget {
   // var countryId;
   // var stateId;
 
-  const AreaDropdownPopup({Key? key}) : super(key: key);
+  const AreaDropdownPopup({super.key});
 
   @override
   Widget build(BuildContext context) {

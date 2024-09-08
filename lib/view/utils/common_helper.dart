@@ -13,9 +13,11 @@ import '../../service/book_steps_service.dart';
 class CommonHelper {
   ConstantColors cc = ConstantColors();
   //common appbar
-  appbarCommon(String title, BuildContext context, VoidCallback pressed) {
+  appbarCommon(String title, BuildContext context, VoidCallback pressed,
+      {actions}) {
     return AppBar(
       centerTitle: true,
+      surfaceTintColor: cc.white,
       iconTheme: IconThemeData(color: cc.greyPrimary),
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       title: Consumer<AppStringService>(
@@ -25,15 +27,16 @@ class CommonHelper {
               color: cc.greyPrimary, fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: cc.white,
       elevation: 0,
       leading: InkWell(
         onTap: pressed,
         child: const Icon(
           Icons.arrow_back_ios,
-          size: 18,
+          // size: 24,
         ),
       ),
+      actions: actions,
     );
   }
 
@@ -150,9 +153,18 @@ class CommonHelper {
     );
   }
 
-  titleCommon(String title, {double fontsize = 18, color, lineheight = 1.3}) {
+  titleCommon(String title,
+      {double fontsize = 18,
+      color,
+      lineheight = 1.3,
+      maxLines,
+      textAlign,
+      overflow}) {
     return Text(
       lnProvider.getString(title),
+      maxLines: maxLines,
+      overflow: overflow,
+      textAlign: textAlign,
       style: TextStyle(
           color: color ?? cc.greyPrimary,
           fontSize: fontsize,
@@ -172,12 +184,12 @@ class CommonHelper {
   checkCircle() {
     return Container(
       padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: cc.primaryColor),
       child: const Icon(
         Icons.check,
         size: 13,
         color: Colors.white,
       ),
-      decoration: BoxDecoration(shape: BoxShape.circle, color: cc.primaryColor),
     );
   }
 
@@ -188,6 +200,17 @@ class CommonHelper {
         imageUrl: imageLink,
         placeholder: (context, url) {
           return Image.asset('assets/images/loading_image.png');
+        },
+        errorWidget: (_, string, obj) {
+          return Container(
+            margin: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                      "assets/images/app_icon.png",
+                    ),
+                    opacity: .5)),
+          );
         },
         height: height,
         width: width,

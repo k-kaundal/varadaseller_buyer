@@ -17,7 +17,7 @@ import '../../utils/constant_colors.dart';
 
 class ServiceCard extends StatelessWidget {
   const ServiceCard(
-      {Key? key,
+      {super.key,
       required this.cc,
       required this.imageLink,
       required this.title,
@@ -30,8 +30,7 @@ class ServiceCard extends StatelessWidget {
       required this.pressed,
       required this.isSaved,
       required this.serviceId,
-      required this.sellerId})
-      : super(key: key);
+      required this.sellerId});
 
   final ConstantColors cc;
   final serviceId;
@@ -146,7 +145,9 @@ class ServiceCard extends StatelessWidget {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: cc.primaryColor, elevation: 0),
+                        foregroundColor: cc.white,
+                        backgroundColor: cc.primaryColor,
+                        elevation: 0),
                     onPressed: () {
                       print('service id is $serviceId');
                       //set some data of the service which is clicked, these datas may be needed
@@ -186,15 +187,14 @@ class ServiceCard extends StatelessWidget {
 
 class ServiceCardContents extends StatelessWidget {
   const ServiceCardContents(
-      {Key? key,
+      {super.key,
       required this.cc,
       required this.imageLink,
       required this.title,
       required this.sellerName,
       required this.rating,
       required this.price,
-      required this.asProvider})
-      : super(key: key);
+      required this.asProvider});
 
   final ConstantColors cc;
   final imageLink;

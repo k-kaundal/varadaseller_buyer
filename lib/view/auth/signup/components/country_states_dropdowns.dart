@@ -10,7 +10,7 @@ import 'package:qixer/view/utils/responsive.dart';
 import '../../../utils/constant_colors.dart';
 
 class CountryStatesDropdowns extends StatefulWidget {
-  const CountryStatesDropdowns({Key? key}) : super(key: key);
+  const CountryStatesDropdowns({super.key});
 
   @override
   State<CountryStatesDropdowns> createState() => _CountryStatesDropdownsState();

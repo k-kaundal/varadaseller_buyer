@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qixer/model/service_extra_model.dart';
 import 'package:qixer/service/booking_services/book_service.dart';
 import 'package:qixer/service/common_service.dart';
 import 'package:qixer/view/utils/others_helper.dart';
-import 'package:http/http.dart' as http;
 
 class PersonalizationService with ChangeNotifier {
   var serviceExtraData;
@@ -151,14 +150,14 @@ class PersonalizationService with ChangeNotifier {
           headers: header);
       print('$baseApi/service-list/service-book/$serviceId');
 
-      log(response.body.toString());
+      debugPrint(response.body.toString());
 
       if (response.statusCode == 201) {
         var data = ServiceExtraModel.fromJson(jsonDecode(response.body));
         isOnline = data.service.isServiceOnline ?? 0;
         print('tax is ${data.service.tax}');
 
-        tax = (int.parse(data.service.tax.toString())).toDouble() ?? 0.0;
+        tax = (data.service.tax).toDouble() ?? 0.0;
 
         //adding included list
         for (int i = 0; i < data.service.serviceInclude.length; i++) {

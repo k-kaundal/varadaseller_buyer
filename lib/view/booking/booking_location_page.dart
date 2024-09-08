@@ -12,12 +12,13 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/constant_styles.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
+import '../../service/dropdowns_services/country_dropdown_service.dart';
 import 'components/steps.dart';
 
 class BookingLocationPage extends StatefulWidget {
   const BookingLocationPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _BookingLocationPageState createState() => _BookingLocationPageState();
@@ -27,6 +28,12 @@ class _BookingLocationPageState extends State<BookingLocationPage> {
   @override
   void initState() {
     super.initState();
+    Provider.of<CountryDropdownService>(context, listen: false)
+        .setCountryBasedOnUserProfile(context);
+    Provider.of<StateDropdownService>(context, listen: false)
+        .setStateBasedOnUserProfile(context);
+    Provider.of<AreaDropdownService>(context, listen: false)
+        .setAreaBasedOnUserProfile(context);
   }
 
   @override

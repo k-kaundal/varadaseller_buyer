@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qixer/view/utils/responsive.dart';
 
 import 'constant_colors.dart';
 
@@ -12,11 +13,13 @@ class CustomInput extends StatelessWidget {
   final bool isNumberField;
   final String? icon;
   final double paddingHorizontal;
+  final maxLength;
+  final Iterable<String>? autofillHints;
 
   TextEditingController? controller;
 
   CustomInput({
-    Key? key,
+    super.key,
     required this.hintText,
     this.onChanged,
     this.textInputAction = TextInputAction.next,
@@ -27,7 +30,9 @@ class CustomInput extends StatelessWidget {
     this.validation,
     this.icon,
     this.paddingHorizontal = 8.0,
-  }) : super(key: key);
+    this.maxLength,
+    this.autofillHints,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,8 @@ class CustomInput extends StatelessWidget {
           validator: validation,
           textInputAction: textInputAction,
           obscureText: isPasswordField,
+          maxLength: maxLength,
+          autofillHints: autofillHints,
           style: const TextStyle(fontSize: 14),
           decoration: InputDecoration(
               prefixIcon: icon != null
@@ -71,7 +78,7 @@ class CustomInput extends StatelessWidget {
                   borderSide: BorderSide(color: ConstantColors().warningColor)),
               focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: ConstantColors().primaryColor)),
-              hintText: hintText,
+              hintText: lnProvider.getString(hintText),
               contentPadding: EdgeInsets.symmetric(
                   horizontal: paddingHorizontal, vertical: 18)),
         ));

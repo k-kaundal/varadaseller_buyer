@@ -12,11 +12,10 @@ import '../utils/common_helper.dart';
 
 class PaytmPayment extends StatefulWidget {
   const PaytmPayment(
-      {Key? key,
+      {super.key,
       required this.isFromOrderExtraAccept,
       required this.isFromWalletDeposite,
-      required this.isFromHireJob})
-      : super(key: key);
+      required this.isFromHireJob});
 
   final isFromOrderExtraAccept;
   final isFromWalletDeposite;

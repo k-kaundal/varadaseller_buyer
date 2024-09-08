@@ -1,9 +1,10 @@
 // ignore_for_file: avoid_print
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert' as convert;
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:http_auth/http_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:qixer/service/book_confirmation_service.dart';

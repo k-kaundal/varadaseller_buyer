@@ -7,7 +7,7 @@ import 'package:qixer/view/jobs/create_job_page.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 
 class MyJobsPageAppbar extends StatelessWidget {
-  const MyJobsPageAppbar({Key? key}) : super(key: key);
+  const MyJobsPageAppbar({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/int_extension.dart';
 import 'package:qixer/model/wallet_history_model.dart';
 import 'package:qixer/service/booking_services/place_order_service.dart';
 import 'package:qixer/service/common_service.dart';
@@ -13,13 +15,12 @@ import 'package:qixer/service/order_details_service.dart';
 import 'package:qixer/service/payment_gateway_list_service.dart';
 import 'package:qixer/view/home/landing_page.dart';
 import 'package:qixer/view/utils/others_helper.dart';
-import 'package:http/http.dart' as http;
 import 'package:qixer/view/wallet/wallet_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WalletService with ChangeNotifier {
   var walletHistory;
-  var walletBalance = '\$0.0';
+  var walletBalance = 0.cur;
 
   var walletHistoryId;
 
@@ -67,7 +68,7 @@ class WalletService with ChangeNotifier {
       walletHistory = data.history;
       notifyListeners();
     } else {
-      print('Error fetching wallet history' + response.body);
+      print('Error fetching wallet history${response.body}');
 
       hasWalletHistory = false;
       notifyListeners();
@@ -109,7 +110,7 @@ class WalletService with ChangeNotifier {
 
       return true;
     } else {
-      print('Error fetching wallet balance' + response.body);
+      print('Error fetching wallet balance${response.body}');
 
       return false;
     }
@@ -321,7 +322,7 @@ class WalletService with ChangeNotifier {
       }
       Provider.of<PlaceOrderService>(context, listen: false).setLoadingFalse();
 
-      print('Error deposite to wallet' + response.body);
+      print('Error deposite to wallet${response.body}');
       return false;
     }
   }

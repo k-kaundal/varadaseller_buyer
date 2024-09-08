@@ -8,7 +8,7 @@ import '../../../../service/searchbar_with_dropdown_service.dart';
 import '../../../utils/responsive.dart';
 
 class StateDropdown extends StatelessWidget {
-  const StateDropdown({Key? key}) : super(key: key);
+  const StateDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/others_helper.dart';
 
 class CountryDropdown extends StatelessWidget {
-  const CountryDropdown({Key? key}) : super(key: key);
+  const CountryDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {

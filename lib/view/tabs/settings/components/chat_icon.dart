@@ -9,8 +9,8 @@ import '../../../live_chat/chat_list_page.dart';
 
 class ChatIcon extends StatelessWidget {
   const ChatIcon({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

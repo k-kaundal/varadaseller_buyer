@@ -125,7 +125,7 @@ class SettingsHelper {
   }
 
   deleteAccountPopup(BuildContext context) {
-    TextEditingController _passwordController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     return Alert(
         context: context,
         style: AlertStyle(
@@ -164,7 +164,7 @@ class SettingsHelper {
                 ),
                 const SizedBox(height: 25),
                 CustomInput(
-                    controller: _passwordController,
+                    controller: passwordController,
                     hintText: asProvider.getString("Enter password")),
                 const SizedBox(height: 12),
                 Row(

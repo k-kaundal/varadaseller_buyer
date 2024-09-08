@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qixer/helper/extension/context_extension.dart';
+import 'package:qixer/helper/extension/string_extension.dart';
 import 'package:qixer/service/app_string_service.dart';
 import 'package:qixer/service/auth_services/google_sign_service.dart';
 import 'package:qixer/service/auth_services/login_service.dart';
@@ -11,11 +15,15 @@ import 'package:qixer/view/utils/common_helper.dart';
 import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/custom_input.dart';
 import 'package:qixer/view/utils/responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../service/auth_services/apple_sign_in_sevice.dart';
 import '../../../service/auth_services/facebook_login_service.dart';
+import '../../../service/profile_service.dart';
 import '../../utils/constant_styles.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, this.hasBackButton = true}) : super(key: key);
+  const LoginPage({super.key, this.hasBackButton = true});
 
   final hasBackButton;
 
@@ -30,6 +38,20 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _passwordVisible = false;
+    initPassword();
+  }
+
+  initPassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    keepLoggedIn = prefs.getBool('keepLoggedIn') ?? true;
+    String? email;
+    String? pass;
+    if (keepLoggedIn) {
+      email = prefs.getString('email');
+      pass = prefs.getString("pass");
+    }
+    emailController.text = email ?? "";
+    passwordController.text = pass ?? "";
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -44,35 +66,40 @@ class _LoginPageState extends State<LoginPage> {
     ConstantColors cc = ConstantColors();
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Listener(
-        onPointerDown: (_) {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.focusedChild?.unfocus();
-          }
-        },
-        child: SingleChildScrollView(
-          physics: physicsCommon,
-          child: Consumer<AppStringService>(
-            builder: (context, asProvider, child) => Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: 230.0,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/login-slider.png'),
-                          fit: BoxFit.cover,
-                        ),
+      body: SingleChildScrollView(
+        physics: physicsCommon,
+        padding: EdgeInsets.zero,
+        child: Consumer<AppStringService>(
+          builder: (context, asProvider, child) => Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 230.0,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/login-slider.png'),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  AppBar(
+                    backgroundColor: Colors.transparent,
+                    leading: IconButton(
+                      onPressed: () {
+                        debugPrint("Pressed back".toString());
+                        context.popFalse;
+                      },
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                    ),
+                  ),
+                ],
+              ),
 
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: AutofillGroup(
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -90,20 +117,24 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         //Name ============>
-                        CommonHelper()
-                            .labelCommon(asProvider.getString("Email")),
+                        CommonHelper().labelCommon(
+                            asProvider.getString("Email or username")),
 
                         CustomInput(
                           controller: emailController,
                           validation: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return 'Please enter your email or username';
                             }
                             return null;
                           },
                           hintText: asProvider.getString("Email"),
                           icon: 'assets/icons/user.png',
                           textInputAction: TextInputAction.next,
+                          autofillHints: const [
+                            AutofillHints.username,
+                            AutofillHints.email
+                          ],
                         ),
                         const SizedBox(
                           height: 25,
@@ -123,6 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                               textInputAction: TextInputAction.next,
                               obscureText: !_passwordVisible,
                               style: const TextStyle(fontSize: 14),
+                              autofillHints: const [AutofillHints.password],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return lnProvider
@@ -254,11 +286,17 @@ class _LoginPageState extends State<LoginPage> {
                               .buttonOrange(asProvider.getString("Login"), () {
                             if (provider.isloading == false) {
                               if (_formKey.currentState!.validate()) {
-                                provider.login(
-                                    emailController.text.trim(),
-                                    passwordController.text,
-                                    context,
-                                    keepLoggedIn);
+                                provider
+                                    .login(
+                                        emailController.text.trim(),
+                                        passwordController.text,
+                                        context,
+                                        keepLoggedIn)
+                                    .then((value) {
+                                  if (value == true) {
+                                    context.popTrue;
+                                  }
+                                });
 
                                 // Navigator.pushReplacement<void, void>(
                                 //   context,
@@ -298,7 +336,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   builder: (context) =>
                                                       const SignupPage()));
                                         },
-                                      text: lnProvider.getString('Register'),
+                                      text: lnProvider.getString('Sign up'),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,
@@ -314,71 +352,103 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(
                           height: 30,
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   crossAxisAlignment: CrossAxisAlignment.center,
-                        //   children: [
-                        //     Expanded(
-                        //         child: Container(
-                        //       height: 1,
-                        //       color: cc.greyFive,
-                        //     )),
-                        //     Container(
-                        //       width: 40,
-                        //       alignment: Alignment.center,
-                        //       margin: const EdgeInsets.only(bottom: 25),
-                        //       child: Text(
-                        //         asProvider.getString("OR"),
-                        //         style: TextStyle(
-                        //             color: cc.greyPrimary,
-                        //             fontSize: 17,
-                        //             fontWeight: FontWeight.w600),
-                        //       ),
-                        //     ),
-                        //     Expanded(
-                        //         child: Container(
-                        //       height: 1,
-                        //       color: cc.greyFive,
-                        //     )),
-                        //   ],
-                        // ),
-                        //
-                        // // login with google, facebook button ===========>
-                        // const SizedBox(
-                        //   height: 20,
-                        // ),
-                        // Consumer<GoogleSignInService>(
-                        //   builder: (context, gProvider, child) => InkWell(
-                        //       onTap: () {
-                        //         if (gProvider.isloading == false) {
-                        //           gProvider.googleLogin(context);
-                        //         }
-                        //       },
-                        //       child: LoginHelper().commonButton(
-                        //           'assets/icons/google.png',
-                        //           lnProvider.getString("Login with Google"),
-                        //           isloading: gProvider.isloading == false
-                        //               ? false
-                        //               : true)),
-                        // ),
-                        // const SizedBox(
-                        //   height: 20,
-                        // ),
-                        // Consumer<FacebookLoginService>(
-                        //   builder: (context, fProvider, child) => InkWell(
-                        //     onTap: () {
-                        //       if (fProvider.isloading == false) {
-                        //         fProvider.checkIfLoggedIn(context);
-                        //       }
-                        //     },
-                        //     child: LoginHelper().commonButton(
-                        //         'assets/icons/facebook.png',
-                        //         lnProvider.getString("Login with Facebook"),
-                        //         isloading: fProvider.isloading == false
-                        //             ? false
-                        //             : true),
-                        //   ),
-                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                child: Container(
+                              height: 1,
+                              color: cc.greyFive,
+                            )),
+                            Container(
+                              width: 40,
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(bottom: 25),
+                              child: Text(
+                                asProvider.getString("OR"),
+                                style: TextStyle(
+                                    color: cc.greyPrimary,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            Expanded(
+                                child: Container(
+                              height: 1,
+                              color: cc.greyFive,
+                            )),
+                          ],
+                        ),
+
+                        // login with google, facebook button ===========>
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Consumer<GoogleSignInService>(
+                          builder: (context, gProvider, child) => InkWell(
+                              onTap: () {
+                                if (gProvider.isloading == false) {
+                                  gProvider.googleLogin(context);
+                                }
+                              },
+                              child: LoginHelper().commonButton(
+                                  'assets/icons/google.png',
+                                  lnProvider.getString("Login with Google"),
+                                  isloading: gProvider.isloading == false
+                                      ? false
+                                      : true)),
+                        ),
+
+                        if (Platform.isIOS) ...[
+                          const SizedBox(height: 20),
+                          Consumer<AppleSignInService>(
+                            builder: (context, gProvider, child) => InkWell(
+                                onTap: () async {
+                                  if (gProvider.isloading == false) {
+                                    gProvider.setLoadingTrue();
+                                    await gProvider
+                                        .appleLogin(context, autoLogin: true)
+                                        .then((value) async {
+                                      if (value == true) {
+                                        // Navigator.of(context).pop();
+                                        await Provider.of<ProfileService>(
+                                                context,
+                                                listen: false)
+                                            .fetchData();
+                                        context.popTrue;
+                                      }
+                                    }).onError((error, stackTrace) =>
+                                            gProvider.setLoadingFalse());
+                                    gProvider.setLoadingFalse();
+                                  }
+                                },
+                                child: LoginHelper().commonButton(
+                                    'assets/icons/apple.png',
+                                    ("Sign in with Apple").tr(),
+                                    isloading: gProvider.isloading == false
+                                        ? false
+                                        : true)),
+                          )
+                        ],
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Consumer<FacebookLoginService>(
+                          builder: (context, fProvider, child) => InkWell(
+                            onTap: () {
+                              if (fProvider.isloading == false) {
+                                fProvider.checkIfLoggedIn(context);
+                              }
+                            },
+                            child: LoginHelper().commonButton(
+                                'assets/icons/facebook.png',
+                                lnProvider.getString("Login with Facebook"),
+                                isloading: fProvider.isloading == false
+                                    ? false
+                                    : true),
+                          ),
+                        ),
 
                         const SizedBox(
                           height: 30,
@@ -386,11 +456,11 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                )
-                // }
-                // }),
-              ],
-            ),
+                ),
+              )
+              // }
+              // }),
+            ],
           ),
         ),
       ),

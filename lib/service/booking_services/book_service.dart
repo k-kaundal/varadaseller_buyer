@@ -30,7 +30,7 @@ class BookService with ChangeNotifier {
     serviceId = id;
     serviceTitle = title;
     serviceImage = image ?? placeHolderUrl;
-    totalPrice = int.parse(newPrice.toString()).round();
+    totalPrice = newPrice.round();
     sellerId = sellerNewId;
     notifyListeners();
   }

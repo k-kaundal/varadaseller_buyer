@@ -9,13 +9,13 @@ import '../../utils/constant_colors.dart';
 
 class MyJobsCardContents extends StatelessWidget {
   const MyJobsCardContents({
-    Key? key,
+    super.key,
     required this.cc,
     required this.imageLink,
     required this.title,
     required this.viewCount,
     required this.price,
-  }) : super(key: key);
+  });
 
   final ConstantColors cc;
   final imageLink;

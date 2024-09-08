@@ -5,9 +5,9 @@ import 'package:qixer/view/utils/constant_colors.dart';
 import 'package:qixer/view/utils/responsive.dart';
 
 class OnlineOfflineDropdown extends StatelessWidget {
-  const OnlineOfflineDropdown({Key? key, required this.searchText})
-      : super(key: key);
-  final searchText;
+  const OnlineOfflineDropdown({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

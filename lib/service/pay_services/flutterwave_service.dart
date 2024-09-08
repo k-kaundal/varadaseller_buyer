@@ -93,33 +93,33 @@ class FlutterwaveService {
             '';
 
     final currency = Provider.of<RtlService>(context, listen: false).currency;
-    final style = FlutterwaveStyle(
-      appBarText: "Flutterwave payment",
-      buttonColor: Colors.blue,
-      buttonTextStyle: const TextStyle(
-        color: Colors.white,
-        fontSize: 16,
-      ),
-      appBarColor: Colors.blue,
-      dialogCancelTextStyle: const TextStyle(
-        color: Colors.grey,
-        fontSize: 17,
-      ),
-      dialogContinueTextStyle: const TextStyle(
-        color: Colors.blue,
-        fontSize: 17,
-      ),
-      mainBackgroundColor: Colors.white,
-      mainTextStyle:
-          const TextStyle(color: Colors.black, fontSize: 17, letterSpacing: 2),
-      dialogBackgroundColor: Colors.white,
-      appBarIcon: const Icon(Icons.arrow_back, color: Colors.white),
-      buttonText: "Pay $currency$amount",
-      appBarTitleTextStyle: const TextStyle(
-        color: Colors.white,
-        fontSize: 18,
-      ),
-    );
+    // final style = FlutterwaveStyle(
+    //   appBarText: "Flutterwave payment",
+    //   buttonColor: Colors.blue,
+    //   buttonTextStyle: const TextStyle(
+    //     color: Colors.white,
+    //     fontSize: 16,
+    //   ),
+    //   appBarColor: Colors.blue,
+    //   dialogCancelTextStyle: const TextStyle(
+    //     color: Colors.grey,
+    //     fontSize: 17,
+    //   ),
+    //   dialogContinueTextStyle: const TextStyle(
+    //     color: Colors.blue,
+    //     fontSize: 17,
+    //   ),
+    //   mainBackgroundColor: Colors.white,
+    //   mainTextStyle:
+    //       const TextStyle(color: Colors.black, fontSize: 17, letterSpacing: 2),
+    //   dialogBackgroundColor: Colors.white,
+    //   appBarIcon: const Icon(Icons.arrow_back, color: Colors.white),
+    //   buttonText: "Pay $currency$amount",
+    //   appBarTitleTextStyle: const TextStyle(
+    //     color: Colors.white,
+    //     fontSize: 18,
+    //   ),
+    // );
 
     final Customer customer =
         Customer(name: "FLW Developer", phoneNumber: phone, email: email);
@@ -139,7 +139,7 @@ class FlutterwaveService {
         Provider.of<RtlService>(context, listen: false).currencyCode;
     final Flutterwave flutterwave = Flutterwave(
         context: context,
-        style: style,
+        // style: style,
         publicKey: publicKey,
         currency: currencyCode,
         txRef: const Uuid().v1(),

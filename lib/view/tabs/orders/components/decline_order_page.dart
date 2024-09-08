@@ -10,10 +10,10 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class DeclineOrderPage extends StatefulWidget {
   const DeclineOrderPage({
-    Key? key,
+    super.key,
     required this.orderId,
     required this.sellerId,
-  }) : super(key: key);
+  });
 
   final orderId;
   final sellerId;

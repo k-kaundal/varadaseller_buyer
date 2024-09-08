@@ -13,7 +13,7 @@ import 'package:qixer/view/utils/others_helper.dart';
 import '../home/components/service_card.dart';
 
 class TopAllServicePage extends StatefulWidget {
-  const TopAllServicePage({Key? key}) : super(key: key);
+  const TopAllServicePage({super.key});
 
   @override
   State<TopAllServicePage> createState() => _TopAllServicePageState();
@@ -70,6 +70,7 @@ class _TopAllServicePageState extends State<TopAllServicePage> {
             });
           }
         },
+        footer: OthersHelper().commonRefreshFooter(context),
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -162,7 +163,6 @@ class _TopAllServicePageState extends State<TopAllServicePage> {
                     )),
           ),
         ),
-        footer: OthersHelper().commonRefreshFooter(context),
       ),
     );
   }

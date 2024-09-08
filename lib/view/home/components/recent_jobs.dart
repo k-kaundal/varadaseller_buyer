@@ -15,8 +15,8 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class RecentJobs extends StatelessWidget {
   const RecentJobs({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class RecentJobs extends StatelessWidget {
                         sizedBoxCustom(18),
                         Container(
                           margin: const EdgeInsets.only(top: 5),
-                          height: 145,
+                          height: 150,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,

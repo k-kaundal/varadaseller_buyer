@@ -18,10 +18,10 @@ import 'package:qixer/view/utils/responsive.dart';
 
 class EditJobPage extends StatefulWidget {
   const EditJobPage({
-    Key? key,
+    super.key,
     required this.jobIndex,
     required this.jobId,
-  }) : super(key: key);
+  });
 
   final jobIndex;
   final jobId;
